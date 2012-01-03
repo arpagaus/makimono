@@ -85,18 +85,20 @@ public class Indexer {
 			document.add(new Field("entry", compressByteArray));
 
 			for (KEle kanjiElement : entry.getKEle()) {
-				document.add(new Field("kanjiElement", kanjiElement.getKeb(), Store.NO, Index.ANALYZED));
+				document.add(new Field("keyword", kanjiElement.getKeb(), Store.NO, Index.ANALYZED));
 			}
 
 			for (REle readingElement : entry.getREle()) {
-				document.add(new Field("readingElement", readingElement.getReb(), Store.NO, Index.ANALYZED));
+				document.add(new Field("keyword", readingElement.getReb(), Store.NO, Index.ANALYZED));
 			}
 
 			for (Sense sense : entry.getSense()) {
 				for (Gloss gloss : sense.getGloss()) {
 					String lang = gloss.getXmlLang();
 					languageCount.put(lang, (languageCount.get(lang) == null ? 0 : languageCount.get(lang)) + 1);
-					document.add(new Field("gloss" + lang, gloss.getvalue(), Store.NO, Index.ANALYZED));
+					document.add(new Field("language", lang, Store.YES, Index.NOT_ANALYZED));
+
+					document.add(new Field("keyword", gloss.getvalue(), Store.NO, Index.ANALYZED));
 				}
 			}
 

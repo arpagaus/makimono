@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.document.CompressionTools;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
+import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -44,11 +44,10 @@ public class Searcher {
 		boolean xmlOutput = args.length == 3 && args[2].equalsIgnoreCase("-xml");
 
 		Directory directory = new SimpleFSDirectory(new File(args[0]));
-		Query q = new MultiFieldQueryParser(Version.LUCENE_30, new String[] { "kanjiElement", "readingElement", "glossen" }, new SimpleAnalyzer(Version.LUCENE_30)).parse(args[1]);
+		Query q = new QueryParser(Version.LUCENE_30, "keyword", new SimpleAnalyzer(Version.LUCENE_30)).parse(args[1]);
 
-		int hitsPerPage = 10;
 		IndexSearcher searcher = new IndexSearcher(directory, true);
-		TopScoreDocCollector collector = TopScoreDocCollector.create(hitsPerPage, true);
+		TopScoreDocCollector collector = TopScoreDocCollector.create(300, true);
 		searcher.search(q, collector);
 		ScoreDoc[] hits = collector.topDocs().scoreDocs;
 
@@ -74,7 +73,7 @@ public class Searcher {
 			marshaller.marshal(dict, printStream);
 		}
 
-		System.out.println("Found " + hits.length + " hits");
+		System.out.println("Found " + collector.getTotalHits() + " hits");
 	}
 
 }

@@ -29,8 +29,7 @@ public class XmlLangTranslatorStreamReader extends StreamReaderDelegate {
 	public String getAttributeValue(int index) {
 		String attributeValue = super.getAttributeValue(index);
 		if (LANG_TRANSLATIONS.containsKey(attributeValue)) {
-			String language = LANG_TRANSLATIONS.get(attributeValue).getLanguage();
-			return language;
+			return LANG_TRANSLATIONS.get(attributeValue).getLanguage();
 		}
 		return attributeValue;
 	}

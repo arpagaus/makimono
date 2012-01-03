@@ -61,6 +61,7 @@
 				</fileset>
 			</classpath>
 			<arg value="-nv" />
+			<arg value="-no-header" />
 			<arg value="-p" />
 			<arg value="au.edu.monash.csse.jmdict.model" />
 			<arg value="-d" />
@@ -71,9 +72,9 @@
 			<arg value="${jmdict.dtd}" />
 		</java>
 
-		<replace value='@XmlAttribute(name = "lang", namespace="http://www.w3.org/XML/1998/namespace", required = true)' token='@XmlAttribute(name = "xml:lang")'>
+		<replace value='"lang", namespace="http://www.w3.org/XML/1998/namespace"' token='"xml:lang"' summary="true">
 			<fileset dir="${gen.dir}">
-				<include name="**.java" />
+				<include name="**/*.java" />
 			</fileset>
 		</replace>
 
