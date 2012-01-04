@@ -11,6 +11,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
+import jiten.model.Language;
+
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.document.CompressionTools;
 import org.apache.lucene.document.Document;
@@ -71,10 +73,13 @@ public class Indexer {
 		Map<String, Integer> languageCount = new HashMap<String, Integer>();
 
 		for (Entry entry : jmdict.getEntry()) {
+
+			jiten.model.Entry jitenEntry = transformEntry(entry);
+
 			Document document = new Document();
 			ByteArrayOutputStream serializedBinary = new ByteArrayOutputStream();
 			ObjectOutputStream objectOutputStream = new ObjectOutputStream(serializedBinary);
-			objectOutputStream.writeObject(entry);
+			objectOutputStream.writeObject(jitenEntry);
 			objectOutputStream.close();
 
 			byte[] originalByteArray = serializedBinary.toByteArray();
@@ -119,5 +124,31 @@ public class Indexer {
 		System.out.println("Finished optimizing index");
 		indexWriter.close();
 		System.out.println("Index closed");
+	}
+
+	private static jiten.model.Entry transformEntry(Entry entry) {
+		jiten.model.Entry jitenEntry = new jiten.model.Entry();
+
+		for (KEle kEle : entry.getKEle()) {
+			jitenEntry.getExpressions().add(kEle.getKeb());
+		}
+
+		for (REle rEle : entry.getREle()) {
+			jitenEntry.getReadings().add(rEle.getReb());
+		}
+
+		for (Sense sense : entry.getSense()) {
+			jiten.model.Sense jitenSense = new jiten.model.Sense();
+			jitenEntry.getSenses().add(jitenSense);
+			for (Gloss gloss : sense.getGloss()) {
+				jiten.model.Gloss jitenGloss = new jiten.model.Gloss();
+				jitenGloss.setLanguage(Language.valueOf(gloss.getXmlLang()));
+				jitenGloss.setValue(gloss.getvalue());
+
+				jitenSense.getGlosses().add(jitenGloss);
+			}
+		}
+
+		return jitenEntry;
 	}
 }

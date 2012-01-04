@@ -1,7 +1,6 @@
 
 package au.edu.monash.csse.jmdict.model;
 
-import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -18,11 +17,8 @@ import javax.xml.bind.annotation.XmlType;
     "updDetl"
 })
 @XmlRootElement(name = "audit")
-public class Audit
-    implements Serializable
-{
+public class Audit {
 
-    private final static long serialVersionUID = 1L;
     @XmlElement(name = "upd_date", required = true)
     protected String updDate;
     @XmlElement(name = "upd_detl", required = true)

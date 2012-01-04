@@ -1,7 +1,6 @@
 
 package au.edu.monash.csse.jmdict.model;
 
-import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -19,11 +18,8 @@ import javax.xml.bind.annotation.XmlType;
     "linkUri"
 })
 @XmlRootElement(name = "links")
-public class Links
-    implements Serializable
-{
+public class Links {
 
-    private final static long serialVersionUID = 1L;
     @XmlElement(name = "link_tag", required = true)
     protected String linkTag;
     @XmlElement(name = "link_desc", required = true)

@@ -29,10 +29,13 @@ class HierarchicalStyle extends ToStringStyle {
 	public void appendDetail(StringBuffer buffer, String fieldName, Object value) {
 		if (value == null) {
 			return;
-		} else if (!value.getClass().getName().startsWith("java")) {
-			buffer.append(ReflectionToStringBuilder.toString(value, instance));
 		} else {
-			super.appendDetail(buffer, fieldName, value);
+			Class<? extends Object> clazz = value.getClass();
+			if (!clazz.getName().startsWith("java") && !clazz.isEnum()) {
+				buffer.append(ReflectionToStringBuilder.toString(value, instance));
+			} else {
+				super.appendDetail(buffer, fieldName, value);
+			}
 		}
 	}
 

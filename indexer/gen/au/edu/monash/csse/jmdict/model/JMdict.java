@@ -1,7 +1,6 @@
 
 package au.edu.monash.csse.jmdict.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -18,11 +17,8 @@ import javax.xml.bind.annotation.XmlType;
     "entry"
 })
 @XmlRootElement(name = "JMdict")
-public class JMdict
-    implements Serializable
-{
+public class JMdict {
 
-    private final static long serialVersionUID = 1L;
     protected List<Entry> entry;
 
     /**

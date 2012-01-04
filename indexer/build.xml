@@ -47,7 +47,6 @@
 	</target>
 
 	<target name="build-jmdict-model">
-		<get src="${jmdict.dtd.url}" dest="${jmdict.dtd}" verbose="on" />
 
 		<!-- Fix the DTD file -->
 		<replace file="${jmdict.dtd}" value="" token="&lt;!DOCTYPE JMdict [" />
@@ -66,8 +65,6 @@
 			<arg value="au.edu.monash.csse.jmdict.model" />
 			<arg value="-d" />
 			<arg value="${gen.dir}" />
-			<arg value="-b" />
-			<arg value="JMdict.jxb" />
 			<arg value="-dtd" />
 			<arg value="${jmdict.dtd}" />
 		</java>

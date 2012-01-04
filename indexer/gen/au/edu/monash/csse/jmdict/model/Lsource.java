@@ -1,7 +1,6 @@
 
 package au.edu.monash.csse.jmdict.model;
 
-import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -20,11 +19,8 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
     "value"
 })
 @XmlRootElement(name = "lsource")
-public class Lsource
-    implements Serializable
-{
+public class Lsource {
 
-    private final static long serialVersionUID = 1L;
     @XmlAttribute(name = "lang", namespace="http://www.w3.org/XML/1998/namespace")
     @XmlJavaTypeAdapter(NormalizedStringAdapter.class)
     protected String xmlLang;

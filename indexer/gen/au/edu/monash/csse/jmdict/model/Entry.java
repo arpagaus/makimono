@@ -1,7 +1,6 @@
 
 package au.edu.monash.csse.jmdict.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -23,11 +22,8 @@ import javax.xml.bind.annotation.XmlType;
     "sense"
 })
 @XmlRootElement(name = "entry")
-public class Entry
-    implements Serializable
-{
+public class Entry {
 
-    private final static long serialVersionUID = 1L;
     @XmlElement(name = "ent_seq", required = true)
     protected String entSeq;
     @XmlElement(name = "k_ele")

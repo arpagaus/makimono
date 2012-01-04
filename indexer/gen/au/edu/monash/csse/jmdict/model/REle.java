@@ -1,7 +1,6 @@
 
 package au.edu.monash.csse.jmdict.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -23,11 +22,8 @@ import javax.xml.bind.annotation.XmlType;
     "rePri"
 })
 @XmlRootElement(name = "r_ele")
-public class REle
-    implements Serializable
-{
+public class REle {
 
-    private final static long serialVersionUID = 1L;
     @XmlElement(required = true)
     protected String reb;
     @XmlElement(name = "re_nokanji")

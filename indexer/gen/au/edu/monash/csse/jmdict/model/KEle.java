@@ -1,7 +1,6 @@
 
 package au.edu.monash.csse.jmdict.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -21,11 +20,8 @@ import javax.xml.bind.annotation.XmlType;
     "kePri"
 })
 @XmlRootElement(name = "k_ele")
-public class KEle
-    implements Serializable
-{
+public class KEle {
 
-    private final static long serialVersionUID = 1L;
     @XmlElement(required = true)
     protected String keb;
     @XmlElement(name = "ke_inf")
