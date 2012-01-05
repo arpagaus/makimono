@@ -1,8 +1,11 @@
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.zip.GZIPInputStream;
 
@@ -13,7 +16,7 @@ import javax.xml.stream.XMLStreamReader;
 
 import jiten.model.Language;
 
-import org.apache.lucene.analysis.SimpleAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.CompressionTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -29,14 +32,13 @@ import au.edu.monash.csse.jmdict.model.Entry;
 import au.edu.monash.csse.jmdict.model.Gloss;
 import au.edu.monash.csse.jmdict.model.JMdict;
 import au.edu.monash.csse.jmdict.model.KEle;
+import au.edu.monash.csse.jmdict.model.KePri;
 import au.edu.monash.csse.jmdict.model.REle;
+import au.edu.monash.csse.jmdict.model.RePri;
 import au.edu.monash.csse.jmdict.model.Sense;
 
 public class Indexer {
 
-	/**
-	 * @param args
-	 */
 	public static void main(String[] args) throws Exception {
 		if (args.length != 2) {
 			System.err.println("Usage: Indexer [path to JMdict.gz file] [path to index destination]");
@@ -49,6 +51,13 @@ public class Indexer {
 			System.exit(1);
 		}
 
+		new Indexer().startIndexing(jmdictFile, new File(args[1]));
+	}
+
+	long uncompressedBytes = 0;
+	long compressedBytes = 0;
+
+	private void startIndexing(File jmdictFile, File indexDirectory) throws Exception {
 		GZIPInputStream inputStream = new GZIPInputStream(new FileInputStream(jmdictFile));
 		Unmarshaller unmarshaller = JAXBContext.newInstance(JMdict.class.getPackage().getName()).createUnmarshaller();
 		unmarshaller.setSchema(null);
@@ -60,52 +69,47 @@ public class Indexer {
 
 		System.out.println("Finished parsing JMdict");
 
-		Directory directory = new SimpleFSDirectory(new File(args[1]));
-		IndexWriter indexWriter = new IndexWriter(directory, new IndexWriterConfig(Version.LUCENE_30, new SimpleAnalyzer(Version.LUCENE_30)));
+		Directory directory = new SimpleFSDirectory(indexDirectory);
+		IndexWriter indexWriter = new IndexWriter(directory, new IndexWriterConfig(Version.LUCENE_35, getAnalyzer()));
 
 		final int size = jmdict.getEntry().size();
 		int processedCount = 0;
 		double progress = 0;
 
-		long uncompressedBytes = 0;
-		long compressedBytes = 0;
-
 		Map<String, Integer> languageCount = new HashMap<String, Integer>();
 
 		for (Entry entry : jmdict.getEntry()) {
-
-			jiten.model.Entry jitenEntry = transformEntry(entry);
-
 			Document document = new Document();
-			ByteArrayOutputStream serializedBinary = new ByteArrayOutputStream();
-			ObjectOutputStream objectOutputStream = new ObjectOutputStream(serializedBinary);
-			objectOutputStream.writeObject(jitenEntry);
-			objectOutputStream.close();
-
-			byte[] originalByteArray = serializedBinary.toByteArray();
-			uncompressedBytes = uncompressedBytes + originalByteArray.length;
-			byte[] compressByteArray = CompressionTools.compress(originalByteArray);
-			compressedBytes = compressedBytes + compressByteArray.length;
-
-			document.add(new Field("entry", compressByteArray));
 
 			for (KEle kanjiElement : entry.getKEle()) {
-				document.add(new Field("keyword", kanjiElement.getKeb(), Store.NO, Index.ANALYZED));
+				Field expression = new Field("expression", kanjiElement.getKeb(), Store.NO, Index.ANALYZED);
+				expression.setBoost(getBoostForExpression(kanjiElement.getKePri()));
+				document.add(expression);
 			}
 
 			for (REle readingElement : entry.getREle()) {
-				document.add(new Field("keyword", readingElement.getReb(), Store.NO, Index.ANALYZED));
+				Field reading = new Field("reading", readingElement.getReb(), Store.NO, Index.ANALYZED);
+				reading.setBoost(getBoostForReading(readingElement.getRePri()));
+				document.add(reading);
 			}
 
 			for (Sense sense : entry.getSense()) {
 				for (Gloss gloss : sense.getGloss()) {
-					String lang = gloss.getXmlLang();
-					languageCount.put(lang, (languageCount.get(lang) == null ? 0 : languageCount.get(lang)) + 1);
-					document.add(new Field("language", lang, Store.YES, Index.NOT_ANALYZED));
+					String glossValue = cleanGloss(gloss.getvalue());
+					gloss.setvalue(glossValue);
 
-					document.add(new Field("keyword", gloss.getvalue(), Store.NO, Index.ANALYZED));
+					String lang = gloss.getXmlLang();
+					if (lang.equals("de")) {
+						glossValue = glossValue.replaceAll("\\(.*\\)", "");
+					}
+
+					languageCount.put(lang, (languageCount.get(lang) == null ? 0 : languageCount.get(lang)) + 1);
+					document.add(new Field("sense-" + lang, glossValue, Store.NO, Index.ANALYZED));
 				}
 			}
+
+			byte[] compressByteArray = getCompressedEntry(transformEntry(entry));
+			document.add(new Field("entry", compressByteArray));
 
 			indexWriter.addDocument(document);
 
@@ -120,14 +124,118 @@ public class Indexer {
 		System.out.printf("Created index with %d entries (" + languageCount + ")", processedCount);
 		System.out.println();
 
-		indexWriter.optimize();
+		indexWriter.forceMerge(1);
+		indexWriter.commit();
 		System.out.println("Finished optimizing index");
 		indexWriter.close();
 		System.out.println("Index closed");
 	}
 
-	private static jiten.model.Entry transformEntry(Entry entry) {
+	private StandardAnalyzer getAnalyzer() {
+		return new StandardAnalyzer(Version.LUCENE_35, Collections.emptySet());
+	}
+
+	private byte[] getCompressedEntry(jiten.model.Entry jitenEntry) throws IOException {
+		ByteArrayOutputStream serializedBinary = new ByteArrayOutputStream();
+		ObjectOutputStream objectOutputStream = new ObjectOutputStream(serializedBinary);
+		objectOutputStream.writeObject(jitenEntry);
+		objectOutputStream.close();
+
+		byte[] originalByteArray = serializedBinary.toByteArray();
+		uncompressedBytes = uncompressedBytes + originalByteArray.length;
+		byte[] compressByteArray = CompressionTools.compress(originalByteArray);
+		compressedBytes = compressedBytes + compressByteArray.length;
+		return compressByteArray;
+	}
+
+	private String cleanGloss(String value) {
+		return value.replace("(n) ", "");
+	}
+
+	private float getBoostForReading(List<RePri> rePri) {
+		float boost = 1.0f;
+		for (RePri r : rePri) {
+			boost = Math.max(boost, getBoost(r.getvalue()));
+		}
+		return boost;
+	}
+
+	private float getBoostForExpression(List<KePri> kePri) {
+		float boost = 1.0f;
+		for (KePri k : kePri) {
+			boost = Math.max(boost, getBoost(k.getvalue()));
+		}
+		return boost;
+	}
+
+	/**
+	 * <p>
+	 * This and the equivalent re_pri field are provided to record information
+	 * about the relative priority of the entry, and consist of codes indicating
+	 * the word appears in various references which can be taken as an
+	 * indication of the frequency with which the word is used. This field is
+	 * intended for use either by applications which want to concentrate on
+	 * entries of a particular priority, or to generate subset files. The
+	 * current values in this field are:
+	 * </p>
+	 * <ul>
+	 * <li>news1/2: appears in the "wordfreq" file compiled by Alexandre Girardi
+	 * from the Mainichi Shimbun. (See the Monash ftp archive for a copy.) Words
+	 * in the first 12,000 in that file are marked "news1" and words in the
+	 * second 12,000 are marked "news2".</li>
+	 * <li>ichi1/2: appears in the "Ichimango goi bunruishuu", Senmon Kyouiku
+	 * Publishing, Tokyo, 1998. (The entries marked "ichi2" were demoted from
+	 * ichi1 because they were observed to have low frequencies in the WWW and
+	 * newspapers.)</li>
+	 * <li>spec1 and spec2: a small number of words use this marker when they
+	 * are detected as being common, but are not included in other lists.</li>
+	 * <li>gai1/2: common loanwords, based on the wordfreq file.</li>
+	 * <li>
+	 * nfxx: this is an indicator of frequency-of-use ranking in the wordfreq
+	 * file. "xx" is the number of the set of 500 words in which the entry can
+	 * be found, with "01" assigned to the first 500, "02" to the second, and so
+	 * on. (The entries with news1, ichi1, spec1 and gai1 values are marked with
+	 * a "(P)" in the EDICT and EDICT2 files.)</li>
+	 * </ul>
+	 * <p>
+	 * The reason both the kanji and reading elements are tagged is because on
+	 * occasions a priority is only associated with a particular kanji/reading
+	 * pair.
+	 * </p>
+	 * 
+	 * @return
+	 */
+	private float getBoost(String priority) {
+		int value = 1; // Between 1 and 100
+		if (priority.equalsIgnoreCase("gai1")) {
+			value = 20;
+		} else if (priority.equalsIgnoreCase("gai2")) {
+			value = 40;
+		} else if (priority.equalsIgnoreCase("ichi1")) {
+			value = 100;
+		} else if (priority.equalsIgnoreCase("ichi2")) {
+			value = 80;
+		} else if (priority.equalsIgnoreCase("news1")) {
+			value = 90;
+		} else if (priority.equalsIgnoreCase("news2")) {
+			value = 70;
+		} else if (priority.equalsIgnoreCase("spec1")) {
+			value = 90;
+		} else if (priority.equalsIgnoreCase("spec2")) {
+			value = 70;
+		} else if (priority.toLowerCase().startsWith("nf")) {
+			value = 101 - Math.max(0, Integer.parseInt(priority.substring(2)));
+		} else {
+			System.err.println("Failed to get boos for '" + priority + "'");
+		}
+		float boost = 10000.0f / 100 * value;
+		return boost;
+	}
+
+	private jiten.model.Entry transformEntry(Entry entry) {
 		jiten.model.Entry jitenEntry = new jiten.model.Entry();
+
+		jitenEntry.setId(Integer.valueOf(entry.getEntSeq()));
 
 		for (KEle kEle : entry.getKEle()) {
 			jitenEntry.getExpressions().add(kEle.getKeb());

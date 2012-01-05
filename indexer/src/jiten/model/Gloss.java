@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Gloss implements Serializable {
 	private static final long serialVersionUID = 5870963060575331502L;
-	
+
 	private String value;
 	private Language language;
 
@@ -24,4 +24,8 @@ public class Gloss implements Serializable {
 		this.language = language;
 	}
 
+	@Override
+	public String toString() {
+		return "\n  language=" + language + ", value=\"" + value + "\"";
+	}
 }

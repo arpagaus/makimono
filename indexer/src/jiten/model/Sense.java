@@ -14,4 +14,11 @@ public class Sense implements Serializable {
 		}
 		return glosses;
 	}
+
+	@Override
+	public String toString() {
+		return "glosses=" + glosses + "";
+	}
+	
+	
 }
