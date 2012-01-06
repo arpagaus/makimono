@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,7 +15,8 @@ import javax.xml.stream.XMLStreamReader;
 
 import jiten.model.Language;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.document.CompressionTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -58,6 +58,8 @@ public class Indexer {
 	long compressedBytes = 0;
 
 	private void startIndexing(File jmdictFile, File indexDirectory) throws Exception {
+		System.out.println("Parsing JMdict");
+
 		GZIPInputStream inputStream = new GZIPInputStream(new FileInputStream(jmdictFile));
 		Unmarshaller unmarshaller = JAXBContext.newInstance(JMdict.class.getPackage().getName()).createUnmarshaller();
 		unmarshaller.setSchema(null);
@@ -98,11 +100,9 @@ public class Indexer {
 					String glossValue = cleanGloss(gloss.getvalue());
 					gloss.setvalue(glossValue);
 
-					String lang = gloss.getXmlLang();
-					if (lang.equals("de")) {
-						glossValue = glossValue.replaceAll("\\(.*\\)", "");
-					}
+					glossValue = glossValue.replaceAll("\\(.*\\)", "");
 
+					String lang = gloss.getXmlLang();
 					languageCount.put(lang, (languageCount.get(lang) == null ? 0 : languageCount.get(lang)) + 1);
 					document.add(new Field("sense-" + lang, glossValue, Store.NO, Index.ANALYZED));
 				}
@@ -131,8 +131,8 @@ public class Indexer {
 		System.out.println("Index closed");
 	}
 
-	private StandardAnalyzer getAnalyzer() {
-		return new StandardAnalyzer(Version.LUCENE_35, Collections.emptySet());
+	private Analyzer getAnalyzer() {
+		return new SimpleAnalyzer(Version.LUCENE_35);
 	}
 
 	private byte[] getCompressedEntry(jiten.model.Entry jitenEntry) throws IOException {
@@ -155,7 +155,7 @@ public class Indexer {
 	private float getBoostForReading(List<RePri> rePri) {
 		float boost = 1.0f;
 		for (RePri r : rePri) {
-			boost = Math.max(boost, getBoost(r.getvalue()));
+			boost = boost * getBoost(r.getvalue());
 		}
 		return boost;
 	}
@@ -163,7 +163,7 @@ public class Indexer {
 	private float getBoostForExpression(List<KePri> kePri) {
 		float boost = 1.0f;
 		for (KePri k : kePri) {
-			boost = Math.max(boost, getBoost(k.getvalue()));
+			boost = boost * getBoost(k.getvalue());
 		}
 		return boost;
 	}

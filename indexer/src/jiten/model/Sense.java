@@ -19,6 +19,4 @@ public class Sense implements Serializable {
 	public String toString() {
 		return "glosses=" + glosses + "";
 	}
-	
-	
 }
