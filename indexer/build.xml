@@ -2,7 +2,7 @@
 <project name="Indexer" default="create-index" basedir=".">
 
 	<property name="jdk.dir" location="C:/Program Files/Java/jdk1.6.0_26/" />
-	
+
 	<property name="build.dir" location="${java.io.tmpdir}/indexer" />
 	<property name="dist.dir" location="dist" />
 
@@ -60,10 +60,10 @@
 		<delete file="${dist.dir}/jmdict-indexer.jar" />
 		<jar destfile="${dist.dir}/jmdict-indexer.jar" basedir="${build.dir}" />
 
-		<delete file="${dist.dir}/jiten-model.jar" />
-		<jar destfile="${dist.dir}/jiten-model.jar">
+		<delete file="${dist.dir}/jiten-common.jar" />
+		<jar destfile="${dist.dir}/jiten-common.jar">
 			<fileset dir="${build.dir}">
-				<include name="**/model/**/*.class" />
+				<include name="**/jiten/**/*.class" />
 			</fileset>
 		</jar>
 

@@ -14,9 +14,9 @@ import jiten.model.Entry;
 
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.index.CorruptIndexException;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
+import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
@@ -46,7 +46,7 @@ public class Searcher {
 		return decompressor;
 	}
 
-	private IndexSearcher getIndexSearcher() throws CorruptIndexException, IOException {
+	private IndexSearcher getIndexSearcher() throws IOException {
 		if (indexSearcher == null) {
 			indexSearcher = new IndexSearcher(IndexReader.open(directory, true));
 		}
@@ -60,7 +60,7 @@ public class Searcher {
 		return queryParser;
 	}
 
-	public List<Entry> search(String queryString) throws IOException, Exception {
+	public List<Entry> search(String queryString) throws IOException, ParseException {
 		if (queryString == null || queryString.equals("")) {
 			return Collections.emptyList();
 		}
@@ -74,12 +74,7 @@ public class Searcher {
 
 		List<Entry> entries = new ArrayList<Entry>();
 		for (int i = 0; i < hits.length; ++i) {
-			int docId = hits[i].doc;
-			Document d = searcher.doc(docId);
-			byte[] binaryValue = decompress(d.getBinaryValue("entry"));
-			ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(binaryValue));
-
-			Entry entry = (Entry) inputStream.readObject();
+			Entry entry = getByDocId(hits[i].doc);
 			entries.add(entry);
 		}
 
@@ -100,5 +95,49 @@ public class Searcher {
 		}
 
 		return bos.toByteArray();
+	}
+
+	public void close() {
+		queryParser = null;
+
+		if (indexSearcher != null) {
+			try {
+				indexSearcher.close();
+			} catch (IOException e) {
+			}
+			try {
+				indexSearcher.getIndexReader().close();
+			} catch (IOException e) {
+			} finally {
+				indexSearcher = null;
+			}
+		}
+		if (directory != null) {
+			try {
+				directory.close();
+			} catch (IOException e) {
+			}
+		}
+
+		if (decompressor != null) {
+			decompressor.end();
+			decompressor = null;
+		}
+	}
+
+	public Entry getByDocId(int docId) throws IOException {
+		Document document = getIndexSearcher().doc(docId);
+		try {
+			byte[] binaryValue = decompress(document.getBinaryValue("entry"));
+			ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(binaryValue));
+
+			Entry entry = (Entry) inputStream.readObject();
+			entry.setDocId(docId);
+			return entry;
+		} catch (IOException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

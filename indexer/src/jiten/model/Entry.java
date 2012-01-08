@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Entry implements Serializable {
-	private static final long serialVersionUID = -5925935214590982629L;
+	private static final long serialVersionUID = -8681593214596009917L;
 
 	private int id;
+	transient private int docId;
 	private ArrayList<String> expressions;
 	private ArrayList<String> readings;
 	private ArrayList<Sense> senses;
@@ -17,6 +18,14 @@ public class Entry implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public int getDocId() {
+		return docId;
+	}
+
+	public void setDocId(int docId) {
+		this.docId = docId;
 	}
 
 	public ArrayList<String> getExpressions() {

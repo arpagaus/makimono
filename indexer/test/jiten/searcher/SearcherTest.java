@@ -2,23 +2,33 @@ package jiten.searcher;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import jiten.model.Entry;
 
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.store.AlreadyClosedException;
 import org.apache.lucene.store.FSDirectory;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 public class SearcherTest {
-	Searcher searcher;
+	private Searcher searcher;
 
 	@Before
 	public void setUp() throws Exception {
 		searcher = new Searcher(FSDirectory.open((new File("res/index"))));
+	}
+
+	@After
+	public void cleanUp() throws Exception {
+		searcher.close();
 	}
 
 	@Test
@@ -30,6 +40,27 @@ public class SearcherTest {
 
 		entries = searcher.search(null);
 		assertTrue(entries.isEmpty());
+	}
+
+	@Test(expected = AlreadyClosedException.class)
+	public void testAlreadyClosed() throws Exception {
+		UUID uuid = UUID.randomUUID();
+		searcher.search(uuid.toString());
+		searcher.close();
+		searcher.search(uuid.toString());
+	}
+
+	@Test(expected = ParseException.class)
+	public void testBadQuery() throws Exception {
+		searcher.search("*abc");
+	}
+
+	@Test
+	public void getByDocId() throws Exception {
+		Entry entry = searcher.getByDocId(33);
+
+		assertNotNull(entry);
+		assertEquals(33, entry.getDocId());
 	}
 
 	@Test
@@ -54,7 +85,7 @@ public class SearcherTest {
 	public void searchFrench() throws Exception {
 		List<Entry> entries = searcher.search("parapluie");
 		assertFalse(entries.isEmpty());
-		
+
 		Entry entry = entries.get(0);
 		assertEquals(1301940, entry.getId());
 	}
@@ -63,7 +94,7 @@ public class SearcherTest {
 	public void searchRussian() throws Exception {
 		List<Entry> entries = searcher.search("горчица");
 		assertFalse(entries.isEmpty());
-		
+
 		Entry entry = entries.get(0);
 		assertEquals(1202390, entry.getId());
 	}
