@@ -5,8 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
@@ -60,9 +58,9 @@ public class Searcher {
 		return queryParser;
 	}
 
-	public List<Entry> search(String queryString) throws IOException, ParseException {
+	public ArrayList<Entry> search(String queryString) throws IOException, ParseException {
 		if (queryString == null || queryString.equals("")) {
-			return Collections.emptyList();
+			return new ArrayList<Entry>(0);
 		}
 
 		Query query = getQueryParser().parse(queryString);
@@ -72,7 +70,7 @@ public class Searcher {
 		searcher.search(query, collector);
 		ScoreDoc[] hits = collector.topDocs().scoreDocs;
 
-		List<Entry> entries = new ArrayList<Entry>();
+		ArrayList<Entry> entries = new ArrayList<Entry>();
 		for (int i = 0; i < hits.length; ++i) {
 			Entry entry = getByDocId(hits[i].doc);
 			entries.add(entry);

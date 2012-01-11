@@ -19,4 +19,17 @@ public class Sense implements Serializable {
 	public String toString() {
 		return "glosses=" + glosses + "";
 	}
+
+	public CharSequence getGlossString(Language langauge) {
+		StringBuilder builder = new StringBuilder();
+		for (Gloss g : glosses) {
+			if (g.getLanguage() == langauge) {
+				if (builder.length() > 0) {
+					builder.append(", ");
+				}
+				builder.append(g.getValue());
+			}
+		}
+		return builder;
+	}
 }
