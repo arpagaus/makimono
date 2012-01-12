@@ -1,10 +1,6 @@
 package jiten.model;
 
-import java.io.Serializable;
-
-public class Gloss implements Serializable {
-	private static final long serialVersionUID = 5870963060575331502L;
-
+public class Gloss {
 	private String value;
 	private Language language;
 
@@ -28,4 +24,33 @@ public class Gloss implements Serializable {
 	public String toString() {
 		return "\n  language=" + language + ", value=\"" + value + "\"";
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((language == null) ? 0 : language.hashCode());
+		result = prime * result + ((value == null) ? 0 : value.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Gloss other = (Gloss) obj;
+		if (language != other.language)
+			return false;
+		if (value == null) {
+			if (other.value != null)
+				return false;
+		} else if (!value.equals(other.value))
+			return false;
+		return true;
+	}
+
 }

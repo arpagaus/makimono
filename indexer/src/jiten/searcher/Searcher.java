@@ -1,12 +1,9 @@
 package jiten.searcher;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.zip.DataFormatException;
-import java.util.zip.Inflater;
 
 import jiten.model.Entry;
 
@@ -30,18 +27,9 @@ public class Searcher {
 	private QueryParser queryParser;
 	private Directory directory;
 	private IndexSearcher indexSearcher;
-	private Inflater decompressor;
 
 	public Searcher(Directory directory) {
 		this.directory = directory;
-	}
-
-	private Inflater getDecompressor() {
-		if (decompressor == null) {
-			decompressor = new Inflater();
-		}
-		decompressor.reset();
-		return decompressor;
 	}
 
 	private IndexSearcher getIndexSearcher() throws IOException {
@@ -79,22 +67,6 @@ public class Searcher {
 		return entries;
 	}
 
-	private byte[] decompress(byte[] value) throws DataFormatException {
-		// Multiply with 2 because the compression is expected to be max 50%
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(value.length * 2);
-		Inflater decompressor = getDecompressor();
-
-		decompressor.setInput(value);
-
-		final byte[] buf = new byte[1024];
-		while (!decompressor.finished()) {
-			int count = decompressor.inflate(buf);
-			bos.write(buf, 0, count);
-		}
-
-		return bos.toByteArray();
-	}
-
 	public void close() {
 		queryParser = null;
 
@@ -116,20 +88,13 @@ public class Searcher {
 			} catch (IOException e) {
 			}
 		}
-
-		if (decompressor != null) {
-			decompressor.end();
-			decompressor = null;
-		}
 	}
 
 	public Entry getByDocId(int docId) throws IOException {
 		Document document = getIndexSearcher().doc(docId);
 		try {
-			byte[] binaryValue = decompress(document.getBinaryValue("entry"));
-			ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(binaryValue));
-
-			Entry entry = (Entry) inputStream.readObject();
+			ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(document.getBinaryValue("entry")));
+			Entry entry = Entry.readEntry(inputStream);
 			entry.setDocId(docId);
 			return entry;
 		} catch (IOException e) {

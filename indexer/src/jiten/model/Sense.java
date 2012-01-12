@@ -1,10 +1,11 @@
 package jiten.model;
 
-import java.io.Serializable;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-public class Sense implements Serializable {
-	private static final long serialVersionUID = -8953037595127299724L;
+public class Sense {
 
 	private ArrayList<Gloss> glosses;
 
@@ -31,5 +32,50 @@ public class Sense implements Serializable {
 			}
 		}
 		return builder;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((glosses == null) ? 0 : glosses.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Sense other = (Sense) obj;
+		if (glosses == null) {
+			if (other.glosses != null)
+				return false;
+		} else if (!glosses.equals(other.glosses))
+			return false;
+		return true;
+	}
+
+	public static void writeSense(ObjectOutputStream outputStream, Sense sense) throws IOException {
+		outputStream.writeByte(sense.glosses.size());
+		for (Gloss g : sense.glosses) {
+			outputStream.writeByte(g.getLanguage().ordinal());
+			outputStream.writeUTF(g.getValue());
+		}
+	}
+
+	public static Sense readSense(ObjectInputStream inputStream) throws IOException {
+		Sense sense = new Sense();
+		byte glossCount = inputStream.readByte();
+		for (int i = 0; i < glossCount; i++) {
+			Gloss g = new Gloss();
+			g.setLanguage(Language.values()[inputStream.readByte()]);
+			g.setValue(inputStream.readUTF());
+			sense.getGlosses().add(g);
+		}
+		return sense;
 	}
 }

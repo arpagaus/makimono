@@ -17,7 +17,6 @@ import jiten.model.Language;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.SimpleAnalyzer;
-import org.apache.lucene.document.CompressionTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
@@ -53,9 +52,6 @@ public class Indexer {
 
 		new Indexer().startIndexing(jmdictFile, new File(args[1]));
 	}
-
-	long uncompressedBytes = 0;
-	long compressedBytes = 0;
 
 	private void startIndexing(File jmdictFile, File indexDirectory) throws Exception {
 		System.out.println("Parsing JMdict");
@@ -108,7 +104,7 @@ public class Indexer {
 				}
 			}
 
-			byte[] compressByteArray = getCompressedEntry(transformEntry(entry));
+			byte[] compressByteArray = getSerializedEntry(transformEntry(entry));
 			document.add(new Field("entry", compressByteArray));
 
 			indexWriter.addDocument(document);
@@ -117,7 +113,7 @@ public class Indexer {
 			double newProgress = Math.round(100.0 / size * processedCount);
 			if (newProgress > progress || processedCount == size) {
 				progress = newProgress;
-				System.out.println("Current progress: " + progress + "% (compression rate: " + Math.round(100.0 / uncompressedBytes * compressedBytes) + "%)");
+				System.out.println("Current progress: " + progress + "%");
 			}
 		}
 
@@ -135,17 +131,13 @@ public class Indexer {
 		return new SimpleAnalyzer(Version.LUCENE_35);
 	}
 
-	private byte[] getCompressedEntry(jiten.model.Entry jitenEntry) throws IOException {
+	private byte[] getSerializedEntry(jiten.model.Entry jitenEntry) throws IOException {
 		ByteArrayOutputStream serializedBinary = new ByteArrayOutputStream();
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(serializedBinary);
-		objectOutputStream.writeObject(jitenEntry);
+		jiten.model.Entry.writeEntry(objectOutputStream, jitenEntry);
 		objectOutputStream.close();
 
-		byte[] originalByteArray = serializedBinary.toByteArray();
-		uncompressedBytes = uncompressedBytes + originalByteArray.length;
-		byte[] compressByteArray = CompressionTools.compress(originalByteArray);
-		compressedBytes = compressedBytes + compressByteArray.length;
-		return compressByteArray;
+		return serializedBinary.toByteArray();
 	}
 
 	private String cleanGloss(String value) {
