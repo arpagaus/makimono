@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/entry_expression"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="問題"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/entry_reading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry_expression"
+            android:layout_centerHorizontal="true"
+            android:text="もんだい"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/secondary_text_dark" />
+
+        <!-- Separator -->
+
+        <TextView
+            android:id="@+id/entry_separator_translation"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry_reading"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/separator_gradient"
+            android:padding="3dp"
+            android:text="@string/translation"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/entry_translation_en"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry_separator_translation"
+            android:layout_marginLeft="15dp"
+            android:drawableLeft="@drawable/gb"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="example" />
+
+        <TextView
+            android:id="@+id/entry_translation_de"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry_translation_en"
+            android:layout_marginLeft="15dp"
+            android:drawableLeft="@drawable/de"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="Beispiel" />
+
+        <TextView
+            android:id="@+id/entry_translation_fr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry_translation_de"
+            android:layout_marginLeft="15dp"
+            android:drawableLeft="@drawable/fr"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="exemple" />
+
+        <TextView
+            android:id="@+id/entry_translation_ru"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry_translation_fr"
+            android:layout_marginLeft="15dp"
+            android:drawableLeft="@drawable/ru"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:text="пример" />
+
+        <!-- Separator -->
+
+        <TextView
+            android:id="@+id/entry_separator_kanji"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry_translation_ru"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/separator_gradient"
+            android:padding="3dp"
+            android:text="@string/kanji"
+            android:textAppearance="@android:style/TextAppearance.Small"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+</ScrollView>

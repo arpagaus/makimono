@@ -1,15 +1,16 @@
-package android.jiten;
+package android.jiten.adapter;
 
 import java.util.ArrayList;
 
+import jiten.model.Entry;
+import jiten.model.Gloss;
+import jiten.model.Sense;
+import android.jiten.R;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-import au.edu.monash.csse.jmdict.model.Entry;
-import au.edu.monash.csse.jmdict.model.Gloss;
-import au.edu.monash.csse.jmdict.model.Sense;
 
 public class ResultAdapter extends BaseAdapter {
 
@@ -37,7 +38,7 @@ public class ResultAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		return Long.valueOf(entries.get(position).getEntSeq());
+		return position;
 	}
 
 	@Override
@@ -45,40 +46,40 @@ public class ResultAdapter extends BaseAdapter {
 		if (convertView == null) {
 			convertView = inflater.inflate(R.layout.search_result_entry, parent, false);
 		}
-		TextView resultExpressionAndReading = (TextView) convertView.findViewById(R.id.resultExpressionAndReading);
-		TextView resultGloss = (TextView) convertView.findViewById(R.id.resultGloss);
+		TextView resultExpression = (TextView) convertView.findViewById(R.id.result_expression);
+		TextView resultReading = (TextView) convertView.findViewById(R.id.result_reading);
+		TextView resultGloss = (TextView) convertView.findViewById(R.id.result_translation);
 
-		resultExpressionAndReading.setText(getExpressionAndReading(entries.get(position)));
+		resultExpression.setText(getExpression(entries.get(position)));
+		resultReading.setText(getReading(entries.get(position)));
 		resultGloss.setText(getGloss(entries.get(position)));
 		return convertView;
 	}
 
-	private CharSequence getExpressionAndReading(Entry entry) {
-		StringBuilder builder = new StringBuilder();
-		if (!entry.getKEle().isEmpty()) {
-			builder.append(entry.getKEle().get(0).getKeb());
+	private CharSequence getExpression(Entry entry) {
+		if (entry.getExpressions().isEmpty()) {
+			return entry.getReadings().get(0);
+		} else {
+			return entry.getExpressions().get(0);
 		}
-		if (!entry.getREle().isEmpty()) {
-			String reading = entry.getREle().get(0).getReb();
-			if (builder.length() > 0) {
-				builder.append(" [");
-				builder.append(reading);
-				builder.append(']');
-			} else {
-				builder.append(reading);
-			}
+	}
+
+	private CharSequence getReading(Entry entry) {
+		if (entry.getExpressions().isEmpty()) {
+			return null;
+		} else {
+			return entry.getReadings().get(0);
 		}
-		return builder.toString();
 	}
 
 	private CharSequence getGloss(Entry entry) {
 		StringBuilder gloss = new StringBuilder();
-		for (Sense s : entry.getSense()) {
-			for (Gloss g : s.getGloss()) {
+		for (Sense s : entry.getSenses()) {
+			for (Gloss g : s.getGlosses()) {
 				if (gloss.length() > 0) {
 					gloss.append(", ");
 				}
-				gloss.append(g.getvalue());
+				gloss.append(g.getValue());
 			}
 		}
 		return gloss.toString();

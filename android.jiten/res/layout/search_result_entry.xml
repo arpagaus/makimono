@@ -1,23 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TwoLineListItem xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_margin="8dp"
-    android:mode="twoLine" >
+    android:layout_height="match_parent"
+    android:padding="5dp" >
 
     <TextView
-        android:id="@+id/resultExpressionAndReading"
-        android:layout_width="fill_parent"
+        android:id="@+id/result_expression"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="top"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:text="問題"
+        android:textSize="24dp" />
 
     <TextView
-        android:id="@+id/resultGloss"
+        android:id="@+id/result_reading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/result_expression"
+        android:layout_marginLeft="18dp"
+        android:layout_toRightOf="@id/result_expression"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="もんだい"
+        android:textSize="18dp" />
+
+    <TextView
+        android:id="@+id/result_translation"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/resultExpressionAndReading"
-        android:gravity="bottom"
-        android:textAppearance="?android:attr/textAppearanceSmall"  />
+        android:layout_alignLeft="@id/result_expression"
+        android:layout_below="@+id/result_expression"
+        android:layout_marginTop="2dp"
+        android:ellipsize="marquee"
+        android:text="example / Beispiel / exemple / пример" />
 
-</TwoLineListItem>
+</RelativeLayout>
