@@ -2,4 +2,10 @@
 <resources>
     <string name="app_name">Jiten</string>
     <string name="search">Search</string>
+    <string name="example">Example</string>
+    <string name="reading">Reading</string>
+    <string name="meaning">Meaning</string>
+    <string name="kanji">Kanji</string>
+    <string name="radicals">Radicals</string>
+    <string name="translation">Translation</string>
 </resources>

@@ -4,41 +4,35 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="8" />
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="13"/>
 
     <application
         android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.Light.NoTitleBar" >
-
-        <!-- The default activity of the app; displays search results. -->
-        <activity
-            android:name=".ResultActivity"
-            android:launchMode="singleTop" >
+        android:theme="@style/Theme.Sherlock.Light" >
+        <activity android:name=".activity.HomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-            <!-- Receives the search request. -->
+        </activity>
+        <activity
+            android:name=".activity.SearchActivity"
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <!-- No category needed, because the Intent will specify this class component -->
             </intent-filter>
 
-            <!-- Points to searchable meta data. -->
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
 
-        <!-- Points to searchable activity so the whole app can invoke search. -->
-        <meta-data
+        <activity android:name=".activity.EntryActivity"></activity><meta-data
             android:name="android.app.default_searchable"
-            android:value=".ResultActivity" />
+            android:value=".activity.SearchActivity" />
+        
     </application>
 
 </manifest>
