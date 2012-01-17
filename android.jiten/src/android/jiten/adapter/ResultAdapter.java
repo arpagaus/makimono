@@ -33,7 +33,7 @@ public class ResultAdapter extends BaseAdapter {
 
 	@Override
 	public Object getItem(int position) {
-		return entries.get(0);
+		return entries.get(position);
 	}
 
 	@Override
