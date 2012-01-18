@@ -23,6 +23,8 @@ public class SerializationTest {
 		entry.getReadings().add("にほんご");
 
 		Sense sense = new Sense();
+		sense.getPartsOfSpeech().add(PartOfSpeech.ADJI);
+		sense.getPartsOfSpeech().add(PartOfSpeech.ADJNO);
 		entry.getSenses().add(sense);
 
 		sense.getGlosses().add(createGloss("(hard) candy", Language.en));

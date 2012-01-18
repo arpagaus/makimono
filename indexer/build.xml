@@ -21,6 +21,7 @@
 	<target name="create-index" depends="build-jmdict-indexer,download-jmdict-file">
 		<delete dir="${index.dir}" />
 		<java classname="Indexer" fork="true">
+			<jvmarg value="-Xmx1024m" />
 			<arg value="${jmdict.file}" />
 			<arg value="${index.dir}" />
 			<sysproperty key="entityExpansionLimit" value="256000" />

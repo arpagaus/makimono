@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 import jiten.model.Entry;
+import jiten.model.PartOfSpeech;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.store.AlreadyClosedException;
@@ -124,5 +125,7 @@ public class SearcherTest {
 
 		Entry entry = entries.get(0);
 		assertEquals(1976570, entry.getId());
+		assertEquals(1, entry.getSenses().get(0).getPartsOfSpeech().size());
+		assertEquals(PartOfSpeech.N, entry.getSenses().get(0).getPartsOfSpeech().get(0));
 	}
 }
