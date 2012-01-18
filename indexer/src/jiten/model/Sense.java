@@ -7,7 +7,16 @@ import java.util.ArrayList;
 
 public class Sense {
 
+	private ArrayList<PartOfSpeech> partsOfSpeech;
 	private ArrayList<Gloss> glosses;
+
+	public ArrayList<PartOfSpeech> getPartsOfSpeech() {
+		if (partsOfSpeech == null) {
+			partsOfSpeech = new ArrayList<PartOfSpeech>();
+
+		}
+		return partsOfSpeech;
+	}
 
 	public ArrayList<Gloss> getGlosses() {
 		if (glosses == null) {
@@ -18,7 +27,7 @@ public class Sense {
 
 	@Override
 	public String toString() {
-		return "glosses=" + glosses + "";
+		return "partsOfSpeech=" + partsOfSpeech + ", glosses=" + glosses + "";
 	}
 
 	public CharSequence getGlossString(Language langauge) {
@@ -39,6 +48,7 @@ public class Sense {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((glosses == null) ? 0 : glosses.hashCode());
+		result = prime * result + ((partsOfSpeech == null) ? 0 : partsOfSpeech.hashCode());
 		return result;
 	}
 
@@ -56,12 +66,22 @@ public class Sense {
 				return false;
 		} else if (!glosses.equals(other.glosses))
 			return false;
+		if (partsOfSpeech == null) {
+			if (other.partsOfSpeech != null)
+				return false;
+		} else if (!partsOfSpeech.equals(other.partsOfSpeech))
+			return false;
 		return true;
 	}
 
 	public static void writeSense(ObjectOutputStream outputStream, Sense sense) throws IOException {
-		outputStream.writeByte(sense.glosses.size());
-		for (Gloss g : sense.glosses) {
+		outputStream.writeByte(sense.getPartsOfSpeech().size());
+		for (PartOfSpeech p : sense.getPartsOfSpeech()) {
+			outputStream.writeByte(p.ordinal());
+		}
+
+		outputStream.writeByte(sense.getGlosses().size());
+		for (Gloss g : sense.getGlosses()) {
 			outputStream.writeByte(g.getLanguage().ordinal());
 			outputStream.writeUTF(g.getValue());
 		}
@@ -69,7 +89,13 @@ public class Sense {
 
 	public static Sense readSense(ObjectInputStream inputStream) throws IOException {
 		Sense sense = new Sense();
-		byte glossCount = inputStream.readByte();
+
+		byte partOfSpeechCount = inputStream.readByte();
+		for (int i = 0; i < partOfSpeechCount; i++) {
+			sense.getPartsOfSpeech().add(PartOfSpeech.values()[inputStream.readByte()]);
+		}
+
+		byte glossCount = inputStream.readByte();;
 		for (int i = 0; i < glossCount; i++) {
 			Gloss g = new Gloss();
 			g.setLanguage(Language.values()[inputStream.readByte()]);
