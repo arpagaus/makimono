@@ -14,6 +14,7 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
+import jiten.model.Dialect;
 import jiten.model.Language;
 import jiten.model.PartOfSpeech;
 
@@ -29,6 +30,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
 
+import au.edu.monash.csse.jmdict.model.Dial;
 import au.edu.monash.csse.jmdict.model.Entry;
 import au.edu.monash.csse.jmdict.model.Gloss;
 import au.edu.monash.csse.jmdict.model.JMdict;
@@ -359,7 +361,10 @@ public class Indexer {
 		for (Sense sense : entry.getSense()) {
 			jiten.model.Sense jitenSense = new jiten.model.Sense();
 			jitenEntry.getSenses().add(jitenSense);
+			
 			jitenSense.getPartsOfSpeech().addAll(transformPartOfSpeech(sense.getPos()));
+			jitenSense.getDialects().addAll(transformDialects(sense.getDial()));
+			
 			for (Gloss gloss : sense.getGloss()) {
 				jiten.model.Gloss jitenGloss = new jiten.model.Gloss();
 				jitenGloss.setLanguage(Language.valueOf(gloss.getXmlLang()));
@@ -380,8 +385,18 @@ public class Indexer {
 		}
 		return jitenPos;
 	}
+
+
+	private List<Dialect> transformDialects(List<Dial> dial) {
+		ArrayList<Dialect> jitenDialects = new ArrayList<Dialect>();
+		for (Dial d : dial) {
+			Dialect dialect = Dialect.valueOf(resolveEnumStringForEntityReference(d.getvalue()));
+			jitenDialects.add(dialect);
+		}
+		return jitenDialects;
+	}
 	
-	private String resolveEnumStringForEntityReference(String entityReference){
-		return JMDICT_ENTITY_REFERENCES.get(entityReference).toUpperCase().replaceAll("-", "");
+	private String resolveEnumStringForEntityReference(String entityReference) {
+		return "JMdict_" + JMDICT_ENTITY_REFERENCES.get(entityReference).replaceAll("-", "_");
 	}
 }
