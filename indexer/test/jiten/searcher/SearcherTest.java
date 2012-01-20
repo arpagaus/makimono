@@ -126,6 +126,6 @@ public class SearcherTest {
 		Entry entry = entries.get(0);
 		assertEquals(1976570, entry.getId());
 		assertEquals(1, entry.getSenses().get(0).getPartsOfSpeech().size());
-		assertEquals(PartOfSpeech.N, entry.getSenses().get(0).getPartsOfSpeech().get(0));
+		assertEquals(PartOfSpeech.JMdict_n, entry.getSenses().get(0).getPartsOfSpeech().get(0));
 	}
 }

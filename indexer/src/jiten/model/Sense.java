@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public class Sense {
 
 	private ArrayList<PartOfSpeech> partsOfSpeech;
+	private ArrayList<Dialect> dialects;
 	private ArrayList<Gloss> glosses;
 
 	public ArrayList<PartOfSpeech> getPartsOfSpeech() {
@@ -16,6 +17,13 @@ public class Sense {
 
 		}
 		return partsOfSpeech;
+	}
+
+	public ArrayList<Dialect> getDialects() {
+		if (dialects == null) {
+			dialects = new ArrayList<Dialect>();
+		}
+		return dialects;
 	}
 
 	public ArrayList<Gloss> getGlosses() {
@@ -27,7 +35,7 @@ public class Sense {
 
 	@Override
 	public String toString() {
-		return "partsOfSpeech=" + partsOfSpeech + ", glosses=" + glosses + "";
+		return "partsOfSpeech=" + partsOfSpeech + ", dialects=" + dialects + ", glosses=" + glosses + "";
 	}
 
 	public CharSequence getGlossString(Language langauge) {
@@ -47,6 +55,7 @@ public class Sense {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((dialects == null) ? 0 : dialects.hashCode());
 		result = prime * result + ((glosses == null) ? 0 : glosses.hashCode());
 		result = prime * result + ((partsOfSpeech == null) ? 0 : partsOfSpeech.hashCode());
 		return result;
@@ -61,6 +70,11 @@ public class Sense {
 		if (getClass() != obj.getClass())
 			return false;
 		Sense other = (Sense) obj;
+		if (dialects == null) {
+			if (other.dialects != null)
+				return false;
+		} else if (!dialects.equals(other.dialects))
+			return false;
 		if (glosses == null) {
 			if (other.glosses != null)
 				return false;
@@ -80,6 +94,11 @@ public class Sense {
 			outputStream.writeByte(p.ordinal());
 		}
 
+		outputStream.writeByte(sense.getDialects().size());
+		for (Dialect d : sense.getDialects()) {
+			outputStream.writeByte(d.ordinal());
+		}
+
 		outputStream.writeByte(sense.getGlosses().size());
 		for (Gloss g : sense.getGlosses()) {
 			outputStream.writeByte(g.getLanguage().ordinal());
@@ -95,7 +114,13 @@ public class Sense {
 			sense.getPartsOfSpeech().add(PartOfSpeech.values()[inputStream.readByte()]);
 		}
 
-		byte glossCount = inputStream.readByte();;
+		byte dialectCount = inputStream.readByte();
+		for (int i = 0; i < dialectCount; i++) {
+			sense.getDialects().add(Dialect.values()[inputStream.readByte()]);
+		}
+
+		byte glossCount = inputStream.readByte();
+		;
 		for (int i = 0; i < glossCount; i++) {
 			Gloss g = new Gloss();
 			g.setLanguage(Language.values()[inputStream.readByte()]);
