@@ -1,29 +1,35 @@
 package android.jiten.adapter;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import jiten.model.Entry;
 import jiten.model.Gloss;
 import jiten.model.Sense;
+import jiten.searcher.Searcher;
+
+import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.store.SimpleFSDirectory;
+
+import android.content.Context;
 import android.jiten.R;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-public class ResultAdapter extends BaseAdapter {
+public class SearchResultAdapter extends BaseAdapter {
 
+	private Context context;
 	private LayoutInflater inflater;
 	private ArrayList<Entry> entries = new ArrayList<Entry>();
 
-	public ResultAdapter(LayoutInflater inflater) {
-		this.inflater = inflater;
-	}
-
-	public void replaceEntries(ArrayList<Entry> newEntries) {
-		entries = newEntries;
-		notifyDataSetChanged();
+	public SearchResultAdapter(Context context) {
+		this.context = context;
+		this.inflater = LayoutInflater.from(context);
 	}
 
 	@Override
@@ -38,7 +44,7 @@ public class ResultAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		return position;
+		return entries.get(position).getDocId();
 	}
 
 	@Override
@@ -85,4 +91,15 @@ public class ResultAdapter extends BaseAdapter {
 		return gloss.toString();
 	}
 
+	public void search(String query) throws IOException, ParseException {
+		String storageState = Environment.getExternalStorageState();
+		if (Environment.MEDIA_MOUNTED.equals(storageState) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(storageState)) {
+			File directory = new File(context.getExternalFilesDir(null), "/indexes/dictionary/");
+			Searcher searcher = new Searcher(new SimpleFSDirectory(directory));
+			entries = searcher.search(query);
+			searcher.close();
+			notifyDataSetChanged();
+		}
+
+	}
 }

@@ -1,42 +1,32 @@
 package android.jiten.activity;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import jiten.model.Entry;
-import jiten.searcher.Searcher;
-
-import org.apache.lucene.store.SimpleFSDirectory;
-
-import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Intent;
-import android.jiten.adapter.ResultAdapter;
+import android.jiten.R;
+import android.jiten.adapter.SearchResultAdapter;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class SearchActivity extends ListActivity {
-
+public class SearchActivity extends AbstractDefaultActivity implements OnItemClickListener {
 	private static final String CLASS_NAME = SearchActivity.class.getName();
 
-	private ResultAdapter resultAdapter;
-	private Searcher searcher;
+	private SearchResultAdapter resultAdapter;
+	private ListView listView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.search_result);
 
-		try {
-			searcher = new Searcher(new SimpleFSDirectory(new File("/mnt/sdcard/dictionary/index/")));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		resultAdapter = new ResultAdapter(LayoutInflater.from(this));
-		setListAdapter(resultAdapter);
+		listView = (ListView) findViewById(android.R.id.list);
+		listView.setOnItemClickListener(this);
+
+		resultAdapter = new SearchResultAdapter(this);
+		listView.setAdapter(resultAdapter);
 
 		handleIntent(getIntent());
 	}
@@ -50,34 +40,19 @@ public class SearchActivity extends ListActivity {
 	private void handleIntent(Intent intent) {
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
-			doSearch(query);
+			try {
+				resultAdapter.search(query);
+			} catch (Exception e) {
+				Log.e(CLASS_NAME, "Failed to search", e);
+			}
 		}
 	}
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		Entry entry = (Entry) getListAdapter().getItem(position);
+	public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
 		Intent intent = new Intent(this, EntryActivity.class);
-		intent.putExtra("DOC_ID", entry.getDocId());
+		intent.putExtra("DOC_ID", (int) id);
 		startActivity(intent);
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		searcher.close();
-	}
-
-	private void doSearch(String query) {
-		try {
-			Log.i(CLASS_NAME, "Execute query");
-			ArrayList<Entry> entries = searcher.search(query);
-			Log.i(CLASS_NAME, "Updating view with " + entries.size() + " entries");
-			resultAdapter.replaceEntries(entries);
-			Log.i(CLASS_NAME, "Finished search");
-		} catch (Exception e) {
-			Log.e("DictionaryActivity", "Error", e);
-		}
 	}
 
 }

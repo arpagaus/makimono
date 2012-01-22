@@ -1,9 +1,6 @@
 package jiten.searcher;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.List;
@@ -58,10 +55,16 @@ public class SearcherTest {
 
 	@Test
 	public void getByDocId() throws Exception {
-		Entry entry = searcher.getByDocId(33);
+		List<Entry> entries = searcher.search("Einkaufswagen");
+		assertEquals(1, entries.size());
 
-		assertNotNull(entry);
-		assertEquals(33, entry.getDocId());
+		Entry entry = entries.get(0);
+		searcher.close();
+		searcher = new Searcher(FSDirectory.open((new File("res/index"))));
+
+		Entry entryByDocId = searcher.getByDocId(entry.getDocId());
+
+		assertEquals(entry, entryByDocId);
 	}
 
 	@Test

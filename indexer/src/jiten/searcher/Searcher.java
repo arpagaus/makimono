@@ -1,6 +1,7 @@
 package jiten.searcher;
 
 import java.io.ByteArrayInputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import org.apache.lucene.search.TopScoreDocCollector;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 
-public class Searcher {
+public class Searcher implements Closeable {
 	private static final int MAX_SIZE = 100;
 	private static final String[] FIELDS = new String[] { "expression", "reading", "sense-en", "sense-de", "sense-ru", "sense-fr" };
 
@@ -67,17 +68,22 @@ public class Searcher {
 		return entries;
 	}
 
-	public void close() {
+	public void close() throws IOException {
 		queryParser = null;
 
+		IOException exception = null;
 		if (indexSearcher != null) {
 			try {
 				indexSearcher.close();
 			} catch (IOException e) {
+				exception = e;
 			}
 			try {
 				indexSearcher.getIndexReader().close();
 			} catch (IOException e) {
+				if (exception == null) {
+					exception = e;
+				}
 			} finally {
 				indexSearcher = null;
 			}
@@ -86,7 +92,14 @@ public class Searcher {
 			try {
 				directory.close();
 			} catch (IOException e) {
+				if (exception == null) {
+					exception = e;
+				}
 			}
+		}
+
+		if (exception != null) {
+			throw exception;
 		}
 	}
 
