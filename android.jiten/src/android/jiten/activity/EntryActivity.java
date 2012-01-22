@@ -13,6 +13,7 @@ import org.apache.lucene.store.SimpleFSDirectory;
 import android.content.Intent;
 import android.jiten.R;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.TextView;
@@ -27,18 +28,11 @@ public class EntryActivity extends FragmentActivity {
 	private TextView frenchTextView;
 	private TextView russianTextView;
 
-	private Searcher searcher;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		try {
-			searcher = new Searcher(new SimpleFSDirectory(new File("/mnt/sdcard/dictionary/index/")));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		setContentView(R.layout.activity_entry);
+		setContentView(R.layout.dictionary_entry);
 		expressionTextView = (TextView) findViewById(R.id.entry_expression);
 		readingTextView = (TextView) findViewById(R.id.entry_reading);
 
@@ -52,14 +46,25 @@ public class EntryActivity extends FragmentActivity {
 
 	private void handleIntent(Intent intent) {
 		if (intent.hasExtra("DOC_ID")) {
-			Entry entry;
+			Searcher searcher = null;
 			try {
-				entry = searcher.getByDocId(intent.getExtras().getInt("DOC_ID"));
+				String storageState = Environment.getExternalStorageState();
+				if (Environment.MEDIA_MOUNTED.equals(storageState) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(storageState)) {
+					File directory = new File(this.getExternalFilesDir(null), "/indexes/dictionary/");
+					searcher = new Searcher(new SimpleFSDirectory(directory));
+					Entry entry = searcher.getByDocId(intent.getExtras().getInt("DOC_ID"));
+					updateView(entry);
+				}
 			} catch (IOException e) {
 				throw new RuntimeException(e);
-			}
-			if (entry != null) {
-				updateView(entry);
+			} finally {
+				if (searcher != null) {
+					try {
+						searcher.close();
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				}
 			}
 		}
 	}
@@ -104,9 +109,4 @@ public class EntryActivity extends FragmentActivity {
 		}
 	}
 
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		searcher.close();
-	}
 }
