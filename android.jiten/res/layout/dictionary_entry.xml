@@ -43,73 +43,13 @@
             android:textColor="@android:color/white"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/entry_translation_en"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/entry_translations"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/entry_separator_translation"
             android:layout_marginLeft="15dp"
-            android:drawableLeft="@drawable/gb"
-            android:drawablePadding="5dp"
-            android:gravity="center_vertical"
-            android:text="for example, e.g." />
-
-        <TextView
-            android:id="@+id/entry_translation_de"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/entry_translation_en"
-            android:layout_marginLeft="15dp"
-            android:drawableLeft="@drawable/de"
-            android:drawablePadding="5dp"
-            android:gravity="center_vertical"
-            android:text="zum Beispiel, beispielsweise, um ein Beispiel anzuführen" />
-
-        <TextView
-            android:id="@+id/entry_translation_fr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/entry_translation_de"
-            android:layout_marginLeft="15dp"
-            android:drawableLeft="@drawable/fr"
-            android:drawablePadding="5dp"
-            android:gravity="center_vertical"
-            android:text="par exemple" />
-
-        <TextView
-            android:id="@+id/entry_translation_ru"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/entry_translation_fr"
-            android:layout_marginLeft="15dp"
-            android:drawableLeft="@drawable/ru"
-            android:drawablePadding="5dp"
-            android:gravity="center_vertical"
-            android:text="например" />
-
-        <TextView
-            android:id="@+id/entry_part_of_speech"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/entry_translation_ru"
-            android:layout_marginLeft="15dp"
-            android:gravity="center_vertical"
-            android:text="noun or participle which takes the aux. verb suru, noun (common) (futsuumeishi)"
-            android:textColor="@android:color/darker_gray" />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/entry_part_of_speech"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/separator_gradient"
-            android:padding="3dp"
-            android:text="@string/translation"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
+            android:orientation="vertical" />
     </RelativeLayout>
 
 </ScrollView>

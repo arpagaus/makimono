@@ -2,6 +2,8 @@ package android.jiten.activity;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import jiten.model.Entry;
 import jiten.model.Language;
@@ -15,18 +17,28 @@ import android.jiten.R;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class EntryActivity extends FragmentActivity {
 
+	@SuppressWarnings("serial")
+	private static final Map<Language, Integer> LANGUAGE_ICONS = new HashMap<Language, Integer>() {
+		{
+			put(Language.en, R.drawable.gb);
+			put(Language.de, R.drawable.de);
+			put(Language.fr, R.drawable.fr);
+			put(Language.ru, R.drawable.ru);
+		}
+	};
+
 	private TextView expressionTextView;
 	private TextView readingTextView;
 
-	private TextView englishTextView;
-	private TextView germanTextView;
-	private TextView frenchTextView;
-	private TextView russianTextView;
+	private LinearLayout translationsGroupView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -35,11 +47,7 @@ public class EntryActivity extends FragmentActivity {
 		setContentView(R.layout.dictionary_entry);
 		expressionTextView = (TextView) findViewById(R.id.entry_expression);
 		readingTextView = (TextView) findViewById(R.id.entry_reading);
-
-		englishTextView = (TextView) findViewById(R.id.entry_translation_en);
-		germanTextView = (TextView) findViewById(R.id.entry_translation_de);
-		frenchTextView = (TextView) findViewById(R.id.entry_translation_fr);
-		russianTextView = (TextView) findViewById(R.id.entry_translation_ru);
+		translationsGroupView = (LinearLayout) findViewById(R.id.entry_translations);
 
 		handleIntent(getIntent());
 	}
@@ -78,35 +86,45 @@ public class EntryActivity extends FragmentActivity {
 		}
 		readingTextView.setText(reading);
 
-		Sense sense = entry.getSenses().get(0);
+		translationsGroupView.removeAllViews();
+		for (Sense sense : entry.getSenses()) {
+			if (translationsGroupView.getChildCount() > 0) {
+				translationsGroupView.addView(createSeparator());
+			}
 
-		englishTextView.setText(sense.getGlossString(Language.en));
-		if (englishTextView.getText().length() == 0) {
-			englishTextView.setVisibility(View.INVISIBLE);
-		} else {
-			englishTextView.setVisibility(View.VISIBLE);
-		}
+			addGlosses(sense);
 
-		germanTextView.setText(sense.getGlossString(Language.de));
-		if (germanTextView.getText().length() == 0) {
-			germanTextView.setVisibility(View.INVISIBLE);
-		} else {
-			germanTextView.setVisibility(View.VISIBLE);
-		}
-
-		frenchTextView.setText(sense.getGlossString(Language.fr));
-		if (frenchTextView.getText().length() == 0) {
-			frenchTextView.setVisibility(View.INVISIBLE);
-		} else {
-			frenchTextView.setVisibility(View.VISIBLE);
-		}
-
-		russianTextView.setText(sense.getGlossString(Language.ru));
-		if (russianTextView.getText().length() == 0) {
-			russianTextView.setVisibility(View.INVISIBLE);
-		} else {
-			russianTextView.setVisibility(View.VISIBLE);
+			TextView textView = new TextView(this);
+			textView.setText("Ideomatic" /* sense.getPartsOfSpeech().toString() */);
+			textView.setTextColor(android.R.color.darker_gray);
+			translationsGroupView.addView(textView);
 		}
 	}
 
+	private View createSeparator() {
+		View separator = new View(this);
+		separator.setBackgroundColor(android.R.color.darker_gray);
+		separator.setMinimumHeight(2);
+		return separator;
+	}
+
+	private void addGlosses(Sense sense) {
+		for (Language lang : Language.values()) {
+			CharSequence gloss = sense.getGlossString(lang);
+			if (gloss.length() > 0) {
+				TextView textView = new TextView(this);
+				textView.setText(gloss);
+				textView.setCompoundDrawablesWithIntrinsicBounds(LANGUAGE_ICONS.get(lang), 0, 0, 0);
+				textView.setCompoundDrawablePadding(getPixelForDip(15));
+				textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
+				textView.setGravity(Gravity.CENTER_VERTICAL);
+				translationsGroupView.addView(textView);
+			}
+		}
+	}
+
+	private int getPixelForDip(int dip) {
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) dip, getResources().getDisplayMetrics());
+
+	}
 }
