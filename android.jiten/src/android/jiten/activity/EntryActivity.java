@@ -5,14 +5,18 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import jiten.model.Dialect;
 import jiten.model.Entry;
 import jiten.model.Language;
+import jiten.model.PartOfSpeech;
 import jiten.model.Sense;
 import jiten.searcher.Searcher;
 
 import org.apache.lucene.store.SimpleFSDirectory;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.jiten.R;
 import android.os.Bundle;
 import android.os.Environment;
@@ -20,6 +24,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -81,30 +86,28 @@ public class EntryActivity extends FragmentActivity {
 		String reading = entry.getReadings().get(0);
 		if (entry.getExpressions().isEmpty()) {
 			expressionTextView.setText(reading);
+			readingTextView.setVisibility(View.GONE);
 		} else {
 			expressionTextView.setText(entry.getExpressions().get(0));
+			readingTextView.setVisibility(View.VISIBLE);
+			readingTextView.setText(reading);
 		}
-		readingTextView.setText(reading);
 
 		translationsGroupView.removeAllViews();
 		for (Sense sense : entry.getSenses()) {
 			if (translationsGroupView.getChildCount() > 0) {
 				translationsGroupView.addView(createSeparator());
 			}
-
 			addGlosses(sense);
-
-			TextView textView = new TextView(this);
-			textView.setText("Ideomatic" /* sense.getPartsOfSpeech().toString() */);
-			textView.setTextColor(android.R.color.darker_gray);
-			translationsGroupView.addView(textView);
+			addAdditionalInfo(sense);
 		}
 	}
 
 	private View createSeparator() {
 		View separator = new View(this);
-		separator.setBackgroundColor(android.R.color.darker_gray);
-		separator.setMinimumHeight(2);
+		separator.setBackgroundColor(Color.LTGRAY);
+		separator.setMinimumHeight(getPixelForDip(1));
+		separator.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 		return separator;
 	}
 
@@ -121,6 +124,37 @@ public class EntryActivity extends FragmentActivity {
 				translationsGroupView.addView(textView);
 			}
 		}
+	}
+
+	private void addAdditionalInfo(Sense sense) {
+		StringBuilder additionalInfo = new StringBuilder();
+		for (PartOfSpeech pos : sense.getPartsOfSpeech()) {
+			if (additionalInfo.length() > 0) {
+				additionalInfo.append(", ");
+			}
+			additionalInfo.append(getStringForName(pos.name()));
+		}
+
+		for (Dialect d : sense.getDialects()) {
+			if (additionalInfo.length() > 0) {
+				additionalInfo.append(", ");
+			}
+			additionalInfo.append(getStringForName(d.name()));
+		}
+
+		if (additionalInfo.length() > 0) {
+			TextView textView = new TextView(this);
+			textView.setText(additionalInfo);
+			textView.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC), Typeface.ITALIC);
+			textView.setTextColor(Color.GRAY);
+			textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
+			textView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+			translationsGroupView.addView(textView);
+		}
+	}
+
+	private String getStringForName(String name) {
+		return getResources().getString(getResources().getIdentifier(name, "string", getPackageName()));
 	}
 
 	private int getPixelForDip(int dip) {

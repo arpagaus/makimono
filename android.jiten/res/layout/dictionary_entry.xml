@@ -4,7 +4,6 @@
     android:layout_height="fill_parent" >
 
     <RelativeLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
@@ -33,22 +32,31 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/entry_reading"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="5dp"
+            android:text="@string/translations"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/entry_separator_line_translation"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry_separator_translation"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginTop="24dp"
             android:background="@drawable/separator_gradient"
-            android:padding="3dp"
-            android:text="@string/translation"
-            android:textColor="@android:color/white"
-            android:textStyle="bold" />
+            android:minHeight="2dp" />
 
         <LinearLayout
             android:id="@+id/entry_translations"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/entry_separator_translation"
-            android:layout_marginLeft="15dp"
+            android:layout_below="@id/entry_separator_line_translation"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:orientation="vertical" />
     </RelativeLayout>
 
