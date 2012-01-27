@@ -38,6 +38,7 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 	}
 
 	private void handleIntent(Intent intent) {
+		setIntent(intent);
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			try {
