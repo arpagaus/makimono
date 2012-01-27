@@ -2,8 +2,10 @@ package android.jiten.activity;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import jiten.model.Dialect;
 import jiten.model.Entry;
@@ -20,15 +22,17 @@ import android.graphics.Typeface;
 import android.jiten.R;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.ViewSwitcher.ViewFactory;
 
-public class EntryActivity extends FragmentActivity {
+public class EntryActivity extends AbstractDefaultActivity {
 
 	@SuppressWarnings("serial")
 	private static final Map<Language, Integer> LANGUAGE_ICONS = new HashMap<Language, Integer>() {
@@ -40,8 +44,15 @@ public class EntryActivity extends FragmentActivity {
 		}
 	};
 
-	private TextView expressionTextView;
-	private TextView readingTextView;
+	private Entry entry;
+	private AtomicInteger currentExpressionIndex = new AtomicInteger();
+	private AtomicInteger currentReadingIndex = new AtomicInteger();
+
+	private TextSwitcher expressionTextSwitcher;
+	private TextView expressionAlternativeIndTextView;
+
+	private TextSwitcher readingTextSwitcher;
+	private TextView readingAlternativeIndTextView;
 
 	private LinearLayout translationsGroupView;
 
@@ -50,11 +61,94 @@ public class EntryActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.dictionary_entry);
-		expressionTextView = (TextView) findViewById(R.id.entry_expression);
-		readingTextView = (TextView) findViewById(R.id.entry_reading);
+		expressionTextSwitcher = createExpressionTextSwitcher();
+		expressionAlternativeIndTextView = createExpressionAlternativeIndTextView();
+		readingTextSwitcher = createReadingTextSwitcher();
+		readingAlternativeIndTextView = createReadingAlternativeIndTextView();
 		translationsGroupView = (LinearLayout) findViewById(R.id.entry_translations);
 
 		handleIntent(getIntent());
+	}
+
+	private TextView createReadingAlternativeIndTextView() {
+		readingAlternativeIndTextView = (TextView) findViewById(R.id.entry_reading_alternative_ind);
+		readingAlternativeIndTextView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showNextReading();
+			}
+		});
+		return readingAlternativeIndTextView;
+	}
+
+	private TextSwitcher createReadingTextSwitcher() {
+		readingTextSwitcher = (TextSwitcher) findViewById(R.id.entry_reading);
+		readingTextSwitcher.setFactory(new ViewFactory() {
+			@Override
+			public View makeView() {
+				TextView textView = new TextView(EntryActivity.this);
+				textView.setTextColor(Color.GRAY);
+				return textView;
+			}
+		});
+		readingTextSwitcher.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showNextReading();
+			}
+		});
+		return readingTextSwitcher;
+	}
+
+	private TextSwitcher createExpressionTextSwitcher() {
+		expressionTextSwitcher = (TextSwitcher) findViewById(R.id.entry_expression);
+		expressionTextSwitcher.setFactory(new ViewFactory() {
+			@Override
+			public View makeView() {
+				TextView textView = new TextView(EntryActivity.this);
+				textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 32);
+				return textView;
+			}
+		});
+		expressionTextSwitcher.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showNextExpression();
+			}
+		});
+		return expressionTextSwitcher;
+	}
+
+	private TextView createExpressionAlternativeIndTextView() {
+		expressionAlternativeIndTextView = (TextView) findViewById(R.id.entry_expression_alternative_ind);
+		expressionAlternativeIndTextView.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showNextExpression();
+			}
+		});
+		return expressionAlternativeIndTextView;
+	}
+
+	private void showNextExpression() {
+		if (entry != null) {
+			showNextAlternative(entry.getExpressions(), expressionTextSwitcher, expressionAlternativeIndTextView, currentExpressionIndex);
+		}
+	}
+
+	private void showNextReading() {
+		if (entry != null) {
+			showNextAlternative(entry.getReadings(), readingTextSwitcher, readingAlternativeIndTextView, currentReadingIndex);
+		}
+	}
+
+	private void showNextAlternative(ArrayList<String> alternatives, TextSwitcher textSwitcher, TextView indTextView, AtomicInteger index) {
+		if (alternatives.size() > 1) {
+			index.set(index.incrementAndGet() % alternatives.size());
+			textSwitcher.setText(alternatives.get(index.get()));
+			indTextView.setVisibility(View.VISIBLE);
+			indTextView.setText("(" + (index.get() + 1) + "/" + alternatives.size() + ")");
+		}
 	}
 
 	private void handleIntent(Intent intent) {
@@ -83,14 +177,22 @@ public class EntryActivity extends FragmentActivity {
 	}
 
 	private void updateView(Entry entry) {
+		this.entry = entry;
+		currentExpressionIndex.set(0);
+		currentReadingIndex.set(0);
+
 		String reading = entry.getReadings().get(0);
 		if (entry.getExpressions().isEmpty()) {
-			expressionTextView.setText(reading);
-			readingTextView.setVisibility(View.GONE);
+			expressionTextSwitcher.setText(reading);
+			readingTextSwitcher.setVisibility(View.GONE);
 		} else {
-			expressionTextView.setText(entry.getExpressions().get(0));
-			readingTextView.setVisibility(View.VISIBLE);
-			readingTextView.setText(reading);
+			expressionTextSwitcher.setText(entry.getExpressions().get(0));
+			readingTextSwitcher.setVisibility(View.VISIBLE);
+			readingTextSwitcher.setText(reading);
+		}
+
+		if (entry.getExpressions().size() <= 1) {
+			expressionAlternativeIndTextView.setVisibility(View.GONE);
 		}
 
 		translationsGroupView.removeAllViews();
@@ -105,7 +207,7 @@ public class EntryActivity extends FragmentActivity {
 
 	private View createSeparator() {
 		View separator = new View(this);
-		separator.setBackgroundColor(Color.LTGRAY);
+		separator.setBackgroundResource(R.drawable.secondary_separator);
 		separator.setMinimumHeight(getPixelForDip(1));
 		separator.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 		return separator;

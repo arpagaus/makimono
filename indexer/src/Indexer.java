@@ -361,10 +361,10 @@ public class Indexer {
 		for (Sense sense : entry.getSense()) {
 			jiten.model.Sense jitenSense = new jiten.model.Sense();
 			jitenEntry.getSenses().add(jitenSense);
-			
+
 			jitenSense.getPartsOfSpeech().addAll(transformPartOfSpeech(sense.getPos()));
 			jitenSense.getDialects().addAll(transformDialects(sense.getDial()));
-			
+
 			for (Gloss gloss : sense.getGloss()) {
 				jiten.model.Gloss jitenGloss = new jiten.model.Gloss();
 				jitenGloss.setLanguage(Language.valueOf(gloss.getXmlLang()));
@@ -386,7 +386,6 @@ public class Indexer {
 		return jitenPos;
 	}
 
-
 	private List<Dialect> transformDialects(List<Dial> dial) {
 		ArrayList<Dialect> jitenDialects = new ArrayList<Dialect>();
 		for (Dial d : dial) {
@@ -395,7 +394,7 @@ public class Indexer {
 		}
 		return jitenDialects;
 	}
-	
+
 	private String resolveEnumStringForEntityReference(String entityReference) {
 		return "JMdict_" + JMDICT_ENTITY_REFERENCES.get(entityReference).replaceAll("-", "_");
 	}
