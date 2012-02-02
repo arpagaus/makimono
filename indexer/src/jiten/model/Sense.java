@@ -4,26 +4,45 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public class Sense {
 
-	private ArrayList<PartOfSpeech> partsOfSpeech;
-	private ArrayList<Dialect> dialects;
+	private TreeSet<PartOfSpeech> partsOfSpeech;
+	private TreeSet<Dialect> dialects;
+	private TreeSet<Miscellaneous> miscellaneous;
+	private TreeSet<FieldOfApplication> fieldsOfApplication;
+
 	private ArrayList<Gloss> glosses;
 
-	public ArrayList<PartOfSpeech> getPartsOfSpeech() {
+	public TreeSet<PartOfSpeech> getPartsOfSpeech() {
 		if (partsOfSpeech == null) {
-			partsOfSpeech = new ArrayList<PartOfSpeech>();
+			partsOfSpeech = new TreeSet<PartOfSpeech>();
 
 		}
 		return partsOfSpeech;
 	}
 
-	public ArrayList<Dialect> getDialects() {
+	public TreeSet<Dialect> getDialects() {
 		if (dialects == null) {
-			dialects = new ArrayList<Dialect>();
+			dialects = new TreeSet<Dialect>();
 		}
 		return dialects;
+	}
+
+	public TreeSet<Miscellaneous> getMiscellaneous() {
+		if (miscellaneous == null) {
+			miscellaneous = new TreeSet<Miscellaneous>();
+		}
+		return miscellaneous;
+	}
+
+	public TreeSet<FieldOfApplication> getFieldsOfApplication() {
+		if (fieldsOfApplication == null) {
+			fieldsOfApplication = new TreeSet<FieldOfApplication>();
+
+		}
+		return fieldsOfApplication;
 	}
 
 	public ArrayList<Gloss> getGlosses() {
@@ -56,7 +75,9 @@ public class Sense {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((dialects == null) ? 0 : dialects.hashCode());
+		result = prime * result + ((fieldsOfApplication == null) ? 0 : fieldsOfApplication.hashCode());
 		result = prime * result + ((glosses == null) ? 0 : glosses.hashCode());
+		result = prime * result + ((miscellaneous == null) ? 0 : miscellaneous.hashCode());
 		result = prime * result + ((partsOfSpeech == null) ? 0 : partsOfSpeech.hashCode());
 		return result;
 	}
@@ -75,10 +96,20 @@ public class Sense {
 				return false;
 		} else if (!dialects.equals(other.dialects))
 			return false;
+		if (fieldsOfApplication == null) {
+			if (other.fieldsOfApplication != null)
+				return false;
+		} else if (!fieldsOfApplication.equals(other.fieldsOfApplication))
+			return false;
 		if (glosses == null) {
 			if (other.glosses != null)
 				return false;
 		} else if (!glosses.equals(other.glosses))
+			return false;
+		if (miscellaneous == null) {
+			if (other.miscellaneous != null)
+				return false;
+		} else if (!miscellaneous.equals(other.miscellaneous))
 			return false;
 		if (partsOfSpeech == null) {
 			if (other.partsOfSpeech != null)
@@ -99,6 +130,16 @@ public class Sense {
 			outputStream.writeByte(d.ordinal());
 		}
 
+		outputStream.writeByte(sense.getMiscellaneous().size());
+		for (Miscellaneous m : sense.getMiscellaneous()) {
+			outputStream.writeByte(m.ordinal());
+		}
+
+		outputStream.writeByte(sense.getFieldsOfApplication().size());
+		for (FieldOfApplication f : sense.getFieldsOfApplication()) {
+			outputStream.writeByte(f.ordinal());
+		}
+
 		outputStream.writeByte(sense.getGlosses().size());
 		for (Gloss g : sense.getGlosses()) {
 			outputStream.writeByte(g.getLanguage().ordinal());
@@ -110,18 +151,27 @@ public class Sense {
 		Sense sense = new Sense();
 
 		byte partOfSpeechCount = inputStream.readByte();
-		for (int i = 0; i < partOfSpeechCount; i++) {
+		for (byte i = 0; i < partOfSpeechCount; i++) {
 			sense.getPartsOfSpeech().add(PartOfSpeech.values()[inputStream.readByte()]);
 		}
 
 		byte dialectCount = inputStream.readByte();
-		for (int i = 0; i < dialectCount; i++) {
+		for (byte i = 0; i < dialectCount; i++) {
 			sense.getDialects().add(Dialect.values()[inputStream.readByte()]);
 		}
 
+		byte miscellaneousCount = inputStream.readByte();
+		for (byte i = 0; i < miscellaneousCount; i++) {
+			sense.getMiscellaneous().add(Miscellaneous.values()[inputStream.readByte()]);
+		}
+
+		byte fieldOfApplicationCount = inputStream.readByte();
+		for (byte i = 0; i < fieldOfApplicationCount; i++) {
+			sense.getFieldsOfApplication().add(FieldOfApplication.values()[inputStream.readByte()]);
+		}
+
 		byte glossCount = inputStream.readByte();
-		;
-		for (int i = 0; i < glossCount; i++) {
+		for (byte i = 0; i < glossCount; i++) {
 			Gloss g = new Gloss();
 			g.setLanguage(Language.values()[inputStream.readByte()]);
 			g.setValue(inputStream.readUTF());

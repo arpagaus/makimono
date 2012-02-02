@@ -44,6 +44,7 @@ public class EntryActivity extends AbstractDefaultActivity {
 		}
 	};
 
+	
 	private Entry entry;
 	private AtomicInteger currentExpressionIndex = new AtomicInteger();
 	private AtomicInteger currentReadingIndex = new AtomicInteger();
@@ -191,8 +192,16 @@ public class EntryActivity extends AbstractDefaultActivity {
 			readingTextSwitcher.setText(reading);
 		}
 
-		if (entry.getExpressions().size() <= 1) {
+		if (entry.getExpressions().size() < 2) {
 			expressionAlternativeIndTextView.setVisibility(View.GONE);
+		} else {
+			expressionAlternativeIndTextView.setVisibility(View.VISIBLE);
+		}
+
+		if (entry.getReadings().size() < 2) {
+			readingAlternativeIndTextView.setVisibility(View.GONE);
+		} else {
+			readingAlternativeIndTextView.setVisibility(View.VISIBLE);
 		}
 
 		translationsGroupView.removeAllViews();

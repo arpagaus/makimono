@@ -25,10 +25,15 @@ public class SerializationTest {
 		Sense sense = new Sense();
 		sense.getPartsOfSpeech().add(PartOfSpeech.JMdict_adj_i);
 		sense.getPartsOfSpeech().add(PartOfSpeech.JMdict_adj_no);
-		
+
 		sense.getDialects().add(Dialect.JMdict_kyb);
 		sense.getDialects().add(Dialect.JMdict_osb);
-		
+
+		sense.getMiscellaneous().add(Miscellaneous.JMdict_fam);
+		sense.getMiscellaneous().add(Miscellaneous.JMdict_derog);
+
+		sense.getFieldsOfApplication().add(FieldOfApplication.JMdict_Buddh);
+
 		entry.getSenses().add(sense);
 
 		sense.getGlosses().add(createGloss("(hard) candy", Language.en));
@@ -71,6 +76,14 @@ public class SerializationTest {
 		assertEquals(entry.getExpressions(), newEntry.getExpressions());
 		assertEquals(entry.getReadings(), newEntry.getReadings());
 		assertEquals(entry.getSenses().size(), newEntry.getSenses().size());
+
+		Sense sense = entry.getSenses().get(0);
+		Sense newSense = newEntry.getSenses().get(0);
+		assertEquals(sense.getPartsOfSpeech(), newSense.getPartsOfSpeech());
+		assertEquals(sense.getDialects(), newSense.getDialects());
+		assertEquals(sense.getMiscellaneous(), newSense.getMiscellaneous());
+		assertEquals(sense.getFieldsOfApplication(), newSense.getFieldsOfApplication());
+
 		assertEquals(entry, newEntry);
 	}
 

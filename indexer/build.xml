@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Indexer" default="create-index" basedir=".">
 
-	<property name="jdk.dir" location="C:/Program Files/Java/jdk1.6.0_26/" />
+	<property name="jdk.dir" location="/usr/lib/jvm/java-6-openjdk/" />
 
 	<property name="build.dir" location="${java.io.tmpdir}/indexer" />
 	<property name="dist.dir" location="dist" />

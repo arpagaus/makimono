@@ -14,6 +14,7 @@ import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
@@ -43,6 +44,7 @@ public class Searcher implements Closeable {
 	private QueryParser getQueryParser() {
 		if (queryParser == null) {
 			queryParser = new MultiFieldQueryParser(Version.LUCENE_35, FIELDS, new SimpleAnalyzer(Version.LUCENE_35));
+			queryParser.setDefaultOperator(Operator.AND);
 		}
 		return queryParser;
 	}

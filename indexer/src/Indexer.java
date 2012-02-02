@@ -15,7 +15,9 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
 import jiten.model.Dialect;
+import jiten.model.FieldOfApplication;
 import jiten.model.Language;
+import jiten.model.Miscellaneous;
 import jiten.model.PartOfSpeech;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -30,13 +32,11 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
 
-import au.edu.monash.csse.jmdict.model.Dial;
 import au.edu.monash.csse.jmdict.model.Entry;
 import au.edu.monash.csse.jmdict.model.Gloss;
 import au.edu.monash.csse.jmdict.model.JMdict;
 import au.edu.monash.csse.jmdict.model.KEle;
 import au.edu.monash.csse.jmdict.model.KePri;
-import au.edu.monash.csse.jmdict.model.Pos;
 import au.edu.monash.csse.jmdict.model.REle;
 import au.edu.monash.csse.jmdict.model.RePri;
 import au.edu.monash.csse.jmdict.model.Sense;
@@ -202,13 +202,11 @@ public class Indexer {
 
 			for (KEle kanjiElement : entry.getKEle()) {
 				Field expression = new Field("expression", kanjiElement.getKeb(), Store.NO, Index.ANALYZED);
-				expression.setBoost(getBoostForExpression(kanjiElement.getKePri()));
 				document.add(expression);
 			}
 
 			for (REle readingElement : entry.getREle()) {
 				Field reading = new Field("reading", readingElement.getReb(), Store.NO, Index.ANALYZED);
-				reading.setBoost(getBoostForReading(readingElement.getRePri()));
 				document.add(reading);
 			}
 
@@ -227,6 +225,8 @@ public class Indexer {
 
 			byte[] compressByteArray = getSerializedEntry(transformEntry(entry));
 			document.add(new Field("entry", compressByteArray));
+
+			document.setBoost(getBoostForEntry(entry));
 
 			indexWriter.addDocument(document);
 
@@ -265,18 +265,17 @@ public class Indexer {
 		return value.replace("(n) ", "");
 	}
 
-	private float getBoostForReading(List<RePri> rePri) {
+	private float getBoostForEntry(Entry entry) {
 		float boost = 1.0f;
-		for (RePri r : rePri) {
-			boost = boost * getBoost(r.getvalue());
+		for (KEle element : entry.getKEle()) {
+			for (KePri priority : element.getKePri()) {
+				boost = boost * getBoost(priority.getvalue());
+			}
 		}
-		return boost;
-	}
-
-	private float getBoostForExpression(List<KePri> kePri) {
-		float boost = 1.0f;
-		for (KePri k : kePri) {
-			boost = boost * getBoost(k.getvalue());
+		for (REle element : entry.getREle()) {
+			for (RePri priority : element.getRePri()) {
+				boost = boost * getBoost(priority.getvalue());
+			}
 		}
 		return boost;
 	}
@@ -345,7 +344,7 @@ public class Indexer {
 		return boost;
 	}
 
-	private jiten.model.Entry transformEntry(Entry entry) {
+	private jiten.model.Entry transformEntry(Entry entry) throws Exception {
 		jiten.model.Entry jitenEntry = new jiten.model.Entry();
 
 		jitenEntry.setId(Integer.valueOf(entry.getEntSeq()));
@@ -362,8 +361,10 @@ public class Indexer {
 			jiten.model.Sense jitenSense = new jiten.model.Sense();
 			jitenEntry.getSenses().add(jitenSense);
 
-			jitenSense.getPartsOfSpeech().addAll(transformPartOfSpeech(sense.getPos()));
-			jitenSense.getDialects().addAll(transformDialects(sense.getDial()));
+			jitenSense.getPartsOfSpeech().addAll(transformEnum(PartOfSpeech.class, sense.getPos()));
+			jitenSense.getDialects().addAll(transformEnum(Dialect.class, sense.getDial()));
+			jitenSense.getMiscellaneous().addAll(transformEnum(Miscellaneous.class, sense.getMisc()));
+			jitenSense.getFieldsOfApplication().addAll(transformEnum(FieldOfApplication.class, sense.getField()));
 
 			for (Gloss gloss : sense.getGloss()) {
 				jiten.model.Gloss jitenGloss = new jiten.model.Gloss();
@@ -377,22 +378,14 @@ public class Indexer {
 		return jitenEntry;
 	}
 
-	private List<PartOfSpeech> transformPartOfSpeech(List<Pos> pos) {
-		ArrayList<PartOfSpeech> jitenPos = new ArrayList<PartOfSpeech>();
-		for (Pos p : pos) {
-			PartOfSpeech partOfSpeech = PartOfSpeech.valueOf(resolveEnumStringForEntityReference(p.getvalue()));
-			jitenPos.add(partOfSpeech);
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private <T extends Enum> List<T> transformEnum(Class<T> e, List<?> list) throws Exception {
+		List<T> result = new ArrayList<T>();
+		for (Object o : list) {
+			Object value = o.getClass().getMethod("getvalue").invoke(o);
+			result.add((T) Enum.valueOf(e, resolveEnumStringForEntityReference(value.toString())));
 		}
-		return jitenPos;
-	}
-
-	private List<Dialect> transformDialects(List<Dial> dial) {
-		ArrayList<Dialect> jitenDialects = new ArrayList<Dialect>();
-		for (Dial d : dial) {
-			Dialect dialect = Dialect.valueOf(resolveEnumStringForEntityReference(d.getvalue()));
-			jitenDialects.add(dialect);
-		}
-		return jitenDialects;
+		return result;
 	}
 
 	private String resolveEnumStringForEntityReference(String entityReference) {
