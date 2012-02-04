@@ -1,13 +1,15 @@
 package jiten.model;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import org.junit.Test;
 
 public class SenseTest {
 
-	@Test
-	public void getGlossString() throws Exception {
+	private Sense createSense() {
 		Sense sense = new Sense();
 
 		Gloss glossGrapefruit = new Gloss();
@@ -26,8 +28,23 @@ public class SenseTest {
 		sense.getGlosses().add(glossOrange);
 		sense.getGlosses().add(glossPampelmuse);
 
+		sense.getPartsOfSpeech().add(PartOfSpeech.JMdict_n);
+		sense.getPartsOfSpeech().add(PartOfSpeech.JMdict_n_suf);
+
+		return sense;
+	}
+
+	@Test
+	public void getGlossString() throws Exception {
+		Sense sense = createSense();
 		CharSequence glossString = sense.getGlossString(Language.en);
-		assertNotNull(glossString);
 		assertEquals("grapefruit, orange", glossString.toString());
+	}
+
+	@Test
+	public void getAdditionalInfo() throws Exception {
+		Sense sense = createSense();
+		ArrayList<String> additionalInfo = sense.getAdditionalInfo();
+		assertEquals(Arrays.asList(PartOfSpeech.JMdict_n.toString(), PartOfSpeech.JMdict_n_suf.toString()), additionalInfo);
 	}
 }

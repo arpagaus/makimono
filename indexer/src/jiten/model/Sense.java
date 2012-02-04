@@ -179,4 +179,12 @@ public class Sense {
 		}
 		return sense;
 	}
+
+	public ArrayList<String> getAdditionalInfo() {
+		ArrayList<String> additionalInfo = new ArrayList<String>();
+		for (PartOfSpeech p : getPartsOfSpeech()) {
+			additionalInfo.add(p.name());
+		}
+		return additionalInfo;
+	}
 }
