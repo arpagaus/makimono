@@ -4,8 +4,11 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="13"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-sdk
+        android:minSdkVersion="8"
+        android:targetSdkVersion="13" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:icon="@drawable/icon"
@@ -29,11 +32,12 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
         </activity>
+        <activity android:name=".activity.EntryActivity" >
+        </activity>
 
-        <activity android:name=".activity.EntryActivityActivityActivityActivity"></activity><meta-data
+        <meta-data
             android:name="android.app.default_searchable"
             android:value=".activity.SearchActivity" />
-        
     </application>
 
 </manifest>

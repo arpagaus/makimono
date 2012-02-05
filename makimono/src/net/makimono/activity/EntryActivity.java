@@ -8,10 +8,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.makimono.R;
-import net.makimono.model.Dialect;
 import net.makimono.model.Entry;
 import net.makimono.model.Language;
-import net.makimono.model.PartOfSpeech;
 import net.makimono.model.Sense;
 import net.makimono.searcher.Searcher;
 
@@ -238,18 +236,11 @@ public class EntryActivity extends AbstractDefaultActivity {
 
 	private void addAdditionalInfo(Sense sense) {
 		StringBuilder additionalInfo = new StringBuilder();
-		for (PartOfSpeech pos : sense.getPartsOfSpeech()) {
+		for (String s : sense.getAdditionalInfo()) {
 			if (additionalInfo.length() > 0) {
 				additionalInfo.append(", ");
 			}
-			additionalInfo.append(getStringForName(pos.name()));
-		}
-
-		for (Dialect d : sense.getDialects()) {
-			if (additionalInfo.length() > 0) {
-				additionalInfo.append(", ");
-			}
-			additionalInfo.append(getStringForName(d.name()));
+			additionalInfo.append(getStringForName(s));
 		}
 
 		if (additionalInfo.length() > 0) {
@@ -264,7 +255,11 @@ public class EntryActivity extends AbstractDefaultActivity {
 	}
 
 	private String getStringForName(String name) {
-		return getResources().getString(getResources().getIdentifier(name, "string", getPackageName()));
+		try {
+			return getResources().getString(getResources().getIdentifier(name, "string", getPackageName()));
+		} catch (RuntimeException e) {
+			return name;
+		}
 	}
 
 	private int getPixelForDip(int dip) {

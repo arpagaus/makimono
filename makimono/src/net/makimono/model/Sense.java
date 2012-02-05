@@ -9,9 +9,9 @@ import java.util.TreeSet;
 public class Sense {
 
 	private TreeSet<PartOfSpeech> partsOfSpeech;
-	private TreeSet<Dialect> dialects;
 	private TreeSet<Miscellaneous> miscellaneous;
 	private TreeSet<FieldOfApplication> fieldsOfApplication;
+	private TreeSet<Dialect> dialects;
 
 	private ArrayList<Gloss> glosses;
 
@@ -21,13 +21,6 @@ public class Sense {
 
 		}
 		return partsOfSpeech;
-	}
-
-	public TreeSet<Dialect> getDialects() {
-		if (dialects == null) {
-			dialects = new TreeSet<Dialect>();
-		}
-		return dialects;
 	}
 
 	public TreeSet<Miscellaneous> getMiscellaneous() {
@@ -45,6 +38,13 @@ public class Sense {
 		return fieldsOfApplication;
 	}
 
+	public TreeSet<Dialect> getDialects() {
+		if (dialects == null) {
+			dialects = new TreeSet<Dialect>();
+		}
+		return dialects;
+	}
+
 	public ArrayList<Gloss> getGlosses() {
 		if (glosses == null) {
 			glosses = new ArrayList<Gloss>();
@@ -54,7 +54,7 @@ public class Sense {
 
 	@Override
 	public String toString() {
-		return "partsOfSpeech=" + partsOfSpeech + ", dialects=" + dialects + ", glosses=" + glosses + "";
+		return "partsOfSpeech=" + partsOfSpeech + ", miscellaneous=" + miscellaneous + ", fieldsOfApplication=" + fieldsOfApplication + ", dialects=" + dialects + ", glosses=" + glosses + "";
 	}
 
 	public CharSequence getGlossString(Language langauge) {
@@ -68,6 +68,23 @@ public class Sense {
 			}
 		}
 		return builder;
+	}
+
+	public ArrayList<String> getAdditionalInfo() {
+		ArrayList<String> additionalInfo = new ArrayList<String>();
+		for (PartOfSpeech p : getPartsOfSpeech()) {
+			additionalInfo.add(p.name());
+		}
+		for (Miscellaneous m : getMiscellaneous()) {
+			additionalInfo.add(m.name());
+		}
+		for (FieldOfApplication f : getFieldsOfApplication()) {
+			additionalInfo.add(f.name());
+		}
+		for (Dialect d : getDialects()) {
+			additionalInfo.add(d.name());
+		}
+		return additionalInfo;
 	}
 
 	@Override
@@ -178,13 +195,5 @@ public class Sense {
 			sense.getGlosses().add(g);
 		}
 		return sense;
-	}
-
-	public ArrayList<String> getAdditionalInfo() {
-		ArrayList<String> additionalInfo = new ArrayList<String>();
-		for (PartOfSpeech p : getPartsOfSpeech()) {
-			additionalInfo.add(p.name());
-		}
-		return additionalInfo;
 	}
 }

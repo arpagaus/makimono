@@ -5,11 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import net.makimono.model.Gloss;
-import net.makimono.model.Language;
-import net.makimono.model.PartOfSpeech;
-import net.makimono.model.Sense;
-
 import org.junit.Test;
 
 public class SenseTest {
@@ -36,6 +31,12 @@ public class SenseTest {
 		sense.getPartsOfSpeech().add(PartOfSpeech.JMdict_n);
 		sense.getPartsOfSpeech().add(PartOfSpeech.JMdict_n_suf);
 
+		sense.getMiscellaneous().add(Miscellaneous.JMdict_pol);
+
+		sense.getFieldsOfApplication().add(FieldOfApplication.JMdict_geom);
+
+		sense.getDialects().add(Dialect.JMdict_kyu);
+
 		return sense;
 	}
 
@@ -50,6 +51,7 @@ public class SenseTest {
 	public void getAdditionalInfo() throws Exception {
 		Sense sense = createSense();
 		ArrayList<String> additionalInfo = sense.getAdditionalInfo();
-		assertEquals(Arrays.asList(PartOfSpeech.JMdict_n.toString(), PartOfSpeech.JMdict_n_suf.toString()), additionalInfo);
+		assertEquals(Arrays.asList(PartOfSpeech.JMdict_n.name(), PartOfSpeech.JMdict_n_suf.name(), Miscellaneous.JMdict_pol.name(), FieldOfApplication.JMdict_geom.name(), Dialect.JMdict_kyu.name()),
+				additionalInfo);
 	}
 }
