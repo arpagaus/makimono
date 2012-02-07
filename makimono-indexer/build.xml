@@ -67,6 +67,10 @@
 			</classpath>
 		</javac>
 
+		<copy todir="${build.dir}">
+			<fileset dir="${indexer.src.dir}" includes="net/makimono/indexer/**.properties" />
+		</copy>
+
 		<delete file="${dist.dir}/jmdict-indexer.jar" />
 		<jar destfile="${dist.dir}/jmdict-indexer.jar" basedir="${build.dir}" />
 

@@ -4,11 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.zip.GZIPInputStream;
 
 import javax.xml.bind.JAXBContext;
@@ -62,125 +64,22 @@ public class Indexer {
 		new Indexer().startIndexing(jmdictFile, new File(args[1]));
 	}
 
-	@SuppressWarnings("serial")
-	private static final Map<String, String> JMDICT_ENTITY_REFERENCES = new HashMap<String, String>() {
-		{
+	private static final Map<String, String> JMDICT_ENTITY_REFERENCES = new HashMap<String, String>();
 
-			put("martial arts term", "MA");
-			put("rude or X-rated term (not displayed in educational software)", "X");
-			put("abbreviation", "abbr");
-			put("adjective (keiyoushi)", "adj-i");
-			put("adjectival nouns or quasi-adjectives (keiyodoshi)", "adj-na");
-			put("nouns which may take the genitive case particle `no'", "adj-no");
-			put("pre-noun adjectival (rentaishi)", "adj-pn");
-			put("`taru' adjective", "adj-t");
-			put("noun or verb acting prenominally", "adj-f");
-			put("former adjective classification (being removed)", "adj");
-			put("adverb (fukushi)", "adv");
-			put("adverb taking the `to' particle", "adv-to");
-			put("archaism", "arch");
-			put("ateji (phonetic) reading", "ateji");
-			put("auxiliary", "aux");
-			put("auxiliary verb", "aux-v");
-			put("auxiliary adjective", "aux-adj");
-			put("Buddhist term", "Buddh");
-			put("chemistry term", "chem");
-			put("children's language", "chn");
-			put("colloquialism", "col");
-			put("computer terminology", "comp");
-			put("conjunction", "conj");
-			put("counter", "ctr");
-			put("derogatory", "derog");
-			put("exclusively kanji", "eK");
-			put("exclusively kana", "ek");
-			put("Expressions (phrases, clauses, etc.)", "exp");
-			put("familiar language", "fam");
-			put("female term or language", "fem");
-			put("food term", "food");
-			put("geometry term", "geom");
-			put("gikun (meaning as reading)  or jukujikun (special kanji reading)", "gikun");
-			put("honorific or respectful (sonkeigo) language", "hon");
-			put("humble (kenjougo) language", "hum");
-			put("word containing irregular kanji usage", "iK");
-			put("idiomatic expression", "id");
-			put("word containing irregular kana usage", "ik");
-			put("interjection (kandoushi)", "int");
-			put("irregular okurigana usage", "io");
-			put("irregular verb", "iv");
-			put("linguistics terminology", "ling");
-			put("manga slang", "m-sl");
-			put("male term or language", "male");
-			put("male slang", "male-sl");
-			put("mathematics", "math");
-			put("military", "mil");
-			put("noun (common) (futsuumeishi)", "n");
-			put("adverbial noun (fukushitekimeishi)", "n-adv");
-			put("noun, used as a suffix", "n-suf");
-			put("noun, used as a prefix", "n-pref");
-			put("noun (temporal) (jisoumeishi)", "n-t");
-			put("numeric", "num");
-			put("word containing out-dated kanji", "oK");
-			put("obsolete term", "obs");
-			put("obscure term", "obsc");
-			put("out-dated or obsolete kana usage", "ok");
-			put("onomatopoeic or mimetic word", "on-mim");
-			put("pronoun", "pn");
-			put("poetical term", "poet");
-			put("polite (teineigo) language", "pol");
-			put("prefix", "pref");
-			put("proverb", "proverb");
-			put("particle", "prt");
-			put("physics terminology", "physics");
-			put("rare", "rare");
-			put("sensitive", "sens");
-			put("slang", "sl");
-			put("suffix", "suf");
-			put("word usually written using kanji alone", "uK");
-			put("word usually written using kana alone", "uk");
-			put("Ichidan verb", "v1");
-			put("Nidan verb with 'u' ending (archaic)", "v2a-s");
-			put("Yondan verb with `hu/fu' ending (archaic)", "v4h");
-			put("Yondan verb with `ru' ending (archaic)", "v4r");
-			put("Godan verb (not completely classified)", "v5");
-			put("Godan verb - -aru special class", "v5aru");
-			put("Godan verb with `bu' ending", "v5b");
-			put("Godan verb with `gu' ending", "v5g");
-			put("Godan verb with `ku' ending", "v5k");
-			put("Godan verb - Iku/Yuku special class", "v5k-s");
-			put("Godan verb with `mu' ending", "v5m");
-			put("Godan verb with `nu' ending", "v5n");
-			put("Godan verb with `ru' ending", "v5r");
-			put("Godan verb with `ru' ending (irregular verb)", "v5r-i");
-			put("Godan verb with `su' ending", "v5s");
-			put("Godan verb with `tsu' ending", "v5t");
-			put("Godan verb with `u' ending", "v5u");
-			put("Godan verb with `u' ending (special class)", "v5u-s");
-			put("Godan verb - Uru old class verb (old form of Eru)", "v5uru");
-			put("Godan verb with `zu' ending", "v5z");
-			put("Ichidan verb - zuru verb (alternative form of -jiru verbs)", "vz");
-			put("intransitive verb", "vi");
-			put("Kuru verb - special class", "vk");
-			put("irregular nu verb", "vn");
-			put("irregular ru verb, plain form ends with -ri", "vr");
-			put("noun or participle which takes the aux. verb suru", "vs");
-			put("su verb - precursor to the modern suru", "vs-c");
-			put("suru verb - special class", "vs-s");
-			put("suru verb - irregular", "vs-i");
-			put("Kyoto-ben", "kyb");
-			put("Osaka-ben", "osb");
-			put("Kansai-ben", "ksb");
-			put("Kantou-ben", "ktb");
-			put("Tosa-ben", "tsb");
-			put("Touhoku-ben", "thb");
-			put("Tsugaru-ben", "tsug");
-			put("Kyuushuu-ben", "kyu");
-			put("Ryuukyuu-ben", "rkb");
-			put("Nagano-ben", "nab");
-			put("transitive verb", "vt");
-			put("vulgar expression or word", "vulg");
+	static {
+		InputStream stream = Indexer.class.getClassLoader().getResourceAsStream(Indexer.class.getPackage().getName().replaceAll("\\.", "/") + "/JMdictReferences.properties");
+		Properties p = new Properties();
+		try {
+			p.load(stream);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-	};
+		for (java.util.Map.Entry<Object, Object> e : p.entrySet()) {
+			JMDICT_ENTITY_REFERENCES.put(e.getValue().toString(), e.getKey().toString());
+		}
+	}
 
+	@SuppressWarnings("serial")
 	private void startIndexing(File jmdictFile, File indexDirectory) throws Exception {
 		System.out.println("Parsing JMdict");
 
@@ -199,7 +98,7 @@ public class Indexer {
 		config.setSimilarity(new DefaultSimilarity() {
 			@Override
 			public float computeNorm(String field, FieldInvertState state) {
-				return state.getBoost();
+				return state.getBoost(); // Don't do length normalization
 			}
 		});
 		IndexWriter indexWriter = new IndexWriter(directory, config);
