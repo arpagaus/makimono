@@ -57,10 +57,10 @@ public class Sense {
 		return "partsOfSpeech=" + partsOfSpeech + ", miscellaneous=" + miscellaneous + ", fieldsOfApplication=" + fieldsOfApplication + ", dialects=" + dialects + ", glosses=" + glosses + "";
 	}
 
-	public CharSequence getGlossString(Language langauge) {
+	public CharSequence getGlossString(Language language) {
 		StringBuilder builder = new StringBuilder();
 		for (Gloss g : glosses) {
-			if (g.getLanguage() == langauge) {
+			if (g.getLanguage() == language) {
 				if (builder.length() > 0) {
 					builder.append(", ");
 				}

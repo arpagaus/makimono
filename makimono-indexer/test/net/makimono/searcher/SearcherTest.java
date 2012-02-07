@@ -7,20 +7,18 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-
 import net.makimono.model.Dialect;
 import net.makimono.model.Entry;
 import net.makimono.model.FieldOfApplication;
+import net.makimono.model.Language;
 import net.makimono.model.Miscellaneous;
 import net.makimono.model.PartOfSpeech;
-import net.makimono.searcher.Searcher;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.store.AlreadyClosedException;
 import org.apache.lucene.store.FSDirectory;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class SearcherTest {
@@ -80,7 +78,7 @@ public class SearcherTest {
 		assertEquals(1, entries.size());
 
 		Entry entry = entries.get(0);
-		assertEquals(1103970, entry.getId());
+		assertEquals("ヒマラヤ", entry.getReadings().get(0));
 	}
 
 	@Test
@@ -89,7 +87,7 @@ public class SearcherTest {
 		assertEquals(1, entries.size());
 
 		Entry entry = entries.get(0);
-		assertEquals(1062770, entry.getId());
+		assertEquals("ショッピングカート", entry.getReadings().get(0));
 	}
 
 	@Test
@@ -98,7 +96,7 @@ public class SearcherTest {
 		assertFalse(entries.isEmpty());
 
 		Entry entry = entries.get(0);
-		assertEquals(1301940, entry.getId());
+		assertEquals("傘", entry.getExpressions().get(0));
 	}
 
 	@Test
@@ -107,7 +105,7 @@ public class SearcherTest {
 		assertFalse(entries.isEmpty());
 
 		Entry entry = entries.get(0);
-		assertEquals(1202390, entry.getId());
+		assertEquals("からし", entry.getReadings().get(0));
 	}
 
 	@Test
@@ -116,7 +114,7 @@ public class SearcherTest {
 		assertEquals(1, entries.size());
 
 		Entry entry = entries.get(0);
-		assertEquals(1062770, entry.getId());
+		assertEquals("Einkaufswagen", entry.getSenses().get(0).getGlossString(Language.de).toString());
 	}
 
 	@Test
@@ -125,13 +123,7 @@ public class SearcherTest {
 		assertEquals(1, entries.size());
 
 		Entry entry = entries.get(0);
-		assertEquals(1277290, entry.getId());
-	}
-
-	private Entry searchUniqueEntry(String queryString) throws IOException, ParseException {
-		List<Entry> entries = searcher.search(queryString);
-		assertEquals(1, entries.size());
-		return entries.get(0);
+		assertEquals("sunflower (Helianthus annuus)", entry.getSenses().get(0).getGlossString(Language.en).toString());
 	}
 
 	@Test
@@ -166,12 +158,9 @@ public class SearcherTest {
 		assertEquals(Dialect.JMdict_ksb, entry.getSenses().get(0).getDialects().iterator().next());
 	}
 
-	@Test
-	@Ignore
-	public void testBoost() throws Exception {
-		List<Entry> entries = searcher.search("benutzen");
-		for (Entry e : entries) {
-			System.out.println(e.getId());
-		}
+	private Entry searchUniqueEntry(String queryString) throws IOException, ParseException {
+		List<Entry> entries = searcher.search(queryString);
+		assertEquals(1, entries.size());
+		return entries.get(0);
 	}
 }

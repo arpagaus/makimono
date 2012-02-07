@@ -23,7 +23,7 @@
 	<target name="create-index" depends="build-jmdict-indexer,download-jmdict-file">
 		<delete dir="${index.dir}" />
 		<java classname="net.makimono.indexer.Indexer" fork="true">
-			<jvmarg value="-Xmx1024m" />
+			<jvmarg value="-Xmx512m" />
 			<arg value="${jmdict.file}" />
 			<arg value="${index.dir}" />
 			<sysproperty key="entityExpansionLimit" value="256000" />
@@ -52,6 +52,7 @@
 
 		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on">
 			<include name="net/makimono/model/**.java" />
+			<include name="net/makimono/searcher/Fields.java" />
 		</javac>
 
 		<javac srcdir="${indexer.src.dir}" destdir="${build.dir}" debug="on">

@@ -1,4 +1,5 @@
 package net.makimono.indexer;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,21 +16,22 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
-
 import net.makimono.model.Dialect;
 import net.makimono.model.FieldOfApplication;
 import net.makimono.model.Language;
 import net.makimono.model.Miscellaneous;
 import net.makimono.model.PartOfSpeech;
+import net.makimono.searcher.Fields;
 
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.SimpleAnalyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.index.FieldInvertState;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.search.DefaultSimilarity;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
@@ -60,122 +62,124 @@ public class Indexer {
 		new Indexer().startIndexing(jmdictFile, new File(args[1]));
 	}
 
-	private static final Map<String, String> JMDICT_ENTITY_REFERENCES = new HashMap<String, String>();
+	@SuppressWarnings("serial")
+	private static final Map<String, String> JMDICT_ENTITY_REFERENCES = new HashMap<String, String>() {
+		{
 
-	static {
-		JMDICT_ENTITY_REFERENCES.put("martial arts term", "MA");
-		JMDICT_ENTITY_REFERENCES.put("rude or X-rated term (not displayed in educational software)", "X");
-		JMDICT_ENTITY_REFERENCES.put("abbreviation", "abbr");
-		JMDICT_ENTITY_REFERENCES.put("adjective (keiyoushi)", "adj-i");
-		JMDICT_ENTITY_REFERENCES.put("adjectival nouns or quasi-adjectives (keiyodoshi)", "adj-na");
-		JMDICT_ENTITY_REFERENCES.put("nouns which may take the genitive case particle `no'", "adj-no");
-		JMDICT_ENTITY_REFERENCES.put("pre-noun adjectival (rentaishi)", "adj-pn");
-		JMDICT_ENTITY_REFERENCES.put("`taru' adjective", "adj-t");
-		JMDICT_ENTITY_REFERENCES.put("noun or verb acting prenominally", "adj-f");
-		JMDICT_ENTITY_REFERENCES.put("former adjective classification (being removed)", "adj");
-		JMDICT_ENTITY_REFERENCES.put("adverb (fukushi)", "adv");
-		JMDICT_ENTITY_REFERENCES.put("adverb taking the `to' particle", "adv-to");
-		JMDICT_ENTITY_REFERENCES.put("archaism", "arch");
-		JMDICT_ENTITY_REFERENCES.put("ateji (phonetic) reading", "ateji");
-		JMDICT_ENTITY_REFERENCES.put("auxiliary", "aux");
-		JMDICT_ENTITY_REFERENCES.put("auxiliary verb", "aux-v");
-		JMDICT_ENTITY_REFERENCES.put("auxiliary adjective", "aux-adj");
-		JMDICT_ENTITY_REFERENCES.put("Buddhist term", "Buddh");
-		JMDICT_ENTITY_REFERENCES.put("chemistry term", "chem");
-		JMDICT_ENTITY_REFERENCES.put("children's language", "chn");
-		JMDICT_ENTITY_REFERENCES.put("colloquialism", "col");
-		JMDICT_ENTITY_REFERENCES.put("computer terminology", "comp");
-		JMDICT_ENTITY_REFERENCES.put("conjunction", "conj");
-		JMDICT_ENTITY_REFERENCES.put("counter", "ctr");
-		JMDICT_ENTITY_REFERENCES.put("derogatory", "derog");
-		JMDICT_ENTITY_REFERENCES.put("exclusively kanji", "eK");
-		JMDICT_ENTITY_REFERENCES.put("exclusively kana", "ek");
-		JMDICT_ENTITY_REFERENCES.put("Expressions (phrases, clauses, etc.)", "exp");
-		JMDICT_ENTITY_REFERENCES.put("familiar language", "fam");
-		JMDICT_ENTITY_REFERENCES.put("female term or language", "fem");
-		JMDICT_ENTITY_REFERENCES.put("food term", "food");
-		JMDICT_ENTITY_REFERENCES.put("geometry term", "geom");
-		JMDICT_ENTITY_REFERENCES.put("gikun (meaning as reading)  or jukujikun (special kanji reading)", "gikun");
-		JMDICT_ENTITY_REFERENCES.put("honorific or respectful (sonkeigo) language", "hon");
-		JMDICT_ENTITY_REFERENCES.put("humble (kenjougo) language", "hum");
-		JMDICT_ENTITY_REFERENCES.put("word containing irregular kanji usage", "iK");
-		JMDICT_ENTITY_REFERENCES.put("idiomatic expression", "id");
-		JMDICT_ENTITY_REFERENCES.put("word containing irregular kana usage", "ik");
-		JMDICT_ENTITY_REFERENCES.put("interjection (kandoushi)", "int");
-		JMDICT_ENTITY_REFERENCES.put("irregular okurigana usage", "io");
-		JMDICT_ENTITY_REFERENCES.put("irregular verb", "iv");
-		JMDICT_ENTITY_REFERENCES.put("linguistics terminology", "ling");
-		JMDICT_ENTITY_REFERENCES.put("manga slang", "m-sl");
-		JMDICT_ENTITY_REFERENCES.put("male term or language", "male");
-		JMDICT_ENTITY_REFERENCES.put("male slang", "male-sl");
-		JMDICT_ENTITY_REFERENCES.put("mathematics", "math");
-		JMDICT_ENTITY_REFERENCES.put("military", "mil");
-		JMDICT_ENTITY_REFERENCES.put("noun (common) (futsuumeishi)", "n");
-		JMDICT_ENTITY_REFERENCES.put("adverbial noun (fukushitekimeishi)", "n-adv");
-		JMDICT_ENTITY_REFERENCES.put("noun, used as a suffix", "n-suf");
-		JMDICT_ENTITY_REFERENCES.put("noun, used as a prefix", "n-pref");
-		JMDICT_ENTITY_REFERENCES.put("noun (temporal) (jisoumeishi)", "n-t");
-		JMDICT_ENTITY_REFERENCES.put("numeric", "num");
-		JMDICT_ENTITY_REFERENCES.put("word containing out-dated kanji", "oK");
-		JMDICT_ENTITY_REFERENCES.put("obsolete term", "obs");
-		JMDICT_ENTITY_REFERENCES.put("obscure term", "obsc");
-		JMDICT_ENTITY_REFERENCES.put("out-dated or obsolete kana usage", "ok");
-		JMDICT_ENTITY_REFERENCES.put("onomatopoeic or mimetic word", "on-mim");
-		JMDICT_ENTITY_REFERENCES.put("pronoun", "pn");
-		JMDICT_ENTITY_REFERENCES.put("poetical term", "poet");
-		JMDICT_ENTITY_REFERENCES.put("polite (teineigo) language", "pol");
-		JMDICT_ENTITY_REFERENCES.put("prefix", "pref");
-		JMDICT_ENTITY_REFERENCES.put("proverb", "proverb");
-		JMDICT_ENTITY_REFERENCES.put("particle", "prt");
-		JMDICT_ENTITY_REFERENCES.put("physics terminology", "physics");
-		JMDICT_ENTITY_REFERENCES.put("rare", "rare");
-		JMDICT_ENTITY_REFERENCES.put("sensitive", "sens");
-		JMDICT_ENTITY_REFERENCES.put("slang", "sl");
-		JMDICT_ENTITY_REFERENCES.put("suffix", "suf");
-		JMDICT_ENTITY_REFERENCES.put("word usually written using kanji alone", "uK");
-		JMDICT_ENTITY_REFERENCES.put("word usually written using kana alone", "uk");
-		JMDICT_ENTITY_REFERENCES.put("Ichidan verb", "v1");
-		JMDICT_ENTITY_REFERENCES.put("Nidan verb with 'u' ending (archaic)", "v2a-s");
-		JMDICT_ENTITY_REFERENCES.put("Yondan verb with `hu/fu' ending (archaic)", "v4h");
-		JMDICT_ENTITY_REFERENCES.put("Yondan verb with `ru' ending (archaic)", "v4r");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb (not completely classified)", "v5");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb - -aru special class", "v5aru");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb with `bu' ending", "v5b");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb with `gu' ending", "v5g");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb with `ku' ending", "v5k");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb - Iku/Yuku special class", "v5k-s");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb with `mu' ending", "v5m");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb with `nu' ending", "v5n");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb with `ru' ending", "v5r");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb with `ru' ending (irregular verb)", "v5r-i");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb with `su' ending", "v5s");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb with `tsu' ending", "v5t");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb with `u' ending", "v5u");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb with `u' ending (special class)", "v5u-s");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb - Uru old class verb (old form of Eru)", "v5uru");
-		JMDICT_ENTITY_REFERENCES.put("Godan verb with `zu' ending", "v5z");
-		JMDICT_ENTITY_REFERENCES.put("Ichidan verb - zuru verb (alternative form of -jiru verbs)", "vz");
-		JMDICT_ENTITY_REFERENCES.put("intransitive verb", "vi");
-		JMDICT_ENTITY_REFERENCES.put("Kuru verb - special class", "vk");
-		JMDICT_ENTITY_REFERENCES.put("irregular nu verb", "vn");
-		JMDICT_ENTITY_REFERENCES.put("irregular ru verb, plain form ends with -ri", "vr");
-		JMDICT_ENTITY_REFERENCES.put("noun or participle which takes the aux. verb suru", "vs");
-		JMDICT_ENTITY_REFERENCES.put("su verb - precursor to the modern suru", "vs-c");
-		JMDICT_ENTITY_REFERENCES.put("suru verb - special class", "vs-s");
-		JMDICT_ENTITY_REFERENCES.put("suru verb - irregular", "vs-i");
-		JMDICT_ENTITY_REFERENCES.put("Kyoto-ben", "kyb");
-		JMDICT_ENTITY_REFERENCES.put("Osaka-ben", "osb");
-		JMDICT_ENTITY_REFERENCES.put("Kansai-ben", "ksb");
-		JMDICT_ENTITY_REFERENCES.put("Kantou-ben", "ktb");
-		JMDICT_ENTITY_REFERENCES.put("Tosa-ben", "tsb");
-		JMDICT_ENTITY_REFERENCES.put("Touhoku-ben", "thb");
-		JMDICT_ENTITY_REFERENCES.put("Tsugaru-ben", "tsug");
-		JMDICT_ENTITY_REFERENCES.put("Kyuushuu-ben", "kyu");
-		JMDICT_ENTITY_REFERENCES.put("Ryuukyuu-ben", "rkb");
-		JMDICT_ENTITY_REFERENCES.put("Nagano-ben", "nab");
-		JMDICT_ENTITY_REFERENCES.put("transitive verb", "vt");
-		JMDICT_ENTITY_REFERENCES.put("vulgar expression or word", "vulg");
-	}
+			put("martial arts term", "MA");
+			put("rude or X-rated term (not displayed in educational software)", "X");
+			put("abbreviation", "abbr");
+			put("adjective (keiyoushi)", "adj-i");
+			put("adjectival nouns or quasi-adjectives (keiyodoshi)", "adj-na");
+			put("nouns which may take the genitive case particle `no'", "adj-no");
+			put("pre-noun adjectival (rentaishi)", "adj-pn");
+			put("`taru' adjective", "adj-t");
+			put("noun or verb acting prenominally", "adj-f");
+			put("former adjective classification (being removed)", "adj");
+			put("adverb (fukushi)", "adv");
+			put("adverb taking the `to' particle", "adv-to");
+			put("archaism", "arch");
+			put("ateji (phonetic) reading", "ateji");
+			put("auxiliary", "aux");
+			put("auxiliary verb", "aux-v");
+			put("auxiliary adjective", "aux-adj");
+			put("Buddhist term", "Buddh");
+			put("chemistry term", "chem");
+			put("children's language", "chn");
+			put("colloquialism", "col");
+			put("computer terminology", "comp");
+			put("conjunction", "conj");
+			put("counter", "ctr");
+			put("derogatory", "derog");
+			put("exclusively kanji", "eK");
+			put("exclusively kana", "ek");
+			put("Expressions (phrases, clauses, etc.)", "exp");
+			put("familiar language", "fam");
+			put("female term or language", "fem");
+			put("food term", "food");
+			put("geometry term", "geom");
+			put("gikun (meaning as reading)  or jukujikun (special kanji reading)", "gikun");
+			put("honorific or respectful (sonkeigo) language", "hon");
+			put("humble (kenjougo) language", "hum");
+			put("word containing irregular kanji usage", "iK");
+			put("idiomatic expression", "id");
+			put("word containing irregular kana usage", "ik");
+			put("interjection (kandoushi)", "int");
+			put("irregular okurigana usage", "io");
+			put("irregular verb", "iv");
+			put("linguistics terminology", "ling");
+			put("manga slang", "m-sl");
+			put("male term or language", "male");
+			put("male slang", "male-sl");
+			put("mathematics", "math");
+			put("military", "mil");
+			put("noun (common) (futsuumeishi)", "n");
+			put("adverbial noun (fukushitekimeishi)", "n-adv");
+			put("noun, used as a suffix", "n-suf");
+			put("noun, used as a prefix", "n-pref");
+			put("noun (temporal) (jisoumeishi)", "n-t");
+			put("numeric", "num");
+			put("word containing out-dated kanji", "oK");
+			put("obsolete term", "obs");
+			put("obscure term", "obsc");
+			put("out-dated or obsolete kana usage", "ok");
+			put("onomatopoeic or mimetic word", "on-mim");
+			put("pronoun", "pn");
+			put("poetical term", "poet");
+			put("polite (teineigo) language", "pol");
+			put("prefix", "pref");
+			put("proverb", "proverb");
+			put("particle", "prt");
+			put("physics terminology", "physics");
+			put("rare", "rare");
+			put("sensitive", "sens");
+			put("slang", "sl");
+			put("suffix", "suf");
+			put("word usually written using kanji alone", "uK");
+			put("word usually written using kana alone", "uk");
+			put("Ichidan verb", "v1");
+			put("Nidan verb with 'u' ending (archaic)", "v2a-s");
+			put("Yondan verb with `hu/fu' ending (archaic)", "v4h");
+			put("Yondan verb with `ru' ending (archaic)", "v4r");
+			put("Godan verb (not completely classified)", "v5");
+			put("Godan verb - -aru special class", "v5aru");
+			put("Godan verb with `bu' ending", "v5b");
+			put("Godan verb with `gu' ending", "v5g");
+			put("Godan verb with `ku' ending", "v5k");
+			put("Godan verb - Iku/Yuku special class", "v5k-s");
+			put("Godan verb with `mu' ending", "v5m");
+			put("Godan verb with `nu' ending", "v5n");
+			put("Godan verb with `ru' ending", "v5r");
+			put("Godan verb with `ru' ending (irregular verb)", "v5r-i");
+			put("Godan verb with `su' ending", "v5s");
+			put("Godan verb with `tsu' ending", "v5t");
+			put("Godan verb with `u' ending", "v5u");
+			put("Godan verb with `u' ending (special class)", "v5u-s");
+			put("Godan verb - Uru old class verb (old form of Eru)", "v5uru");
+			put("Godan verb with `zu' ending", "v5z");
+			put("Ichidan verb - zuru verb (alternative form of -jiru verbs)", "vz");
+			put("intransitive verb", "vi");
+			put("Kuru verb - special class", "vk");
+			put("irregular nu verb", "vn");
+			put("irregular ru verb, plain form ends with -ri", "vr");
+			put("noun or participle which takes the aux. verb suru", "vs");
+			put("su verb - precursor to the modern suru", "vs-c");
+			put("suru verb - special class", "vs-s");
+			put("suru verb - irregular", "vs-i");
+			put("Kyoto-ben", "kyb");
+			put("Osaka-ben", "osb");
+			put("Kansai-ben", "ksb");
+			put("Kantou-ben", "ktb");
+			put("Tosa-ben", "tsb");
+			put("Touhoku-ben", "thb");
+			put("Tsugaru-ben", "tsug");
+			put("Kyuushuu-ben", "kyu");
+			put("Ryuukyuu-ben", "rkb");
+			put("Nagano-ben", "nab");
+			put("transitive verb", "vt");
+			put("vulgar expression or word", "vulg");
+		}
+	};
 
 	private void startIndexing(File jmdictFile, File indexDirectory) throws Exception {
 		System.out.println("Parsing JMdict");
@@ -191,7 +195,14 @@ public class Indexer {
 		System.out.println("Finished parsing JMdict");
 
 		Directory directory = new SimpleFSDirectory(indexDirectory);
-		IndexWriter indexWriter = new IndexWriter(directory, new IndexWriterConfig(Version.LUCENE_35, getAnalyzer()));
+		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35));
+		config.setSimilarity(new DefaultSimilarity() {
+			@Override
+			public float computeNorm(String field, FieldInvertState state) {
+				return state.getBoost();
+			}
+		});
+		IndexWriter indexWriter = new IndexWriter(directory, config);
 
 		final int size = jmdict.getEntry().size();
 		int processedCount = 0;
@@ -203,12 +214,12 @@ public class Indexer {
 			Document document = new Document();
 
 			for (KEle kanjiElement : entry.getKEle()) {
-				Field expression = new Field("expression", kanjiElement.getKeb(), Store.NO, Index.ANALYZED);
+				Field expression = new Field(Fields.EXPRESSION.name(), kanjiElement.getKeb(), Store.NO, Index.NOT_ANALYZED);
 				document.add(expression);
 			}
 
 			for (REle readingElement : entry.getREle()) {
-				Field reading = new Field("reading", readingElement.getReb(), Store.NO, Index.ANALYZED);
+				Field reading = new Field(Fields.READING.name(), readingElement.getReb(), Store.NO, Index.NOT_ANALYZED);
 				document.add(reading);
 			}
 
@@ -218,18 +229,19 @@ public class Indexer {
 					gloss.setvalue(glossValue);
 
 					glossValue = glossValue.replaceAll("\\(.*\\)", "");
+					glossValue = glossValue.toLowerCase();
 
-					String lang = gloss.getXmlLang();
+					String lang = gloss.getXmlLang().toUpperCase();
 					languageCount.put(lang, (languageCount.get(lang) == null ? 0 : languageCount.get(lang)) + 1);
-					document.add(new Field("sense-" + lang, glossValue, Store.NO, Index.ANALYZED));
+
+					document.add(new Field("SENSE_" + lang, glossValue, Store.NO, Index.NOT_ANALYZED));
+					document.add(new Field("SENSE_ANALYZED_" + lang, glossValue, Store.NO, Index.ANALYZED));
 				}
 			}
 
 			byte[] compressByteArray = getSerializedEntry(transformEntry(entry));
 			document.add(new Field("entry", compressByteArray));
-
-			document.setBoost(getBoostForEntry(entry));
-
+			document.setBoost((float) getBoostForEntry(entry));
 			indexWriter.addDocument(document);
 
 			processedCount++;
@@ -250,10 +262,6 @@ public class Indexer {
 		System.out.println("Index closed");
 	}
 
-	private Analyzer getAnalyzer() {
-		return new SimpleAnalyzer(Version.LUCENE_35);
-	}
-
 	private byte[] getSerializedEntry(net.makimono.model.Entry entry) throws IOException {
 		ByteArrayOutputStream serializedBinary = new ByteArrayOutputStream();
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(serializedBinary);
@@ -267,16 +275,16 @@ public class Indexer {
 		return value.replace("(n) ", "");
 	}
 
-	private float getBoostForEntry(Entry entry) {
-		float boost = 1.0f;
+	float getBoostForEntry(Entry entry) {
+		float boost = 1f;
 		for (KEle element : entry.getKEle()) {
 			for (KePri priority : element.getKePri()) {
-				boost = boost * getBoost(priority.getvalue());
+				boost = Math.max(boost, getBoost(priority.getvalue()));
 			}
 		}
 		for (REle element : entry.getREle()) {
 			for (RePri priority : element.getRePri()) {
-				boost = boost * getBoost(priority.getvalue());
+				boost = Math.max(boost, getBoost(priority.getvalue()));
 			}
 		}
 		return boost;
@@ -319,31 +327,16 @@ public class Indexer {
 	 * 
 	 * @return
 	 */
-	private float getBoost(String priority) {
-		int value = 1; // Between 1 and 100
-		if (priority.equalsIgnoreCase("gai1")) {
-			value = 20;
-		} else if (priority.equalsIgnoreCase("gai2")) {
-			value = 40;
-		} else if (priority.equalsIgnoreCase("ichi1")) {
-			value = 100;
-		} else if (priority.equalsIgnoreCase("ichi2")) {
-			value = 80;
-		} else if (priority.equalsIgnoreCase("news1")) {
-			value = 90;
-		} else if (priority.equalsIgnoreCase("news2")) {
-			value = 70;
-		} else if (priority.equalsIgnoreCase("spec1")) {
-			value = 90;
-		} else if (priority.equalsIgnoreCase("spec2")) {
-			value = 70;
-		} else if (priority.toLowerCase().startsWith("nf")) {
-			value = 101 - Math.max(0, Integer.parseInt(priority.substring(2)));
-		} else {
-			System.err.println("Failed to get boos for '" + priority + "'");
+	float getBoost(String priority) {
+		if (priority.equalsIgnoreCase("ichi1") || priority.equalsIgnoreCase("spec1")) {
+			return 100;
 		}
-		float boost = 10000.0f / 100 * value;
-		return boost;
+		if (priority.equalsIgnoreCase("ichi2") || priority.equalsIgnoreCase("spec2")) {
+			return 75;
+		} else if (priority.toLowerCase().startsWith("nf")) {
+			return (51 - Integer.parseInt(priority.substring(2))) + 62.5f;
+		}
+		return -1;
 	}
 
 	private net.makimono.model.Entry transformEntry(Entry jmdictEntry) throws Exception {

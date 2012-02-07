@@ -18,15 +18,15 @@ import org.apache.lucene.queryParser.QueryParser.Operator;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
-import org.apache.lucene.search.TopScoreDocCollector;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 
 public class Searcher implements Closeable {
-	private static final int MAX_SIZE = 100;
-	private static final String[] FIELDS = new String[] { "expression", "reading", "sense-en", "sense-de", "sense-ru", "sense-fr" };
+	private static final int MAX_SIZE = 20;
 
-	private QueryParser queryParser;
+	private QueryParser queryParserNotAnalyzed;
+	private QueryParser queryParserAnalyzed;
 	private Directory directory;
 	private IndexSearcher indexSearcher;
 
@@ -41,12 +41,20 @@ public class Searcher implements Closeable {
 		return indexSearcher;
 	}
 
-	private QueryParser getQueryParser() {
-		if (queryParser == null) {
-			queryParser = new MultiFieldQueryParser(Version.LUCENE_35, FIELDS, new SimpleAnalyzer(Version.LUCENE_35));
-			queryParser.setDefaultOperator(Operator.AND);
+	private QueryParser getQueryParserAnalyzed() {
+		if (queryParserAnalyzed == null) {
+			queryParserAnalyzed = new MultiFieldQueryParser(Version.LUCENE_35, Fields.ALL_ANALYZED_FIELDS, new SimpleAnalyzer(Version.LUCENE_35));
+			queryParserAnalyzed.setDefaultOperator(Operator.AND);
 		}
-		return queryParser;
+		return queryParserAnalyzed;
+	}
+
+	private QueryParser getQueryParserNotAnalyzed() {
+		if (queryParserNotAnalyzed == null) {
+			queryParserNotAnalyzed = new MultiFieldQueryParser(Version.LUCENE_35, Fields.ALL_NOT_ANALYZED_FIELDS, new SimpleAnalyzer(Version.LUCENE_35));
+			queryParserNotAnalyzed.setDefaultOperator(Operator.AND);
+		}
+		return queryParserNotAnalyzed;
 	}
 
 	public ArrayList<Entry> search(String queryString) throws IOException, ParseException {
@@ -54,24 +62,34 @@ public class Searcher implements Closeable {
 			return new ArrayList<Entry>(0);
 		}
 
-		Query query = getQueryParser().parse(queryString);
-
-		TopScoreDocCollector collector = TopScoreDocCollector.create(MAX_SIZE, true);
-		IndexSearcher searcher = getIndexSearcher();
-		searcher.search(query, collector);
-		ScoreDoc[] hits = collector.topDocs().scoreDocs;
-
 		ArrayList<Entry> entries = new ArrayList<Entry>();
-		for (int i = 0; i < hits.length; ++i) {
-			Entry entry = getByDocId(hits[i].doc);
-			entries.add(entry);
-		}
+		searchTopDocs(entries, getQueryParserNotAnalyzed().parse(queryString));
+		searchTopDocs(entries, getQueryParserAnalyzed().parse(queryString));
 
 		return entries;
 	}
 
+	private void searchTopDocs(ArrayList<Entry> entries, Query query) throws IOException {
+		int limitCount = MAX_SIZE - entries.size();
+		if (limitCount <= 0) {
+			return;
+		}
+
+		IndexSearcher searcher = getIndexSearcher();
+		TopDocs topDocs = searcher.search(query, limitCount);
+		for (ScoreDoc d : topDocs.scoreDocs) {
+			Entry entry = getByDocId(d.doc);
+			if (!entries.contains(entry)) {
+				entries.add(entry);
+			}
+			if (entries.size() >= MAX_SIZE) {
+				return;
+			}
+		}
+	}
+
 	public void close() throws IOException {
-		queryParser = null;
+		queryParserNotAnalyzed = null;
 
 		IOException exception = null;
 		if (indexSearcher != null) {
