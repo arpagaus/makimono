@@ -2,9 +2,11 @@ package net.makimono.activity;
 
 import net.makimono.R;
 import net.makimono.adapter.SearchResultAdapter;
+import net.makimono.content.SearchSuggestionProvider;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +15,8 @@ import android.widget.ListView;
 
 public class SearchActivity extends AbstractDefaultActivity implements OnItemClickListener {
 	private static final String CLASS_NAME = SearchActivity.class.getName();
+
+	private SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
 
 	private SearchResultAdapter resultAdapter;
 	private ListView listView;
@@ -41,6 +45,8 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 		setIntent(intent);
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
+			suggestions.saveRecentQuery(query, null);
+
 			try {
 				resultAdapter.search(query);
 			} catch (Exception e) {

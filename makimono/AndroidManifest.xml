@@ -38,6 +38,7 @@
         <meta-data
             android:name="android.app.default_searchable"
             android:value=".activity.SearchActivity" />
+        <provider android:name=".content.SearchSuggestionProvider" android:authorities="net.makimono.content.SearchSuggestionProvider"></provider>
     </application>
 
 </manifest>
