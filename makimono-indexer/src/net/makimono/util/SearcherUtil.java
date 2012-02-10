@@ -1,13 +1,10 @@
 package net.makimono.util;
+
 import java.io.File;
 import java.util.List;
 
-
 import net.makimono.model.Entry;
 import net.makimono.searcher.Searcher;
-
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.SimpleFSDirectory;
 
 /**
  * <p>
@@ -27,12 +24,11 @@ public class SearcherUtil {
 			System.exit(1);
 		}
 
-		Directory directory = new SimpleFSDirectory(new File(args[0]));
 		String query = args[1];
 		System.out.println("Searching for '" + query + "'");
 
 		long time = System.currentTimeMillis();
-		List<Entry> entries = new Searcher(directory).search(query);
+		List<Entry> entries = new Searcher(new File(args[0])).search(query);
 
 		for (Entry entry : entries) {
 			System.out.println(entry);

@@ -2,9 +2,12 @@ package net.makimono.searcher;
 
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import net.makimono.model.Entry;
 
@@ -19,7 +22,11 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
+import org.apache.lucene.search.suggest.Lookup;
+import org.apache.lucene.search.suggest.Lookup.LookupResult;
+import org.apache.lucene.search.suggest.fst.FSTLookup;
 import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
 
 public class Searcher implements Closeable {
@@ -27,16 +34,28 @@ public class Searcher implements Closeable {
 
 	private QueryParser queryParserNotAnalyzed;
 	private QueryParser queryParserAnalyzed;
-	private Directory directory;
+	private Directory dictionaryDirectory;
 	private IndexSearcher indexSearcher;
 
-	public Searcher(Directory directory) {
-		this.directory = directory;
+	private Lookup lookup;
+
+	public Searcher(File dictionaryPath) throws IOException {
+		this.dictionaryDirectory = new SimpleFSDirectory(dictionaryPath);
+	}
+
+	private Lookup getLookup() throws IOException {
+		if (lookup == null) {
+			lookup = new FSTLookup();
+			DictionaryTermFreqIterator iterator = new DictionaryTermFreqIterator(getIndexSearcher().getIndexReader().terms());
+			iterator.setIncludedFields(Arrays.asList(Fields.ALL_NOT_ANALYZED_FIELDS));
+			lookup.build(iterator);
+		}
+		return lookup;
 	}
 
 	private IndexSearcher getIndexSearcher() throws IOException {
 		if (indexSearcher == null) {
-			indexSearcher = new IndexSearcher(IndexReader.open(directory, true));
+			indexSearcher = new IndexSearcher(IndexReader.open(dictionaryDirectory, true));
 		}
 		return indexSearcher;
 	}
@@ -108,9 +127,9 @@ public class Searcher implements Closeable {
 				indexSearcher = null;
 			}
 		}
-		if (directory != null) {
+		if (dictionaryDirectory != null) {
 			try {
-				directory.close();
+				dictionaryDirectory.close();
 			} catch (IOException e) {
 				if (exception == null) {
 					exception = e;
@@ -135,5 +154,19 @@ public class Searcher implements Closeable {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
+	}
+
+	public ArrayList<String> suggest(String input) throws IOException {
+		if (input == null || input.length() == 0) {
+			return new ArrayList<String>(0);
+		}
+
+		List<LookupResult> results = getLookup().lookup(input, false, 100);
+		ArrayList<String> suggestions = new ArrayList<String>(results.size());
+		for (LookupResult r : results) {
+			suggestions.add(r.key);
+			System.out.println(r);
+		}
+		return suggestions;
 	}
 }

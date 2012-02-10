@@ -12,9 +12,6 @@ import net.makimono.model.Entry;
 import net.makimono.model.Language;
 import net.makimono.model.Sense;
 import net.makimono.searcher.Searcher;
-
-import org.apache.lucene.store.SimpleFSDirectory;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -156,7 +153,7 @@ public class EntryActivity extends AbstractDefaultActivity {
 				String storageState = Environment.getExternalStorageState();
 				if (Environment.MEDIA_MOUNTED.equals(storageState) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(storageState)) {
 					File directory = new File(Environment.getExternalStorageDirectory(), "makimono/indexes/dictionary/");
-					searcher = new Searcher(new SimpleFSDirectory(directory));
+					searcher = new Searcher(directory);
 					Entry entry = searcher.getByDocId(intent.getExtras().getInt("DOC_ID"));
 					updateView(entry);
 				}

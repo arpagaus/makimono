@@ -2,6 +2,8 @@
 <project name="Indexer" default="create-index" basedir=".">
 
 	<property name="jdk.dir" location="/usr/lib/jvm/java-6-openjdk/" />
+	
+	<property name="lib.dir" location="../makimono/lib" />
 
 	<property name="build.dir" location="${java.io.tmpdir}/indexer" />
 	<property name="dist.dir" location="dist" />
@@ -12,7 +14,7 @@
 	<property name="indexer.gen.dir" location="gen" />
 
 	<property name="resources" location="res" />
-	<property name="index.dir" location="${resources}/index/" />
+	<property name="dictionary.index.dir" location="${resources}/indexes/dictionary" />
 
 	<property name="jmdict.file" location="${resources}/JMdict.gz" />
 	<property name="jmdict.url" value="ftp://ftp.monash.edu.au/pub/nihongo/JMdict.gz" />
@@ -21,14 +23,14 @@
 	<property name="jmdict.dtd.url" value="http://www.csse.monash.edu.au/~jwb/jmdict_dtd_v107" />
 
 	<target name="create-index" depends="build-jmdict-indexer,download-jmdict-file">
-		<delete dir="${index.dir}" />
+		<delete dir="${dictionary.index.dir}" />
 		<java classname="net.makimono.indexer.Indexer" fork="true">
 			<jvmarg value="-Xmx512m" />
 			<arg value="${jmdict.file}" />
-			<arg value="${index.dir}" />
+			<arg value="${dictionary.index.dir}" />
 			<sysproperty key="entityExpansionLimit" value="256000" />
 			<classpath>
-				<fileset dir="lib">
+				<fileset dir="${lib.dir}">
 					<include name="*.jar" />
 				</fileset>
 				<fileset dir="${dist.dir}">
@@ -58,7 +60,7 @@
 		<javac srcdir="${indexer.src.dir}" destdir="${build.dir}" debug="on">
 			<include name="net/makimono/indexer/**.java" />
 			<classpath>
-				<fileset dir="lib">
+				<fileset dir="${lib.dir}">
 					<include name="*.jar" />
 				</fileset>
 				<fileset dir="${dist.dir}">

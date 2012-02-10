@@ -50,8 +50,8 @@ import au.edu.monash.csse.jmdict.model.Sense;
 public class Indexer {
 
 	public static void main(String[] args) throws Exception {
-		if (args.length != 2) {
-			System.err.println("Usage: Indexer [path to JMdict.gz file] [path to index destination]");
+		if (args.length < 2) {
+			System.err.println("Usage: Indexer [path to JMdict.gz file] [path to dictionary index destination]");
 			System.exit(1);
 		}
 
@@ -61,7 +61,9 @@ public class Indexer {
 			System.exit(1);
 		}
 
-		new Indexer().startIndexing(jmdictFile, new File(args[1]));
+		Indexer indexer = new Indexer();
+		SimpleFSDirectory dictionaryDirectory = new SimpleFSDirectory(new File(args[1]));
+		indexer.createDictionaryIndex(jmdictFile, dictionaryDirectory);
 	}
 
 	private static final Map<String, String> JMDICT_ENTITY_REFERENCES = new HashMap<String, String>();
@@ -80,7 +82,7 @@ public class Indexer {
 	}
 
 	@SuppressWarnings("serial")
-	private void startIndexing(File jmdictFile, File indexDirectory) throws Exception {
+	private void createDictionaryIndex(File jmdictFile, Directory directory) throws Exception {
 		System.out.println("Parsing JMdict");
 
 		GZIPInputStream inputStream = new GZIPInputStream(new FileInputStream(jmdictFile));
@@ -93,7 +95,6 @@ public class Indexer {
 
 		System.out.println("Finished parsing JMdict");
 
-		Directory directory = new SimpleFSDirectory(indexDirectory);
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35));
 		config.setSimilarity(new DefaultSimilarity() {
 			@Override

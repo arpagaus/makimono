@@ -11,7 +11,6 @@ import net.makimono.model.Sense;
 import net.makimono.searcher.Searcher;
 
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.store.SimpleFSDirectory;
 
 import android.content.Context;
 import android.os.Environment;
@@ -93,7 +92,7 @@ public class SearchResultAdapter extends BaseAdapter {
 		String storageState = Environment.getExternalStorageState();
 		if (Environment.MEDIA_MOUNTED.equals(storageState) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(storageState)) {
 			File directory = new File(Environment.getExternalStorageDirectory(), "makimono/indexes/dictionary/");
-			Searcher searcher = new Searcher(new SimpleFSDirectory(directory));
+			Searcher searcher = new Searcher(directory);
 			entries = searcher.search(query);
 			searcher.close();
 			notifyDataSetChanged();
