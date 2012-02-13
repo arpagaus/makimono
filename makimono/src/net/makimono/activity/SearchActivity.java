@@ -1,10 +1,17 @@
 package net.makimono.activity;
 
+import java.util.ArrayList;
+
 import net.makimono.R;
 import net.makimono.adapter.SearchResultAdapter;
 import net.makimono.content.SearchSuggestionProvider;
+import net.makimono.model.Entry;
+import net.makimono.service.SearcherService;
+import net.makimono.service.SearcherServiceConnection;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
 import android.util.Log;
@@ -16,7 +23,8 @@ import android.widget.ListView;
 public class SearchActivity extends AbstractDefaultActivity implements OnItemClickListener {
 	private static final String CLASS_NAME = SearchActivity.class.getName();
 
-	private SearchRecentSuggestions suggestions = new SearchRecentSuggestions(this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+	private SearchRecentSuggestions recentSuggestions = new SearchRecentSuggestions(this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+	private SearcherServiceConnection connection = new SearcherServiceConnection();
 
 	private SearchResultAdapter resultAdapter;
 	private ListView listView;
@@ -24,15 +32,28 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.search_result);
+		bindSearcher();
+		initiazlizeView();
+		handleIntent(getIntent());
+	}
 
+	private void bindSearcher() {
+		Intent intent = new Intent(this, SearcherService.class);
+		bindService(intent, connection, Context.BIND_AUTO_CREATE);
+	}
+
+	private void initiazlizeView() {
+		setContentView(R.layout.search_result);
 		listView = (ListView) findViewById(android.R.id.list);
 		listView.setOnItemClickListener(this);
-
 		resultAdapter = new SearchResultAdapter(this);
 		listView.setAdapter(resultAdapter);
+	}
 
-		handleIntent(getIntent());
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbindService(connection);
 	}
 
 	@Override
@@ -45,13 +66,27 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 		setIntent(intent);
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
-			suggestions.saveRecentQuery(query, null);
 
-			try {
-				resultAdapter.search(query);
-			} catch (Exception e) {
-				Log.e(CLASS_NAME, "Failed to search", e);
-			}
+			AsyncTask<String, Void, ArrayList<Entry>> task = new AsyncTask<String, Void, ArrayList<Entry>>() {
+				protected ArrayList<Entry> doInBackground(String... queries) {
+					try {
+						String query = queries[0];
+						ArrayList<Entry> entries = connection.getSearcher().search(query);
+						if (!entries.isEmpty()) {
+							recentSuggestions.saveRecentQuery(query, null);
+						}
+						return entries;
+					} catch (Exception e) {
+						Log.e(CLASS_NAME, "Failed to search", e);
+						return null;
+					}
+				}
+
+				protected void onPostExecute(ArrayList<Entry> entries) {
+					resultAdapter.search(entries);
+				}
+			};
+			task.execute(query);
 		}
 	}
 

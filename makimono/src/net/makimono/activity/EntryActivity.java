@@ -1,6 +1,5 @@
 package net.makimono.activity;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,12 +10,15 @@ import net.makimono.R;
 import net.makimono.model.Entry;
 import net.makimono.model.Language;
 import net.makimono.model.Sense;
-import net.makimono.searcher.Searcher;
+import net.makimono.service.SearcherService;
+import net.makimono.service.SearcherServiceConnection;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -28,6 +30,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher.ViewFactory;
 
 public class EntryActivity extends AbstractDefaultActivity {
+	private static final String LOG_TAG = EntryActivity.class.getSimpleName();
 
 	@SuppressWarnings("serial")
 	private static final Map<Language, Integer> LANGUAGE_ICONS = new HashMap<Language, Integer>() {
@@ -39,7 +42,10 @@ public class EntryActivity extends AbstractDefaultActivity {
 		}
 	};
 
+	private SearcherServiceConnection connection = new SearcherServiceConnection();
+
 	private Entry entry;
+
 	private AtomicInteger currentExpressionIndex = new AtomicInteger();
 	private AtomicInteger currentReadingIndex = new AtomicInteger();
 
@@ -54,15 +60,29 @@ public class EntryActivity extends AbstractDefaultActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		bindSearcher();
+		initializeView();
+		handleIntent(getIntent());
+	}
 
+	private void bindSearcher() {
+		Intent intent = new Intent(this, SearcherService.class);
+		bindService(intent, connection, Context.BIND_AUTO_CREATE);
+	}
+
+	private void initializeView() {
 		setContentView(R.layout.dictionary_entry);
 		expressionTextSwitcher = createExpressionTextSwitcher();
 		expressionAlternativeIndTextView = createExpressionAlternativeIndTextView();
 		readingTextSwitcher = createReadingTextSwitcher();
 		readingAlternativeIndTextView = createReadingAlternativeIndTextView();
 		translationsGroupView = (LinearLayout) findViewById(R.id.entry_translations);
+	}
 
-		handleIntent(getIntent());
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbindService(connection);
 	}
 
 	private TextView createReadingAlternativeIndTextView() {
@@ -148,26 +168,21 @@ public class EntryActivity extends AbstractDefaultActivity {
 
 	private void handleIntent(Intent intent) {
 		if (intent.hasExtra("DOC_ID")) {
-			Searcher searcher = null;
-			try {
-				String storageState = Environment.getExternalStorageState();
-				if (Environment.MEDIA_MOUNTED.equals(storageState) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(storageState)) {
-					File directory = new File(Environment.getExternalStorageDirectory(), "makimono/indexes/dictionary/");
-					searcher = new Searcher(directory);
-					Entry entry = searcher.getByDocId(intent.getExtras().getInt("DOC_ID"));
-					updateView(entry);
-				}
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			} finally {
-				if (searcher != null) {
+			AsyncTask<Integer, Void, Entry> task = new AsyncTask<Integer, Void, Entry>() {
+				protected Entry doInBackground(Integer... docIds) {
 					try {
-						searcher.close();
+						return connection.getSearcher().getByDocId(docIds[0]);
 					} catch (IOException e) {
-						throw new RuntimeException(e);
+						Log.e(LOG_TAG, "Failed to get dictionary entry", e);
+						return null;
 					}
 				}
-			}
+
+				protected void onPostExecute(Entry entry) {
+					updateView(entry);
+				}
+			};
+			task.execute(intent.getExtras().getInt("DOC_ID"));
 		}
 	}
 

@@ -1,19 +1,12 @@
 package net.makimono.adapter;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import net.makimono.R;
 import net.makimono.model.Entry;
 import net.makimono.model.Gloss;
 import net.makimono.model.Sense;
-import net.makimono.searcher.Searcher;
-
-import org.apache.lucene.queryParser.ParseException;
-
 import android.content.Context;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,15 +81,8 @@ public class SearchResultAdapter extends BaseAdapter {
 		return gloss.toString();
 	}
 
-	public void search(String query) throws IOException, ParseException {
-		String storageState = Environment.getExternalStorageState();
-		if (Environment.MEDIA_MOUNTED.equals(storageState) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(storageState)) {
-			File directory = new File(Environment.getExternalStorageDirectory(), "makimono/indexes/dictionary/");
-			Searcher searcher = new Searcher(directory);
-			entries = searcher.search(query);
-			searcher.close();
-			notifyDataSetChanged();
-		}
-
+	public void search(ArrayList<Entry> entries) {
+		this.entries = entries;
+		notifyDataSetChanged();
 	}
 }

@@ -22,7 +22,7 @@ public class Gloss {
 
 	@Override
 	public String toString() {
-		return "\n  language=" + language + ", value=\"" + value + "\"";
+		return value;
 	}
 
 	@Override

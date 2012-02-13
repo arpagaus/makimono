@@ -5,11 +5,12 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.lang.Character.UnicodeBlock;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.TreeSet;
 
 import net.makimono.model.Entry;
+import net.makimono.model.Sense;
 
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.document.Document;
@@ -22,9 +23,6 @@ import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.search.suggest.Lookup;
-import org.apache.lucene.search.suggest.Lookup.LookupResult;
-import org.apache.lucene.search.suggest.fst.FSTLookup;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
@@ -37,20 +35,8 @@ public class Searcher implements Closeable {
 	private Directory dictionaryDirectory;
 	private IndexSearcher indexSearcher;
 
-	private Lookup lookup;
-
 	public Searcher(File dictionaryPath) throws IOException {
 		this.dictionaryDirectory = new SimpleFSDirectory(dictionaryPath);
-	}
-
-	private Lookup getLookup() throws IOException {
-		if (lookup == null) {
-			lookup = new FSTLookup();
-			DictionaryTermFreqIterator iterator = new DictionaryTermFreqIterator(getIndexSearcher().getIndexReader().terms());
-			iterator.setIncludedFields(Arrays.asList(Fields.ALL_NOT_ANALYZED_FIELDS));
-			lookup.build(iterator);
-		}
-		return lookup;
 	}
 
 	private IndexSearcher getIndexSearcher() throws IOException {
@@ -156,17 +142,53 @@ public class Searcher implements Closeable {
 		}
 	}
 
-	public ArrayList<String> suggest(String input) throws IOException {
-		if (input == null || input.length() == 0) {
-			return new ArrayList<String>(0);
+	public TreeSet<String> suggest(String prefix) throws IOException {
+		if (isQualifiedForSuggestions(prefix)) {
+			try {
+				prefix = prefix.trim();
+				ArrayList<Entry> entries = search(prefix + "*");
+				return extractSuggestions(prefix, entries);
+			} catch (ParseException e) {
+				throw new RuntimeException(e);
+			}
 		}
+		return new TreeSet<String>();
+	}
 
-		List<LookupResult> results = getLookup().lookup(input, false, 100);
-		ArrayList<String> suggestions = new ArrayList<String>(results.size());
-		for (LookupResult r : results) {
-			suggestions.add(r.key);
-			System.out.println(r);
+	private TreeSet<String> extractSuggestions(String prefix, ArrayList<Entry> entries) {
+		TreeSet<String> suggestions = new TreeSet<String>();
+		for (Entry entry : entries) {
+			suggestions.addAll(getMatchingStrings(prefix, entry.getExpressions()));
+			suggestions.addAll(getMatchingStrings(prefix, entry.getReadings()));
+			for (Sense sense : entry.getSenses()) {
+				suggestions.addAll(getMatchingStrings(prefix, sense.getGlosses()));
+			}
 		}
 		return suggestions;
+	}
+
+	private TreeSet<String> getMatchingStrings(String prefix, ArrayList<? extends Object> list) {
+		TreeSet<String> set = new TreeSet<String>();
+		for (Object o : list) {
+			if (o.toString().toLowerCase().startsWith(prefix)) {
+				set.add(o.toString());
+			}
+		}
+		return set;
+	}
+
+	private boolean isQualifiedForSuggestions(String prefix) {
+		if (prefix == null || prefix.length() == 0) {
+			return false;
+		}
+
+		UnicodeBlock block = UnicodeBlock.of(prefix.charAt(0));
+		if (block == UnicodeBlock.HIRAGANA || block == UnicodeBlock.KATAKANA) {
+			return prefix.length() >= 2;
+		} else if (block == UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS) {
+			return prefix.length() >= 1;
+		} else {
+			return prefix.length() >= 3;
+		}
 	}
 }

@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
 import net.makimono.model.Dialect;
 import net.makimono.model.Entry;
@@ -156,47 +157,60 @@ public class SearcherTest {
 
 	@Test
 	public void suggestEmpty() throws Exception {
-		List<String> suggestions = searcher.suggest(null);
+		Set<String> suggestions = searcher.suggest(null);
 		assertTrue(suggestions.isEmpty());
 
 		suggestions = searcher.suggest("");
 		assertTrue(suggestions.isEmpty());
+	}
 
-		suggestions = searcher.suggest("AB");
+	@Test
+	public void suggestMinLength() throws Exception {
+		Set<String> suggestions = searcher.suggest("ho");
 		assertTrue(suggestions.isEmpty());
+		suggestions = searcher.suggest("hot");
+		assertFalse(suggestions.isEmpty());
+
+		suggestions = searcher.suggest("に");
+		assertTrue(suggestions.isEmpty());
+		suggestions = searcher.suggest("にほ");
+		assertFalse(suggestions.isEmpty());
+
+		suggestions = searcher.suggest("本");
+		assertFalse(suggestions.isEmpty());
 	}
 
 	@Test
 	public void suggestEnglish() throws Exception {
-		List<String> suggestions = searcher.suggest("motorboa");
+		Set<String> suggestions = searcher.suggest("motorboa");
 		assertEquals(1, suggestions.size());
 		assertEquals("motorboat", suggestions.iterator().next());
 	}
 
 	@Test
 	public void suggestRussian() throws Exception {
-		List<String> suggestions = searcher.suggest("горч");
+		Set<String> suggestions = searcher.suggest("горч");
 		assertEquals(1, suggestions.size());
 		assertEquals("горчица", suggestions.iterator().next());
 	}
 
 	@Test
 	public void suggestExpression() throws Exception {
-		List<String> suggestions = searcher.suggest("時差ぼ");
+		Set<String> suggestions = searcher.suggest("時差ぼ");
 		assertEquals(1, suggestions.size());
 		assertEquals("時差ぼけ", suggestions.iterator().next());
 	}
 
 	@Test
 	public void suggestHiragana() throws Exception {
-		List<String> suggestions = searcher.suggest("じさぼ");
+		Set<String> suggestions = searcher.suggest("じさぼ");
 		assertEquals(1, suggestions.size());
 		assertEquals("じさぼけ", suggestions.iterator().next());
 	}
 
 	@Test
 	public void suggestKatakana() throws Exception {
-		List<String> suggestions = searcher.suggest("アップルパ");
+		Set<String> suggestions = searcher.suggest("アップルパ");
 		assertEquals(1, suggestions.size());
 		assertEquals("アップルパイ", suggestions.iterator().next());
 	}
