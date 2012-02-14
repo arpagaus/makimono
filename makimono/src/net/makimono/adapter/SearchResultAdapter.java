@@ -81,7 +81,7 @@ public class SearchResultAdapter extends BaseAdapter {
 		return gloss.toString();
 	}
 
-	public void search(ArrayList<Entry> entries) {
+	public void updateEntries(ArrayList<Entry> entries) {
 		this.entries = entries;
 		notifyDataSetChanged();
 	}

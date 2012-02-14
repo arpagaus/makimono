@@ -387,6 +387,7 @@ containing a value of this type.
         public static final int entry_translations=0x7f050023;
         public static final int homeAsUp=0x7f050006;
         public static final int listMode=0x7f050002;
+        public static final int menu_preferences=0x7f050028;
         public static final int menu_search=0x7f050027;
         public static final int normal=0x7f050001;
         public static final int result_expression=0x7f050024;
@@ -577,7 +578,8 @@ containing a value of this type.
         public static final int Widget_Sherlock_TextView_SpinnerItem_ActionBar=0x7f0b0009;
     }
     public static final class xml {
-        public static final int searchable=0x7f040000;
+        public static final int preference=0x7f040000;
+        public static final int searchable=0x7f040001;
     }
     public static final class styleable {
         /** Attributes that can be used with a SherlockTheme.

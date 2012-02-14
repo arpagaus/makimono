@@ -14,6 +14,7 @@ import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
+import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 
 public class SearchSuggestionProvider extends SearchRecentSuggestionsProvider {
@@ -21,6 +22,10 @@ public class SearchSuggestionProvider extends SearchRecentSuggestionsProvider {
 
 	public static final int MODE = DATABASE_MODE_QUERIES;
 	public static final String AUTHORITY = SearchSuggestionProvider.class.getName();
+
+	public static SearchRecentSuggestions getSearchRecentSuggestions(Context context) {
+		return new SearchRecentSuggestions(context, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
+	}
 
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
 

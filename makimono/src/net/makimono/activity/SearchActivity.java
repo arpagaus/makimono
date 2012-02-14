@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -23,7 +22,6 @@ import android.widget.ListView;
 public class SearchActivity extends AbstractDefaultActivity implements OnItemClickListener {
 	private static final String CLASS_NAME = SearchActivity.class.getName();
 
-	private SearchRecentSuggestions recentSuggestions = new SearchRecentSuggestions(this, SearchSuggestionProvider.AUTHORITY, SearchSuggestionProvider.MODE);
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
 
 	private SearchResultAdapter resultAdapter;
@@ -73,7 +71,7 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 						String query = queries[0];
 						ArrayList<Entry> entries = connection.getSearcher().search(query);
 						if (!entries.isEmpty()) {
-							recentSuggestions.saveRecentQuery(query, null);
+							SearchSuggestionProvider.getSearchRecentSuggestions(SearchActivity.this).saveRecentQuery(query, null);
 						}
 						return entries;
 					} catch (Exception e) {
@@ -83,7 +81,7 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 				}
 
 				protected void onPostExecute(ArrayList<Entry> entries) {
-					resultAdapter.search(entries);
+					resultAdapter.updateEntries(entries);
 				}
 			};
 			task.execute(query);
