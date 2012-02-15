@@ -18,6 +18,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -218,8 +219,10 @@ public class EntryActivity extends AbstractDefaultActivity {
 			if (translationsGroupView.getChildCount() > 0) {
 				translationsGroupView.addView(createSeparator());
 			}
-			addGlosses(sense);
-			addAdditionalInfo(sense);
+			int glossesCount = addGlosses(sense);
+			if (glossesCount > 0) {
+				addAdditionalInfo(sense);
+			}
 		}
 	}
 
@@ -231,8 +234,11 @@ public class EntryActivity extends AbstractDefaultActivity {
 		return separator;
 	}
 
-	private void addGlosses(Sense sense) {
-		for (Language lang : Language.values()) {
+	private int addGlosses(Sense sense) {
+		ArrayList<Language> languages = PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
+
+		int glossesCount = 0;
+		for (Language lang : languages) {
 			CharSequence gloss = sense.getGlossString(lang);
 			if (gloss.length() > 0) {
 				TextView textView = new TextView(this);
@@ -242,8 +248,11 @@ public class EntryActivity extends AbstractDefaultActivity {
 				textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
 				textView.setGravity(Gravity.CENTER_VERTICAL);
 				translationsGroupView.addView(textView);
+
+				glossesCount++;
 			}
 		}
+		return glossesCount;
 	}
 
 	private void addAdditionalInfo(Sense sense) {

@@ -32,6 +32,7 @@ public class SearcherService extends Service {
 				File directory = new File(Environment.getExternalStorageDirectory(), "makimono/indexes/dictionary/");
 				searcher = new Searcher(directory);
 
+				updateSearcherLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 				preferenceChangeListener = new PreferenceChangeListener();
 				PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
 			}
@@ -70,13 +71,18 @@ public class SearcherService extends Service {
 		}
 	}
 
+	private void updateSearcherLanguages(SharedPreferences sharedPreferences) {
+		ArrayList<Language> languages = PreferenceActivity.getConfiguredLanguages(sharedPreferences);
+		searcher.setLanguages(languages);
+	}
+
 	private class PreferenceChangeListener implements OnSharedPreferenceChangeListener {
 		@Override
 		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
 			if (key.contains("language")) {
-				ArrayList<Language> languages = PreferenceActivity.getConfiguredLanguages(sharedPreferences);
-				searcher.setLanguages(languages);
+				updateSearcherLanguages(sharedPreferences);
 			}
 		}
+
 	}
 }

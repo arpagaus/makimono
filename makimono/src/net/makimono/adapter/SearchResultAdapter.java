@@ -1,12 +1,17 @@
 package net.makimono.adapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.makimono.R;
+import net.makimono.activity.PreferenceActivity;
 import net.makimono.model.Entry;
 import net.makimono.model.Gloss;
+import net.makimono.model.Language;
 import net.makimono.model.Sense;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +20,20 @@ import android.widget.TextView;
 
 public class SearchResultAdapter extends BaseAdapter {
 
+	private List<Language> languages;
 	private LayoutInflater inflater;
+	private SharedPreferences sharedPreferences;
+
 	private ArrayList<Entry> entries = new ArrayList<Entry>();
 
 	public SearchResultAdapter(Context context) {
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 		this.inflater = LayoutInflater.from(context);
+		updateLanguages();
+	}
+
+	private void updateLanguages() {
+		languages = PreferenceActivity.getConfiguredLanguages(sharedPreferences);
 	}
 
 	@Override
@@ -72,16 +86,19 @@ public class SearchResultAdapter extends BaseAdapter {
 		StringBuilder gloss = new StringBuilder();
 		for (Sense s : entry.getSenses()) {
 			for (Gloss g : s.getGlosses()) {
-				if (gloss.length() > 0) {
-					gloss.append(", ");
+				if (languages.contains(g.getLanguage())) {
+					if (gloss.length() > 0) {
+						gloss.append(", ");
+					}
+					gloss.append(g.getValue());
 				}
-				gloss.append(g.getValue());
 			}
 		}
 		return gloss.toString();
 	}
 
 	public void updateEntries(ArrayList<Entry> entries) {
+		updateLanguages();
 		this.entries = entries;
 		notifyDataSetChanged();
 	}
