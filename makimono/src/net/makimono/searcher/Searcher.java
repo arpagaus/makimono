@@ -7,9 +7,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.Character.UnicodeBlock;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.TreeSet;
 
 import net.makimono.model.Entry;
+import net.makimono.model.Language;
 import net.makimono.model.Sense;
 
 import org.apache.lucene.analysis.SimpleAnalyzer;
@@ -30,6 +33,8 @@ import org.apache.lucene.util.Version;
 public class Searcher implements Closeable {
 	private static final int MAX_SIZE = 20;
 
+	private List<Language> languages;
+
 	private QueryParser queryParserNotAnalyzed;
 	private QueryParser queryParserAnalyzed;
 	private Directory dictionaryDirectory;
@@ -37,6 +42,13 @@ public class Searcher implements Closeable {
 
 	public Searcher(File dictionaryPath) throws IOException {
 		this.dictionaryDirectory = new SimpleFSDirectory(dictionaryPath);
+		languages = Arrays.asList(Language.values());
+	}
+
+	public void setLanguages(List<Language> languages) {
+		this.languages = languages;
+		queryParserAnalyzed = null;
+		queryParserNotAnalyzed = null;
 	}
 
 	private IndexSearcher getIndexSearcher() throws IOException {
@@ -48,7 +60,7 @@ public class Searcher implements Closeable {
 
 	private QueryParser getQueryParserAnalyzed() {
 		if (queryParserAnalyzed == null) {
-			queryParserAnalyzed = new MultiFieldQueryParser(Version.LUCENE_35, Fields.ALL_ANALYZED_FIELDS, new SimpleAnalyzer(Version.LUCENE_35));
+			queryParserAnalyzed = new MultiFieldQueryParser(Version.LUCENE_35, Fields.getAllAnalzedFields(languages), new SimpleAnalyzer(Version.LUCENE_35));
 			queryParserAnalyzed.setDefaultOperator(Operator.AND);
 		}
 		return queryParserAnalyzed;
@@ -56,7 +68,7 @@ public class Searcher implements Closeable {
 
 	private QueryParser getQueryParserNotAnalyzed() {
 		if (queryParserNotAnalyzed == null) {
-			queryParserNotAnalyzed = new MultiFieldQueryParser(Version.LUCENE_35, Fields.ALL_NOT_ANALYZED_FIELDS, new SimpleAnalyzer(Version.LUCENE_35));
+			queryParserNotAnalyzed = new MultiFieldQueryParser(Version.LUCENE_35, Fields.getAllNotAnalzedFields(languages), new SimpleAnalyzer(Version.LUCENE_35));
 			queryParserNotAnalyzed.setDefaultOperator(Operator.AND);
 		}
 		return queryParserNotAnalyzed;
@@ -191,4 +203,5 @@ public class Searcher implements Closeable {
 			return prefix.length() >= 3;
 		}
 	}
+
 }

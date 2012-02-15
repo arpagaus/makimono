@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -15,20 +16,20 @@ import net.makimono.model.Miscellaneous;
 import net.makimono.model.PartOfSpeech;
 
 import org.apache.lucene.queryParser.ParseException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 public class SearcherTest {
-	private static Searcher searcher;
+	private Searcher searcher;
 
-	@BeforeClass
-	public static void setUpClass() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		searcher = new Searcher(new File("res/indexes/dictionary"));
 	}
 
-	@AfterClass
-	public static void cleanUpClass() throws Exception {
+	@After
+	public void cleanUp() throws Exception {
 		searcher.close();
 		searcher = null;
 	}
@@ -213,5 +214,14 @@ public class SearcherTest {
 		Set<String> suggestions = searcher.suggest("アップルパ");
 		assertEquals(1, suggestions.size());
 		assertEquals("アップルパイ", suggestions.iterator().next());
+	}
+
+	@Test
+	public void testOnlyEnglish() throws Exception {
+		assertFalse(searcher.search("Abfalleimer").isEmpty());
+
+		searcher.setLanguages(Arrays.asList(Language.en));
+
+		assertTrue(searcher.search("Abfalleimer").isEmpty());
 	}
 }
