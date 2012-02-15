@@ -27,13 +27,11 @@ public class SearcherServiceConnection implements ServiceConnection {
 
 	@Override
 	public void onServiceDisconnected(ComponentName name) {
-		Log.d(LOG_TAG, "onServiceDisconnected");
 		searcherBinder = null;
 	}
 
 	@Override
 	public void onServiceConnected(ComponentName name, IBinder binder) {
-		Log.d(LOG_TAG, "onServiceConnected");
 		searcherBinder = ((SearcherBinder) binder);
 		lock.countDown();
 	}

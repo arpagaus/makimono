@@ -8,8 +8,8 @@
         android:title="@string/search"/>
     <item
         android:id="@+id/menu_preferences"
-        android:icon="@drawable/ic_menu_camera"
+        android:icon="@drawable/ic_menu_preferences"
         android:showAsAction="never"
-        android:title="Preferences"/>
+        android:title="@string/settings"/>
 
 </menu>

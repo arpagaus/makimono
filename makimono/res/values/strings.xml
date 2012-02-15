@@ -6,5 +6,6 @@
     <string name="translations">Translations</string>
     <string name="general">General</string>
     <string name="languages">Languages</string>
+    <string name="settings">Settings</string>
 
 </resources>

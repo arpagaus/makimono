@@ -3,6 +3,10 @@
 
     <gradient
         android:endColor="@android:color/background_light"
-        android:startColor="#DD1111" />
+        android:startColor="#FF4444" />
+    
+    <!-- <gradient
+        android:endColor="@android:color/background_light"
+        android:startColor="#CC0000" /> -->
 
 </shape>

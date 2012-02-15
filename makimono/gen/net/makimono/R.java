@@ -351,11 +351,12 @@ containing a value of this type.
         public static final int fr=0x7f02002a;
         public static final int gb=0x7f02002b;
         public static final int ic_menu_camera=0x7f02002c;
-        public static final int ic_menu_search_holo_light=0x7f02002d;
-        public static final int icon=0x7f02002e;
-        public static final int primary_separator=0x7f02002f;
-        public static final int ru=0x7f020030;
-        public static final int secondary_separator=0x7f020031;
+        public static final int ic_menu_preferences=0x7f02002d;
+        public static final int ic_menu_search_holo_light=0x7f02002e;
+        public static final int icon=0x7f02002f;
+        public static final int primary_separator=0x7f020030;
+        public static final int ru=0x7f020031;
+        public static final int secondary_separator=0x7f020032;
     }
     public static final class id {
         public static final int abs__action_bar=0x7f05001b;
@@ -541,6 +542,7 @@ containing a value of this type.
         public static final int general=0x7f090074;
         public static final int languages=0x7f090075;
         public static final int search=0x7f090072;
+        public static final int settings=0x7f090076;
         public static final int translations=0x7f090073;
     }
     public static final class style {
