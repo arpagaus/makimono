@@ -4,5 +4,7 @@
     <string name="app_name">Makimono</string>
     <string name="search">Search</string>
     <string name="translations">Translations</string>
+    <string name="general">General</string>
+    <string name="languages">Languages</string>
 
 </resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/languages" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/gb"
+            android:key="language_en"
+            android:title="English" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/de"
+            android:key="language_de"
+            android:title="German" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/fr"
+            android:key="language_fr"
+            android:title="French" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ru"
+            android:key="language_ru"
+            android:title="Russian" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/search" >
+        <Preference
+            android:key="clear_search_history"
+            android:summary="Remove all the searches you have performed"
+            android:title="Clear search history" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

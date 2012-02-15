@@ -538,6 +538,8 @@ containing a value of this type.
         public static final int JMdict_vz=0x7f09005c;
         public static final int abs__tab_under_ab_tag=0x7f090000;
         public static final int app_name=0x7f090071;
+        public static final int general=0x7f090074;
+        public static final int languages=0x7f090075;
         public static final int search=0x7f090072;
         public static final int translations=0x7f090073;
     }
