@@ -19,11 +19,13 @@
             android:inAnimation="@android:anim/fade_in"
             android:outAnimation="@android:anim/fade_out" >
 
-            <!-- <TextView
+            <!--
+                 <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="例えば"
-                android:textSize="32dp" /> -->
+                android:textSize="32dp" />
+            -->
         </TextSwitcher>
 
         <TextView
@@ -32,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/entry_expression"
             android:layout_toRightOf="@id/entry_expression"
-            android:text="(1/2)"
             android:textColor="@android:color/darker_gray" />
 
         <TextSwitcher
@@ -46,12 +47,14 @@
             android:inAnimation="@android:anim/fade_in"
             android:outAnimation="@android:anim/fade_out" >
 
-            <!-- <TextView
+            <!--
+                 <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="たとえば"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="16dp" /> -->
+                android:textSize="16dp" />
+            -->
         </TextSwitcher>
 
         <TextView
@@ -60,7 +63,6 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/entry_reading"
             android:layout_toRightOf="@id/entry_reading"
-            android:text="(1/2)"
             android:textColor="@android:color/darker_gray" />
 
         <TextView
@@ -92,6 +94,17 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:orientation="vertical" />
+
+        <TextView
+            android:id="@+id/entry_copyright"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry_translations"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/entry_copyright"
+            android:textSize="10dp" />
     </RelativeLayout>
 
 </ScrollView>

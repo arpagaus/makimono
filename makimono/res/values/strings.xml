@@ -7,5 +7,6 @@
     <string name="general">General</string>
     <string name="languages">Languages</string>
     <string name="settings">Settings</string>
+    <string name="entry_copyright">This software is based on material from the JMdict (EDICT, Wadoku, etc.) dictionary files in accordance with the licence provisions of the Electronic Dictionaries Research Group</string>
 
 </resources>
