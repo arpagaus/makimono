@@ -52,10 +52,8 @@ public class EntryActivity extends AbstractDefaultActivity {
 
 	private TextSwitcher expressionTextSwitcher;
 	private TextView expressionAlternativeIndTextView;
-
 	private TextSwitcher readingTextSwitcher;
 	private TextView readingAlternativeIndTextView;
-
 	private LinearLayout translationsGroupView;
 
 	@Override
@@ -149,12 +147,20 @@ public class EntryActivity extends AbstractDefaultActivity {
 	private void showNextExpression() {
 		if (entry != null) {
 			showNextAlternative(entry.getExpressions(), expressionTextSwitcher, expressionAlternativeIndTextView, currentExpressionIndex);
+			currentReadingIndex.set(-1);
+			showNextReading();
 		}
 	}
 
 	private void showNextReading() {
 		if (entry != null) {
-			showNextAlternative(entry.getReadings(), readingTextSwitcher, readingAlternativeIndTextView, currentReadingIndex);
+			ArrayList<String> readings;
+			if (entry.getExpressions().isEmpty()) {
+				readings = entry.getReadings();
+			} else {
+				readings = entry.getReadings(entry.getExpressions().get(currentExpressionIndex.get()));
+			}
+			showNextAlternative(readings, readingTextSwitcher, readingAlternativeIndTextView, currentReadingIndex);
 		}
 	}
 
@@ -162,8 +168,12 @@ public class EntryActivity extends AbstractDefaultActivity {
 		if (alternatives.size() > 1) {
 			index.set(index.incrementAndGet() % alternatives.size());
 			textSwitcher.setText(alternatives.get(index.get()));
-			indTextView.setVisibility(View.VISIBLE);
 			indTextView.setText("(" + (index.get() + 1) + "/" + alternatives.size() + ")");
+			indTextView.setVisibility(View.VISIBLE);
+		} else if (alternatives.size() == 1) {
+			index.set(0);
+			textSwitcher.setText(alternatives.get(0));
+			indTextView.setVisibility(View.GONE);
 		}
 	}
 
@@ -202,17 +212,8 @@ public class EntryActivity extends AbstractDefaultActivity {
 			readingTextSwitcher.setText(reading);
 		}
 
-		if (entry.getExpressions().size() < 2) {
-			expressionAlternativeIndTextView.setVisibility(View.GONE);
-		} else {
-			expressionAlternativeIndTextView.setVisibility(View.VISIBLE);
-		}
-
-		if (entry.getReadings().size() < 2) {
-			readingAlternativeIndTextView.setVisibility(View.GONE);
-		} else {
-			readingAlternativeIndTextView.setVisibility(View.VISIBLE);
-		}
+		currentExpressionIndex.set(-1);
+		showNextExpression();
 
 		translationsGroupView.removeAllViews();
 		for (Sense sense : entry.getSenses()) {
