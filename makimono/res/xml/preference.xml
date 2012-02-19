@@ -4,22 +4,22 @@
     <PreferenceCategory android:title="@string/languages" >
         <CheckBoxPreference
             android:defaultValue="true"
-            android:icon="@drawable/gb"
+            android:icon="@drawable/ic_english"
             android:key="language_en"
             android:title="English" />
         <CheckBoxPreference
             android:defaultValue="true"
-            android:icon="@drawable/de"
+            android:icon="@drawable/ic_german"
             android:key="language_de"
             android:title="German" />
         <CheckBoxPreference
             android:defaultValue="true"
-            android:icon="@drawable/fr"
+            android:icon="@drawable/ic_french"
             android:key="language_fr"
             android:title="French" />
         <CheckBoxPreference
             android:defaultValue="true"
-            android:icon="@drawable/ru"
+            android:icon="@drawable/ic_russian"
             android:key="language_ru"
             android:title="Russian" />
     </PreferenceCategory>
