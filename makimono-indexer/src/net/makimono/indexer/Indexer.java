@@ -45,6 +45,7 @@ import au.edu.monash.csse.jmdict.model.KEle;
 import au.edu.monash.csse.jmdict.model.KePri;
 import au.edu.monash.csse.jmdict.model.REle;
 import au.edu.monash.csse.jmdict.model.RePri;
+import au.edu.monash.csse.jmdict.model.ReRestr;
 import au.edu.monash.csse.jmdict.model.Sense;
 
 public class Indexer {
@@ -239,17 +240,24 @@ public class Indexer {
 		return -1;
 	}
 
-	private net.makimono.model.Entry transformEntry(Entry jmdictEntry) throws Exception {
+	net.makimono.model.Entry transformEntry(Entry jmdictEntry) throws Exception {
 		net.makimono.model.Entry entry = new net.makimono.model.Entry();
-
 		entry.setId(Integer.valueOf(jmdictEntry.getEntSeq()));
 
 		for (KEle kEle : jmdictEntry.getKEle()) {
 			entry.getExpressions().add(kEle.getKeb());
 		}
 
-		for (REle rEle : jmdictEntry.getREle()) {
+		for (int i = 0; i < jmdictEntry.getREle().size(); i++) {
+			REle rEle = jmdictEntry.getREle().get(i);
 			entry.getReadings().add(rEle.getReb());
+
+			for (ReRestr r : rEle.getReRestr()) {
+				int expressionIndex = entry.getExpressions().indexOf(r.getvalue());
+				if (expressionIndex >= 0) {
+					entry.addReadingRestriction(i, expressionIndex);
+				}
+			}
 		}
 
 		for (Sense jmdictSense : jmdictEntry.getSense()) {

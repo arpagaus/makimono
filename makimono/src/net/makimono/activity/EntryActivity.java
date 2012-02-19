@@ -36,10 +36,10 @@ public class EntryActivity extends AbstractDefaultActivity {
 	@SuppressWarnings("serial")
 	private static final Map<Language, Integer> LANGUAGE_ICONS = new HashMap<Language, Integer>() {
 		{
-			put(Language.en, R.drawable.gb);
-			put(Language.de, R.drawable.de);
-			put(Language.fr, R.drawable.fr);
-			put(Language.ru, R.drawable.ru);
+			put(Language.en, R.drawable.ic_english);
+			put(Language.de, R.drawable.ic_german);
+			put(Language.fr, R.drawable.ic_french);
+			put(Language.ru, R.drawable.ic_russian);
 		}
 	};
 

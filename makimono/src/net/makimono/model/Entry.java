@@ -5,12 +5,17 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class Entry {
 	private int id;
 	transient private int docId;
 	private ArrayList<String> expressions;
 	private ArrayList<String> readings;
+	private Map<Integer, Set<Integer>> readingRestrictions;
 	private ArrayList<Sense> senses;
 
 	public int getId() {
@@ -43,6 +48,41 @@ public class Entry {
 		return readings;
 	}
 
+	public ArrayList<String> getReadings(String expression) {
+		int expressionIndex = getExpressions().indexOf(expression);
+		ArrayList<String> readignsForExpression = new ArrayList<String>(getReadings());
+		for (Map.Entry<Integer, Set<Integer>> e : getReadingRestrictions().entrySet()) {
+			Set<Integer> set = e.getValue();
+			if (!set.isEmpty() && !set.contains(expressionIndex)) {
+				readignsForExpression.remove(getReadings().get(e.getKey()));
+			}
+		}
+
+		return readignsForExpression;
+	}
+
+	public void addReadingRestriction(int readingIndex, int expressionIndex) {
+		getReadingRestrictions().get(readingIndex).add(expressionIndex);
+	}
+
+	@SuppressWarnings("serial")
+	public Map<Integer, Set<Integer>> getReadingRestrictions() {
+		if (readingRestrictions == null) {
+			readingRestrictions = new HashMap<Integer, Set<Integer>>() {
+				@Override
+				public Set<Integer> get(Object key) {
+					Set<Integer> set = super.get(key);
+					if (set == null) {
+						set = new HashSet<Integer>();
+						put((Integer) key, set);
+					}
+					return set;
+				}
+			};
+		}
+		return readingRestrictions;
+	}
+
 	public ArrayList<Sense> getSenses() {
 		if (senses == null) {
 			senses = new ArrayList<Sense>();
@@ -52,7 +92,7 @@ public class Entry {
 
 	@Override
 	public String toString() {
-		return "id=" + id + "\nexpressions=" + expressions + "\nreadings=" + readings + "\nsenses=" + senses + "";
+		return "id=" + id + "\nexpressions=" + expressions + "\nreadings=" + readings + "\nreadingRestrictions=" + readingRestrictions + "\nsenses=" + senses;
 	}
 
 	@Override
@@ -61,6 +101,7 @@ public class Entry {
 		int result = 1;
 		result = prime * result + ((expressions == null) ? 0 : expressions.hashCode());
 		result = prime * result + id;
+		result = prime * result + ((readingRestrictions == null) ? 0 : readingRestrictions.hashCode());
 		result = prime * result + ((readings == null) ? 0 : readings.hashCode());
 		result = prime * result + ((senses == null) ? 0 : senses.hashCode());
 		return result;
@@ -81,6 +122,11 @@ public class Entry {
 		} else if (!expressions.equals(other.expressions))
 			return false;
 		if (id != other.id)
+			return false;
+		if (readingRestrictions == null) {
+			if (other.readingRestrictions != null)
+				return false;
+		} else if (!readingRestrictions.equals(other.readingRestrictions))
 			return false;
 		if (readings == null) {
 			if (other.readings != null)
@@ -108,11 +154,20 @@ public class Entry {
 			outputStream.writeUTF(s);
 		}
 
+		outputStream.writeByte(entry.getReadingRestrictions().size());
+		for (Map.Entry<Integer, Set<Integer>> e : entry.getReadingRestrictions().entrySet()) {
+			outputStream.writeByte(e.getKey());
+			outputStream.writeByte(e.getValue().size());
+			for (Integer i : e.getValue()) {
+				outputStream.writeByte(i);
+			}
+		}
+
 		outputStream.writeByte(entry.getSenses().size());
 		for (Sense s : entry.getSenses()) {
 			Sense.writeSense(outputStream, s);
 		}
-		
+
 		outputStream.flush();
 	}
 
@@ -122,6 +177,15 @@ public class Entry {
 
 		entry.expressions = readStringList(inputStream);
 		entry.readings = readStringList(inputStream);
+
+		byte restrictionCount = inputStream.readByte();
+		for (int i = 0; i < restrictionCount; i++) {
+			Set<Integer> set = entry.getReadingRestrictions().get((int) inputStream.readByte());
+			byte readingCount = inputStream.readByte();
+			for (int j = 0; j < readingCount; j++) {
+				set.add((int) inputStream.readByte());
+			}
+		}
 
 		byte senseCount = inputStream.readByte();
 		for (int i = 0; i < senseCount; i++) {
@@ -141,4 +205,5 @@ public class Entry {
 		Collections.addAll(list, expressions);
 		return list;
 	}
+
 }

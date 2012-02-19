@@ -30,35 +30,67 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Sense }
+     * Create an instance of {@link SInf }
      * 
      */
-    public Sense createSense() {
-        return new Sense();
+    public SInf createSInf() {
+        return new SInf();
     }
 
     /**
-     * Create an instance of {@link REle }
+     * Create an instance of {@link Stagr }
      * 
      */
-    public REle createREle() {
-        return new REle();
+    public Stagr createStagr() {
+        return new Stagr();
     }
 
     /**
-     * Create an instance of {@link Bibl }
+     * Create an instance of {@link RePri }
      * 
      */
-    public Bibl createBibl() {
-        return new Bibl();
+    public RePri createRePri() {
+        return new RePri();
     }
 
     /**
-     * Create an instance of {@link ReRestr }
+     * Create an instance of {@link KePri }
      * 
      */
-    public ReRestr createReRestr() {
-        return new ReRestr();
+    public KePri createKePri() {
+        return new KePri();
+    }
+
+    /**
+     * Create an instance of {@link Etym }
+     * 
+     */
+    public Etym createEtym() {
+        return new Etym();
+    }
+
+    /**
+     * Create an instance of {@link Ant }
+     * 
+     */
+    public Ant createAnt() {
+        return new Ant();
+    }
+
+    /**
+     * Create an instance of {@link Pri }
+     * 
+     */
+    public Pri createPri() {
+        return new Pri();
+    }
+
+    /**
+     * Create an instance of {@link Gloss }
+     * 
+     */
+    public Gloss createGloss() {
+        return new Gloss();
     }
 
     /**
@@ -70,11 +102,91 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Misc }
+     * Create an instance of {@link Xref }
      * 
      */
-    public Misc createMisc() {
-        return new Misc();
+    public Xref createXref() {
+        return new Xref();
+    }
+
+    /**
+     * Create an instance of {@link REle }
+     * 
+     */
+    public REle createREle() {
+        return new REle();
+    }
+
+    /**
+     * Create an instance of {@link Entry }
+     * 
+     */
+    public Entry createEntry() {
+        return new Entry();
+    }
+
+    /**
+     * Create an instance of {@link ReRestr }
+     * 
+     */
+    public ReRestr createReRestr() {
+        return new ReRestr();
+    }
+
+    /**
+     * Create an instance of {@link Stagk }
+     * 
+     */
+    public Stagk createStagk() {
+        return new Stagk();
+    }
+
+    /**
+     * Create an instance of {@link Example }
+     * 
+     */
+    public Example createExample() {
+        return new Example();
+    }
+
+    /**
+     * Create an instance of {@link Info }
+     * 
+     */
+    public Info createInfo() {
+        return new Info();
+    }
+
+    /**
+     * Create an instance of {@link KEle }
+     * 
+     */
+    public KEle createKEle() {
+        return new KEle();
+    }
+
+    /**
+     * Create an instance of {@link KeInf }
+     * 
+     */
+    public KeInf createKeInf() {
+        return new KeInf();
+    }
+
+    /**
+     * Create an instance of {@link ReInf }
+     * 
+     */
+    public ReInf createReInf() {
+        return new ReInf();
+    }
+
+    /**
+     * Create an instance of {@link Links }
+     * 
+     */
+    public Links createLinks() {
+        return new Links();
     }
 
     /**
@@ -83,6 +195,22 @@ public class ObjectFactory {
      */
     public Dial createDial() {
         return new Dial();
+    }
+
+    /**
+     * Create an instance of {@link Bibl }
+     * 
+     */
+    public Bibl createBibl() {
+        return new Bibl();
+    }
+
+    /**
+     * Create an instance of {@link Sense }
+     * 
+     */
+    public Sense createSense() {
+        return new Sense();
     }
 
     /**
@@ -102,51 +230,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Xref }
+     * Create an instance of {@link JMdict }
      * 
      */
-    public Xref createXref() {
-        return new Xref();
-    }
-
-    /**
-     * Create an instance of {@link Ant }
-     * 
-     */
-    public Ant createAnt() {
-        return new Ant();
-    }
-
-    /**
-     * Create an instance of {@link Info }
-     * 
-     */
-    public Info createInfo() {
-        return new Info();
-    }
-
-    /**
-     * Create an instance of {@link ReInf }
-     * 
-     */
-    public ReInf createReInf() {
-        return new ReInf();
-    }
-
-    /**
-     * Create an instance of {@link KEle }
-     * 
-     */
-    public KEle createKEle() {
-        return new KEle();
-    }
-
-    /**
-     * Create an instance of {@link SInf }
-     * 
-     */
-    public SInf createSInf() {
-        return new SInf();
+    public JMdict createJMdict() {
+        return new JMdict();
     }
 
     /**
@@ -158,99 +246,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link KePri }
+     * Create an instance of {@link Misc }
      * 
      */
-    public KePri createKePri() {
-        return new KePri();
-    }
-
-    /**
-     * Create an instance of {@link Links }
-     * 
-     */
-    public Links createLinks() {
-        return new Links();
-    }
-
-    /**
-     * Create an instance of {@link JMdict }
-     * 
-     */
-    public JMdict createJMdict() {
-        return new JMdict();
-    }
-
-    /**
-     * Create an instance of {@link Example }
-     * 
-     */
-    public Example createExample() {
-        return new Example();
-    }
-
-    /**
-     * Create an instance of {@link Etym }
-     * 
-     */
-    public Etym createEtym() {
-        return new Etym();
-    }
-
-    /**
-     * Create an instance of {@link Gloss }
-     * 
-     */
-    public Gloss createGloss() {
-        return new Gloss();
-    }
-
-    /**
-     * Create an instance of {@link Entry }
-     * 
-     */
-    public Entry createEntry() {
-        return new Entry();
-    }
-
-    /**
-     * Create an instance of {@link Pri }
-     * 
-     */
-    public Pri createPri() {
-        return new Pri();
-    }
-
-    /**
-     * Create an instance of {@link RePri }
-     * 
-     */
-    public RePri createRePri() {
-        return new RePri();
-    }
-
-    /**
-     * Create an instance of {@link KeInf }
-     * 
-     */
-    public KeInf createKeInf() {
-        return new KeInf();
-    }
-
-    /**
-     * Create an instance of {@link Stagr }
-     * 
-     */
-    public Stagr createStagr() {
-        return new Stagr();
-    }
-
-    /**
-     * Create an instance of {@link Stagk }
-     * 
-     */
-    public Stagk createStagk() {
-        return new Stagk();
+    public Misc createMisc() {
+        return new Misc();
     }
 
 }

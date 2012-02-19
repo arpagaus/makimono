@@ -219,9 +219,16 @@ public class SearcherTest {
 	@Test
 	public void testOnlyEnglish() throws Exception {
 		assertFalse(searcher.search("Abfalleimer").isEmpty());
-
 		searcher.setLanguages(Arrays.asList(Language.en));
-
 		assertTrue(searcher.search("Abfalleimer").isEmpty());
+	}
+
+	@Test
+	public void testReadingRestriction() throws Exception {
+		Entry entry = searchUniqueEntry("打付ける");
+
+		assertEquals(Arrays.asList("ぶつける", "ぶっつける", "うちつける", "ぶちつける"), entry.getReadings("打付ける"));
+		assertEquals(Arrays.asList("うちつける", "ぶちつける"), entry.getReadings("打ち付ける"));
+		assertEquals(Arrays.asList("ぶっつける"), entry.getReadings("打っ付ける"));
 	}
 }

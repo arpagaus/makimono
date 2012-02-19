@@ -8,15 +8,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import net.makimono.model.Dialect;
-import net.makimono.model.Entry;
-import net.makimono.model.FieldOfApplication;
-import net.makimono.model.Gloss;
-import net.makimono.model.Language;
-import net.makimono.model.Miscellaneous;
-import net.makimono.model.PartOfSpeech;
-import net.makimono.model.Sense;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -30,6 +21,7 @@ public class SerializationTest {
 		entry.setId(1153520);
 		entry.getExpressions().add("日本語");
 		entry.getReadings().add("にほんご");
+		entry.addReadingRestriction(0, 0);
 
 		Sense sense = new Sense();
 		sense.getPartsOfSpeech().add(PartOfSpeech.JMdict_adj_i);
