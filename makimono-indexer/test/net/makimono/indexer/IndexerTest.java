@@ -16,7 +16,7 @@ public class IndexerTest {
 
 	@Test
 	public void testBoost() {
-		Indexer indexer = new Indexer();
+		DictionaryIndexer indexer = new DictionaryIndexer();
 
 		assertEquals(100, indexer.getBoost("ichi1"), 0);
 		assertEquals(100, indexer.getBoost("spec1"), 0);
@@ -45,7 +45,7 @@ public class IndexerTest {
 		jmdictEntry.getREle().add(createREel("ひび"));
 		jmdictEntry.getREle().add(createREel("あかぎれ", "皹", "皸"));
 
-		Indexer indexer = new Indexer();
+		DictionaryIndexer indexer = new DictionaryIndexer();
 		Entry entry = indexer.transformEntry(jmdictEntry);
 
 		assertEquals(Arrays.asList("ひび"), entry.getReadings("罅"));

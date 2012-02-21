@@ -60,7 +60,7 @@ public class Searcher implements Closeable {
 
 	private QueryParser getQueryParserAnalyzed() {
 		if (queryParserAnalyzed == null) {
-			queryParserAnalyzed = new MultiFieldQueryParser(Version.LUCENE_35, Fields.getAllAnalzedFields(languages), new SimpleAnalyzer(Version.LUCENE_35));
+			queryParserAnalyzed = new MultiFieldQueryParser(Version.LUCENE_35, DictionaryFields.getAllAnalzedFields(languages), new SimpleAnalyzer(Version.LUCENE_35));
 			queryParserAnalyzed.setDefaultOperator(Operator.AND);
 		}
 		return queryParserAnalyzed;
@@ -68,7 +68,7 @@ public class Searcher implements Closeable {
 
 	private QueryParser getQueryParserNotAnalyzed() {
 		if (queryParserNotAnalyzed == null) {
-			queryParserNotAnalyzed = new MultiFieldQueryParser(Version.LUCENE_35, Fields.getAllNotAnalzedFields(languages), new SimpleAnalyzer(Version.LUCENE_35));
+			queryParserNotAnalyzed = new MultiFieldQueryParser(Version.LUCENE_35, DictionaryFields.getAllNotAnalzedFields(languages), new SimpleAnalyzer(Version.LUCENE_35));
 			queryParserNotAnalyzed.setDefaultOperator(Operator.AND);
 		}
 		return queryParserNotAnalyzed;

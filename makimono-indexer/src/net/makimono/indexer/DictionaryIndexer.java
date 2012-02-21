@@ -2,7 +2,6 @@ package net.makimono.indexer;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
@@ -11,32 +10,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.zip.GZIPInputStream;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamReader;
 
 import net.makimono.model.Dialect;
 import net.makimono.model.FieldOfApplication;
 import net.makimono.model.Language;
 import net.makimono.model.Miscellaneous;
 import net.makimono.model.PartOfSpeech;
-import net.makimono.searcher.Fields;
+import net.makimono.searcher.DictionaryFields;
 
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
-import org.apache.lucene.index.FieldInvertState;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.search.DefaultSimilarity;
 import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.SimpleFSDirectory;
-import org.apache.lucene.util.Version;
 
 import au.edu.monash.csse.jmdict.model.Entry;
 import au.edu.monash.csse.jmdict.model.Gloss;
@@ -48,29 +34,12 @@ import au.edu.monash.csse.jmdict.model.RePri;
 import au.edu.monash.csse.jmdict.model.ReRestr;
 import au.edu.monash.csse.jmdict.model.Sense;
 
-public class Indexer {
-
-	public static void main(String[] args) throws Exception {
-		if (args.length < 2) {
-			System.err.println("Usage: Indexer [path to JMdict.gz file] [path to dictionary index destination]");
-			System.exit(1);
-		}
-
-		File jmdictFile = new File(args[0]);
-		if (!jmdictFile.exists()) {
-			System.err.println("Failed to find file: " + args[0]);
-			System.exit(1);
-		}
-
-		Indexer indexer = new Indexer();
-		SimpleFSDirectory dictionaryDirectory = new SimpleFSDirectory(new File(args[1]));
-		indexer.createDictionaryIndex(jmdictFile, dictionaryDirectory);
-	}
+public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 
 	private static final Map<String, String> JMDICT_ENTITY_REFERENCES = new HashMap<String, String>();
 
 	static {
-		InputStream stream = Indexer.class.getClassLoader().getResourceAsStream(Indexer.class.getPackage().getName().replaceAll("\\.", "/") + "/JMdictReferences.properties");
+		InputStream stream = DictionaryIndexer.class.getClassLoader().getResourceAsStream(DictionaryIndexer.class.getPackage().getName().replaceAll("\\.", "/") + "/JMdictReferences.properties");
 		Properties p = new Properties();
 		try {
 			p.load(stream);
@@ -82,85 +51,57 @@ public class Indexer {
 		}
 	}
 
-	@SuppressWarnings("serial")
-	private void createDictionaryIndex(File jmdictFile, Directory directory) throws Exception {
-		System.out.println("Parsing JMdict");
+	public DictionaryIndexer() {
+		super(JMdict.class.getPackage().getName());
+	}
 
-		GZIPInputStream inputStream = new GZIPInputStream(new FileInputStream(jmdictFile));
-		Unmarshaller unmarshaller = JAXBContext.newInstance(JMdict.class.getPackage().getName()).createUnmarshaller();
-		unmarshaller.setSchema(null);
+	private Map<String, Integer> languageCount = new HashMap<String, Integer>();
 
-		XMLInputFactory factory = XMLInputFactory.newFactory();
-		XMLStreamReader streamReader = new XmlLangTranslatorStreamReader(factory.createXMLStreamReader(inputStream));
-		JMdict jmdict = (JMdict) unmarshaller.unmarshal(streamReader);
+	@Override
+	public void createIndex(File gzipXmlFile, Directory luceneDirectory) throws Exception {
+		super.createIndex(gzipXmlFile, luceneDirectory);
+		System.out.println("languageCount=" + languageCount);
+	}
 
-		System.out.println("Finished parsing JMdict");
+	@Override
+	protected List<Entry> getIteratable(JMdict root) {
+		return root.getEntry();
+	}
 
-		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35));
-		config.setSimilarity(new DefaultSimilarity() {
-			@Override
-			public float computeNorm(String field, FieldInvertState state) {
-				return state.getBoost(); // Don't do length normalization
-			}
-		});
-		IndexWriter indexWriter = new IndexWriter(directory, config);
+	@Override
+	protected Document createDocument(Entry entry) throws Exception {
+		Document document = new Document();
 
-		final int size = jmdict.getEntry().size();
-		int processedCount = 0;
-		double progress = 0;
+		for (KEle kanjiElement : entry.getKEle()) {
+			Field expression = new Field(DictionaryFields.EXPRESSION.name(), kanjiElement.getKeb(), Store.NO, Index.NOT_ANALYZED);
+			document.add(expression);
+		}
 
-		Map<String, Integer> languageCount = new HashMap<String, Integer>();
+		for (REle readingElement : entry.getREle()) {
+			Field reading = new Field(DictionaryFields.READING.name(), readingElement.getReb(), Store.NO, Index.NOT_ANALYZED);
+			document.add(reading);
+		}
 
-		for (Entry entry : jmdict.getEntry()) {
-			Document document = new Document();
+		for (Sense sense : entry.getSense()) {
+			for (Gloss gloss : sense.getGloss()) {
+				String glossValue = cleanGloss(gloss.getvalue());
+				gloss.setvalue(glossValue);
 
-			for (KEle kanjiElement : entry.getKEle()) {
-				Field expression = new Field(Fields.EXPRESSION.name(), kanjiElement.getKeb(), Store.NO, Index.NOT_ANALYZED);
-				document.add(expression);
-			}
+				glossValue = glossValue.replaceAll("\\(.*\\)", "");
+				glossValue = glossValue.toLowerCase();
 
-			for (REle readingElement : entry.getREle()) {
-				Field reading = new Field(Fields.READING.name(), readingElement.getReb(), Store.NO, Index.NOT_ANALYZED);
-				document.add(reading);
-			}
+				String lang = gloss.getXmlLang().toUpperCase();
+				languageCount.put(lang, (languageCount.get(lang) == null ? 0 : languageCount.get(lang)) + 1);
 
-			for (Sense sense : entry.getSense()) {
-				for (Gloss gloss : sense.getGloss()) {
-					String glossValue = cleanGloss(gloss.getvalue());
-					gloss.setvalue(glossValue);
-
-					glossValue = glossValue.replaceAll("\\(.*\\)", "");
-					glossValue = glossValue.toLowerCase();
-
-					String lang = gloss.getXmlLang().toUpperCase();
-					languageCount.put(lang, (languageCount.get(lang) == null ? 0 : languageCount.get(lang)) + 1);
-
-					document.add(new Field("SENSE_" + lang, glossValue, Store.NO, Index.NOT_ANALYZED));
-					document.add(new Field("SENSE_ANALYZED_" + lang, glossValue, Store.NO, Index.ANALYZED));
-				}
-			}
-
-			byte[] compressByteArray = getSerializedEntry(transformEntry(entry));
-			document.add(new Field("entry", compressByteArray));
-			document.setBoost((float) getBoostForEntry(entry));
-			indexWriter.addDocument(document);
-
-			processedCount++;
-			double newProgress = Math.round(100.0 / size * processedCount);
-			if (newProgress > progress || processedCount == size) {
-				progress = newProgress;
-				System.out.println("Current progress: " + progress + "%");
+				document.add(new Field("SENSE_" + lang, glossValue, Store.NO, Index.NOT_ANALYZED));
+				document.add(new Field("SENSE_ANALYZED_" + lang, glossValue, Store.NO, Index.ANALYZED));
 			}
 		}
 
-		System.out.printf("Created index with %d entries (" + languageCount + ")", processedCount);
-		System.out.println();
-
-		indexWriter.forceMerge(1);
-		indexWriter.commit();
-		System.out.println("Finished optimizing index");
-		indexWriter.close();
-		System.out.println("Index closed");
+		byte[] compressByteArray = getSerializedEntry(transformEntry(entry));
+		document.add(new Field("entry", compressByteArray));
+		document.setBoost((float) getBoostForEntry(entry));
+		return document;
 	}
 
 	private byte[] getSerializedEntry(net.makimono.model.Entry entry) throws IOException {

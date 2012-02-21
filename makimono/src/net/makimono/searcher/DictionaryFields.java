@@ -7,7 +7,7 @@ import java.util.Set;
 
 import net.makimono.model.Language;
 
-public enum Fields {
+public enum DictionaryFields {
 	EXPRESSION, READING, SENSE_EN, SENSE_DE, SENSE_FR, SENSE_RU, SENSE_ANALYZED_EN, SENSE_ANALYZED_DE, SENSE_ANALYZED_FR, SENSE_ANALYZED_RU;
 
 	public static final String[] ALL_ANALYZED_FIELDS;
@@ -16,7 +16,7 @@ public enum Fields {
 	static {
 		Set<String> allFields = new HashSet<String>();
 		Set<String> allNotAnalyzedFields = new HashSet<String>();
-		for (Fields f : values()) {
+		for (DictionaryFields f : values()) {
 			if (!f.name().contains("ANALYZED")) {
 				allNotAnalyzedFields.add(f.name());
 			} else {
