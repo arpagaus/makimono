@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.makimono.R;
 import net.makimono.activity.PreferenceActivity;
-import net.makimono.model.Entry;
+import net.makimono.model.DictionaryEntry;
 import net.makimono.model.Gloss;
 import net.makimono.model.Language;
 import net.makimono.model.Sense;
@@ -24,7 +24,7 @@ public class SearchResultAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private SharedPreferences sharedPreferences;
 
-	private ArrayList<Entry> entries = new ArrayList<Entry>();
+	private ArrayList<DictionaryEntry> entries = new ArrayList<DictionaryEntry>();
 
 	public SearchResultAdapter(Context context) {
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -66,7 +66,7 @@ public class SearchResultAdapter extends BaseAdapter {
 		return convertView;
 	}
 
-	private CharSequence getExpression(Entry entry) {
+	private CharSequence getExpression(DictionaryEntry entry) {
 		if (entry.getExpressions().isEmpty()) {
 			return entry.getReadings().get(0);
 		} else {
@@ -74,7 +74,7 @@ public class SearchResultAdapter extends BaseAdapter {
 		}
 	}
 
-	private CharSequence getReading(Entry entry) {
+	private CharSequence getReading(DictionaryEntry entry) {
 		if (entry.getExpressions().isEmpty()) {
 			return null;
 		} else {
@@ -82,7 +82,7 @@ public class SearchResultAdapter extends BaseAdapter {
 		}
 	}
 
-	private CharSequence getGloss(Entry entry) {
+	private CharSequence getGloss(DictionaryEntry entry) {
 		StringBuilder gloss = new StringBuilder();
 		for (Sense s : entry.getSenses()) {
 			for (Gloss g : s.getGlosses()) {
@@ -97,7 +97,7 @@ public class SearchResultAdapter extends BaseAdapter {
 		return gloss.toString();
 	}
 
-	public void updateEntries(ArrayList<Entry> entries) {
+	public void updateEntries(ArrayList<DictionaryEntry> entries) {
 		updateLanguages();
 		this.entries = entries;
 		notifyDataSetChanged();

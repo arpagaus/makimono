@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.TreeSet;
 
-import net.makimono.model.Entry;
+import net.makimono.model.DictionaryEntry;
 import net.makimono.model.Language;
 import net.makimono.model.Sense;
 
@@ -30,7 +30,7 @@ import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.Version;
 
-public class Searcher implements Closeable {
+public class DictionarySearcher implements Closeable {
 	private static final int MAX_SIZE = 20;
 
 	private List<Language> languages;
@@ -40,7 +40,7 @@ public class Searcher implements Closeable {
 	private Directory dictionaryDirectory;
 	private IndexSearcher indexSearcher;
 
-	public Searcher(File dictionaryPath) throws IOException {
+	public DictionarySearcher(File dictionaryPath) throws IOException {
 		this.dictionaryDirectory = new SimpleFSDirectory(dictionaryPath);
 		languages = Arrays.asList(Language.values());
 	}
@@ -74,19 +74,19 @@ public class Searcher implements Closeable {
 		return queryParserNotAnalyzed;
 	}
 
-	public ArrayList<Entry> search(String queryString) throws IOException, ParseException {
+	public ArrayList<DictionaryEntry> search(String queryString) throws IOException, ParseException {
 		if (queryString == null || queryString.equals("")) {
-			return new ArrayList<Entry>(0);
+			return new ArrayList<DictionaryEntry>(0);
 		}
 
-		ArrayList<Entry> entries = new ArrayList<Entry>();
+		ArrayList<DictionaryEntry> entries = new ArrayList<DictionaryEntry>();
 		searchTopDocs(entries, getQueryParserNotAnalyzed().parse(queryString));
 		searchTopDocs(entries, getQueryParserAnalyzed().parse(queryString));
 
 		return entries;
 	}
 
-	private void searchTopDocs(ArrayList<Entry> entries, Query query) throws IOException {
+	private void searchTopDocs(ArrayList<DictionaryEntry> entries, Query query) throws IOException {
 		int limitCount = MAX_SIZE - entries.size();
 		if (limitCount <= 0) {
 			return;
@@ -95,7 +95,7 @@ public class Searcher implements Closeable {
 		IndexSearcher searcher = getIndexSearcher();
 		TopDocs topDocs = searcher.search(query, limitCount);
 		for (ScoreDoc d : topDocs.scoreDocs) {
-			Entry entry = getByDocId(d.doc);
+			DictionaryEntry entry = getByDocId(d.doc);
 			if (!entries.contains(entry)) {
 				entries.add(entry);
 			}
@@ -107,6 +107,7 @@ public class Searcher implements Closeable {
 
 	public void close() throws IOException {
 		queryParserNotAnalyzed = null;
+		queryParserAnalyzed = null;
 
 		IOException exception = null;
 		if (indexSearcher != null) {
@@ -140,11 +141,11 @@ public class Searcher implements Closeable {
 		}
 	}
 
-	public Entry getByDocId(int docId) throws IOException {
+	public DictionaryEntry getByDocId(int docId) throws IOException {
 		Document document = getIndexSearcher().doc(docId);
 		try {
 			ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(document.getBinaryValue("entry")));
-			Entry entry = Entry.readEntry(inputStream);
+			DictionaryEntry entry = DictionaryEntry.readEntry(inputStream);
 			entry.setDocId(docId);
 			return entry;
 		} catch (IOException e) {
@@ -158,7 +159,7 @@ public class Searcher implements Closeable {
 		if (isQualifiedForSuggestions(prefix)) {
 			try {
 				prefix = prefix.trim();
-				ArrayList<Entry> entries = search(prefix + "*");
+				ArrayList<DictionaryEntry> entries = search(prefix + "*");
 				return extractSuggestions(prefix, entries);
 			} catch (ParseException e) {
 				throw new RuntimeException(e);
@@ -167,9 +168,9 @@ public class Searcher implements Closeable {
 		return new TreeSet<String>();
 	}
 
-	private TreeSet<String> extractSuggestions(String prefix, ArrayList<Entry> entries) {
+	private TreeSet<String> extractSuggestions(String prefix, ArrayList<DictionaryEntry> entries) {
 		TreeSet<String> suggestions = new TreeSet<String>();
-		for (Entry entry : entries) {
+		for (DictionaryEntry entry : entries) {
 			suggestions.addAll(getMatchingStrings(prefix, entry.getExpressions()));
 			suggestions.addAll(getMatchingStrings(prefix, entry.getReadings()));
 			for (Sense sense : entry.getSenses()) {

@@ -13,11 +13,11 @@ import org.junit.Test;
 
 public class SerializationTest {
 
-	private Entry entry;
+	private DictionaryEntry entry;
 
 	@Before
 	public void setUp() throws Exception {
-		entry = new Entry();
+		entry = new DictionaryEntry();
 		entry.setId(1153520);
 		entry.getExpressions().add("日本語");
 		entry.getReadings().add("にほんご");
@@ -52,24 +52,24 @@ public class SerializationTest {
 		return gloss;
 	}
 
-	private static byte[] serializeToByteArray(Entry entry) throws IOException {
+	private static byte[] serializeToByteArray(DictionaryEntry entry) throws IOException {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		ObjectOutputStream oos = new ObjectOutputStream(baos);
-		Entry.writeEntry(oos, entry);
+		DictionaryEntry.writeEntry(oos, entry);
 		oos.close();
 		return baos.toByteArray();
 	}
 
-	private Entry deserializeFromByteArray(byte[] bytes) throws IOException {
+	private DictionaryEntry deserializeFromByteArray(byte[] bytes) throws IOException {
 		ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
 		ObjectInputStream ois = new ObjectInputStream(bais);
-		return Entry.readEntry(ois);
+		return DictionaryEntry.readEntry(ois);
 	}
 
 	@Test
 	public void testSerialization() throws Exception {
 		byte[] bytes = serializeToByteArray(entry);
-		Entry newEntry = deserializeFromByteArray(bytes);
+		DictionaryEntry newEntry = deserializeFromByteArray(bytes);
 
 		assertNotNull(newEntry);
 		assertEquals(entry.getId(), newEntry.getId());

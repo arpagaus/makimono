@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.makimono.model.Dialect;
-import net.makimono.model.Entry;
+import net.makimono.model.DictionaryEntry;
 import net.makimono.model.FieldOfApplication;
 import net.makimono.model.Language;
 import net.makimono.model.Miscellaneous;
@@ -20,12 +20,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SearcherTest {
-	private Searcher searcher;
+public class DictionarySearcherTest {
+	private DictionarySearcher searcher;
 
 	@Before
 	public void setUp() throws Exception {
-		searcher = new Searcher(new File("res/indexes/dictionary"));
+		searcher = new DictionarySearcher(new File("res/indexes/dictionary"));
 	}
 
 	@After
@@ -36,7 +36,7 @@ public class SearcherTest {
 
 	@Test
 	public void searchEmpty() throws Exception {
-		List<Entry> entries;
+		List<DictionaryEntry> entries;
 
 		entries = searcher.search("");
 		assertTrue(entries.isEmpty());
@@ -52,75 +52,75 @@ public class SearcherTest {
 
 	@Test
 	public void getByDocId() throws Exception {
-		List<Entry> entries = searcher.search("Einkaufswagen");
+		List<DictionaryEntry> entries = searcher.search("Einkaufswagen");
 		assertEquals(1, entries.size());
 
-		Entry entry = entries.get(0);
+		DictionaryEntry entry = entries.get(0);
 		searcher.close();
-		searcher = new Searcher(new File("res/indexes/dictionary"));
+		searcher = new DictionarySearcher(new File("res/indexes/dictionary"));
 
-		Entry entryByDocId = searcher.getByDocId(entry.getDocId());
+		DictionaryEntry entryByDocId = searcher.getByDocId(entry.getDocId());
 
 		assertEquals(entry, entryByDocId);
 	}
 
 	@Test
 	public void searchEnglish() throws Exception {
-		List<Entry> entries = searcher.search("Himalaya");
+		List<DictionaryEntry> entries = searcher.search("Himalaya");
 		assertEquals(1, entries.size());
 
-		Entry entry = entries.get(0);
+		DictionaryEntry entry = entries.get(0);
 		assertEquals("ヒマラヤ", entry.getReadings().get(0));
 	}
 
 	@Test
 	public void searchGerman() throws Exception {
-		List<Entry> entries = searcher.search("Einkaufswagen");
+		List<DictionaryEntry> entries = searcher.search("Einkaufswagen");
 		assertEquals(1, entries.size());
 
-		Entry entry = entries.get(0);
+		DictionaryEntry entry = entries.get(0);
 		assertEquals("ショッピングカート", entry.getReadings().get(0));
 	}
 
 	@Test
 	public void searchFrench() throws Exception {
-		List<Entry> entries = searcher.search("parapluie");
+		List<DictionaryEntry> entries = searcher.search("parapluie");
 		assertFalse(entries.isEmpty());
 
-		Entry entry = entries.get(0);
+		DictionaryEntry entry = entries.get(0);
 		assertEquals("傘", entry.getExpressions().get(0));
 	}
 
 	@Test
 	public void searchRussian() throws Exception {
-		List<Entry> entries = searcher.search("горчица");
+		List<DictionaryEntry> entries = searcher.search("горчица");
 		assertFalse(entries.isEmpty());
 
-		Entry entry = entries.get(0);
+		DictionaryEntry entry = entries.get(0);
 		assertEquals("からし", entry.getReadings().get(0));
 	}
 
 	@Test
 	public void searchKatakana() throws Exception {
-		List<Entry> entries = searcher.search("ショッピングカート");
+		List<DictionaryEntry> entries = searcher.search("ショッピングカート");
 		assertEquals(1, entries.size());
 
-		Entry entry = entries.get(0);
+		DictionaryEntry entry = entries.get(0);
 		assertEquals("Einkaufswagen", entry.getSenses().get(0).getGlossString(Language.de).toString());
 	}
 
 	@Test
 	public void searchKanji() throws Exception {
-		List<Entry> entries = searcher.search("向日葵");
+		List<DictionaryEntry> entries = searcher.search("向日葵");
 		assertEquals(1, entries.size());
 
-		Entry entry = entries.get(0);
+		DictionaryEntry entry = entries.get(0);
 		assertEquals("sunflower (Helianthus annuus)", entry.getSenses().get(0).getGlossString(Language.en).toString());
 	}
 
 	@Test
 	public void testPartOfSpeech() throws Exception {
-		Entry entry = searchUniqueEntry("うみのいえ");
+		DictionaryEntry entry = searchUniqueEntry("うみのいえ");
 		assertEquals(1976570, entry.getId());
 		assertEquals(1, entry.getSenses().get(0).getPartsOfSpeech().size());
 		assertEquals(PartOfSpeech.JMdict_n, entry.getSenses().get(0).getPartsOfSpeech().iterator().next());
@@ -128,7 +128,7 @@ public class SearcherTest {
 
 	@Test
 	public void testMiscellaneous() throws Exception {
-		Entry entry = searchUniqueEntry("明かん");
+		DictionaryEntry entry = searchUniqueEntry("明かん");
 		assertEquals(1000230, entry.getId());
 		assertEquals(1, entry.getSenses().get(0).getMiscellaneous().size());
 		assertEquals(Miscellaneous.JMdict_uk, entry.getSenses().get(0).getMiscellaneous().iterator().next());
@@ -136,7 +136,7 @@ public class SearcherTest {
 
 	@Test
 	public void testFieldOfApplication() throws Exception {
-		Entry entry = searchUniqueEntry("アーカイバー");
+		DictionaryEntry entry = searchUniqueEntry("アーカイバー");
 		assertEquals(1013370, entry.getId());
 		assertEquals(1, entry.getSenses().get(0).getFieldsOfApplication().size());
 		assertEquals(FieldOfApplication.JMdict_comp, entry.getSenses().get(0).getFieldsOfApplication().iterator().next());
@@ -144,14 +144,14 @@ public class SearcherTest {
 
 	@Test
 	public void testDialect() throws Exception {
-		Entry entry = searchUniqueEntry("明かん");
+		DictionaryEntry entry = searchUniqueEntry("明かん");
 		assertEquals(1000230, entry.getId());
 		assertEquals(1, entry.getSenses().get(0).getDialects().size());
 		assertEquals(Dialect.JMdict_ksb, entry.getSenses().get(0).getDialects().iterator().next());
 	}
 
-	private Entry searchUniqueEntry(String queryString) throws IOException, ParseException {
-		List<Entry> entries = searcher.search(queryString);
+	private DictionaryEntry searchUniqueEntry(String queryString) throws IOException, ParseException {
+		List<DictionaryEntry> entries = searcher.search(queryString);
 		assertEquals(1, entries.size());
 		return entries.get(0);
 	}
@@ -225,7 +225,7 @@ public class SearcherTest {
 
 	@Test
 	public void testReadingRestriction() throws Exception {
-		Entry entry = searchUniqueEntry("打付ける");
+		DictionaryEntry entry = searchUniqueEntry("打付ける");
 
 		assertEquals(Arrays.asList("ぶつける", "ぶっつける", "うちつける", "ぶちつける"), entry.getReadings("打付ける"));
 		assertEquals(Arrays.asList("うちつける", "ぶちつける"), entry.getReadings("打ち付ける"));

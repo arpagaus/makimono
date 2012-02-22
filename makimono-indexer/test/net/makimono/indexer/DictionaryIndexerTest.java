@@ -4,7 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
-import net.makimono.model.Entry;
+import net.makimono.model.DictionaryEntry;
 
 import org.junit.Test;
 
@@ -12,7 +12,7 @@ import au.edu.monash.csse.jmdict.model.KEle;
 import au.edu.monash.csse.jmdict.model.REle;
 import au.edu.monash.csse.jmdict.model.ReRestr;
 
-public class IndexerTest {
+public class DictionaryIndexerTest {
 
 	@Test
 	public void testBoost() {
@@ -46,7 +46,7 @@ public class IndexerTest {
 		jmdictEntry.getREle().add(createREel("あかぎれ", "皹", "皸"));
 
 		DictionaryIndexer indexer = new DictionaryIndexer();
-		Entry entry = indexer.transformEntry(jmdictEntry);
+		DictionaryEntry entry = indexer.transformEntry(jmdictEntry);
 
 		assertEquals(Arrays.asList("ひび"), entry.getReadings("罅"));
 		assertEquals(Arrays.asList("ひび", "あかぎれ"), entry.getReadings("皹"));

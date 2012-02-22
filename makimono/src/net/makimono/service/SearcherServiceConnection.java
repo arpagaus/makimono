@@ -2,7 +2,7 @@ package net.makimono.service;
 
 import java.util.concurrent.CountDownLatch;
 
-import net.makimono.searcher.Searcher;
+import net.makimono.searcher.DictionarySearcher;
 import net.makimono.service.SearcherService.SearcherBinder;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
@@ -16,7 +16,7 @@ public class SearcherServiceConnection implements ServiceConnection {
 
 	private CountDownLatch lock = new CountDownLatch(1);
 
-	public Searcher getSearcher() {
+	public DictionarySearcher getSearcher() {
 		try {
 			lock.await();
 		} catch (InterruptedException e) {

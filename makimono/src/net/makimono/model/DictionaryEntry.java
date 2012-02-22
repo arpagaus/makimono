@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class Entry {
+public class DictionaryEntry {
 	private int id;
 	transient private int docId;
 	private ArrayList<String> expressions;
@@ -115,7 +115,7 @@ public class Entry {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Entry other = (Entry) obj;
+		DictionaryEntry other = (DictionaryEntry) obj;
 		if (expressions == null) {
 			if (other.expressions != null)
 				return false;
@@ -141,7 +141,7 @@ public class Entry {
 		return true;
 	}
 
-	public static void writeEntry(ObjectOutputStream outputStream, Entry entry) throws IOException {
+	public static void writeEntry(ObjectOutputStream outputStream, DictionaryEntry entry) throws IOException {
 		outputStream.writeInt(entry.getId());
 
 		outputStream.writeByte(entry.getExpressions().size());
@@ -171,8 +171,8 @@ public class Entry {
 		outputStream.flush();
 	}
 
-	public static Entry readEntry(ObjectInputStream inputStream) throws IOException {
-		Entry entry = new Entry();
+	public static DictionaryEntry readEntry(ObjectInputStream inputStream) throws IOException {
+		DictionaryEntry entry = new DictionaryEntry();
 		entry.id = inputStream.readInt();
 
 		entry.expressions = readStringList(inputStream);

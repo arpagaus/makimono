@@ -104,10 +104,10 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 		return document;
 	}
 
-	private byte[] getSerializedEntry(net.makimono.model.Entry entry) throws IOException {
+	private byte[] getSerializedEntry(net.makimono.model.DictionaryEntry entry) throws IOException {
 		ByteArrayOutputStream serializedBinary = new ByteArrayOutputStream();
 		ObjectOutputStream objectOutputStream = new ObjectOutputStream(serializedBinary);
-		net.makimono.model.Entry.writeEntry(objectOutputStream, entry);
+		net.makimono.model.DictionaryEntry.writeEntry(objectOutputStream, entry);
 		objectOutputStream.close();
 
 		return serializedBinary.toByteArray();
@@ -181,8 +181,8 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 		return -1;
 	}
 
-	net.makimono.model.Entry transformEntry(Entry jmdictEntry) throws Exception {
-		net.makimono.model.Entry entry = new net.makimono.model.Entry();
+	net.makimono.model.DictionaryEntry transformEntry(Entry jmdictEntry) throws Exception {
+		net.makimono.model.DictionaryEntry entry = new net.makimono.model.DictionaryEntry();
 		entry.setId(Integer.valueOf(jmdictEntry.getEntSeq()));
 
 		for (KEle kEle : jmdictEntry.getKEle()) {

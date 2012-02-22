@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import net.makimono.R;
 import net.makimono.adapter.SearchResultAdapter;
 import net.makimono.content.SearchSuggestionProvider;
-import net.makimono.model.Entry;
+import net.makimono.model.DictionaryEntry;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
 import android.app.SearchManager;
@@ -65,11 +65,11 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 
-			AsyncTask<String, Void, ArrayList<Entry>> task = new AsyncTask<String, Void, ArrayList<Entry>>() {
-				protected ArrayList<Entry> doInBackground(String... queries) {
+			AsyncTask<String, Void, ArrayList<DictionaryEntry>> task = new AsyncTask<String, Void, ArrayList<DictionaryEntry>>() {
+				protected ArrayList<DictionaryEntry> doInBackground(String... queries) {
 					try {
 						String query = queries[0];
-						ArrayList<Entry> entries = connection.getSearcher().search(query);
+						ArrayList<DictionaryEntry> entries = connection.getSearcher().search(query);
 						if (!entries.isEmpty()) {
 							SearchSuggestionProvider.getSearchRecentSuggestions(SearchActivity.this).saveRecentQuery(query, null);
 						}
@@ -80,7 +80,7 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 					}
 				}
 
-				protected void onPostExecute(ArrayList<Entry> entries) {
+				protected void onPostExecute(ArrayList<DictionaryEntry> entries) {
 					resultAdapter.updateEntries(entries);
 				}
 			};

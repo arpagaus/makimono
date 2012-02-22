@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.makimono.R;
-import net.makimono.model.Entry;
+import net.makimono.model.DictionaryEntry;
 import net.makimono.model.Language;
 import net.makimono.model.Sense;
 import net.makimono.service.SearcherService;
@@ -45,7 +45,7 @@ public class EntryActivity extends AbstractDefaultActivity {
 
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
 
-	private Entry entry;
+	private DictionaryEntry entry;
 
 	private AtomicInteger currentExpressionIndex = new AtomicInteger();
 	private AtomicInteger currentReadingIndex = new AtomicInteger();
@@ -179,8 +179,8 @@ public class EntryActivity extends AbstractDefaultActivity {
 
 	private void handleIntent(Intent intent) {
 		if (intent.hasExtra("DOC_ID")) {
-			AsyncTask<Integer, Void, Entry> task = new AsyncTask<Integer, Void, Entry>() {
-				protected Entry doInBackground(Integer... docIds) {
+			AsyncTask<Integer, Void, DictionaryEntry> task = new AsyncTask<Integer, Void, DictionaryEntry>() {
+				protected DictionaryEntry doInBackground(Integer... docIds) {
 					try {
 						return connection.getSearcher().getByDocId(docIds[0]);
 					} catch (IOException e) {
@@ -189,7 +189,7 @@ public class EntryActivity extends AbstractDefaultActivity {
 					}
 				}
 
-				protected void onPostExecute(Entry entry) {
+				protected void onPostExecute(DictionaryEntry entry) {
 					updateView(entry);
 				}
 			};
@@ -197,7 +197,7 @@ public class EntryActivity extends AbstractDefaultActivity {
 		}
 	}
 
-	private void updateView(Entry entry) {
+	private void updateView(DictionaryEntry entry) {
 		this.entry = entry;
 		currentExpressionIndex.set(0);
 		currentReadingIndex.set(0);

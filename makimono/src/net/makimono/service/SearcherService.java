@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import net.makimono.activity.PreferenceActivity;
 import net.makimono.model.Language;
-import net.makimono.searcher.Searcher;
+import net.makimono.searcher.DictionarySearcher;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,7 +20,7 @@ import android.util.Log;
 public class SearcherService extends Service {
 	private final static String LOG_TAG = SearcherService.class.getSimpleName();
 
-	private Searcher searcher;
+	private DictionarySearcher searcher;
 	private OnSharedPreferenceChangeListener preferenceChangeListener;
 
 	@Override
@@ -30,7 +30,7 @@ public class SearcherService extends Service {
 			String storageState = Environment.getExternalStorageState();
 			if (Environment.MEDIA_MOUNTED.equals(storageState) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(storageState)) {
 				File directory = new File(Environment.getExternalStorageDirectory(), "makimono/indexes/dictionary/");
-				searcher = new Searcher(directory);
+				searcher = new DictionarySearcher(directory);
 
 				updateSearcherLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 				preferenceChangeListener = new PreferenceChangeListener();
@@ -66,7 +66,7 @@ public class SearcherService extends Service {
 	}
 
 	public class SearcherBinder extends Binder {
-		public Searcher getSearcher() {
+		public DictionarySearcher getSearcher() {
 			return SearcherService.this.searcher;
 		}
 	}

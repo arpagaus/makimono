@@ -3,8 +3,8 @@ package net.makimono.util;
 import java.io.File;
 import java.util.List;
 
-import net.makimono.model.Entry;
-import net.makimono.searcher.Searcher;
+import net.makimono.model.DictionaryEntry;
+import net.makimono.searcher.DictionarySearcher;
 
 /**
  * <p>
@@ -28,9 +28,9 @@ public class SearcherUtil {
 		System.out.println("Searching for '" + query + "'");
 
 		long time = System.currentTimeMillis();
-		List<Entry> entries = new Searcher(new File(args[0])).search(query);
+		List<DictionaryEntry> entries = new DictionarySearcher(new File(args[0])).search(query);
 
-		for (Entry entry : entries) {
+		for (DictionaryEntry entry : entries) {
 			System.out.println(entry);
 		}
 
