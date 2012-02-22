@@ -4,6 +4,14 @@ public class Gloss {
 	private String value;
 	private Language language;
 
+	public Gloss() {
+	}
+
+	public Gloss(String value, Language language) {
+		this.value = value;
+		this.language = language;
+	}
+
 	public String getValue() {
 		return value;
 	}

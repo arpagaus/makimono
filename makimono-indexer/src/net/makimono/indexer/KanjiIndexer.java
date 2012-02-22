@@ -31,7 +31,7 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 	}
 
 	@Override
-	protected Document createDocument(au.edu.monash.csse.kanjidic.model.Character character) throws Exception {
+	public Document createDocument(au.edu.monash.csse.kanjidic.model.Character character) throws Exception {
 		ReadingMeaning rm = character.getReadingMeaning();
 		if (rm == null || rm.getRmgroup() == null || rm.getRmgroup().getMeaning().isEmpty() || rm.getRmgroup().getReading().isEmpty()) {
 			return null;
@@ -45,7 +45,7 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 		Document document = new Document();
 		String literal = String.valueOf(Character.toChars(codePoint));
 		document.add(new Field(KanjiDictionaryFields.LITERAL.name(), literal, Store.YES, Index.NOT_ANALYZED));
-		document.add(new Field(KanjiDictionaryFields.CODE_POINT.name(), String.valueOf(codePoint), Store.YES, Index.NO));
+		document.add(new Field(KanjiDictionaryFields.CODE_POINT.name(), ByteBuffer.allocate(4).putInt(codePoint).array()));
 
 		Byte strokeCount = character.getMisc().getStrokeCount().get(0);
 		document.add(new Field(KanjiDictionaryFields.STROKE_COUNT.name(), new byte[] { strokeCount }));
