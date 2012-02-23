@@ -16,7 +16,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.IndexSearcher;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
@@ -39,7 +38,7 @@ public class KanjiSearcher implements Closeable {
 		return indexSearcher;
 	}
 
-	public ArrayList<KanjiEntry> getKanjiEntries(String string) throws IOException, ParseException {
+	public ArrayList<KanjiEntry> getKanjiEntries(String string) throws IOException {
 		if (string == null || string.equals("")) {
 			return new ArrayList<KanjiEntry>(0);
 		}
@@ -56,7 +55,7 @@ public class KanjiSearcher implements Closeable {
 		return entries;
 	}
 
-	public KanjiEntry getKanjiEntry(String literal) throws IOException, ParseException {
+	public KanjiEntry getKanjiEntry(String literal) throws IOException {
 		TermQuery query = new TermQuery(new Term(KanjiDictionaryFields.LITERAL.name(), literal));
 
 		TopDocs topDocs = getIndexSearcher().search(query, 1);

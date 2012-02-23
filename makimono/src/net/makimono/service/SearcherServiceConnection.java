@@ -3,6 +3,7 @@ package net.makimono.service;
 import java.util.concurrent.CountDownLatch;
 
 import net.makimono.searcher.DictionarySearcher;
+import net.makimono.searcher.KanjiSearcher;
 import net.makimono.service.SearcherService.SearcherBinder;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
@@ -16,13 +17,22 @@ public class SearcherServiceConnection implements ServiceConnection {
 
 	private CountDownLatch lock = new CountDownLatch(1);
 
-	public DictionarySearcher getSearcher() {
+	public DictionarySearcher getDictionarySearcher() {
 		try {
 			lock.await();
 		} catch (InterruptedException e) {
 			Log.e(LOG_TAG, e.getMessage(), e);
 		}
-		return searcherBinder.getSearcher();
+		return searcherBinder.getDictionarySearcher();
+	}
+
+	public KanjiSearcher getKanjiSearcher() {
+		try {
+			lock.await();
+		} catch (InterruptedException e) {
+			Log.e(LOG_TAG, e.getMessage(), e);
+		}
+		return searcherBinder.getKanjiSearcher();
 	}
 
 	@Override

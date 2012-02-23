@@ -96,13 +96,34 @@
             android:orientation="vertical" />
 
         <TextView
-            android:id="@+id/entry_copyright"
+            android:id="@+id/entry_separator_kanjis"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/entry_translations"
-            android:layout_margin="10dp"
-            android:text="@string/entry_copyright"
-            android:textSize="10dp" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/kanjis"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/entry_separator_line_kanjis"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry_separator_kanjis"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/primary_separator"
+            android:minHeight="2dp" />
+
+        <LinearLayout
+            android:id="@+id/entry_kanjis"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry_separator_line_kanjis"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical" />
     </RelativeLayout>
 
 </ScrollView>

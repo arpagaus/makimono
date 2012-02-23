@@ -55,7 +55,7 @@ public class SearchSuggestionProvider extends SearchRecentSuggestionsProvider {
 	private Cursor queryDictionarySuggestions(String string) {
 		MatrixCursor cursor = new MatrixCursor(new String[] { SearchManager.SUGGEST_COLUMN_FORMAT, SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_QUERY, BaseColumns._ID });
 		try {
-			TreeSet<String> suggestions = connection.getSearcher().suggest(string);
+			TreeSet<String> suggestions = connection.getDictionarySearcher().suggest(string);
 			for (String s : suggestions) {
 				cursor.addRow(new Object[] { null, s, s, s.hashCode() });
 			}

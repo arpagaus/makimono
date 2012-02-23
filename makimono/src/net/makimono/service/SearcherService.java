@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import net.makimono.activity.PreferenceActivity;
 import net.makimono.model.Language;
 import net.makimono.searcher.DictionarySearcher;
+import net.makimono.searcher.KanjiSearcher;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,7 +21,9 @@ import android.util.Log;
 public class SearcherService extends Service {
 	private final static String LOG_TAG = SearcherService.class.getSimpleName();
 
-	private DictionarySearcher searcher;
+	private DictionarySearcher dictionarySearcher;
+	private KanjiSearcher kanjiSearcher;
+
 	private OnSharedPreferenceChangeListener preferenceChangeListener;
 
 	@Override
@@ -30,7 +33,10 @@ public class SearcherService extends Service {
 			String storageState = Environment.getExternalStorageState();
 			if (Environment.MEDIA_MOUNTED.equals(storageState) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(storageState)) {
 				File directory = new File(Environment.getExternalStorageDirectory(), "makimono/indexes/dictionary/");
-				searcher = new DictionarySearcher(directory);
+				dictionarySearcher = new DictionarySearcher(directory);
+
+				directory = new File(Environment.getExternalStorageDirectory(), "makimono/indexes/kanji/");
+				kanjiSearcher = new KanjiSearcher(directory);
 
 				updateSearcherLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 				preferenceChangeListener = new PreferenceChangeListener();
@@ -50,14 +56,23 @@ public class SearcherService extends Service {
 	}
 
 	private void closeSearcher() {
-		if (searcher != null) {
+		if (dictionarySearcher != null) {
 			try {
-				searcher.close();
+				dictionarySearcher.close();
 			} catch (IOException e) {
 				Log.e(LOG_TAG, "Failed to close searcher", e);
 			}
 		}
-		searcher = null;
+		dictionarySearcher = null;
+
+		if (kanjiSearcher != null) {
+			try {
+				kanjiSearcher.close();
+			} catch (IOException e) {
+				Log.e(LOG_TAG, "Failed to close searcher", e);
+			}
+		}
+		kanjiSearcher = null;
 	}
 
 	@Override
@@ -66,14 +81,18 @@ public class SearcherService extends Service {
 	}
 
 	public class SearcherBinder extends Binder {
-		public DictionarySearcher getSearcher() {
-			return SearcherService.this.searcher;
+		public DictionarySearcher getDictionarySearcher() {
+			return SearcherService.this.dictionarySearcher;
+		}
+
+		public KanjiSearcher getKanjiSearcher() {
+			return SearcherService.this.kanjiSearcher;
 		}
 	}
 
 	private void updateSearcherLanguages(SharedPreferences sharedPreferences) {
 		ArrayList<Language> languages = PreferenceActivity.getConfiguredLanguages(sharedPreferences);
-		searcher.setLanguages(languages);
+		dictionarySearcher.setLanguages(languages);
 	}
 
 	private class PreferenceChangeListener implements OnSharedPreferenceChangeListener {

@@ -69,7 +69,7 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 				protected ArrayList<DictionaryEntry> doInBackground(String... queries) {
 					try {
 						String query = queries[0];
-						ArrayList<DictionaryEntry> entries = connection.getSearcher().search(query);
+						ArrayList<DictionaryEntry> entries = connection.getDictionarySearcher().search(query);
 						if (!entries.isEmpty()) {
 							SearchSuggestionProvider.getSearchRecentSuggestions(SearchActivity.this).saveRecentQuery(query, null);
 						}

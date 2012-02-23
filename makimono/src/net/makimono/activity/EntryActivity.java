@@ -3,15 +3,21 @@ package net.makimono.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.makimono.R;
 import net.makimono.model.DictionaryEntry;
+import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
 import net.makimono.model.Sense;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,6 +28,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
@@ -55,6 +62,7 @@ public class EntryActivity extends AbstractDefaultActivity {
 	private TextSwitcher readingTextSwitcher;
 	private TextView readingAlternativeIndTextView;
 	private LinearLayout translationsGroupView;
+	private LinearLayout kanjisGroupView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -76,6 +84,7 @@ public class EntryActivity extends AbstractDefaultActivity {
 		readingTextSwitcher = createReadingTextSwitcher();
 		readingAlternativeIndTextView = createReadingAlternativeIndTextView();
 		translationsGroupView = (LinearLayout) findViewById(R.id.entry_translations);
+		kanjisGroupView = (LinearLayout) findViewById(R.id.entry_kanjis);
 	}
 
 	@Override
@@ -179,25 +188,31 @@ public class EntryActivity extends AbstractDefaultActivity {
 
 	private void handleIntent(Intent intent) {
 		if (intent.hasExtra("DOC_ID")) {
-			AsyncTask<Integer, Void, DictionaryEntry> task = new AsyncTask<Integer, Void, DictionaryEntry>() {
-				protected DictionaryEntry doInBackground(Integer... docIds) {
+			AsyncTask<Integer, Void, Pair<DictionaryEntry, HashSet<KanjiEntry>>> task = new AsyncTask<Integer, Void, Pair<DictionaryEntry, HashSet<KanjiEntry>>>() {
+				protected Pair<DictionaryEntry, HashSet<KanjiEntry>> doInBackground(Integer... docIds) {
 					try {
-						return connection.getSearcher().getByDocId(docIds[0]);
+						DictionaryEntry dictionaryEntry = connection.getDictionarySearcher().getByDocId(docIds[0]);
+
+						HashSet<KanjiEntry> kanjiEntries = new HashSet<KanjiEntry>();
+						for (String e : dictionaryEntry.getExpressions()) {
+							kanjiEntries.addAll(connection.getKanjiSearcher().getKanjiEntries(e));
+						}
+						return Pair.of(dictionaryEntry, kanjiEntries);
 					} catch (IOException e) {
 						Log.e(LOG_TAG, "Failed to get dictionary entry", e);
 						return null;
 					}
 				}
 
-				protected void onPostExecute(DictionaryEntry entry) {
-					updateView(entry);
+				protected void onPostExecute(Pair<DictionaryEntry, HashSet<KanjiEntry>> pair) {
+					updateView(pair.getLeft(), pair.getRight());
 				}
 			};
 			task.execute(intent.getExtras().getInt("DOC_ID"));
 		}
 	}
 
-	private void updateView(DictionaryEntry entry) {
+	private void updateView(DictionaryEntry entry, HashSet<KanjiEntry> kanjiEntries) {
 		this.entry = entry;
 		currentExpressionIndex.set(0);
 		currentReadingIndex.set(0);
@@ -224,6 +239,26 @@ public class EntryActivity extends AbstractDefaultActivity {
 			if (glossesCount > 0) {
 				addAdditionalInfo(sense);
 			}
+		}
+
+		LayoutInflater inflater = LayoutInflater.from(this);
+		kanjisGroupView.removeAllViews();
+		for (KanjiEntry k : kanjiEntries) {
+			if (kanjisGroupView.getChildCount() > 0) {
+				kanjisGroupView.addView(createSeparator());
+			}
+			View kanjiView = inflater.inflate(R.layout.search_result_entry, kanjisGroupView, false);
+			kanjiView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
+
+			TextView resultExpression = (TextView) kanjiView.findViewById(R.id.result_expression);
+			TextView resultReading = (TextView) kanjiView.findViewById(R.id.result_reading);
+			TextView resultGloss = (TextView) kanjiView.findViewById(R.id.result_translation);
+
+			resultExpression.setText(k.getLiteral());
+			resultReading.setText(StringUtils.join(StringUtils.join(k.getKunYomi(), ", "), StringUtils.join(k.getOnYomi(), ", "), " / "));
+			resultGloss.setText(StringUtils.join(k.getGlosses(), ", "));
+
+			kanjisGroupView.addView(kanjiView);
 		}
 	}
 
