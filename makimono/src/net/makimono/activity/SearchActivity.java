@@ -90,7 +90,7 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
-		Intent intent = new Intent(this, EntryActivity.class);
+		Intent intent = new Intent(this, DictionaryEntryActivity.class);
 		intent.putExtra("DOC_ID", (int) id);
 		startActivity(intent);
 	}

@@ -37,8 +37,8 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher.ViewFactory;
 
-public class EntryActivity extends AbstractDefaultActivity {
-	private static final String LOG_TAG = EntryActivity.class.getSimpleName();
+public class DictionaryEntryActivity extends AbstractDefaultActivity {
+	private static final String LOG_TAG = DictionaryEntryActivity.class.getSimpleName();
 
 	@SuppressWarnings("serial")
 	private static final Map<Language, Integer> LANGUAGE_ICONS = new HashMap<Language, Integer>() {
@@ -113,7 +113,7 @@ public class EntryActivity extends AbstractDefaultActivity {
 		readingTextSwitcher.setFactory(new ViewFactory() {
 			@Override
 			public View makeView() {
-				TextView textView = new TextView(EntryActivity.this);
+				TextView textView = new TextView(DictionaryEntryActivity.this);
 				textView.setTextColor(Color.GRAY);
 				return textView;
 			}
@@ -132,7 +132,7 @@ public class EntryActivity extends AbstractDefaultActivity {
 		expressionTextSwitcher.setFactory(new ViewFactory() {
 			@Override
 			public View makeView() {
-				TextView textView = new TextView(EntryActivity.this);
+				TextView textView = new TextView(DictionaryEntryActivity.this);
 				textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 32);
 				return textView;
 			}
