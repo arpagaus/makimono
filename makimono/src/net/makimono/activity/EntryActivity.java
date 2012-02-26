@@ -57,6 +57,8 @@ public class EntryActivity extends AbstractDefaultActivity {
 	private AtomicInteger currentExpressionIndex = new AtomicInteger();
 	private AtomicInteger currentReadingIndex = new AtomicInteger();
 
+	private LayoutInflater layoutInflater;
+
 	private TextSwitcher expressionTextSwitcher;
 	private TextView expressionAlternativeIndTextView;
 	private TextSwitcher readingTextSwitcher;
@@ -78,6 +80,8 @@ public class EntryActivity extends AbstractDefaultActivity {
 	}
 
 	private void initializeView() {
+		layoutInflater = LayoutInflater.from(this);
+
 		setContentView(R.layout.dictionary_entry);
 		expressionTextSwitcher = createExpressionTextSwitcher();
 		expressionAlternativeIndTextView = createExpressionAlternativeIndTextView();
@@ -241,25 +245,33 @@ public class EntryActivity extends AbstractDefaultActivity {
 			}
 		}
 
-		LayoutInflater inflater = LayoutInflater.from(this);
 		kanjisGroupView.removeAllViews();
-		for (KanjiEntry k : kanjiEntries) {
-			if (kanjisGroupView.getChildCount() > 0) {
-				kanjisGroupView.addView(createSeparator());
+		if (kanjiEntries.isEmpty()) {
+			findViewById(R.id.entry_separator_kanjis).setVisibility(View.GONE);
+			findViewById(R.id.entry_separator_line_kanjis).setVisibility(View.GONE);
+			kanjisGroupView.setVisibility(View.GONE);
+		} else {
+			for (KanjiEntry kanjiEntry : kanjiEntries) {
+				if (kanjisGroupView.getChildCount() > 0) {
+					kanjisGroupView.addView(createSeparator());
+				}
+				kanjisGroupView.addView(createKanjiView(kanjiEntry));
 			}
-			View kanjiView = inflater.inflate(R.layout.search_result_entry, kanjisGroupView, false);
-			kanjiView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
-
-			TextView resultExpression = (TextView) kanjiView.findViewById(R.id.result_expression);
-			TextView resultReading = (TextView) kanjiView.findViewById(R.id.result_reading);
-			TextView resultGloss = (TextView) kanjiView.findViewById(R.id.result_translation);
-
-			resultExpression.setText(k.getLiteral());
-			resultReading.setText(StringUtils.join(StringUtils.join(k.getKunYomi(), ", "), StringUtils.join(k.getOnYomi(), ", "), " / "));
-			resultGloss.setText(StringUtils.join(k.getGlosses(), ", "));
-
-			kanjisGroupView.addView(kanjiView);
 		}
+	}
+
+	private View createKanjiView(KanjiEntry kanjiEntry) {
+		View kanjiView = layoutInflater.inflate(R.layout.search_result_entry, kanjisGroupView, false);
+		kanjiView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
+
+		TextView resultExpression = (TextView) kanjiView.findViewById(R.id.result_expression);
+		TextView resultReading = (TextView) kanjiView.findViewById(R.id.result_reading);
+		TextView resultGloss = (TextView) kanjiView.findViewById(R.id.result_translation);
+
+		resultExpression.setText(kanjiEntry.getLiteral());
+		resultReading.setText(StringUtils.join(StringUtils.join(kanjiEntry.getKunYomi(), ", "), StringUtils.join(kanjiEntry.getOnYomi(), ", "), " / "));
+		resultGloss.setText(StringUtils.join(kanjiEntry.getGlosses(), ", "));
+		return kanjiView;
 	}
 
 	private View createSeparator() {
