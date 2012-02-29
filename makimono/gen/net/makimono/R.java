@@ -390,13 +390,20 @@ containing a value of this type.
         public static final int entry_separator_translations=0x7f050021;
         public static final int entry_translations=0x7f050023;
         public static final int homeAsUp=0x7f050006;
+        public static final int kanji_kun_yomi=0x7f05002d;
+        public static final int kanji_kun_yomi_label=0x7f05002c;
+        public static final int kanji_literal=0x7f050027;
+        public static final int kanji_on_yomi=0x7f05002b;
+        public static final int kanji_on_yomi_label=0x7f05002a;
+        public static final int kanji_readings_separator_line=0x7f050029;
+        public static final int kanji_readings_separator_text=0x7f050028;
         public static final int listMode=0x7f050002;
-        public static final int menu_preferences=0x7f05002b;
-        public static final int menu_search=0x7f05002a;
+        public static final int menu_preferences=0x7f050032;
+        public static final int menu_search=0x7f050031;
         public static final int normal=0x7f050001;
-        public static final int result_expression=0x7f050027;
-        public static final int result_reading=0x7f050028;
-        public static final int result_translation=0x7f050029;
+        public static final int result_expression=0x7f05002e;
+        public static final int result_reading=0x7f05002f;
+        public static final int result_translation=0x7f050030;
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
         public static final int showTitle=0x7f050007;
@@ -421,8 +428,9 @@ containing a value of this type.
         public static final int abs__simple_spinner_item=0x7f03000a;
         public static final int dictionary_entry=0x7f03000b;
         public static final int home_screen=0x7f03000c;
-        public static final int search_result=0x7f03000d;
-        public static final int search_result_entry=0x7f03000e;
+        public static final int kanji_entry=0x7f03000d;
+        public static final int search_result=0x7f03000e;
+        public static final int search_result_entry=0x7f03000f;
     }
     public static final class menu {
         public static final int actionbar=0x7f0c0000;
@@ -546,6 +554,7 @@ containing a value of this type.
         public static final int general=0x7f090074;
         public static final int kanjis=0x7f090078;
         public static final int languages=0x7f090075;
+        public static final int readings=0x7f090079;
         public static final int search=0x7f090072;
         public static final int settings=0x7f090076;
         public static final int translations=0x7f090073;

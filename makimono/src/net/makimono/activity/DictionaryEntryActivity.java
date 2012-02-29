@@ -1,6 +1,5 @@
 package net.makimono.activity;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.makimono.R;
+import net.makimono.listener.KanjiViewListener;
 import net.makimono.model.DictionaryEntry;
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
@@ -16,16 +16,13 @@ import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -38,7 +35,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher.ViewFactory;
 
 public class DictionaryEntryActivity extends AbstractDefaultActivity {
-	private static final String LOG_TAG = DictionaryEntryActivity.class.getSimpleName();
+	public static final String EXTRA_DOC_ID = DictionaryEntryActivity.class + ".EXTRA_DOC_ID";
 
 	@SuppressWarnings("serial")
 	private static final Map<Language, Integer> LANGUAGE_ICONS = new HashMap<Language, Integer>() {
@@ -50,7 +47,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		}
 	};
 
-	private SearcherServiceConnection connection = new SearcherServiceConnection();
+	SearcherServiceConnection connection = new SearcherServiceConnection();
 
 	private DictionaryEntry entry;
 
@@ -70,7 +67,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		bindSearcher();
-		initializeView();
+		initializeContentView();
 		handleIntent(getIntent());
 	}
 
@@ -79,7 +76,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		bindService(intent, connection, Context.BIND_AUTO_CREATE);
 	}
 
-	private void initializeView() {
+	private void initializeContentView() {
 		layoutInflater = LayoutInflater.from(this);
 
 		setContentView(R.layout.dictionary_entry);
@@ -191,32 +188,14 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	}
 
 	private void handleIntent(Intent intent) {
-		if (intent.hasExtra("DOC_ID")) {
-			AsyncTask<Integer, Void, Pair<DictionaryEntry, HashSet<KanjiEntry>>> task = new AsyncTask<Integer, Void, Pair<DictionaryEntry, HashSet<KanjiEntry>>>() {
-				protected Pair<DictionaryEntry, HashSet<KanjiEntry>> doInBackground(Integer... docIds) {
-					try {
-						DictionaryEntry dictionaryEntry = connection.getDictionarySearcher().getByDocId(docIds[0]);
-
-						HashSet<KanjiEntry> kanjiEntries = new HashSet<KanjiEntry>();
-						for (String e : dictionaryEntry.getExpressions()) {
-							kanjiEntries.addAll(connection.getKanjiSearcher().getKanjiEntries(e));
-						}
-						return Pair.of(dictionaryEntry, kanjiEntries);
-					} catch (IOException e) {
-						Log.e(LOG_TAG, "Failed to get dictionary entry", e);
-						return null;
-					}
-				}
-
-				protected void onPostExecute(Pair<DictionaryEntry, HashSet<KanjiEntry>> pair) {
-					updateView(pair.getLeft(), pair.getRight());
-				}
-			};
-			task.execute(intent.getExtras().getInt("DOC_ID"));
+		if (intent.hasExtra(EXTRA_DOC_ID)) {
+			int docId = intent.getExtras().getInt(EXTRA_DOC_ID);
+			DictionaryEntryTask task = new DictionaryEntryTask(this);
+			task.execute(docId);
 		}
 	}
 
-	private void updateView(DictionaryEntry entry, HashSet<KanjiEntry> kanjiEntries) {
+	void updateView(DictionaryEntry entry, HashSet<KanjiEntry> kanjiEntries) {
 		this.entry = entry;
 		currentExpressionIndex.set(0);
 		currentReadingIndex.set(0);
@@ -271,6 +250,8 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		resultExpression.setText(kanjiEntry.getLiteral());
 		resultReading.setText(StringUtils.join(StringUtils.join(kanjiEntry.getKunYomi(), ", "), StringUtils.join(kanjiEntry.getOnYomi(), ", "), " / "));
 		resultGloss.setText(StringUtils.join(kanjiEntry.getGlosses(), ", "));
+
+		kanjiView.setOnClickListener(new KanjiViewListener(this, kanjiEntry.getCodePoint()));
 		return kanjiView;
 	}
 
@@ -333,6 +314,5 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 	private int getPixelForDip(int dip) {
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) dip, getResources().getDisplayMetrics());
-
 	}
 }

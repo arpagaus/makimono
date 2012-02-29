@@ -34,6 +34,10 @@
         </activity>
         <activity android:name=".activity.DictionaryEntryActivity" >
         </activity>
+        <activity android:name=".activity.KanjiEntryActivity" >
+        </activity>
+        <activity android:name=".activity.PreferenceActivity" >
+        </activity>
 
         <meta-data
             android:name="android.app.default_searchable"
@@ -48,9 +52,6 @@
             android:name=".service.SearcherService"
             android:exported="false" >
         </service>
-
-        <activity android:name=".activity.PreferenceActivity" >
-        </activity>
     </application>
 
 </manifest>
