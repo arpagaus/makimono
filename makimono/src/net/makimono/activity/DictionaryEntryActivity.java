@@ -248,7 +248,10 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		TextView resultGloss = (TextView) kanjiView.findViewById(R.id.result_translation);
 
 		resultExpression.setText(kanjiEntry.getLiteral());
-		resultReading.setText(StringUtils.join(StringUtils.join(kanjiEntry.getKunYomi(), ", "), StringUtils.join(kanjiEntry.getOnYomi(), ", "), " / "));
+		String kunYomi = StringUtils.join(kanjiEntry.getKunYomi(), ", ");
+		String onYomi = StringUtils.join(kanjiEntry.getOnYomi(), ", ");
+		String separator = onYomi.length() > 0 && kunYomi.length() > 0 ? " / " : "";
+		resultReading.setText(kunYomi + separator + onYomi);
 		resultGloss.setText(StringUtils.join(kanjiEntry.getGlosses(), ", "));
 
 		kanjiView.setOnClickListener(new KanjiViewListener(this, kanjiEntry.getCodePoint()));
