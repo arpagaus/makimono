@@ -18,8 +18,8 @@
         android:layout_alignBottom="@id/result_expression"
         android:layout_marginLeft="12dp"
         android:layout_toRightOf="@id/result_expression"
-        android:ellipsize="end"
-        android:lines="1"
+        android:ellipsize="marquee"
+        android:singleLine="true"
         android:text="たとえば"
         android:textColor="@android:color/darker_gray"
         android:textSize="16dp" />
