@@ -564,8 +564,11 @@ containing a value of this type.
         public static final int settings=0x7f090075;
     }
     public static final class style {
+        public static final int EntryMainExpression=0x7f0b001f;
         public static final int Internal_Widget_Sherlock_ActionBar=0x7f0b001c;
         public static final int Internal_Widget_Sherlock_Light_ActionBar=0x7f0b001d;
+        public static final int SeparatorLine=0x7f0b0021;
+        public static final int SeparatorText=0x7f0b0020;
         public static final int TextAppearance_Widget_Subtitle=0x7f0b001b;
         public static final int TextAppearance_Widget_Title=0x7f0b001a;
         public static final int Theme_Sherlock=0x7f0b0000;

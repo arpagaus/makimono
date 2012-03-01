@@ -9,37 +9,21 @@
 
         <TextView
             android:id="@+id/kanji_literal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
+            style="@style/EntryMainExpression"
             android:textSize="48dp" />
 
         <!-- Readings -->
 
         <TextView
             android:id="@+id/kanji_readings_separator_text"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            style="@style/SeparatorText"
             android:layout_below="@id/kanji_literal"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/readings"
-            android:textStyle="bold" />
+            android:text="@string/readings" />
 
         <View
             android:id="@+id/kanji_readings_separator_line"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/kanji_readings_separator_text"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/primary_separator"
-            android:minHeight="2dp" />
+            style="@style/SeparatorLine"
+            android:layout_below="@id/kanji_readings_separator_text" />
 
         <TextView
             android:id="@+id/kanji_on_yomi_label"
@@ -81,24 +65,14 @@
 
         <TextView
             android:id="@+id/kanji_meanings_separator_text"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            style="@style/SeparatorText"
             android:layout_below="@id/kanji_kun_yomi_label"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:text="@string/meanings"
-            android:textStyle="bold" />
+            android:text="@string/meanings" />
 
         <View
             android:id="@+id/kanji_meanings_separator_line"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/kanji_meanings_separator_text"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@drawable/primary_separator"
-            android:minHeight="2dp" />
+            style="@style/SeparatorLine"
+            android:layout_below="@id/kanji_meanings_separator_text" />
 
         <LinearLayout
             android:id="@+id/kanji_meanings"
