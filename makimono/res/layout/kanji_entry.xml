@@ -83,6 +83,38 @@
             android:layout_alignBaseline="@id/kanji_kun_yomi_label"
             android:layout_margin="10dp"
             android:layout_toRightOf="@id/kanji_kun_yomi_label" />
+
+        <!-- Meanings -->
+
+        <TextView
+            android:id="@+id/kanji_meanings_separator_text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kanji_kun_yomi_label"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/meanings"
+            android:textStyle="bold" />
+
+        <View
+            android:id="@+id/kanji_meanings_separator_line"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kanji_meanings_separator_text"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/primary_separator"
+            android:minHeight="2dp" />
+
+        <LinearLayout
+            android:id="@+id/kanji_meanings"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kanji_meanings_separator_line"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical" />
     </RelativeLayout>
 
 </ScrollView>

@@ -351,12 +351,13 @@ containing a value of this type.
         public static final int ic_french=0x7f02002a;
         public static final int ic_german=0x7f02002b;
         public static final int ic_launcher=0x7f02002c;
-        public static final int ic_menu_camera=0x7f02002d;
-        public static final int ic_menu_preferences=0x7f02002e;
-        public static final int ic_menu_search_holo_light=0x7f02002f;
+        public static final int ic_menu_preferences=0x7f02002d;
+        public static final int ic_menu_search_holo_light=0x7f02002e;
+        public static final int ic_portugese=0x7f02002f;
         public static final int ic_russian=0x7f020030;
-        public static final int primary_separator=0x7f020031;
-        public static final int secondary_separator=0x7f020032;
+        public static final int ic_spanish=0x7f020031;
+        public static final int primary_separator=0x7f020032;
+        public static final int secondary_separator=0x7f020033;
     }
     public static final class id {
         public static final int abs__action_bar=0x7f05001b;
@@ -393,18 +394,21 @@ containing a value of this type.
         public static final int kanji_kun_yomi=0x7f05002e;
         public static final int kanji_kun_yomi_label=0x7f05002d;
         public static final int kanji_literal=0x7f050027;
+        public static final int kanji_meanings=0x7f050031;
+        public static final int kanji_meanings_separator_line=0x7f050030;
+        public static final int kanji_meanings_separator_text=0x7f05002f;
         public static final int kanji_on_yomi=0x7f05002b;
         public static final int kanji_on_yomi_label=0x7f05002a;
         public static final int kanji_readings_secondary_separator=0x7f05002c;
         public static final int kanji_readings_separator_line=0x7f050029;
         public static final int kanji_readings_separator_text=0x7f050028;
         public static final int listMode=0x7f050002;
-        public static final int menu_preferences=0x7f050033;
-        public static final int menu_search=0x7f050032;
+        public static final int menu_preferences=0x7f050036;
+        public static final int menu_search=0x7f050035;
         public static final int normal=0x7f050001;
-        public static final int result_expression=0x7f05002f;
-        public static final int result_reading=0x7f050030;
-        public static final int result_translation=0x7f050031;
+        public static final int result_expression=0x7f050032;
+        public static final int result_reading=0x7f050033;
+        public static final int result_translation=0x7f050034;
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
         public static final int showTitle=0x7f050007;
@@ -555,6 +559,7 @@ containing a value of this type.
         public static final int general=0x7f090074;
         public static final int kanjis=0x7f090078;
         public static final int languages=0x7f090075;
+        public static final int meanings=0x7f09007a;
         public static final int readings=0x7f090079;
         public static final int search=0x7f090072;
         public static final int settings=0x7f090076;

@@ -10,5 +10,6 @@
     <string name="entry_copyright">This software is based on material from the JMdict (EDICT, Wadoku, etc.) dictionary files in accordance with the licence provisions of the Electronic Dictionaries Research Group</string>
     <string name="kanjis">Kanjis</string>
     <string name="readings">Readings</string>
+    <string name="meanings">Meanings</string>
 
 </resources>
