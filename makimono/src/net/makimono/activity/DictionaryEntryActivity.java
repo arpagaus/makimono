@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.makimono.R;
 import net.makimono.listener.KanjiViewListener;
 import net.makimono.model.DictionaryEntry;
+import net.makimono.model.Gloss;
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
 import net.makimono.model.Sense;
@@ -271,7 +272,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 		int glossesCount = 0;
 		for (Language lang : languages) {
-			CharSequence gloss = sense.getGlossString(lang);
+			CharSequence gloss = Gloss.getGlossString(lang, sense.getGlosses());
 			if (gloss.length() > 0) {
 				TextView textView = new TextView(this);
 				textView.setText(gloss);

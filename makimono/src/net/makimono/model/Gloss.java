@@ -1,5 +1,7 @@
 package net.makimono.model;
 
+import java.util.Collection;
+
 public class Gloss {
 	private String value;
 	private Language language;
@@ -59,6 +61,19 @@ public class Gloss {
 		} else if (!value.equals(other.value))
 			return false;
 		return true;
+	}
+
+	public static CharSequence getGlossString(Language language, Collection<Gloss> glosses) {
+		StringBuilder builder = new StringBuilder();
+		for (Gloss g : glosses) {
+			if (g.getLanguage() == language) {
+				if (builder.length() > 0) {
+					builder.append(", ");
+				}
+				builder.append(g.getValue());
+			}
+		}
+		return builder;
 	}
 
 }

@@ -19,9 +19,14 @@
             android:title="French" />
         <CheckBoxPreference
             android:defaultValue="true"
-            android:icon="@drawable/ic_russian"
-            android:key="language_ru"
-            android:title="Russian" />
+            android:icon="@drawable/ic_spanish"
+            android:key="language_es"
+            android:title="Spanish" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_portugese"
+            android:key="language_pt"
+            android:title="Portugese" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/search" >
         <Preference

@@ -11,6 +11,7 @@ import java.util.Set;
 import net.makimono.model.Dialect;
 import net.makimono.model.DictionaryEntry;
 import net.makimono.model.FieldOfApplication;
+import net.makimono.model.Gloss;
 import net.makimono.model.Language;
 import net.makimono.model.Miscellaneous;
 import net.makimono.model.PartOfSpeech;
@@ -106,7 +107,7 @@ public class DictionarySearcherTest {
 		assertEquals(1, entries.size());
 
 		DictionaryEntry entry = entries.get(0);
-		assertEquals("Einkaufswagen", entry.getSenses().get(0).getGlossString(Language.de).toString());
+		assertEquals("Einkaufswagen", Gloss.getGlossString(Language.de, entry.getSenses().get(0).getGlosses()).toString());
 	}
 
 	@Test
@@ -115,7 +116,7 @@ public class DictionarySearcherTest {
 		assertEquals(1, entries.size());
 
 		DictionaryEntry entry = entries.get(0);
-		assertEquals("sunflower (Helianthus annuus)", entry.getSenses().get(0).getGlossString(Language.en).toString());
+		assertEquals("sunflower (Helianthus annuus)", Gloss.getGlossString(Language.en, entry.getSenses().get(0).getGlosses()).toString());
 	}
 
 	@Test

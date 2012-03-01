@@ -1,5 +1,6 @@
 package net.makimono.activity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.LinearLayout;
@@ -77,14 +79,18 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		kunYomiTextView.setText(StringUtils.join(entry.getKunYomi(), ", "));
 
 		meaningsGroupView.removeAllViews();
-		for (Gloss gloss : entry.getGlosses()) {
-			TextView textView = new TextView(this);
-			textView.setText(gloss.getValue());
-			textView.setCompoundDrawablesWithIntrinsicBounds(LANGUAGE_ICONS.get(gloss.getLanguage()), 0, 0, 0);
-			textView.setCompoundDrawablePadding(getPixelForDip(15));
-			textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
-			textView.setGravity(Gravity.CENTER_VERTICAL);
-			meaningsGroupView.addView(textView);
+		ArrayList<Language> languages = PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
+		for (Language language : languages) {
+			CharSequence gloss = Gloss.getGlossString(language, entry.getGlosses());
+			if (gloss.length() > 0) {
+				TextView textView = new TextView(this);
+				textView.setText(gloss);
+				textView.setCompoundDrawablesWithIntrinsicBounds(LANGUAGE_ICONS.get(language), 0, 0, 0);
+				textView.setCompoundDrawablePadding(getPixelForDip(15));
+				textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
+				textView.setGravity(Gravity.CENTER_VERTICAL);
+				meaningsGroupView.addView(textView);
+			}
 		}
 	}
 

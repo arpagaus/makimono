@@ -43,7 +43,7 @@ public class SenseTest {
 	@Test
 	public void getGlossString() throws Exception {
 		Sense sense = createSense();
-		CharSequence glossString = sense.getGlossString(Language.en);
+		CharSequence glossString = Gloss.getGlossString(Language.en, sense.getGlosses());
 		assertEquals("grapefruit, orange", glossString.toString());
 	}
 

@@ -57,19 +57,6 @@ public class Sense {
 		return "partsOfSpeech=" + partsOfSpeech + ", miscellaneous=" + miscellaneous + ", fieldsOfApplication=" + fieldsOfApplication + ", dialects=" + dialects + ", glosses=" + glosses + "";
 	}
 
-	public CharSequence getGlossString(Language language) {
-		StringBuilder builder = new StringBuilder();
-		for (Gloss g : glosses) {
-			if (g.getLanguage() == language) {
-				if (builder.length() > 0) {
-					builder.append(", ");
-				}
-				builder.append(g.getValue());
-			}
-		}
-		return builder;
-	}
-
 	public ArrayList<String> getAdditionalInfo() {
 		ArrayList<String> additionalInfo = new ArrayList<String>();
 		for (PartOfSpeech p : getPartsOfSpeech()) {

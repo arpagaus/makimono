@@ -20,6 +20,8 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
 	public static final String LANGUAGE_DE = "language_de";
 	public static final String LANGUAGE_FR = "language_fr";
 	public static final String LANGUAGE_RU = "language_ru";
+	public static final String LANGUAGE_ES = "language_es";
+	public static final String LANGUAGE_PT = "language_pt";
 
 	public static ArrayList<Language> getConfiguredLanguages(SharedPreferences preferences) {
 		ArrayList<Language> languages = new ArrayList<Language>();
@@ -34,6 +36,12 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
 		}
 		if (preferences.getBoolean(LANGUAGE_RU, true)) {
 			languages.add(Language.ru);
+		}
+		if (preferences.getBoolean(LANGUAGE_ES, true)) {
+			languages.add(Language.es);
+		}
+		if (preferences.getBoolean(LANGUAGE_PT, true)) {
+			languages.add(Language.pt);
 		}
 		Log.d(LOG_TAG, "languages=" + languages);
 		return languages;
