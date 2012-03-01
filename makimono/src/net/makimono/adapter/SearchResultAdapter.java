@@ -58,7 +58,7 @@ public class SearchResultAdapter extends BaseAdapter {
 		}
 		TextView resultExpression = (TextView) convertView.findViewById(R.id.result_expression);
 		TextView resultReading = (TextView) convertView.findViewById(R.id.result_reading);
-		TextView resultMeaning = (TextView) convertView.findViewById(R.id.entry_meanings);
+		TextView resultMeaning = (TextView) convertView.findViewById(R.id.result_meaning);
 
 		resultExpression.setText(getExpression(entries.get(position)));
 		resultReading.setText(getReading(entries.get(position)));
