@@ -1,8 +1,6 @@
 package net.makimono.activity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.makimono.R;
 import net.makimono.model.Gloss;
@@ -10,6 +8,7 @@ import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
+import net.makimono.util.IconResolver;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -24,18 +23,6 @@ import android.widget.TextView;
 
 public class KanjiEntryActivity extends AbstractDefaultActivity {
 	public static final String EXTRA_CODE_POINT = KanjiEntryActivity.class.getName() + ".EXTRA_CODE_POINT";
-
-	@SuppressWarnings("serial")
-	private static final Map<Language, Integer> LANGUAGE_ICONS = new HashMap<Language, Integer>() {
-		{
-			put(Language.en, R.drawable.ic_english);
-			put(Language.de, R.drawable.ic_german);
-			put(Language.fr, R.drawable.ic_french);
-			put(Language.ru, R.drawable.ic_russian);
-			put(Language.es, R.drawable.ic_spanish);
-			put(Language.pt, R.drawable.ic_portugese);
-		}
-	};
 
 	SearcherServiceConnection connection = new SearcherServiceConnection();
 
@@ -85,7 +72,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 			if (gloss.length() > 0) {
 				TextView textView = new TextView(this);
 				textView.setText(gloss);
-				textView.setCompoundDrawablesWithIntrinsicBounds(LANGUAGE_ICONS.get(language), 0, 0, 0);
+				textView.setCompoundDrawablesWithIntrinsicBounds(IconResolver.resolveIcon(language), 0, 0, 0);
 				textView.setCompoundDrawablePadding(getPixelForDip(15));
 				textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
 				textView.setGravity(Gravity.CENTER_VERTICAL);

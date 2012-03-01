@@ -1,9 +1,7 @@
 package net.makimono.activity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.makimono.R;
@@ -15,6 +13,7 @@ import net.makimono.model.Language;
 import net.makimono.model.Sense;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
+import net.makimono.util.IconResolver;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -37,16 +36,6 @@ import android.widget.ViewSwitcher.ViewFactory;
 
 public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	public static final String EXTRA_DOC_ID = DictionaryEntryActivity.class + ".EXTRA_DOC_ID";
-
-	@SuppressWarnings("serial")
-	private static final Map<Language, Integer> LANGUAGE_ICONS = new HashMap<Language, Integer>() {
-		{
-			put(Language.en, R.drawable.ic_english);
-			put(Language.de, R.drawable.ic_german);
-			put(Language.fr, R.drawable.ic_french);
-			put(Language.ru, R.drawable.ic_russian);
-		}
-	};
 
 	SearcherServiceConnection connection = new SearcherServiceConnection();
 
@@ -271,12 +260,12 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		ArrayList<Language> languages = PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 
 		int glossesCount = 0;
-		for (Language lang : languages) {
-			CharSequence gloss = Gloss.getGlossString(lang, sense.getGlosses());
+		for (Language language : languages) {
+			CharSequence gloss = Gloss.getGlossString(language, sense.getGlosses());
 			if (gloss.length() > 0) {
 				TextView textView = new TextView(this);
 				textView.setText(gloss);
-				textView.setCompoundDrawablesWithIntrinsicBounds(LANGUAGE_ICONS.get(lang), 0, 0, 0);
+				textView.setCompoundDrawablesWithIntrinsicBounds(IconResolver.resolveIcon(language), 0, 0, 0);
 				textView.setCompoundDrawablePadding(getPixelForDip(15));
 				textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
 				textView.setGravity(Gravity.CENTER_VERTICAL);
