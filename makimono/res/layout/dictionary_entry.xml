@@ -66,20 +66,20 @@
             android:textColor="@android:color/darker_gray" />
 
         <TextView
-            android:id="@+id/entry_separator_translations"
+            android:id="@+id/entry_separator_meanings"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/entry_reading"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:text="@string/translations"
+            android:text="@string/meanings"
             android:textStyle="bold" />
 
         <View
-            android:id="@+id/entry_separator_line_translations"
+            android:id="@+id/entry_separator_line_meanings"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/entry_separator_translations"
+            android:layout_below="@id/entry_separator_meanings"
             android:layout_marginBottom="10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
@@ -87,10 +87,10 @@
             android:minHeight="2dp" />
 
         <LinearLayout
-            android:id="@+id/entry_translations"
+            android:id="@+id/entry_meanings"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/entry_separator_line_translations"
+            android:layout_below="@id/entry_separator_line_meanings"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:orientation="vertical" />
@@ -99,7 +99,7 @@
             android:id="@+id/entry_separator_kanjis"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/entry_translations"
+            android:layout_below="@id/entry_meanings"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
             android:text="@string/kanjis"

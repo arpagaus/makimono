@@ -383,13 +383,13 @@ containing a value of this type.
         public static final int entry_expression=0x7f05001d;
         public static final int entry_expression_alternative_ind=0x7f05001e;
         public static final int entry_kanjis=0x7f050026;
+        public static final int entry_meanings=0x7f050023;
         public static final int entry_reading=0x7f05001f;
         public static final int entry_reading_alternative_ind=0x7f050020;
         public static final int entry_separator_kanjis=0x7f050024;
         public static final int entry_separator_line_kanjis=0x7f050025;
-        public static final int entry_separator_line_translations=0x7f050022;
-        public static final int entry_separator_translations=0x7f050021;
-        public static final int entry_translations=0x7f050023;
+        public static final int entry_separator_line_meanings=0x7f050022;
+        public static final int entry_separator_meanings=0x7f050021;
         public static final int homeAsUp=0x7f050006;
         public static final int kanji_kun_yomi=0x7f05002d;
         public static final int kanji_kun_yomi_label=0x7f05002c;
@@ -406,8 +406,8 @@ containing a value of this type.
         public static final int menu_search=0x7f050034;
         public static final int normal=0x7f050001;
         public static final int result_expression=0x7f050031;
+        public static final int result_meaning=0x7f050033;
         public static final int result_reading=0x7f050032;
-        public static final int result_translation=0x7f050033;
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
         public static final int showTitle=0x7f050007;
@@ -554,15 +554,14 @@ containing a value of this type.
         public static final int JMdict_vz=0x7f09005c;
         public static final int abs__tab_under_ab_tag=0x7f090000;
         public static final int app_name=0x7f090071;
-        public static final int entry_copyright=0x7f090077;
-        public static final int general=0x7f090074;
-        public static final int kanjis=0x7f090078;
-        public static final int languages=0x7f090075;
-        public static final int meanings=0x7f09007a;
-        public static final int readings=0x7f090079;
+        public static final int entry_copyright=0x7f090076;
+        public static final int general=0x7f090073;
+        public static final int kanjis=0x7f090077;
+        public static final int languages=0x7f090074;
+        public static final int meanings=0x7f090079;
+        public static final int readings=0x7f090078;
         public static final int search=0x7f090072;
-        public static final int settings=0x7f090076;
-        public static final int translations=0x7f090073;
+        public static final int settings=0x7f090075;
     }
     public static final class style {
         public static final int Internal_Widget_Sherlock_ActionBar=0x7f0b001c;

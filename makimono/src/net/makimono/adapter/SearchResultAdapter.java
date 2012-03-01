@@ -6,8 +6,8 @@ import java.util.List;
 import net.makimono.R;
 import net.makimono.activity.PreferenceActivity;
 import net.makimono.model.DictionaryEntry;
-import net.makimono.model.Meaning;
 import net.makimono.model.Language;
+import net.makimono.model.Meaning;
 import net.makimono.model.Sense;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -58,7 +58,7 @@ public class SearchResultAdapter extends BaseAdapter {
 		}
 		TextView resultExpression = (TextView) convertView.findViewById(R.id.result_expression);
 		TextView resultReading = (TextView) convertView.findViewById(R.id.result_reading);
-		TextView resultMeaning = (TextView) convertView.findViewById(R.id.result_translation);
+		TextView resultMeaning = (TextView) convertView.findViewById(R.id.entry_meanings);
 
 		resultExpression.setText(getExpression(entries.get(position)));
 		resultReading.setText(getReading(entries.get(position)));

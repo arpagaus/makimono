@@ -7,9 +7,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.makimono.R;
 import net.makimono.listener.KanjiViewListener;
 import net.makimono.model.DictionaryEntry;
-import net.makimono.model.Meaning;
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
+import net.makimono.model.Meaning;
 import net.makimono.model.Sense;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
@@ -50,7 +50,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	private TextView expressionAlternativeIndTextView;
 	private TextSwitcher readingTextSwitcher;
 	private TextView readingAlternativeIndTextView;
-	private LinearLayout translationsGroupView;
+	private LinearLayout meaningsGroupView;
 	private LinearLayout kanjisGroupView;
 
 	@Override
@@ -74,7 +74,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		expressionAlternativeIndTextView = createExpressionAlternativeIndTextView();
 		readingTextSwitcher = createReadingTextSwitcher();
 		readingAlternativeIndTextView = createReadingAlternativeIndTextView();
-		translationsGroupView = (LinearLayout) findViewById(R.id.entry_translations);
+		meaningsGroupView = (LinearLayout) findViewById(R.id.entry_meanings);
 		kanjisGroupView = (LinearLayout) findViewById(R.id.entry_kanjis);
 	}
 
@@ -203,10 +203,10 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		currentExpressionIndex.set(-1);
 		showNextExpression();
 
-		translationsGroupView.removeAllViews();
+		meaningsGroupView.removeAllViews();
 		for (Sense sense : entry.getSenses()) {
-			if (translationsGroupView.getChildCount() > 0) {
-				translationsGroupView.addView(createSeparator());
+			if (meaningsGroupView.getChildCount() > 0) {
+				meaningsGroupView.addView(createSeparator());
 			}
 			int meaningsCount = addMeanings(sense);
 			if (meaningsCount > 0) {
@@ -235,7 +235,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 		TextView resultExpression = (TextView) kanjiView.findViewById(R.id.result_expression);
 		TextView resultReading = (TextView) kanjiView.findViewById(R.id.result_reading);
-		TextView resultMeaning = (TextView) kanjiView.findViewById(R.id.result_translation);
+		TextView resultMeaning = (TextView) kanjiView.findViewById(R.id.result_meaning);
 
 		resultExpression.setText(kanjiEntry.getLiteral());
 		String kunYomi = StringUtils.join(kanjiEntry.getKunYomi(), ", ");
@@ -269,7 +269,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 				textView.setCompoundDrawablePadding(getPixelForDip(15));
 				textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
 				textView.setGravity(Gravity.CENTER_VERTICAL);
-				translationsGroupView.addView(textView);
+				meaningsGroupView.addView(textView);
 
 				meaningsCount++;
 			}
@@ -293,7 +293,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			textView.setTextColor(Color.GRAY);
 			textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
 			textView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-			translationsGroupView.addView(textView);
+			meaningsGroupView.addView(textView);
 		}
 	}
 

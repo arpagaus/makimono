@@ -25,7 +25,7 @@
         android:textSize="16dp" />
 
     <TextView
-        android:id="@+id/result_translation"
+        android:id="@+id/result_meaning"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/result_expression"
