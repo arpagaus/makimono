@@ -12,21 +12,21 @@ public class SenseTest {
 	private Sense createSense() {
 		Sense sense = new Sense();
 
-		Gloss glossGrapefruit = new Gloss();
-		glossGrapefruit.setLanguage(Language.en);
-		glossGrapefruit.setValue("grapefruit");
+		Meaning meaningGrapefruit = new Meaning();
+		meaningGrapefruit.setLanguage(Language.en);
+		meaningGrapefruit.setValue("grapefruit");
 
-		Gloss glossOrange = new Gloss();
-		glossOrange.setLanguage(Language.en);
-		glossOrange.setValue("orange");
+		Meaning meaningOrange = new Meaning();
+		meaningOrange.setLanguage(Language.en);
+		meaningOrange.setValue("orange");
 
-		Gloss glossPampelmuse = new Gloss();
-		glossPampelmuse.setLanguage(Language.de);
-		glossPampelmuse.setValue("orange");
+		Meaning meaningPampelmuse = new Meaning();
+		meaningPampelmuse.setLanguage(Language.de);
+		meaningPampelmuse.setValue("orange");
 
-		sense.getGlosses().add(glossGrapefruit);
-		sense.getGlosses().add(glossOrange);
-		sense.getGlosses().add(glossPampelmuse);
+		sense.getMeanings().add(meaningGrapefruit);
+		sense.getMeanings().add(meaningOrange);
+		sense.getMeanings().add(meaningPampelmuse);
 
 		sense.getPartsOfSpeech().add(PartOfSpeech.JMdict_n);
 		sense.getPartsOfSpeech().add(PartOfSpeech.JMdict_n_suf);
@@ -41,10 +41,10 @@ public class SenseTest {
 	}
 
 	@Test
-	public void getGlossString() throws Exception {
+	public void getMeaningString() throws Exception {
 		Sense sense = createSense();
-		CharSequence glossString = Gloss.getGlossString(Language.en, sense.getGlosses());
-		assertEquals("grapefruit, orange", glossString.toString());
+		CharSequence meaningString = Meaning.getMeaningString(Language.en, sense.getMeanings());
+		assertEquals("grapefruit, orange", meaningString.toString());
 	}
 
 	@Test

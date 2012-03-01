@@ -174,7 +174,7 @@ public class DictionarySearcher implements Closeable {
 			suggestions.addAll(getMatchingStrings(prefix, entry.getExpressions()));
 			suggestions.addAll(getMatchingStrings(prefix, entry.getReadings()));
 			for (Sense sense : entry.getSenses()) {
-				suggestions.addAll(getMatchingStrings(prefix, sense.getGlosses()));
+				suggestions.addAll(getMatchingStrings(prefix, sense.getMeanings()));
 			}
 		}
 		return suggestions;

@@ -3,7 +3,7 @@ package net.makimono.activity;
 import java.util.ArrayList;
 
 import net.makimono.R;
-import net.makimono.model.Gloss;
+import net.makimono.model.Meaning;
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
 import net.makimono.service.SearcherService;
@@ -68,10 +68,10 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		meaningsGroupView.removeAllViews();
 		ArrayList<Language> languages = PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 		for (Language language : languages) {
-			CharSequence gloss = Gloss.getGlossString(language, entry.getGlosses());
-			if (gloss.length() > 0) {
+			CharSequence meaning = Meaning.getMeaningString(language, entry.getMeanings());
+			if (meaning.length() > 0) {
 				TextView textView = new TextView(this);
-				textView.setText(gloss);
+				textView.setText(meaning);
 				textView.setCompoundDrawablesWithIntrinsicBounds(IconResolver.resolveIcon(language), 0, 0, 0);
 				textView.setCompoundDrawablePadding(getPixelForDip(15));
 				textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));

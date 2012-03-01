@@ -8,7 +8,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.makimono.model.Gloss;
+import net.makimono.model.Meaning;
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
 
@@ -79,20 +79,20 @@ public class KanjiSearcher implements Closeable {
 			entry.getKunYomi().add(f.stringValue());
 		}
 
-		entry.getGlosses().addAll(getGlosses(document.getFieldables(KanjiDictionaryFields.MEANING_EN.name()), Language.en));
-		entry.getGlosses().addAll(getGlosses(document.getFieldables(KanjiDictionaryFields.MEANING_FR.name()), Language.fr));
-		entry.getGlosses().addAll(getGlosses(document.getFieldables(KanjiDictionaryFields.MEANING_ES.name()), Language.es));
-		entry.getGlosses().addAll(getGlosses(document.getFieldables(KanjiDictionaryFields.MEANING_PT.name()), Language.pt));
+		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiDictionaryFields.MEANING_EN.name()), Language.en));
+		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiDictionaryFields.MEANING_FR.name()), Language.fr));
+		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiDictionaryFields.MEANING_ES.name()), Language.es));
+		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiDictionaryFields.MEANING_PT.name()), Language.pt));
 
 		return entry;
 	}
 
-	private List<? extends Gloss> getGlosses(Fieldable[] fieldables, Language lang) {
-		ArrayList<Gloss> glosses = new ArrayList<Gloss>();
+	private List<? extends Meaning> getMeanings(Fieldable[] fieldables, Language lang) {
+		ArrayList<Meaning> meanings = new ArrayList<Meaning>();
 		for (Fieldable f : fieldables) {
-			glosses.add(new Gloss(f.stringValue(), lang));
+			meanings.add(new Meaning(f.stringValue(), lang));
 		}
-		return glosses;
+		return meanings;
 	}
 
 	public void close() throws IOException {

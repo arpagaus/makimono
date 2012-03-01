@@ -10,7 +10,7 @@ public class KanjiEntry {
 	private byte strokeCount;
 	private ArrayList<String> onYomi;
 	private ArrayList<String> kunYomi;
-	private ArrayList<Gloss> glosses;
+	private ArrayList<Meaning> meanings;
 
 	public String getLiteral() {
 		return literal;
@@ -67,11 +67,11 @@ public class KanjiEntry {
 		this.kunYomi = kunYomi;
 	}
 
-	public ArrayList<Gloss> getGlosses() {
-		if (glosses == null) {
-			glosses = new ArrayList<Gloss>();
+	public ArrayList<Meaning> getMeanings() {
+		if (meanings == null) {
+			meanings = new ArrayList<Meaning>();
 		}
-		return glosses;
+		return meanings;
 	}
 
 	@Override

@@ -37,19 +37,19 @@ public class SerializationTest {
 
 		entry.getSenses().add(sense);
 
-		sense.getGlosses().add(createGloss("(hard) candy", Language.en));
-		sense.getGlosses().add(createGloss("toffee", Language.en));
-		sense.getGlosses().add(createGloss("bonbon", Language.fr));
-		sense.getGlosses().add(createGloss("sucrerie", Language.fr));
-		sense.getGlosses().add(createGloss("Bonbon", Language.de));
-		sense.getGlosses().add(createGloss("Verlockung", Language.de));
+		sense.getMeanings().add(createMeaning("(hard) candy", Language.en));
+		sense.getMeanings().add(createMeaning("toffee", Language.en));
+		sense.getMeanings().add(createMeaning("bonbon", Language.fr));
+		sense.getMeanings().add(createMeaning("sucrerie", Language.fr));
+		sense.getMeanings().add(createMeaning("Bonbon", Language.de));
+		sense.getMeanings().add(createMeaning("Verlockung", Language.de));
 	}
 
-	private Gloss createGloss(String value, Language language) {
-		Gloss gloss = new Gloss();
-		gloss.setLanguage(language);
-		gloss.setValue(value);
-		return gloss;
+	private Meaning createMeaning(String value, Language language) {
+		Meaning meaning = new Meaning();
+		meaning.setLanguage(language);
+		meaning.setValue(value);
+		return meaning;
 	}
 
 	private static byte[] serializeToByteArray(DictionaryEntry entry) throws IOException {

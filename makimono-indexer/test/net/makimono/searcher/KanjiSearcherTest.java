@@ -12,7 +12,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import net.makimono.indexer.KanjiIndexer;
-import net.makimono.model.Gloss;
+import net.makimono.model.Meaning;
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
 
@@ -56,27 +56,27 @@ public class KanjiSearcherTest {
 		assertEquals(asArrayList("ゴ"), entry.getOnYomi());
 		assertEquals(asArrayList("かた.る", "かた.らう"), entry.getKunYomi());
 
-		ArrayList<Gloss> glosses = entry.getGlosses();
-		assertTrue(glosses.contains(new Gloss("word", Language.en)));
-		assertTrue(glosses.contains(new Gloss("speech", Language.en)));
-		assertTrue(glosses.contains(new Gloss("language", Language.en)));
+		ArrayList<Meaning> meanings = entry.getMeanings();
+		assertTrue(meanings.contains(new Meaning("word", Language.en)));
+		assertTrue(meanings.contains(new Meaning("speech", Language.en)));
+		assertTrue(meanings.contains(new Meaning("language", Language.en)));
 
-		assertTrue(glosses.contains(new Gloss("langage", Language.fr)));
-		assertTrue(glosses.contains(new Gloss("mot", Language.fr)));
-		assertTrue(glosses.contains(new Gloss("raconter", Language.fr)));
+		assertTrue(meanings.contains(new Meaning("langage", Language.fr)));
+		assertTrue(meanings.contains(new Meaning("mot", Language.fr)));
+		assertTrue(meanings.contains(new Meaning("raconter", Language.fr)));
 
-		assertTrue(glosses.contains(new Gloss("palabra", Language.es)));
-		assertTrue(glosses.contains(new Gloss("discurso", Language.es)));
-		assertTrue(glosses.contains(new Gloss("lenguaje", Language.es)));
-		assertTrue(glosses.contains(new Gloss("hablar", Language.es)));
-		assertTrue(glosses.contains(new Gloss("conversar", Language.es)));
-		assertTrue(glosses.contains(new Gloss("narrar", Language.es)));
+		assertTrue(meanings.contains(new Meaning("palabra", Language.es)));
+		assertTrue(meanings.contains(new Meaning("discurso", Language.es)));
+		assertTrue(meanings.contains(new Meaning("lenguaje", Language.es)));
+		assertTrue(meanings.contains(new Meaning("hablar", Language.es)));
+		assertTrue(meanings.contains(new Meaning("conversar", Language.es)));
+		assertTrue(meanings.contains(new Meaning("narrar", Language.es)));
 
-		assertTrue(glosses.contains(new Gloss("palavra", Language.pt)));
-		assertTrue(glosses.contains(new Gloss("discurso", Language.pt)));
-		assertTrue(glosses.contains(new Gloss("língua", Language.pt)));
+		assertTrue(meanings.contains(new Meaning("palavra", Language.pt)));
+		assertTrue(meanings.contains(new Meaning("discurso", Language.pt)));
+		assertTrue(meanings.contains(new Meaning("língua", Language.pt)));
 
-		assertEquals(15, glosses.size());
+		assertEquals(15, meanings.size());
 	}
 
 	private static ArrayList<String> asArrayList(String... string) {

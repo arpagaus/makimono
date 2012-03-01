@@ -6,7 +6,7 @@ import java.util.List;
 import net.makimono.R;
 import net.makimono.activity.PreferenceActivity;
 import net.makimono.model.DictionaryEntry;
-import net.makimono.model.Gloss;
+import net.makimono.model.Meaning;
 import net.makimono.model.Language;
 import net.makimono.model.Sense;
 import android.content.Context;
@@ -58,11 +58,11 @@ public class SearchResultAdapter extends BaseAdapter {
 		}
 		TextView resultExpression = (TextView) convertView.findViewById(R.id.result_expression);
 		TextView resultReading = (TextView) convertView.findViewById(R.id.result_reading);
-		TextView resultGloss = (TextView) convertView.findViewById(R.id.result_translation);
+		TextView resultMeaning = (TextView) convertView.findViewById(R.id.result_translation);
 
 		resultExpression.setText(getExpression(entries.get(position)));
 		resultReading.setText(getReading(entries.get(position)));
-		resultGloss.setText(getGloss(entries.get(position)));
+		resultMeaning.setText(getMeaning(entries.get(position)));
 		return convertView;
 	}
 
@@ -82,19 +82,19 @@ public class SearchResultAdapter extends BaseAdapter {
 		}
 	}
 
-	private CharSequence getGloss(DictionaryEntry entry) {
-		StringBuilder gloss = new StringBuilder();
+	private CharSequence getMeaning(DictionaryEntry entry) {
+		StringBuilder meaning = new StringBuilder();
 		for (Sense s : entry.getSenses()) {
-			for (Gloss g : s.getGlosses()) {
+			for (Meaning g : s.getMeanings()) {
 				if (languages.contains(g.getLanguage())) {
-					if (gloss.length() > 0) {
-						gloss.append(", ");
+					if (meaning.length() > 0) {
+						meaning.append(", ");
 					}
-					gloss.append(g.getValue());
+					meaning.append(g.getValue());
 				}
 			}
 		}
-		return gloss.toString();
+		return meaning.toString();
 	}
 
 	public void updateEntries(ArrayList<DictionaryEntry> entries) {

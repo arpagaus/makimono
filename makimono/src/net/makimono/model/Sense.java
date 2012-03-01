@@ -13,7 +13,7 @@ public class Sense {
 	private TreeSet<FieldOfApplication> fieldsOfApplication;
 	private TreeSet<Dialect> dialects;
 
-	private ArrayList<Gloss> glosses;
+	private ArrayList<Meaning> meanings;
 
 	public TreeSet<PartOfSpeech> getPartsOfSpeech() {
 		if (partsOfSpeech == null) {
@@ -45,16 +45,16 @@ public class Sense {
 		return dialects;
 	}
 
-	public ArrayList<Gloss> getGlosses() {
-		if (glosses == null) {
-			glosses = new ArrayList<Gloss>();
+	public ArrayList<Meaning> getMeanings() {
+		if (meanings == null) {
+			meanings = new ArrayList<Meaning>();
 		}
-		return glosses;
+		return meanings;
 	}
 
 	@Override
 	public String toString() {
-		return "partsOfSpeech=" + partsOfSpeech + ", miscellaneous=" + miscellaneous + ", fieldsOfApplication=" + fieldsOfApplication + ", dialects=" + dialects + ", glosses=" + glosses + "";
+		return "partsOfSpeech=" + partsOfSpeech + ", miscellaneous=" + miscellaneous + ", fieldsOfApplication=" + fieldsOfApplication + ", dialects=" + dialects + ", meanings=" + meanings + "";
 	}
 
 	public ArrayList<String> getAdditionalInfo() {
@@ -80,7 +80,7 @@ public class Sense {
 		int result = 1;
 		result = prime * result + ((dialects == null) ? 0 : dialects.hashCode());
 		result = prime * result + ((fieldsOfApplication == null) ? 0 : fieldsOfApplication.hashCode());
-		result = prime * result + ((glosses == null) ? 0 : glosses.hashCode());
+		result = prime * result + ((meanings == null) ? 0 : meanings.hashCode());
 		result = prime * result + ((miscellaneous == null) ? 0 : miscellaneous.hashCode());
 		result = prime * result + ((partsOfSpeech == null) ? 0 : partsOfSpeech.hashCode());
 		return result;
@@ -105,10 +105,10 @@ public class Sense {
 				return false;
 		} else if (!fieldsOfApplication.equals(other.fieldsOfApplication))
 			return false;
-		if (glosses == null) {
-			if (other.glosses != null)
+		if (meanings == null) {
+			if (other.meanings != null)
 				return false;
-		} else if (!glosses.equals(other.glosses))
+		} else if (!meanings.equals(other.meanings))
 			return false;
 		if (miscellaneous == null) {
 			if (other.miscellaneous != null)
@@ -144,8 +144,8 @@ public class Sense {
 			outputStream.writeByte(f.ordinal());
 		}
 
-		outputStream.writeByte(sense.getGlosses().size());
-		for (Gloss g : sense.getGlosses()) {
+		outputStream.writeByte(sense.getMeanings().size());
+		for (Meaning g : sense.getMeanings()) {
 			outputStream.writeByte(g.getLanguage().ordinal());
 			outputStream.writeUTF(g.getValue());
 		}
@@ -174,12 +174,12 @@ public class Sense {
 			sense.getFieldsOfApplication().add(FieldOfApplication.values()[inputStream.readByte()]);
 		}
 
-		byte glossCount = inputStream.readByte();
-		for (byte i = 0; i < glossCount; i++) {
-			Gloss g = new Gloss();
+		byte meaningCount = inputStream.readByte();
+		for (byte i = 0; i < meaningCount; i++) {
+			Meaning g = new Meaning();
 			g.setLanguage(Language.values()[inputStream.readByte()]);
 			g.setValue(inputStream.readUTF());
-			sense.getGlosses().add(g);
+			sense.getMeanings().add(g);
 		}
 		return sense;
 	}

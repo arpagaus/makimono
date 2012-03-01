@@ -2,14 +2,14 @@ package net.makimono.model;
 
 import java.util.Collection;
 
-public class Gloss {
+public class Meaning {
 	private String value;
 	private Language language;
 
-	public Gloss() {
+	public Meaning() {
 	}
 
-	public Gloss(String value, Language language) {
+	public Meaning(String value, Language language) {
 		this.value = value;
 		this.language = language;
 	}
@@ -52,7 +52,7 @@ public class Gloss {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Gloss other = (Gloss) obj;
+		Meaning other = (Meaning) obj;
 		if (language != other.language)
 			return false;
 		if (value == null) {
@@ -63,9 +63,9 @@ public class Gloss {
 		return true;
 	}
 
-	public static CharSequence getGlossString(Language language, Collection<Gloss> glosses) {
+	public static CharSequence getMeaningString(Language language, Collection<Meaning> meanings) {
 		StringBuilder builder = new StringBuilder();
-		for (Gloss g : glosses) {
+		for (Meaning g : meanings) {
 			if (g.getLanguage() == language) {
 				if (builder.length() > 0) {
 					builder.append(", ");

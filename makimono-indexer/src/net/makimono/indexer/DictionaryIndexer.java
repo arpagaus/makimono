@@ -84,17 +84,17 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 
 		for (Sense sense : entry.getSense()) {
 			for (Gloss gloss : sense.getGloss()) {
-				String glossValue = cleanGloss(gloss.getvalue());
-				gloss.setvalue(glossValue);
+				String meaningValue = cleanMeaning(gloss.getvalue());
+				gloss.setvalue(meaningValue);
 
-				glossValue = glossValue.replaceAll("\\(.*\\)", "");
-				glossValue = glossValue.toLowerCase();
+				meaningValue = meaningValue.replaceAll("\\(.*\\)", "");
+				meaningValue = meaningValue.toLowerCase();
 
 				String lang = gloss.getXmlLang().toUpperCase();
 				languageCount.put(lang, (languageCount.get(lang) == null ? 0 : languageCount.get(lang)) + 1);
 
-				document.add(new Field("SENSE_" + lang, glossValue, Store.NO, Index.NOT_ANALYZED));
-				document.add(new Field("SENSE_ANALYZED_" + lang, glossValue, Store.NO, Index.ANALYZED));
+				document.add(new Field("SENSE_" + lang, meaningValue, Store.NO, Index.NOT_ANALYZED));
+				document.add(new Field("SENSE_ANALYZED_" + lang, meaningValue, Store.NO, Index.ANALYZED));
 			}
 		}
 
@@ -113,7 +113,7 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 		return serializedBinary.toByteArray();
 	}
 
-	private String cleanGloss(String value) {
+	private String cleanMeaning(String value) {
 		return value.replace("(n) ", "");
 	}
 
@@ -210,12 +210,12 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 			sense.getMiscellaneous().addAll(transformEnum(Miscellaneous.class, jmdictSense.getMisc()));
 			sense.getFieldsOfApplication().addAll(transformEnum(FieldOfApplication.class, jmdictSense.getField()));
 
-			for (Gloss jmdictGloss : jmdictSense.getGloss()) {
-				net.makimono.model.Gloss gloss = new net.makimono.model.Gloss();
-				gloss.setLanguage(Language.valueOf(jmdictGloss.getXmlLang()));
-				gloss.setValue(jmdictGloss.getvalue());
+			for (Gloss gloss : jmdictSense.getGloss()) {
+				net.makimono.model.Meaning meaning = new net.makimono.model.Meaning();
+				meaning.setLanguage(Language.valueOf(gloss.getXmlLang()));
+				meaning.setValue(gloss.getvalue());
 
-				sense.getGlosses().add(gloss);
+				sense.getMeanings().add(meaning);
 			}
 		}
 

@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.makimono.R;
 import net.makimono.listener.KanjiViewListener;
 import net.makimono.model.DictionaryEntry;
-import net.makimono.model.Gloss;
+import net.makimono.model.Meaning;
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
 import net.makimono.model.Sense;
@@ -208,8 +208,8 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			if (translationsGroupView.getChildCount() > 0) {
 				translationsGroupView.addView(createSeparator());
 			}
-			int glossesCount = addGlosses(sense);
-			if (glossesCount > 0) {
+			int meaningsCount = addMeanings(sense);
+			if (meaningsCount > 0) {
 				addAdditionalInfo(sense);
 			}
 		}
@@ -235,14 +235,14 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 		TextView resultExpression = (TextView) kanjiView.findViewById(R.id.result_expression);
 		TextView resultReading = (TextView) kanjiView.findViewById(R.id.result_reading);
-		TextView resultGloss = (TextView) kanjiView.findViewById(R.id.result_translation);
+		TextView resultMeaning = (TextView) kanjiView.findViewById(R.id.result_translation);
 
 		resultExpression.setText(kanjiEntry.getLiteral());
 		String kunYomi = StringUtils.join(kanjiEntry.getKunYomi(), ", ");
 		String onYomi = StringUtils.join(kanjiEntry.getOnYomi(), ", ");
 		String separator = onYomi.length() > 0 && kunYomi.length() > 0 ? " / " : "";
 		resultReading.setText(kunYomi + separator + onYomi);
-		resultGloss.setText(StringUtils.join(kanjiEntry.getGlosses(), ", "));
+		resultMeaning.setText(StringUtils.join(kanjiEntry.getMeanings(), ", "));
 
 		kanjiView.setOnClickListener(new KanjiViewListener(this, kanjiEntry.getCodePoint()));
 		return kanjiView;
@@ -256,25 +256,25 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		return separator;
 	}
 
-	private int addGlosses(Sense sense) {
+	private int addMeanings(Sense sense) {
 		ArrayList<Language> languages = PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 
-		int glossesCount = 0;
+		int meaningsCount = 0;
 		for (Language language : languages) {
-			CharSequence gloss = Gloss.getGlossString(language, sense.getGlosses());
-			if (gloss.length() > 0) {
+			CharSequence meaning = Meaning.getMeaningString(language, sense.getMeanings());
+			if (meaning.length() > 0) {
 				TextView textView = new TextView(this);
-				textView.setText(gloss);
+				textView.setText(meaning);
 				textView.setCompoundDrawablesWithIntrinsicBounds(IconResolver.resolveIcon(language), 0, 0, 0);
 				textView.setCompoundDrawablePadding(getPixelForDip(15));
 				textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
 				textView.setGravity(Gravity.CENTER_VERTICAL);
 				translationsGroupView.addView(textView);
 
-				glossesCount++;
+				meaningsCount++;
 			}
 		}
-		return glossesCount;
+		return meaningsCount;
 	}
 
 	private void addAdditionalInfo(Sense sense) {
