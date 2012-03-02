@@ -1,6 +1,7 @@
 package net.makimono.activity;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -188,8 +190,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 				DictionaryEntry entry = DictionaryEntry.readEntry(new ObjectInputStream(in));
 				updateView(entry);
 
-				DictionaryEntryTask task = new DictionaryEntryTask(this);
-				task.execute(entry);
+				new LoadKanjiEntriesTask().execute(entry);
 			} catch (Exception e) {
 				Log.e(DictionaryEntryActivity.class.getSimpleName(), "Failed to deserialize entry", e);
 			}
@@ -226,7 +227,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		}
 	}
 
-	void updateKanjisView(HashSet<KanjiEntry> kanjiEntries) {
+	private void updateKanjisView(HashSet<KanjiEntry> kanjiEntries) {
 		kanjisGroupView.removeAllViews();
 		if (kanjiEntries.isEmpty()) {
 			findViewById(R.id.entry_separator_kanjis).setVisibility(View.GONE);
@@ -314,5 +315,27 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 	private int getPixelForDip(int dip) {
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) dip, getResources().getDisplayMetrics());
+	}
+
+	private class LoadKanjiEntriesTask extends AsyncTask<DictionaryEntry, Void, HashSet<KanjiEntry>> {
+
+		protected HashSet<KanjiEntry> doInBackground(DictionaryEntry... dictionaryEntries) {
+			try {
+				DictionaryEntry dictionaryEntry = dictionaryEntries[0];
+
+				HashSet<KanjiEntry> kanjiEntries = new HashSet<KanjiEntry>();
+				for (String e : dictionaryEntry.getExpressions()) {
+					kanjiEntries.addAll(connection.getKanjiSearcher().getKanjiEntries(e));
+				}
+				return kanjiEntries;
+			} catch (IOException e) {
+				Log.e(LoadKanjiEntriesTask.class.getSimpleName(), "Failed to get kanjis entry", e);
+				return null;
+			}
+		}
+
+		protected void onPostExecute(HashSet<KanjiEntry> kanjis) {
+			updateKanjisView(kanjis);
+		}
 	}
 }
