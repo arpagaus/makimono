@@ -1,5 +1,7 @@
 package net.makimono.activity;
 
+import java.io.ByteArrayInputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -23,6 +25,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -180,13 +183,20 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 	private void handleIntent(Intent intent) {
 		if (intent.hasExtra(EXTRA_DOC_ID)) {
-			int docId = intent.getExtras().getInt(EXTRA_DOC_ID);
-			DictionaryEntryTask task = new DictionaryEntryTask(this);
-			task.execute(docId);
+			ByteArrayInputStream in = new ByteArrayInputStream(intent.getExtras().getByteArray(EXTRA_DOC_ID));
+			try {
+				DictionaryEntry entry = DictionaryEntry.readEntry(new ObjectInputStream(in));
+				updateView(entry);
+
+				DictionaryEntryTask task = new DictionaryEntryTask(this);
+				task.execute(entry);
+			} catch (Exception e) {
+				Log.e(DictionaryEntryActivity.class.getSimpleName(), "Failed to deserialize entry", e);
+			}
 		}
 	}
 
-	void updateView(DictionaryEntry entry, HashSet<KanjiEntry> kanjiEntries) {
+	private void updateView(DictionaryEntry entry) {
 		this.entry = entry;
 		currentExpressionIndex.set(0);
 		currentReadingIndex.set(0);
@@ -214,7 +224,9 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 				addAdditionalInfo(sense);
 			}
 		}
+	}
 
+	void updateKanjisView(HashSet<KanjiEntry> kanjiEntries) {
 		kanjisGroupView.removeAllViews();
 		if (kanjiEntries.isEmpty()) {
 			findViewById(R.id.entry_separator_kanjis).setVisibility(View.GONE);

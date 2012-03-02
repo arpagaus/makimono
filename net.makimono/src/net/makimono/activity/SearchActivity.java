@@ -1,5 +1,8 @@
 package net.makimono.activity;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 import net.makimono.R;
@@ -89,10 +92,17 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View v, int position, long id) {
+	public void onItemClick(AdapterView<?> view, View v, int position, long id) {
 		Intent intent = new Intent(this, DictionaryEntryActivity.class);
-		intent.putExtra(DictionaryEntryActivity.EXTRA_DOC_ID, (int) id);
-		startActivity(intent);
+		DictionaryEntry entry = (DictionaryEntry) view.getAdapter().getItem(position);
+		try {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			DictionaryEntry.writeEntry(new ObjectOutputStream(out), entry);
+			intent.putExtra(DictionaryEntryActivity.EXTRA_DOC_ID, out.toByteArray());
+			startActivity(intent);
+		} catch (IOException e) {
+			Log.e(CLASS_NAME, "Failed to serialize entry", e);
+		}
 	}
 
 }
