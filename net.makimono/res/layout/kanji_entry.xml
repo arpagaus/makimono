@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/kanji_literal"
+            style="@style/EntryMainExpression"
+            android:textSize="48dp" />
+
+        <!-- Readings -->
+
+        <TextView
+            android:id="@+id/kanji_readings_separator_text"
+            style="@style/SeparatorText"
+            android:layout_below="@id/kanji_literal"
+            android:text="@string/readings" />
+
+        <View
+            android:id="@+id/kanji_readings_separator_line"
+            style="@style/SeparatorLine"
+            android:layout_below="@id/kanji_readings_separator_text" />
+
+        <LinearLayout
+            android:id="@+id/kanji_on_yomi_label"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kanji_readings_separator_line"
+            android:layout_margin="10dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minWidth="80dp"
+                android:text="On-Yomi" />
+
+            <TextView
+                android:id="@+id/kanji_on_yomi"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/kanji_kun_yomi_label"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kanji_on_yomi_label"
+            android:layout_margin="10dp"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:minWidth="80dp"
+                android:text="Kun-Yomi" />
+
+            <TextView
+                android:id="@+id/kanji_kun_yomi"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <!-- Meanings -->
+
+        <TextView
+            android:id="@+id/kanji_meanings_separator_text"
+            style="@style/SeparatorText"
+            android:layout_below="@id/kanji_kun_yomi_label"
+            android:text="@string/meanings" />
+
+        <View
+            android:id="@+id/kanji_meanings_separator_line"
+            style="@style/SeparatorLine"
+            android:layout_below="@id/kanji_meanings_separator_text" />
+
+        <LinearLayout
+            android:id="@+id/kanji_meanings"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kanji_meanings_separator_line"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical" />
+    </RelativeLayout>
+
+</ScrollView>

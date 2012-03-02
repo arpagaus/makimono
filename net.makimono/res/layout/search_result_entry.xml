@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/result_expression"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="例えば"
+        android:textSize="24dp" />
+
+    <TextView
+        android:id="@+id/result_reading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/result_expression"
+        android:layout_marginLeft="12dp"
+        android:layout_toRightOf="@id/result_expression"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="たとえば"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="16dp" />
+
+    <TextView
+        android:id="@+id/result_meaning"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/result_expression"
+        android:layout_below="@+id/result_expression"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="for example, e.g. / zum Beispiel, beispielsweise, um ein Beispiel anzuführen / par exemple / например" />
+
+</RelativeLayout>

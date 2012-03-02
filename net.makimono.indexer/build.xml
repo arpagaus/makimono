@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Indexer" default="create-kanjidic-index" basedir=".">
+
+	<property name="jdk.dir" location="/usr/lib/jvm/java-6-openjdk/" />
+
+	<property name="lib.dir" location="../makimono/lib" />
+
+	<property name="build.dir" location="${java.io.tmpdir}/indexer" />
+	<property name="dist.dir" location="dist" />
+
+	<property name="src.dir" location="../makimono/src" />
+
+	<property name="indexer.src.dir" location="src" />
+	<property name="indexer.gen.dir" location="gen" />
+
+	<property name="resources" location="res" />
+	<property name="dictionary.index.dir" location="${resources}/indexes/dictionary" />
+
+	<property name="jmdict.file" location="${resources}/JMdict.gz" />
+	<property name="jmdict.url" value="ftp://ftp.monash.edu.au/pub/nihongo/JMdict.gz" />
+
+	<property name="jmdict.dtd" location="${resources}/JMdict.dtd" />
+	<property name="jmdict.dtd.url" value="http://www.csse.monash.edu.au/~jwb/jmdict_dtd_v107" />
+
+	<!-- KANJIDIC properties -->
+	<property name="kanjidic.file" location="${resources}/kanjidic2.xml.gz" />
+	<property name="kanjidic.url" value="http://www.csse.monash.edu.au/~jwb/kanjidic2/kanjidic2.xml.gz" />
+
+	<property name="kanjidic.xsd" location="${resources}/kanjidic2.xsd" />
+	<property name="kanjidic.xsd.url" value="http://www.csse.monash.edu.au/~jwb/kanjidic2/kanjidic2x.xsd.gz" />
+
+	<target name="create-kanjidic-index" depends="download-kanjidic-file,build-kanjidic-model">
+	</target>
+
+	<target name="download-kanjidic-file" depends="check-kanjidic-file" unless="kanjidic.file.available">
+		<get src="${kanjidic.url}" dest="${kanjidic.file}" verbose="on" />
+	</target>
+
+	<target name="check-kanjidic-file">
+		<available file="${kanjidic.file}" property="kanjidic.file.available" />
+	</target>
+
+	<target name="build-kanjidic-model">
+		<get dest="${kanjidic.xsd}.gz" src="${kanjidic.xsd.url}" verbose="true" ignoreerrors="true" />
+		<gunzip src="${kanjidic.xsd}.gz" dest="${kanjidic.xsd}" />
+
+		<java classname="com.sun.tools.internal.xjc.XJCFacade" failonerror="true">
+			<classpath>
+				<fileset dir="${jdk.dir}/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<arg value="-nv" />
+			<arg value="-no-header" />
+			<arg value="-p" />
+			<arg value="au.edu.monash.csse.kanjidic.model" />
+			<arg value="-d" />
+			<arg value="${indexer.gen.dir}" />
+			<arg value="${kanjidic.xsd}" />
+		</java>
+
+	</target>
+
+	<target name="create-jmdict-index" depends="build-jmdict-indexer,download-jmdict-file">
+		<delete dir="${dictionary.index.dir}" />
+		<java classname="net.makimono.indexer.Launcher" fork="true">
+			<jvmarg value="-Xmx512m" />
+			<arg value="${jmdict.file}" />
+			<arg value="${dictionary.index.dir}" />
+			<sysproperty key="entityExpansionLimit" value="256000" />
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${dist.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</java>
+	</target>
+
+	<target name="download-jmdict-file" depends="check-jmdict-file" unless="jmdict.file.available">
+		<get src="${jmdict.url}" dest="${jmdict.file}" verbose="on" />
+	</target>
+
+	<target name="check-jmdict-file">
+		<available file="${jmdict.file}" property="jmdict.file.available" />
+	</target>
+
+	<target name="build-jmdict-indexer" depends="build-jmdict-model">
+		<mkdir dir="${build.dir}" />
+
+		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on">
+			<include name="net/makimono/model/**.java" />
+			<include name="net/makimono/searcher/*Fields.java" />
+		</javac>
+
+		<javac srcdir="${indexer.src.dir}" destdir="${build.dir}" debug="on">
+			<include name="net/makimono/indexer/**.java" />
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${dist.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+
+		<copy todir="${build.dir}">
+			<fileset dir="${indexer.src.dir}" includes="net/makimono/indexer/**.properties" />
+		</copy>
+
+		<delete file="${dist.dir}/jmdict-indexer.jar" />
+		<jar destfile="${dist.dir}/jmdict-indexer.jar" basedir="${build.dir}" />
+
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="build-jmdict-model">
+		<get dest="${jmdict.dtd}" src="${jmdict.dtd.url}" verbose="true" ignoreerrors="true" />
+
+		<!-- Fix the DTD file -->
+		<replace file="${jmdict.dtd}" value="" token="&lt;!DOCTYPE JMdict [" />
+		<replace file="${jmdict.dtd}" value="" token="]&gt;" />
+		<replace file="${jmdict.dtd}" value='"en"' token='"eng"' />
+
+		<java classname="com.sun.tools.internal.xjc.XJCFacade" failonerror="true">
+			<classpath>
+				<fileset dir="${jdk.dir}/lib">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
+			<arg value="-nv" />
+			<arg value="-no-header" />
+			<arg value="-p" />
+			<arg value="au.edu.monash.csse.jmdict.model" />
+			<arg value="-d" />
+			<arg value="${indexer.gen.dir}" />
+			<arg value="-dtd" />
+			<arg value="${jmdict.dtd}" />
+		</java>
+
+		<replace value='"lang", namespace="http://www.w3.org/XML/1998/namespace"' token='"xml:lang"' summary="true">
+			<fileset dir="${indexer.gen.dir}">
+				<include name="**/*.java" />
+			</fileset>
+		</replace>
+
+		<mkdir dir="${build.dir}" />
+		<javac srcdir="${indexer.gen.dir}" destdir="${build.dir}/" debug="on" />
+		<delete file="${dist.dir}/jmdict-model.jar" />
+		<jar destfile="${dist.dir}/jmdict-model.jar" basedir="${build.dir}" />
+		<delete dir="${build.dir}" />
+	</target>
+
+</project>
