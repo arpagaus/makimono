@@ -11,7 +11,7 @@ import java.io.ObjectOutputStream;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SerializationTest {
+public class DictionaryEntrySerializationTest {
 
 	private DictionaryEntry entry;
 
