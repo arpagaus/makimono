@@ -13,7 +13,7 @@ import net.makimono.model.Meaning;
 import net.makimono.model.Sense;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
-import net.makimono.util.IconResolver;
+import net.makimono.util.MeaningTextViewFactory;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -260,18 +260,12 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	private int addMeanings(Sense sense) {
 		ArrayList<Language> languages = PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 
+		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);
 		int meaningsCount = 0;
 		for (Language language : languages) {
 			CharSequence meaning = Meaning.getMeaningString(language, sense.getMeanings());
 			if (meaning.length() > 0) {
-				TextView textView = new TextView(this);
-				textView.setText(meaning);
-				textView.setCompoundDrawablesWithIntrinsicBounds(IconResolver.resolveIcon(language), 0, 0, 0);
-				textView.setCompoundDrawablePadding(getPixelForDip(15));
-				textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
-				textView.setGravity(Gravity.CENTER_VERTICAL);
-				meaningsGroupView.addView(textView);
-
+				meaningsGroupView.addView(factory.makeView(meaning, language));
 				meaningsCount++;
 			}
 		}
