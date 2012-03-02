@@ -121,6 +121,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			public View makeView() {
 				TextView textView = new TextView(DictionaryEntryActivity.this);
 				textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 32);
+				textView.setGravity(Gravity.CENTER_HORIZONTAL);
 				return textView;
 			}
 		});
