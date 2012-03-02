@@ -30,13 +30,16 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/kanji_readings_separator_line"
-            android:layout_margin="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:minWidth="80dp"
                 android:text="On-Yomi" />
 
@@ -51,13 +54,16 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/kanji_on_yomi_label"
-            android:layout_margin="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
             android:orientation="horizontal" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
                 android:minWidth="80dp"
                 android:text="Kun-Yomi" />
 
