@@ -98,7 +98,7 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			DictionaryEntry.writeEntry(new ObjectOutputStream(out), entry);
-			intent.putExtra(DictionaryEntryActivity.EXTRA_DOC_ID, out.toByteArray());
+			intent.putExtra(DictionaryEntryActivity.EXTRA_DICTIONARY_ENTRY, out.toByteArray());
 			startActivity(intent);
 		} catch (IOException e) {
 			Log.e(CLASS_NAME, "Failed to serialize entry", e);

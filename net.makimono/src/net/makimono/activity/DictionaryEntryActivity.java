@@ -40,7 +40,7 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher.ViewFactory;
 
 public class DictionaryEntryActivity extends AbstractDefaultActivity {
-	public static final String EXTRA_DOC_ID = DictionaryEntryActivity.class + ".EXTRA_DOC_ID";
+	public static final String EXTRA_DICTIONARY_ENTRY = DictionaryEntryActivity.class + ".EXTRA_DOC_ID";
 
 	SearcherServiceConnection connection = new SearcherServiceConnection();
 
@@ -184,8 +184,8 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	}
 
 	private void handleIntent(Intent intent) {
-		if (intent.hasExtra(EXTRA_DOC_ID)) {
-			ByteArrayInputStream in = new ByteArrayInputStream(intent.getExtras().getByteArray(EXTRA_DOC_ID));
+		if (intent.hasExtra(EXTRA_DICTIONARY_ENTRY)) {
+			ByteArrayInputStream in = new ByteArrayInputStream(intent.getExtras().getByteArray(EXTRA_DICTIONARY_ENTRY));
 			try {
 				DictionaryEntry entry = DictionaryEntry.readEntry(new ObjectInputStream(in));
 				updateView(entry);
@@ -258,7 +258,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		resultReading.setText(kunYomi + separator + onYomi);
 		resultMeaning.setText(StringUtils.join(kanjiEntry.getMeanings(), ", "));
 
-		kanjiView.setOnClickListener(new KanjiViewListener(this, kanjiEntry.getCodePoint()));
+		kanjiView.setOnClickListener(new KanjiViewListener(this, kanjiEntry));
 		return kanjiView;
 	}
 

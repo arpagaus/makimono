@@ -1,16 +1,21 @@
 package net.makimono.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class KanjiEntry {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class KanjiEntry implements Parcelable {
 
 	private String literal;
 	private int codePoint;
 	private short radical;
 	private byte strokeCount;
-	private ArrayList<String> onYomi;
-	private ArrayList<String> kunYomi;
-	private ArrayList<Meaning> meanings;
+	private List<String> onYomi;
+	private List<String> kunYomi;
+	private List<Meaning> meanings;
 
 	public String getLiteral() {
 		return literal;
@@ -44,7 +49,7 @@ public class KanjiEntry {
 		this.strokeCount = strokeCount;
 	}
 
-	public ArrayList<String> getOnYomi() {
+	public List<String> getOnYomi() {
 		if (onYomi == null) {
 			onYomi = new ArrayList<String>();
 		}
@@ -55,7 +60,7 @@ public class KanjiEntry {
 		this.onYomi = onYomi;
 	}
 
-	public ArrayList<String> getKunYomi() {
+	public List<String> getKunYomi() {
 		if (kunYomi == null) {
 			kunYomi = new ArrayList<String>();
 
@@ -67,7 +72,7 @@ public class KanjiEntry {
 		this.kunYomi = kunYomi;
 	}
 
-	public ArrayList<Meaning> getMeanings() {
+	public List<Meaning> getMeanings() {
 		if (meanings == null) {
 			meanings = new ArrayList<Meaning>();
 		}
@@ -94,5 +99,53 @@ public class KanjiEntry {
 		if (codePoint != other.codePoint)
 			return false;
 		return true;
+	}
+
+	public static final Parcelable.Creator<KanjiEntry> CREATOR = new Parcelable.Creator<KanjiEntry>() {
+		public KanjiEntry createFromParcel(Parcel parcel) {
+			KanjiEntry entry = new KanjiEntry();
+			entry.readFromParcel(parcel);
+			return entry;
+		}
+
+		public KanjiEntry[] newArray(int size) {
+			return new KanjiEntry[size];
+		}
+	};
+
+	private void readFromParcel(Parcel parcel) {
+		codePoint = parcel.readInt();
+		literal = String.valueOf(Character.toChars(codePoint));
+		radical = (short) parcel.readInt();
+		strokeCount = parcel.readByte();
+
+		onYomi = Arrays.asList((String[]) parcel.readValue(null));
+		kunYomi = Arrays.asList((String[]) parcel.readValue(null));
+
+		byte meaningCount = parcel.readByte();
+		for (byte i = 0; i < meaningCount; i++) {
+			getMeanings().add(new Meaning(parcel.readString(), Language.values()[parcel.readByte()]));
+		}
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel parcel, int flags) {
+		parcel.writeInt(codePoint);
+		parcel.writeInt(radical);
+		parcel.writeByte(strokeCount);
+
+		parcel.writeValue(onYomi.toArray(new String[onYomi.size()]));
+		parcel.writeValue(kunYomi.toArray(new String[kunYomi.size()]));
+
+		parcel.writeByte((byte) meanings.size());
+		for (Meaning m : meanings) {
+			parcel.writeString(m.getValue());
+			parcel.writeByte((byte) m.getLanguage().ordinal());
+		}
 	}
 }
