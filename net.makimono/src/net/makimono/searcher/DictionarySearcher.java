@@ -181,10 +181,12 @@ public class DictionarySearcher implements Closeable {
 	}
 
 	private TreeSet<String> getMatchingStrings(String prefix, ArrayList<? extends Object> list) {
+		prefix = prefix.toLowerCase();
 		TreeSet<String> set = new TreeSet<String>();
 		for (Object o : list) {
-			if (o.toString().toLowerCase().startsWith(prefix)) {
-				set.add(o.toString());
+			String string = o.toString().toLowerCase().replaceAll("\\p{Punct}", "");
+			if (string.startsWith(prefix)) {
+				set.add(string);
 			}
 		}
 		return set;
