@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element ref="{}variant" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element ref="{}freq"/>
  *         &lt;element ref="{}rad_name" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element ref="{}jlpt" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -39,7 +40,8 @@ import javax.xml.bind.annotation.XmlType;
     "strokeCount",
     "variant",
     "freq",
-    "radName"
+    "radName",
+    "jlpt"
 })
 @XmlRootElement(name = "misc")
 public class Misc {
@@ -51,6 +53,7 @@ public class Misc {
     protected short freq;
     @XmlElement(name = "rad_name")
     protected List<String> radName;
+    protected Byte jlpt;
 
     /**
      * Gets the value of the grade property.
@@ -177,6 +180,30 @@ public class Misc {
             radName = new ArrayList<String>();
         }
         return this.radName;
+    }
+
+    /**
+     * Gets the value of the jlpt property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Byte }
+     *     
+     */
+    public Byte getJlpt() {
+        return jlpt;
+    }
+
+    /**
+     * Sets the value of the jlpt property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Byte }
+     *     
+     */
+    public void setJlpt(Byte value) {
+        this.jlpt = value;
     }
 
 }

@@ -50,6 +50,10 @@ public class KanjiSearcherTest {
 
 		assertEquals("語", entry.getLiteral());
 		assertEquals(0x8a9e, entry.getCodePoint());
+		assertEquals(2, entry.getGrade());
+		assertEquals(301, entry.getFrequency());
+		assertEquals(4, entry.getJlpt());
+
 		assertEquals(149, entry.getRadical());
 		assertEquals(14, entry.getStrokeCount());
 

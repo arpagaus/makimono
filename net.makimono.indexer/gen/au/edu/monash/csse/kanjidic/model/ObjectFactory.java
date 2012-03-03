@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _StrokeCount_QNAME = new QName("", "stroke_count");
+    private final static QName _Jlpt_QNAME = new QName("", "jlpt");
     private final static QName _FileVersion_QNAME = new QName("", "file_version");
     private final static QName _Freq_QNAME = new QName("", "freq");
     private final static QName _Grade_QNAME = new QName("", "grade");
@@ -43,51 +44,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RadValue }
-     * 
-     */
-    public RadValue createRadValue() {
-        return new RadValue();
-    }
-
-    /**
      * Create an instance of {@link Variant }
      * 
      */
     public Variant createVariant() {
         return new Variant();
-    }
-
-    /**
-     * Create an instance of {@link Header }
-     * 
-     */
-    public Header createHeader() {
-        return new Header();
-    }
-
-    /**
-     * Create an instance of {@link QueryCode }
-     * 
-     */
-    public QueryCode createQueryCode() {
-        return new QueryCode();
-    }
-
-    /**
-     * Create an instance of {@link Radical }
-     * 
-     */
-    public Radical createRadical() {
-        return new Radical();
-    }
-
-    /**
-     * Create an instance of {@link ReadingMeaning }
-     * 
-     */
-    public ReadingMeaning createReadingMeaning() {
-        return new ReadingMeaning();
     }
 
     /**
@@ -99,11 +60,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Character }
+     * Create an instance of {@link QCode }
      * 
      */
-    public Character createCharacter() {
-        return new Character();
+    public QCode createQCode() {
+        return new QCode();
+    }
+
+    /**
+     * Create an instance of {@link Header }
+     * 
+     */
+    public Header createHeader() {
+        return new Header();
     }
 
     /**
@@ -115,19 +84,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Misc }
+     * Create an instance of {@link ReadingMeaning }
      * 
      */
-    public Misc createMisc() {
-        return new Misc();
+    public ReadingMeaning createReadingMeaning() {
+        return new ReadingMeaning();
     }
 
     /**
-     * Create an instance of {@link Rmgroup }
+     * Create an instance of {@link QueryCode }
      * 
      */
-    public Rmgroup createRmgroup() {
-        return new Rmgroup();
+    public QueryCode createQueryCode() {
+        return new QueryCode();
     }
 
     /**
@@ -139,35 +108,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Meaning }
+     * Create an instance of {@link RadValue }
      * 
      */
-    public Meaning createMeaning() {
-        return new Meaning();
-    }
-
-    /**
-     * Create an instance of {@link Codepoint }
-     * 
-     */
-    public Codepoint createCodepoint() {
-        return new Codepoint();
-    }
-
-    /**
-     * Create an instance of {@link QCode }
-     * 
-     */
-    public QCode createQCode() {
-        return new QCode();
-    }
-
-    /**
-     * Create an instance of {@link DicRef }
-     * 
-     */
-    public DicRef createDicRef() {
-        return new DicRef();
+    public RadValue createRadValue() {
+        return new RadValue();
     }
 
     /**
@@ -179,12 +124,77 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DicRef }
+     * 
+     */
+    public DicRef createDicRef() {
+        return new DicRef();
+    }
+
+    /**
+     * Create an instance of {@link Rmgroup }
+     * 
+     */
+    public Rmgroup createRmgroup() {
+        return new Rmgroup();
+    }
+
+    /**
+     * Create an instance of {@link Codepoint }
+     * 
+     */
+    public Codepoint createCodepoint() {
+        return new Codepoint();
+    }
+
+    /**
+     * Create an instance of {@link Meaning }
+     * 
+     */
+    public Meaning createMeaning() {
+        return new Meaning();
+    }
+
+    /**
+     * Create an instance of {@link Radical }
+     * 
+     */
+    public Radical createRadical() {
+        return new Radical();
+    }
+
+    /**
+     * Create an instance of {@link Misc }
+     * 
+     */
+    public Misc createMisc() {
+        return new Misc();
+    }
+
+    /**
+     * Create an instance of {@link Character }
+     * 
+     */
+    public Character createCharacter() {
+        return new Character();
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link Byte }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "", name = "stroke_count")
     public JAXBElement<Byte> createStrokeCount(Byte value) {
         return new JAXBElement<Byte>(_StrokeCount_QNAME, Byte.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Byte }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "jlpt")
+    public JAXBElement<Byte> createJlpt(Byte value) {
+        return new JAXBElement<Byte>(_Jlpt_QNAME, Byte.class, null, value);
     }
 
     /**

@@ -25,9 +25,7 @@
 	<!-- KANJIDIC properties -->
 	<property name="kanjidic.file" location="${resources}/kanjidic2.xml.gz" />
 	<property name="kanjidic.url" value="http://www.csse.monash.edu.au/~jwb/kanjidic2/kanjidic2.xml.gz" />
-
 	<property name="kanjidic.xsd" location="${resources}/kanjidic2.xsd" />
-	<property name="kanjidic.xsd.url" value="http://www.csse.monash.edu.au/~jwb/kanjidic2/kanjidic2x.xsd.gz" />
 
 	<target name="create-kanjidic-index" depends="download-kanjidic-file,build-kanjidic-model">
 	</target>
@@ -41,9 +39,6 @@
 	</target>
 
 	<target name="build-kanjidic-model">
-		<get dest="${kanjidic.xsd}.gz" src="${kanjidic.xsd.url}" verbose="true" ignoreerrors="true" />
-		<gunzip src="${kanjidic.xsd}.gz" dest="${kanjidic.xsd}" />
-
 		<java classname="com.sun.tools.internal.xjc.XJCFacade" failonerror="true">
 			<classpath>
 				<fileset dir="${jdk.dir}/lib">

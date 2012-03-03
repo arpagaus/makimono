@@ -11,6 +11,9 @@ public class KanjiEntry implements Parcelable {
 
 	private String literal;
 	private int codePoint;
+	private byte jlpt;
+	private byte grade;
+	private short frequency;
 	private short radical;
 	private byte strokeCount;
 	private List<String> onYomi;
@@ -31,6 +34,30 @@ public class KanjiEntry implements Parcelable {
 
 	public void setCodePoint(int codePoint) {
 		this.codePoint = codePoint;
+	}
+
+	public byte getJlpt() {
+		return jlpt;
+	}
+
+	public void setJlpt(byte jlpt) {
+		this.jlpt = jlpt;
+	}
+
+	public byte getGrade() {
+		return grade;
+	}
+
+	public void setGrade(byte grade) {
+		this.grade = grade;
+	}
+
+	public short getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(short frequency) {
+		this.frequency = frequency;
 	}
 
 	public short getRadical() {
@@ -116,6 +143,9 @@ public class KanjiEntry implements Parcelable {
 	private void readFromParcel(Parcel parcel) {
 		codePoint = parcel.readInt();
 		literal = String.valueOf(Character.toChars(codePoint));
+		jlpt = parcel.readByte();
+		grade = parcel.readByte();
+		frequency = (short) parcel.readInt();
 		radical = (short) parcel.readInt();
 		strokeCount = parcel.readByte();
 
@@ -136,6 +166,9 @@ public class KanjiEntry implements Parcelable {
 	@Override
 	public void writeToParcel(Parcel parcel, int flags) {
 		parcel.writeInt(codePoint);
+		parcel.writeByte(jlpt);
+		parcel.writeByte(grade);
+		parcel.writeInt(frequency);
 		parcel.writeInt(radical);
 		parcel.writeByte(strokeCount);
 

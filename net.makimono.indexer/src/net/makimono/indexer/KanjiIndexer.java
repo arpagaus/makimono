@@ -47,6 +47,16 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 		document.add(new Field(KanjiDictionaryFields.LITERAL.name(), literal, Store.YES, Index.NOT_ANALYZED));
 		document.add(new Field(KanjiDictionaryFields.CODE_POINT.name(), ByteBuffer.allocate(4).putInt(codePoint).array()));
 
+		Byte jlpt = character.getMisc().getJlpt();
+		if (jlpt != null) {
+			document.add(new Field(KanjiDictionaryFields.JLPT.name(), new byte[] { jlpt }));
+		}
+
+		Byte grade = character.getMisc().getGrade();
+		if (grade != null) {
+			document.add(new Field(KanjiDictionaryFields.GRADE.name(), new byte[] { grade }));
+		}
+
 		Byte strokeCount = character.getMisc().getStrokeCount().get(0);
 		document.add(new Field(KanjiDictionaryFields.STROKE_COUNT.name(), new byte[] { strokeCount }));
 
@@ -63,6 +73,7 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 
 		short freq = character.getMisc().getFreq();
 		if (freq > 0.0) {
+			document.add(new Field(KanjiDictionaryFields.FREQUENCY.name(), ByteBuffer.allocate(2).putShort(freq).array()));
 			document.setBoost(1.0f + (100.0f / FREQ_MAX * (FREQ_MAX + 1 - Math.min(freq, FREQ_MAX))));
 		}
 		return document;

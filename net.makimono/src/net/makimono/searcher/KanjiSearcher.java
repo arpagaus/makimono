@@ -8,9 +8,9 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.makimono.model.Meaning;
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
+import net.makimono.model.Meaning;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Fieldable;
@@ -69,6 +69,20 @@ public class KanjiSearcher implements Closeable {
 		KanjiEntry entry = new KanjiEntry();
 		entry.setLiteral(document.getFieldable(KanjiDictionaryFields.LITERAL.name()).stringValue());
 		entry.setCodePoint(ByteBuffer.wrap(document.getFieldable(KanjiDictionaryFields.CODE_POINT.name()).getBinaryValue()).getInt());
+
+		Fieldable fieldable = document.getFieldable(KanjiDictionaryFields.GRADE.name());
+		if (fieldable != null) {
+			entry.setGrade(fieldable.getBinaryValue()[0]);
+		}
+		fieldable = document.getFieldable(KanjiDictionaryFields.FREQUENCY.name());
+		if (fieldable != null) {
+			entry.setFrequency(ByteBuffer.wrap(fieldable.getBinaryValue()).getShort());
+		}
+		fieldable = document.getFieldable(KanjiDictionaryFields.JLPT.name());
+		if (fieldable != null) {
+			entry.setJlpt(fieldable.getBinaryValue()[0]);
+		}
+
 		entry.setRadical(ByteBuffer.wrap(document.getFieldable(KanjiDictionaryFields.RADICAL.name()).getBinaryValue()).getShort());
 		entry.setStrokeCount(document.getFieldable(KanjiDictionaryFields.STROKE_COUNT.name()).getBinaryValue()[0]);
 
