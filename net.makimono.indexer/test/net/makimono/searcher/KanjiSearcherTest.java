@@ -12,9 +12,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import net.makimono.indexer.KanjiIndexer;
-import net.makimono.model.Meaning;
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
+import net.makimono.model.Meaning;
 
 import org.apache.lucene.document.Document;
 import org.junit.After;
@@ -56,7 +56,7 @@ public class KanjiSearcherTest {
 		assertEquals(asArrayList("ゴ"), entry.getOnYomi());
 		assertEquals(asArrayList("かた.る", "かた.らう"), entry.getKunYomi());
 
-		ArrayList<Meaning> meanings = entry.getMeanings();
+		List<Meaning> meanings = entry.getMeanings();
 		assertTrue(meanings.contains(new Meaning("word", Language.en)));
 		assertTrue(meanings.contains(new Meaning("speech", Language.en)));
 		assertTrue(meanings.contains(new Meaning("language", Language.en)));
