@@ -25,60 +25,42 @@
             style="@style/SeparatorLine"
             android:layout_below="@id/kanji_readings_separator_text" />
 
-        <LinearLayout
-            android:id="@+id/kanji_on_yomi_label"
+        <TableLayout
+            android:id="@+id/kanji_readings"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/kanji_readings_separator_line"
-            android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:stretchColumns="1" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="80dp"
-                android:text="On-Yomi" />
+            <TableRow android:gravity="center_vertical" >
 
-            <TextView
-                android:id="@+id/kanji_on_yomi"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                <TextView android:text="On-Yomi" />
 
-        <LinearLayout
-            android:id="@+id/kanji_kun_yomi_label"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/kanji_on_yomi_label"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
+                <TextView
+                    android:id="@+id/kanji_on_yomi"
+                    android:layout_margin="3dp"
+                    android:paddingLeft="15dp" />
+            </TableRow>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:minWidth="80dp"
-                android:text="Kun-Yomi" />
+            <TableRow android:gravity="center_vertical" >
 
-            <TextView
-                android:id="@+id/kanji_kun_yomi"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                <TextView android:text="Kun-Yomi" />
+
+                <TextView
+                    android:id="@+id/kanji_kun_yomi"
+                    android:layout_margin="3dp"
+                    android:paddingLeft="15dp" />
+            </TableRow>
+        </TableLayout>
 
         <!-- Meanings -->
 
         <TextView
             android:id="@+id/kanji_meanings_separator_text"
             style="@style/SeparatorText"
-            android:layout_below="@id/kanji_kun_yomi_label"
+            android:layout_below="@id/kanji_readings"
             android:text="@string/meanings" />
 
         <View
@@ -94,6 +76,68 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:orientation="vertical" />
+
+        <!-- Miscellaneous -->
+
+        <TextView
+            android:id="@+id/kanji_misc_separator_text"
+            style="@style/SeparatorText"
+            android:layout_below="@id/kanji_meanings"
+            android:text="@string/miscellaneous" />
+
+        <View
+            android:id="@+id/kanji_misc_separator_line"
+            style="@style/SeparatorLine"
+            android:layout_below="@id/kanji_misc_separator_text" />
+
+        <TableLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kanji_misc_separator_line"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:stretchColumns="1" >
+
+            <TableRow android:gravity="center_vertical" >
+
+                <TextView android:text="JLPT" />
+
+                <TextView
+                    android:id="@+id/kanji_jlpt"
+                    android:layout_margin="3dp"
+                    android:paddingLeft="15dp" />
+            </TableRow>
+
+            <TableRow android:gravity="center_vertical" >
+
+                <TextView android:text="@string/grade" />
+
+                <TextView
+                    android:id="@+id/kanji_grade"
+                    android:layout_margin="3dp"
+                    android:paddingLeft="15dp" />
+            </TableRow>
+
+            <TableRow android:gravity="center_vertical" >
+
+                <TextView android:text="@string/frequency" />
+
+                <TextView
+                    android:id="@+id/kanji_frequency"
+                    android:layout_margin="3dp"
+                    android:paddingLeft="15dp" />
+            </TableRow>
+
+            <TableRow android:gravity="center_vertical" >
+
+                <TextView android:text="@string/unicode" />
+
+                <TextView
+                    android:id="@+id/kanji_unicode"
+                    android:layout_margin="3dp"
+                    android:paddingLeft="15dp" />
+            </TableRow>
+        </TableLayout>
     </RelativeLayout>
 
 </ScrollView>

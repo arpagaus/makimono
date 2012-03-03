@@ -22,6 +22,10 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 	private TextView literalTextView;
 	private TextView onYomiTextView;
 	private TextView kunYomiTextView;
+	private TextView jlptTextView;
+	private TextView gradeTextView;
+	private TextView frequencyTextView;
+	private TextView unicodeTextView;
 	private LinearLayout meaningsGroupView;
 
 	@Override
@@ -36,6 +40,11 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		literalTextView = (TextView) findViewById(R.id.kanji_literal);
 		onYomiTextView = (TextView) findViewById(R.id.kanji_on_yomi);
 		kunYomiTextView = (TextView) findViewById(R.id.kanji_kun_yomi);
+		jlptTextView = (TextView) findViewById(R.id.kanji_jlpt);
+		gradeTextView = (TextView) findViewById(R.id.kanji_grade);
+		frequencyTextView = (TextView) findViewById(R.id.kanji_frequency);
+		unicodeTextView = (TextView) findViewById(R.id.kanji_unicode);
+
 		meaningsGroupView = (LinearLayout) findViewById(R.id.kanji_meanings);
 	}
 
@@ -50,6 +59,11 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		literalTextView.setText(entry.getLiteral());
 		onYomiTextView.setText(StringUtils.join(entry.getOnYomi(), ", "));
 		kunYomiTextView.setText(StringUtils.join(entry.getKunYomi(), ", "));
+
+		jlptTextView.setText(entry.getJlpt() == 0 ? "" : String.valueOf(entry.getJlpt()));
+		gradeTextView.setText(entry.getGrade() == 0 ? "" : String.valueOf(entry.getGrade()));
+		frequencyTextView.setText(entry.getFrequency() == 0 ? "" : String.valueOf(entry.getFrequency()));
+		unicodeTextView.setText("U+" + Integer.toHexString(entry.getCodePoint()).toUpperCase());
 
 		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);
 		meaningsGroupView.removeAllViews();
