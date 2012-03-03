@@ -22,6 +22,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 	private TextView literalTextView;
 	private TextView onYomiTextView;
 	private TextView kunYomiTextView;
+	private TextView strokeCountTextView;
 	private TextView jlptTextView;
 	private TextView gradeTextView;
 	private TextView frequencyTextView;
@@ -40,6 +41,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		literalTextView = (TextView) findViewById(R.id.kanji_literal);
 		onYomiTextView = (TextView) findViewById(R.id.kanji_on_yomi);
 		kunYomiTextView = (TextView) findViewById(R.id.kanji_kun_yomi);
+		strokeCountTextView = (TextView) findViewById(R.id.kanji_stroke_count);
 		jlptTextView = (TextView) findViewById(R.id.kanji_jlpt);
 		gradeTextView = (TextView) findViewById(R.id.kanji_grade);
 		frequencyTextView = (TextView) findViewById(R.id.kanji_frequency);
@@ -60,9 +62,10 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		onYomiTextView.setText(StringUtils.join(entry.getOnYomi(), ", "));
 		kunYomiTextView.setText(StringUtils.join(entry.getKunYomi(), ", "));
 
-		jlptTextView.setText(entry.getJlpt() == 0 ? "" : String.valueOf(entry.getJlpt()));
-		gradeTextView.setText(entry.getGrade() == 0 ? "" : String.valueOf(entry.getGrade()));
-		frequencyTextView.setText(entry.getFrequency() == 0 ? "" : String.valueOf(entry.getFrequency()));
+		strokeCountTextView.setText(entry.getStrokeCount() == 0 ? "-" : String.valueOf(entry.getStrokeCount()));
+		jlptTextView.setText(entry.getJlpt() == 0 ? "-" : String.valueOf(entry.getJlpt()));
+		gradeTextView.setText(entry.getGrade() == 0 ? "-" : String.valueOf(entry.getGrade()));
+		frequencyTextView.setText(entry.getFrequency() == 0 ? "-" : String.valueOf(entry.getFrequency()));
 		unicodeTextView.setText("U+" + Integer.toHexString(entry.getCodePoint()).toUpperCase());
 
 		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);

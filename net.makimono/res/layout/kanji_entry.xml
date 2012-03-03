@@ -32,7 +32,7 @@
             android:layout_below="@id/kanji_readings_separator_line"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:stretchColumns="1" >
+            android:shrinkColumns="1" >
 
             <TableRow android:gravity="center_vertical" >
 
@@ -50,6 +50,7 @@
 
                 <TextView
                     android:id="@+id/kanji_kun_yomi"
+                    android:layout_height="wrap_content"
                     android:layout_margin="3dp"
                     android:paddingLeft="15dp" />
             </TableRow>
@@ -97,6 +98,16 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:stretchColumns="1" >
+
+            <TableRow android:gravity="center_vertical" >
+
+                <TextView android:text="@string/stroke_count" />
+
+                <TextView
+                    android:id="@+id/kanji_stroke_count"
+                    android:layout_margin="3dp"
+                    android:paddingLeft="15dp" />
+            </TableRow>
 
             <TableRow android:gravity="center_vertical" >
 
