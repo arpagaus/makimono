@@ -83,7 +83,7 @@ public class KanjiSearcher implements Closeable {
 			entry.setJlpt(fieldable.getBinaryValue()[0]);
 		}
 
-		entry.setRadical(ByteBuffer.wrap(document.getFieldable(KanjiDictionaryFields.RADICAL.name()).getBinaryValue()).getShort());
+		entry.setRadical(document.getFieldable(KanjiDictionaryFields.RADICAL.name()).stringValue());
 		entry.setStrokeCount(document.getFieldable(KanjiDictionaryFields.STROKE_COUNT.name()).getBinaryValue()[0]);
 
 		for (Fieldable f : document.getFieldables(KanjiDictionaryFields.ONYOMI.name())) {

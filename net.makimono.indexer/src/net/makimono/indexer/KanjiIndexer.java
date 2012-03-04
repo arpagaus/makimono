@@ -60,13 +60,20 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 		Byte strokeCount = character.getMisc().getStrokeCount().get(0);
 		document.add(new Field(KanjiDictionaryFields.STROKE_COUNT.name(), new byte[] { strokeCount }));
 
-		short radical = -1;
+		String radical = null;
 		for (RadValue r : character.getRadical().getRadValue()) {
 			if (r.getRadType().equalsIgnoreCase("classical")) {
-				radical = r.getValue();
+				radical = String.valueOf(r.getValue());
+				document.add(new Field(KanjiDictionaryFields.RADICAL.name(), radical, Store.YES, Index.NO));
 			}
 		}
-		document.add(new Field(KanjiDictionaryFields.RADICAL.name(), ByteBuffer.allocate(2).putShort(radical).array()));
+
+		if (radical != null && !character.getMisc().getRadName().isEmpty()) {
+			document.add(new Field(KanjiDictionaryFields.RADICAL_ENTRY.name(), radical, Store.YES, Index.NOT_ANALYZED_NO_NORMS));
+		}
+		for (String radicalName : character.getMisc().getRadName()) {
+			document.add(new Field(KanjiDictionaryFields.RADICAL_NAME.name(), radicalName, Store.YES, Index.NOT_ANALYZED));
+		}
 
 		addReadings(document, rm.getRmgroup().getReading());
 		addMeanings(document, rm.getRmgroup().getMeaning());
