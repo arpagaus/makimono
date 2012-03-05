@@ -20,6 +20,7 @@ import au.edu.monash.csse.kanjidic.model.ReadingMeaning;
 public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.csse.kanjidic.model.Character> {
 
 	private static final int FREQ_MAX = 2500;
+	public static final int RADICAL_UNICODE_OFFSET = 0x2F00;
 
 	public KanjiIndexer() {
 		super(Kanjidic2.class.getPackage().getName());
@@ -63,14 +64,11 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 		String radical = null;
 		for (RadValue r : character.getRadical().getRadValue()) {
 			if (r.getRadType().equalsIgnoreCase("classical")) {
-				radical = String.valueOf(r.getValue());
+				radical = getRadicalCharacterForIndex(r.getValue());
 				document.add(new Field(KanjiDictionaryFields.RADICAL.name(), radical, Store.YES, Index.NO));
 			}
 		}
 
-		if (radical != null && !character.getMisc().getRadName().isEmpty()) {
-			document.add(new Field(KanjiDictionaryFields.RADICAL_ENTRY.name(), radical, Store.YES, Index.NOT_ANALYZED_NO_NORMS));
-		}
 		for (String radicalName : character.getMisc().getRadName()) {
 			document.add(new Field(KanjiDictionaryFields.RADICAL_NAME.name(), radicalName, Store.YES, Index.NOT_ANALYZED));
 		}
@@ -84,6 +82,11 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 			document.setBoost(1.0f + (100.0f / FREQ_MAX * (FREQ_MAX + 1 - Math.min(freq, FREQ_MAX))));
 		}
 		return document;
+	}
+
+	private String getRadicalCharacterForIndex(short value) {
+		int c = RADICAL_UNICODE_OFFSET + (value - 1);
+		return String.valueOf(Character.toChars(c));
 	}
 
 	private Integer getCodePoint(au.edu.monash.csse.kanjidic.model.Character character) {
