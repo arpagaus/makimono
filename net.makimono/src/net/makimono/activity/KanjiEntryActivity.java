@@ -22,6 +22,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 	private TextView literalTextView;
 	private TextView onYomiTextView;
 	private TextView kunYomiTextView;
+	private TextView radicalTextView;
 	private TextView strokeCountTextView;
 	private TextView jlptTextView;
 	private TextView gradeTextView;
@@ -41,6 +42,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		literalTextView = (TextView) findViewById(R.id.kanji_literal);
 		onYomiTextView = (TextView) findViewById(R.id.kanji_on_yomi);
 		kunYomiTextView = (TextView) findViewById(R.id.kanji_kun_yomi);
+		radicalTextView = (TextView) findViewById(R.id.kanji_radical);
 		strokeCountTextView = (TextView) findViewById(R.id.kanji_stroke_count);
 		jlptTextView = (TextView) findViewById(R.id.kanji_jlpt);
 		gradeTextView = (TextView) findViewById(R.id.kanji_grade);
@@ -62,6 +64,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		onYomiTextView.setText(StringUtils.join(entry.getOnYomi(), ", "));
 		kunYomiTextView.setText(StringUtils.join(entry.getKunYomi(), ", "));
 
+		radicalTextView.setText(entry.getRadical() == null ? "-" : entry.getRadical());
 		strokeCountTextView.setText(entry.getStrokeCount() == 0 ? "-" : String.valueOf(entry.getStrokeCount()));
 		jlptTextView.setText(entry.getJlpt() == 0 ? "-" : String.valueOf(entry.getJlpt()));
 		gradeTextView.setText(entry.getGrade() == 0 ? "-" : String.valueOf(entry.getGrade()));

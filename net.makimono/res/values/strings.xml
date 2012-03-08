@@ -15,5 +15,6 @@
     <string name="frequency">Frequency</string>
     <string name="unicode">Unicode</string>
     <string name="stroke_count">Stroke count</string>
+    <string name="radical">Radical</string>
 
 </resources>

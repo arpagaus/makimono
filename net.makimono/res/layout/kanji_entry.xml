@@ -101,6 +101,16 @@
 
             <TableRow android:gravity="center_vertical" >
 
+                <TextView android:text="@string/radical" />
+
+                <TextView
+                    android:id="@+id/kanji_radical"
+                    android:layout_margin="3dp"
+                    android:paddingLeft="15dp" />
+            </TableRow>
+
+            <TableRow android:gravity="center_vertical" >
+
                 <TextView android:text="@string/stroke_count" />
 
                 <TextView
