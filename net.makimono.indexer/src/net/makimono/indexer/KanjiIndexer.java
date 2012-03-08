@@ -61,11 +61,9 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 		Byte strokeCount = character.getMisc().getStrokeCount().get(0);
 		document.add(new Field(KanjiDictionaryFields.STROKE_COUNT.name(), new byte[] { strokeCount }));
 
-		String radical = null;
 		for (RadValue r : character.getRadical().getRadValue()) {
 			if (r.getRadType().equalsIgnoreCase("classical")) {
-				radical = getRadicalCharacterForIndex(r.getValue());
-				document.add(new Field(KanjiDictionaryFields.RADICAL.name(), radical, Store.YES, Index.NO));
+				document.add(new Field(KanjiDictionaryFields.RADICAL.name(), ByteBuffer.allocate(2).putShort(r.getValue()).array()));
 			}
 		}
 
@@ -82,11 +80,6 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 			document.setBoost(1.0f + (100.0f / FREQ_MAX * (FREQ_MAX + 1 - Math.min(freq, FREQ_MAX))));
 		}
 		return document;
-	}
-
-	private String getRadicalCharacterForIndex(short value) {
-		int c = RADICAL_UNICODE_OFFSET + (value - 1);
-		return String.valueOf(Character.toChars(c));
 	}
 
 	private Integer getCodePoint(au.edu.monash.csse.kanjidic.model.Character character) {

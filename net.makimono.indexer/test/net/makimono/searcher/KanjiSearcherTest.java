@@ -54,7 +54,7 @@ public class KanjiSearcherTest {
 		assertEquals(301, entry.getFrequency());
 		assertEquals(4, entry.getJlpt());
 
-		assertEquals(KanjiIndexer.RADICAL_UNICODE_OFFSET + 149 - 1, Character.codePointAt(entry.getRadical(), 0));
+		assertEquals(149, entry.getRadical());
 		assertEquals(14, entry.getStrokeCount());
 
 		assertEquals(asArrayList("ゴ"), entry.getOnYomi());
@@ -94,7 +94,7 @@ public class KanjiSearcherTest {
 
 		assertEquals("𢦏", entry.getLiteral());
 		assertEquals(0x2298F, entry.getCodePoint());
-		assertEquals(KanjiIndexer.RADICAL_UNICODE_OFFSET + 62 - 1, Character.codePointAt(entry.getRadical(), 0));
+		assertEquals(62, entry.getRadical());
 		assertEquals(6, entry.getStrokeCount());
 	}
 

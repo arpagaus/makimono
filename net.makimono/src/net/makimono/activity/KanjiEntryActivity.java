@@ -64,7 +64,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		onYomiTextView.setText(StringUtils.join(entry.getOnYomi(), ", "));
 		kunYomiTextView.setText(StringUtils.join(entry.getKunYomi(), ", "));
 
-		radicalTextView.setText(entry.getRadical() == null ? "-" : entry.getRadical());
+		radicalTextView.setText(entry.getRadical() == 0 ? "-" : String.valueOf(entry.getRadical()));
 		strokeCountTextView.setText(entry.getStrokeCount() == 0 ? "-" : String.valueOf(entry.getStrokeCount()));
 		jlptTextView.setText(entry.getJlpt() == 0 ? "-" : String.valueOf(entry.getJlpt()));
 		gradeTextView.setText(entry.getGrade() == 0 ? "-" : String.valueOf(entry.getGrade()));
