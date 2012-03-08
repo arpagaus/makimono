@@ -1,13 +1,29 @@
 package net.makimono.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class KanjiEntry implements Parcelable {
+
+	private static final Properties RADICAL_KANA = new Properties();
+	private static final Properties RADICAL_KANJI = new Properties();
+
+	static {
+		ClassLoader classLoader = KanjiEntry.class.getClassLoader();
+		try {
+			String path = KanjiEntry.class.getName().replace('.', '/');
+			RADICAL_KANA.load(classLoader.getResourceAsStream(path + "_radical_kana.properties"));
+			RADICAL_KANJI.load(classLoader.getResourceAsStream(path + "_radical_kanji.properties"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private String literal;
 	private int codePoint;
@@ -62,6 +78,24 @@ public class KanjiEntry implements Parcelable {
 
 	public short getRadical() {
 		return radical;
+	}
+
+	public char getRadicalKanji() {
+		try {
+			return RADICAL_KANJI.get(String.valueOf(getRadical())).toString().charAt(0);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return 'E';
+		}
+	}
+
+	public String getRadicalKana() {
+		try {
+			return RADICAL_KANA.get(String.valueOf(getRadical())).toString();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "Unexpected error";
+		}
 	}
 
 	public void setRadical(short radical) {
@@ -181,4 +215,5 @@ public class KanjiEntry implements Parcelable {
 			parcel.writeByte((byte) m.getLanguage().ordinal());
 		}
 	}
+
 }

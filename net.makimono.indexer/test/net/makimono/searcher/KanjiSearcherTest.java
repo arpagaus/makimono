@@ -54,8 +54,11 @@ public class KanjiSearcherTest {
 		assertEquals(301, entry.getFrequency());
 		assertEquals(4, entry.getJlpt());
 
-		assertEquals(149, entry.getRadical());
 		assertEquals(14, entry.getStrokeCount());
+
+		assertEquals(149, entry.getRadical());
+		assertEquals('言', entry.getRadicalKanji());
+		assertEquals("ことば", entry.getRadicalKana());
 
 		assertEquals(asArrayList("ゴ"), entry.getOnYomi());
 		assertEquals(asArrayList("かた.る", "かた.らう"), entry.getKunYomi());
@@ -94,8 +97,11 @@ public class KanjiSearcherTest {
 
 		assertEquals("𢦏", entry.getLiteral());
 		assertEquals(0x2298F, entry.getCodePoint());
-		assertEquals(62, entry.getRadical());
 		assertEquals(6, entry.getStrokeCount());
+
+		assertEquals(62, entry.getRadical());
+		assertEquals('戈', entry.getRadicalKanji());
+		assertEquals("かのほこ", entry.getRadicalKana());
 	}
 
 	@Test
