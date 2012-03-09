@@ -74,7 +74,7 @@ public class DictionarySearcher implements Closeable {
 		return queryParserNotAnalyzed;
 	}
 
-	public ArrayList<DictionaryEntry> search(String queryString) throws IOException, ParseException {
+	public List<DictionaryEntry> search(String queryString) throws IOException, ParseException {
 		if (queryString == null || queryString.equals("")) {
 			return new ArrayList<DictionaryEntry>(0);
 		}
@@ -159,7 +159,7 @@ public class DictionarySearcher implements Closeable {
 		if (isQualifiedForSuggestions(prefix)) {
 			try {
 				prefix = prefix.trim();
-				ArrayList<DictionaryEntry> entries = search(prefix + "*");
+				List<DictionaryEntry> entries = search(prefix + "*");
 				return extractSuggestions(prefix, entries);
 			} catch (ParseException e) {
 				throw new RuntimeException(e);
@@ -168,7 +168,7 @@ public class DictionarySearcher implements Closeable {
 		return new TreeSet<String>();
 	}
 
-	private TreeSet<String> extractSuggestions(String prefix, ArrayList<DictionaryEntry> entries) {
+	private TreeSet<String> extractSuggestions(String prefix, List<DictionaryEntry> entries) {
 		TreeSet<String> suggestions = new TreeSet<String>();
 		for (DictionaryEntry entry : entries) {
 			suggestions.addAll(getMatchingStrings(prefix, entry.getExpressions()));

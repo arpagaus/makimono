@@ -3,7 +3,7 @@ package net.makimono.activity;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
+import java.util.List;
 
 import net.makimono.R;
 import net.makimono.adapter.SearchResultAdapter;
@@ -68,11 +68,11 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 
-			AsyncTask<String, Void, ArrayList<DictionaryEntry>> task = new AsyncTask<String, Void, ArrayList<DictionaryEntry>>() {
-				protected ArrayList<DictionaryEntry> doInBackground(String... queries) {
+			AsyncTask<String, Void, List<DictionaryEntry>> task = new AsyncTask<String, Void, List<DictionaryEntry>>() {
+				protected List<DictionaryEntry> doInBackground(String... queries) {
 					try {
 						String query = queries[0];
-						ArrayList<DictionaryEntry> entries = connection.getDictionarySearcher().search(query);
+						List<DictionaryEntry> entries = connection.getDictionarySearcher().search(query);
 						if (!entries.isEmpty()) {
 							SearchSuggestionProvider.getSearchRecentSuggestions(SearchActivity.this).saveRecentQuery(query, null);
 						}
@@ -83,7 +83,7 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 					}
 				}
 
-				protected void onPostExecute(ArrayList<DictionaryEntry> entries) {
+				protected void onPostExecute(List<DictionaryEntry> entries) {
 					resultAdapter.updateEntries(entries);
 				}
 			};

@@ -24,7 +24,7 @@ public class SearchResultAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private SharedPreferences sharedPreferences;
 
-	private ArrayList<DictionaryEntry> entries = new ArrayList<DictionaryEntry>();
+	private List<DictionaryEntry> entries = new ArrayList<DictionaryEntry>();
 
 	public SearchResultAdapter(Context context) {
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -97,7 +97,7 @@ public class SearchResultAdapter extends BaseAdapter {
 		return meaning.toString();
 	}
 
-	public void updateEntries(ArrayList<DictionaryEntry> entries) {
+	public void updateEntries(List<DictionaryEntry> entries) {
 		updateLanguages();
 		this.entries = entries;
 		notifyDataSetChanged();
