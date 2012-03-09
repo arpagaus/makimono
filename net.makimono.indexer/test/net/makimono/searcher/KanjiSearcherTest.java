@@ -122,4 +122,20 @@ public class KanjiSearcherTest {
 		assertEquals("本", entries.get(1).getLiteral());
 		assertEquals("語", entries.get(2).getLiteral());
 	}
+
+	@Test
+	public void findAllRadicals() throws Exception {
+		for (short i = 1; i <= 214; i++) {
+			KanjiEntry entry = new KanjiEntry();
+			entry.setRadical(i);
+
+			KanjiEntry radical = searcher.getKanjiEntry(String.valueOf(entry.getRadicalKanji()));
+			assertNotNull("Radical " + i, radical);
+			assertEquals("Radical " + i, entry.getRadicalKanji(), radical.getLiteral().charAt(0));
+			assertFalse(radical.getMeanings().isEmpty());
+
+			assertNotNull("Radical " + i, entry.getRadicalKana());
+			assertTrue("Radical " + i, entry.getRadicalKana().length() > 0);
+		}
+	}
 }

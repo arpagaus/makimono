@@ -42,7 +42,7 @@ import android.widget.ViewSwitcher.ViewFactory;
 public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	public static final String EXTRA_DICTIONARY_ENTRY = DictionaryEntryActivity.class + ".EXTRA_DOC_ID";
 
-	SearcherServiceConnection connection = new SearcherServiceConnection();
+	private SearcherServiceConnection connection = new SearcherServiceConnection();
 
 	private DictionaryEntry entry;
 

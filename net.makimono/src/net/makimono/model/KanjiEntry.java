@@ -85,7 +85,7 @@ public class KanjiEntry implements Parcelable {
 			return RADICAL_KANJI.get(String.valueOf(getRadical())).toString().charAt(0);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return 'E';
+			return ' ';
 		}
 	}
 
@@ -94,7 +94,7 @@ public class KanjiEntry implements Parcelable {
 			return RADICAL_KANA.get(String.valueOf(getRadical())).toString();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "Unexpected error";
+			return null;
 		}
 	}
 
