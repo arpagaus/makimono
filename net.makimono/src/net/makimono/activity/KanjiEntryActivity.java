@@ -33,6 +33,9 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 	private TextView literalTextView;
 	private TextView onYomiTextView;
 	private TextView kunYomiTextView;
+	private TextView nanoriTextView;
+	private TextView hangulTextView;
+	private TextView pinyinTextView;
 	private TextView radicalTextView;
 	private TextView strokeCountTextView;
 	private TextView jlptTextView;
@@ -65,6 +68,9 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		literalTextView = (TextView) findViewById(R.id.kanji_literal);
 		onYomiTextView = (TextView) findViewById(R.id.kanji_on_yomi);
 		kunYomiTextView = (TextView) findViewById(R.id.kanji_kun_yomi);
+		nanoriTextView = (TextView) findViewById(R.id.kanji_nanori);
+		hangulTextView = (TextView) findViewById(R.id.kanji_hangul);
+		pinyinTextView = (TextView) findViewById(R.id.kanji_pinyin);
 		radicalTextView = (TextView) findViewById(R.id.kanji_radical);
 		strokeCountTextView = (TextView) findViewById(R.id.kanji_stroke_count);
 		jlptTextView = (TextView) findViewById(R.id.kanji_jlpt);
@@ -90,6 +96,9 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		literalTextView.setText(entry.getLiteral());
 		onYomiTextView.setText(StringUtils.join(entry.getOnYomi(), ", "));
 		kunYomiTextView.setText(StringUtils.join(entry.getKunYomi(), ", "));
+		nanoriTextView.setText(StringUtils.join(entry.getNanori(), ", "));
+		hangulTextView.setText(StringUtils.join(entry.getHangul(), ", "));
+		pinyinTextView.setText(StringUtils.join(entry.getPinyin(), ", "));
 
 		updateRadicalTextView(entry, null);
 		strokeCountTextView.setText(entry.getStrokeCount() == 0 ? "-" : String.valueOf(entry.getStrokeCount()));

@@ -74,6 +74,10 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 		addReadings(document, rm.getRmgroup().getReading());
 		addMeanings(document, rm.getRmgroup().getMeaning());
 
+		for (String nanori : rm.getNanori()) {
+			document.add(new Field(KanjiDictionaryFields.NANORI.name(), nanori, Store.YES, Index.NOT_ANALYZED));
+		}
+
 		short freq = character.getMisc().getFreq();
 		if (freq > 0.0) {
 			document.add(new Field(KanjiDictionaryFields.FREQUENCY.name(), ByteBuffer.allocate(2).putShort(freq).array()));
@@ -110,6 +114,10 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 				document.add(new Field(KanjiDictionaryFields.ONYOMI.name(), r.getValue(), Store.YES, Index.NOT_ANALYZED));
 			} else if (r.getRType().equalsIgnoreCase("ja_kun")) {
 				document.add(new Field(KanjiDictionaryFields.KUNYOMI.name(), r.getValue(), Store.YES, Index.NOT_ANALYZED));
+			} else if (r.getRType().equalsIgnoreCase("pinyin")) {
+				document.add(new Field(KanjiDictionaryFields.PINYIN.name(), r.getValue(), Store.YES, Index.NO));
+			} else if (r.getRType().equalsIgnoreCase("korean_h")) {
+				document.add(new Field(KanjiDictionaryFields.HANGUL.name(), r.getValue(), Store.YES, Index.NO));
 			}
 		}
 	}

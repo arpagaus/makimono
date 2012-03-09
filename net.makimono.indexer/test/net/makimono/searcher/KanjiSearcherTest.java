@@ -63,6 +63,10 @@ public class KanjiSearcherTest {
 		assertEquals(asArrayList("ゴ"), entry.getOnYomi());
 		assertEquals(asArrayList("かた.る", "かた.らう"), entry.getKunYomi());
 
+		assertEquals(asArrayList("や"), entry.getNanori());
+		assertEquals(asArrayList("yu3", "yu4"), entry.getPinyin());
+		assertEquals(asArrayList("어"), entry.getHangul());
+
 		List<Meaning> meanings = entry.getMeanings();
 		assertTrue(meanings.contains(new Meaning("word", Language.en)));
 		assertTrue(meanings.contains(new Meaning("speech", Language.en)));
@@ -97,8 +101,9 @@ public class KanjiSearcherTest {
 
 		assertEquals("𢦏", entry.getLiteral());
 		assertEquals(0x2298F, entry.getCodePoint());
-		assertEquals(6, entry.getStrokeCount());
+		assertEquals(asArrayList("zai1"), entry.getPinyin());
 
+		assertEquals(6, entry.getStrokeCount());
 		assertEquals(62, entry.getRadical());
 		assertEquals('戈', entry.getRadicalKanji());
 		assertEquals("かのほこ", entry.getRadicalKana());

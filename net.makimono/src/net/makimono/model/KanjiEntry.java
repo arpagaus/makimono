@@ -34,6 +34,9 @@ public class KanjiEntry implements Parcelable {
 	private byte strokeCount;
 	private List<String> onYomi;
 	private List<String> kunYomi;
+	private List<String> nanori;
+	private List<String> pinyin;
+	private List<String> hangul;
 	private List<Meaning> meanings;
 
 	public String getLiteral() {
@@ -117,10 +120,6 @@ public class KanjiEntry implements Parcelable {
 		return onYomi;
 	}
 
-	public void setOnYomi(ArrayList<String> onYomi) {
-		this.onYomi = onYomi;
-	}
-
 	public List<String> getKunYomi() {
 		if (kunYomi == null) {
 			kunYomi = new ArrayList<String>();
@@ -129,8 +128,26 @@ public class KanjiEntry implements Parcelable {
 		return kunYomi;
 	}
 
-	public void setKunYomi(ArrayList<String> kunYomi) {
-		this.kunYomi = kunYomi;
+	public List<String> getNanori() {
+		if (nanori == null) {
+			nanori = new ArrayList<String>();
+
+		}
+		return nanori;
+	}
+
+	public List<String> getPinyin() {
+		if (pinyin == null) {
+			pinyin = new ArrayList<String>();
+		}
+		return pinyin;
+	}
+
+	public List<String> getHangul() {
+		if (hangul == null) {
+			hangul = new ArrayList<String>();
+		}
+		return hangul;
 	}
 
 	public List<Meaning> getMeanings() {
@@ -185,6 +202,9 @@ public class KanjiEntry implements Parcelable {
 
 		onYomi = Arrays.asList((String[]) parcel.readValue(null));
 		kunYomi = Arrays.asList((String[]) parcel.readValue(null));
+		nanori = Arrays.asList((String[]) parcel.readValue(null));
+		hangul = Arrays.asList((String[]) parcel.readValue(null));
+		pinyin = Arrays.asList((String[]) parcel.readValue(null));
 
 		byte meaningCount = parcel.readByte();
 		for (byte i = 0; i < meaningCount; i++) {
@@ -208,6 +228,9 @@ public class KanjiEntry implements Parcelable {
 
 		parcel.writeValue(onYomi.toArray(new String[onYomi.size()]));
 		parcel.writeValue(kunYomi.toArray(new String[kunYomi.size()]));
+		parcel.writeValue(nanori.toArray(new String[nanori.size()]));
+		parcel.writeValue(hangul.toArray(new String[hangul.size()]));
+		parcel.writeValue(pinyin.toArray(new String[pinyin.size()]));
 
 		parcel.writeByte((byte) meanings.size());
 		for (Meaning m : meanings) {

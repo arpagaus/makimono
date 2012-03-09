@@ -86,12 +86,11 @@ public class KanjiSearcher implements Closeable {
 		entry.setRadical(ByteBuffer.wrap(document.getFieldable(KanjiDictionaryFields.RADICAL.name()).getBinaryValue()).getShort());
 		entry.setStrokeCount(document.getFieldable(KanjiDictionaryFields.STROKE_COUNT.name()).getBinaryValue()[0]);
 
-		for (Fieldable f : document.getFieldables(KanjiDictionaryFields.ONYOMI.name())) {
-			entry.getOnYomi().add(f.stringValue());
-		}
-		for (Fieldable f : document.getFieldables(KanjiDictionaryFields.KUNYOMI.name())) {
-			entry.getKunYomi().add(f.stringValue());
-		}
+		entry.getOnYomi().addAll(getStringsForField(document, KanjiDictionaryFields.ONYOMI));
+		entry.getKunYomi().addAll(getStringsForField(document, KanjiDictionaryFields.KUNYOMI));
+		entry.getNanori().addAll(getStringsForField(document, KanjiDictionaryFields.NANORI));
+		entry.getPinyin().addAll(getStringsForField(document, KanjiDictionaryFields.PINYIN));
+		entry.getHangul().addAll(getStringsForField(document, KanjiDictionaryFields.HANGUL));
 
 		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiDictionaryFields.MEANING_EN.name()), Language.en));
 		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiDictionaryFields.MEANING_FR.name()), Language.fr));
@@ -99,6 +98,14 @@ public class KanjiSearcher implements Closeable {
 		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiDictionaryFields.MEANING_PT.name()), Language.pt));
 
 		return entry;
+	}
+
+	private ArrayList<String> getStringsForField(Document document, KanjiDictionaryFields field) {
+		ArrayList<String> strings = new ArrayList<String>();
+		for (Fieldable f : document.getFieldables(field.name())) {
+			strings.add(f.stringValue());
+		}
+		return strings;
 	}
 
 	private List<? extends Meaning> getMeanings(Fieldable[] fieldables, Language lang) {

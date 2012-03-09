@@ -54,6 +54,39 @@
                     android:layout_margin="3dp"
                     android:paddingLeft="15dp" />
             </TableRow>
+
+            <TableRow android:gravity="center_vertical" >
+
+                <TextView android:text="Nanori" />
+
+                <TextView
+                    android:id="@+id/kanji_nanori"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:paddingLeft="15dp" />
+            </TableRow>
+
+            <TableRow android:gravity="center_vertical" >
+
+                <TextView android:text="Hangul" />
+
+                <TextView
+                    android:id="@+id/kanji_hangul"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:paddingLeft="15dp" />
+            </TableRow>
+
+            <TableRow android:gravity="center_vertical" >
+
+                <TextView android:text="Pinyin" />
+
+                <TextView
+                    android:id="@+id/kanji_pinyin"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:paddingLeft="15dp" />
+            </TableRow>
         </TableLayout>
 
         <!-- Meanings -->
