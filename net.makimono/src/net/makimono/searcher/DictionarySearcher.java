@@ -157,7 +157,7 @@ public class DictionarySearcher implements Closeable {
 				TermEnum terms = reader.terms(new Term(field.name(), prefix));
 				do {
 					if (terms.term().text().toLowerCase().startsWith(prefix.toLowerCase())) {
-						suggestions.add(terms.term().text());
+						suggestions.add(terms.term().text().trim());
 					} else {
 						break;
 					}
