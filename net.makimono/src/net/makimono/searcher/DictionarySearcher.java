@@ -8,35 +8,34 @@ import java.io.ObjectInputStream;
 import java.lang.Character.UnicodeBlock;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeSet;
 
 import net.makimono.model.DictionaryEntry;
 import net.makimono.model.Language;
-import net.makimono.model.Sense;
 
-import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.queryParser.QueryParser;
-import org.apache.lucene.queryParser.QueryParser.Operator;
+import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.Query;
+import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
-import org.apache.lucene.util.Version;
 
 public class DictionarySearcher implements Closeable {
 	private static final int MAX_SIZE = 20;
 
 	private List<Language> languages;
 
-	private QueryParser queryParserNotAnalyzed;
-	private QueryParser queryParserAnalyzed;
 	private Directory dictionaryDirectory;
 	private IndexSearcher indexSearcher;
 
@@ -47,8 +46,6 @@ public class DictionarySearcher implements Closeable {
 
 	public void setLanguages(List<Language> languages) {
 		this.languages = languages;
-		queryParserAnalyzed = null;
-		queryParserNotAnalyzed = null;
 	}
 
 	private IndexSearcher getIndexSearcher() throws IOException {
@@ -58,57 +55,41 @@ public class DictionarySearcher implements Closeable {
 		return indexSearcher;
 	}
 
-	private QueryParser getQueryParserAnalyzed() {
-		if (queryParserAnalyzed == null) {
-			queryParserAnalyzed = new MultiFieldQueryParser(Version.LUCENE_35, DictionaryFields.getAllAnalzedFields(languages), new SimpleAnalyzer(Version.LUCENE_35));
-			queryParserAnalyzed.setDefaultOperator(Operator.AND);
-		}
-		return queryParserAnalyzed;
-	}
-
-	private QueryParser getQueryParserNotAnalyzed() {
-		if (queryParserNotAnalyzed == null) {
-			queryParserNotAnalyzed = new MultiFieldQueryParser(Version.LUCENE_35, DictionaryFields.getAllNotAnalzedFields(languages), new SimpleAnalyzer(Version.LUCENE_35));
-			queryParserNotAnalyzed.setDefaultOperator(Operator.AND);
-		}
-		return queryParserNotAnalyzed;
-	}
-
 	public List<DictionaryEntry> search(String queryString) throws IOException, ParseException {
 		if (queryString == null || queryString.equals("")) {
 			return new ArrayList<DictionaryEntry>(0);
 		}
+		queryString = queryString.toLowerCase();
 
-		ArrayList<DictionaryEntry> entries = new ArrayList<DictionaryEntry>();
-		searchTopDocs(entries, getQueryParserNotAnalyzed().parse(queryString));
-		searchTopDocs(entries, getQueryParserAnalyzed().parse(queryString));
+		BooleanQuery booleanQuery = new BooleanQuery();
+		for (DictionaryFields field : DictionaryFields.values()) {
+			if (!field.isSenseField() || languages.contains(field.getLanguage())) {
+				PrefixQuery prefixQuery = new PrefixQuery(new Term(field.name(), queryString));
+				if (field.isAnalyzedField()) {
+					prefixQuery.setBoost(Float.MIN_NORMAL);
+				} else {
+					TermQuery termQuery = new TermQuery(new Term(field.name(), queryString));
+					termQuery.setBoost(Short.MAX_VALUE);
+					booleanQuery.add(termQuery, Occur.SHOULD);
+				}
+				booleanQuery.add(prefixQuery, Occur.SHOULD);
 
-		return entries;
-	}
-
-	private void searchTopDocs(ArrayList<DictionaryEntry> entries, Query query) throws IOException {
-		int limitCount = MAX_SIZE - entries.size();
-		if (limitCount <= 0) {
-			return;
+			}
 		}
 
+		ArrayList<DictionaryEntry> entries = new ArrayList<DictionaryEntry>();
 		IndexSearcher searcher = getIndexSearcher();
-		TopDocs topDocs = searcher.search(query, limitCount);
+		TopDocs topDocs = searcher.search(booleanQuery, MAX_SIZE);
 		for (ScoreDoc d : topDocs.scoreDocs) {
 			DictionaryEntry entry = getByDocId(d.doc);
 			if (!entries.contains(entry)) {
 				entries.add(entry);
 			}
-			if (entries.size() >= MAX_SIZE) {
-				return;
-			}
 		}
+		return entries;
 	}
 
 	public void close() throws IOException {
-		queryParserNotAnalyzed = null;
-		queryParserAnalyzed = null;
-
 		IOException exception = null;
 		if (indexSearcher != null) {
 			try {
@@ -156,40 +137,34 @@ public class DictionarySearcher implements Closeable {
 	}
 
 	public TreeSet<String> suggest(String prefix) throws IOException {
-		if (isQualifiedForSuggestions(prefix)) {
-			try {
-				prefix = prefix.trim();
-				List<DictionaryEntry> entries = search(prefix + "*");
-				return extractSuggestions(prefix, entries);
-			} catch (ParseException e) {
-				throw new RuntimeException(e);
-			}
-		}
-		return new TreeSet<String>();
-	}
-
-	private TreeSet<String> extractSuggestions(String prefix, List<DictionaryEntry> entries) {
 		TreeSet<String> suggestions = new TreeSet<String>();
-		for (DictionaryEntry entry : entries) {
-			suggestions.addAll(getMatchingStrings(prefix, entry.getExpressions()));
-			suggestions.addAll(getMatchingStrings(prefix, entry.getReadings()));
-			for (Sense sense : entry.getSenses()) {
-				suggestions.addAll(getMatchingStrings(prefix, sense.getMeanings()));
+		if (isQualifiedForSuggestions(prefix)) {
+			Set<DictionaryFields> fields = new HashSet<DictionaryFields>();
+			if (containsKanji(prefix)) {
+				fields.add(DictionaryFields.EXPRESSION);
+			} else if (isKana(prefix)) {
+				fields.add(DictionaryFields.READING);
+			} else {
+				for (DictionaryFields field : DictionaryFields.values()) {
+					if (field.isSenseField() && languages.contains(field.getLanguage())) {
+						fields.add(field);
+					}
+				}
+			}
+
+			IndexReader reader = getIndexSearcher().getIndexReader();
+			for (DictionaryFields field : fields) {
+				TermEnum terms = reader.terms(new Term(field.name(), prefix));
+				do {
+					if (terms.term().text().toLowerCase().startsWith(prefix.toLowerCase())) {
+						suggestions.add(terms.term().text());
+					} else {
+						break;
+					}
+				} while (terms.next() && suggestions.size() < MAX_SIZE);
 			}
 		}
 		return suggestions;
-	}
-
-	private TreeSet<String> getMatchingStrings(String prefix, ArrayList<? extends Object> list) {
-		prefix = prefix.toLowerCase();
-		TreeSet<String> set = new TreeSet<String>();
-		for (Object o : list) {
-			String string = o.toString().toLowerCase().replaceAll("\\p{Punct}", "");
-			if (string.startsWith(prefix)) {
-				set.add(string);
-			}
-		}
-		return set;
 	}
 
 	private boolean isQualifiedForSuggestions(String prefix) {
@@ -197,14 +172,32 @@ public class DictionarySearcher implements Closeable {
 			return false;
 		}
 
-		UnicodeBlock block = UnicodeBlock.of(prefix.charAt(0));
-		if (block == UnicodeBlock.HIRAGANA || block == UnicodeBlock.KATAKANA) {
+		if (isKana(prefix)) {
 			return prefix.length() >= 2;
-		} else if (block == UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS) {
+		} else if (containsKanji(prefix)) {
 			return prefix.length() >= 1;
 		} else {
 			return prefix.length() >= 3;
 		}
 	}
 
+	private boolean isKana(String string) {
+		string = string.replaceAll("\\s*", "");
+		for (Character c : string.toCharArray()) {
+			UnicodeBlock block = UnicodeBlock.of(c);
+			if (block != UnicodeBlock.HIRAGANA && block != UnicodeBlock.KATAKANA) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private boolean containsKanji(String string) {
+		for (Character c : string.toCharArray()) {
+			if (UnicodeBlock.of(c) == UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

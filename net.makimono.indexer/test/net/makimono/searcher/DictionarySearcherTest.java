@@ -11,8 +11,8 @@ import java.util.Set;
 import net.makimono.model.Dialect;
 import net.makimono.model.DictionaryEntry;
 import net.makimono.model.FieldOfApplication;
-import net.makimono.model.Meaning;
 import net.makimono.model.Language;
+import net.makimono.model.Meaning;
 import net.makimono.model.Miscellaneous;
 import net.makimono.model.PartOfSpeech;
 
@@ -46,11 +46,6 @@ public class DictionarySearcherTest {
 		assertTrue(entries.isEmpty());
 	}
 
-	@Test(expected = ParseException.class)
-	public void testBadQuery() throws Exception {
-		searcher.search("*abc");
-	}
-
 	@Test
 	public void getByDocId() throws Exception {
 		List<DictionaryEntry> entries = searcher.search("Einkaufswagen");
@@ -66,12 +61,9 @@ public class DictionarySearcherTest {
 	}
 
 	@Test
-	public void searchEnglish() throws Exception {
-		List<DictionaryEntry> entries = searcher.search("Himalaya");
-		assertEquals(1, entries.size());
-
-		DictionaryEntry entry = entries.get(0);
-		assertEquals("ヒマラヤ", entry.getReadings().get(0));
+	public void searchPartial() throws Exception {
+		List<DictionaryEntry> entries = searcher.search("memor");
+		assertFalse(entries.isEmpty());
 	}
 
 	@Test
