@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class SearchActivity extends AbstractDefaultActivity implements OnItemClickListener {
 	private static final String CLASS_NAME = SearchActivity.class.getName();
@@ -29,6 +30,7 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 
 	private SearchResultAdapter resultAdapter;
 	private ListView listView;
+	private TextView noEntriesTextView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,7 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 	private void initiazlizeView() {
 		setContentView(R.layout.search_result);
 		listView = (ListView) findViewById(android.R.id.list);
+		noEntriesTextView = (TextView) findViewById(R.id.no_entries);
 		listView.setOnItemClickListener(this);
 		resultAdapter = new SearchResultAdapter(this);
 		listView.setAdapter(resultAdapter);
@@ -67,27 +70,7 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 		setIntent(intent);
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
-
-			AsyncTask<String, Void, List<DictionaryEntry>> task = new AsyncTask<String, Void, List<DictionaryEntry>>() {
-				protected List<DictionaryEntry> doInBackground(String... queries) {
-					try {
-						String query = queries[0];
-						List<DictionaryEntry> entries = connection.getDictionarySearcher().search(query);
-						if (!entries.isEmpty()) {
-							SearchSuggestionProvider.getSearchRecentSuggestions(SearchActivity.this).saveRecentQuery(query, null);
-						}
-						return entries;
-					} catch (Exception e) {
-						Log.e(CLASS_NAME, "Failed to search", e);
-						return null;
-					}
-				}
-
-				protected void onPostExecute(List<DictionaryEntry> entries) {
-					resultAdapter.updateEntries(entries);
-				}
-			};
-			task.execute(query);
+			new DictionarySearchTask().execute(query);
 		}
 	}
 
@@ -105,4 +88,31 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 		}
 	}
 
+	private class DictionarySearchTask extends AsyncTask<String, Void, List<DictionaryEntry>> {
+		protected List<DictionaryEntry> doInBackground(String... queries) {
+			try {
+				String query = queries[0];
+				List<DictionaryEntry> entries = connection.getDictionarySearcher().search(query);
+				if (!entries.isEmpty()) {
+					SearchSuggestionProvider.getSearchRecentSuggestions(SearchActivity.this).saveRecentQuery(query, null);
+				}
+				return entries;
+			} catch (Exception e) {
+				Log.e(CLASS_NAME, "Failed to search", e);
+				return null;
+			}
+		}
+
+		protected void onPostExecute(List<DictionaryEntry> entries) {
+			if (entries.isEmpty()) {
+				noEntriesTextView.setVisibility(View.VISIBLE);
+				listView.setVisibility(View.GONE);
+			} else {
+				noEntriesTextView.setVisibility(View.GONE);
+				listView.setVisibility(View.VISIBLE);
+				resultAdapter.updateEntries(entries);
+				listView.scrollTo(0, 0);
+			}
+		}
+	}
 }

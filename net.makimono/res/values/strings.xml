@@ -16,5 +16,6 @@
     <string name="unicode">Unicode</string>
     <string name="stroke_count">Stroke count</string>
     <string name="radical">Radical</string>
+    <string name="no_entries">No entries found</string>
 
 </resources>

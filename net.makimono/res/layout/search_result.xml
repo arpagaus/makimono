@@ -4,6 +4,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/no_entries"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal"
+        android:paddingTop="20dp"
+        android:text="@string/no_entries"
+        android:visibility="gone" />
+
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"

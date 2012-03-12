@@ -412,12 +412,13 @@ containing a value of this type.
         public static final int kanji_stroke_count=0x7f050036;
         public static final int kanji_unicode=0x7f05003a;
         public static final int listMode=0x7f050002;
-        public static final int menu_preferences=0x7f05003f;
-        public static final int menu_search=0x7f05003e;
+        public static final int menu_preferences=0x7f050040;
+        public static final int menu_search=0x7f05003f;
+        public static final int no_entries=0x7f05003b;
         public static final int normal=0x7f050001;
-        public static final int result_expression=0x7f05003b;
-        public static final int result_meaning=0x7f05003d;
-        public static final int result_reading=0x7f05003c;
+        public static final int result_expression=0x7f05003c;
+        public static final int result_meaning=0x7f05003e;
+        public static final int result_reading=0x7f05003d;
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
         public static final int showTitle=0x7f050007;
@@ -572,6 +573,7 @@ containing a value of this type.
         public static final int languages=0x7f090074;
         public static final int meanings=0x7f090079;
         public static final int miscellaneous=0x7f09007a;
+        public static final int no_entries=0x7f090080;
         public static final int radical=0x7f09007f;
         public static final int readings=0x7f090078;
         public static final int search=0x7f090072;
