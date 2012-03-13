@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import net.makimono.R;
@@ -17,9 +18,6 @@ import net.makimono.model.Sense;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
 import net.makimono.util.MeaningTextViewFactory;
-
-import org.apache.commons.lang3.StringUtils;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -252,11 +250,8 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		TextView resultMeaning = (TextView) kanjiView.findViewById(R.id.result_meaning);
 
 		resultExpression.setText(kanjiEntry.getLiteral());
-		String kunYomi = StringUtils.join(kanjiEntry.getKunYomi(), ", ");
-		String onYomi = StringUtils.join(kanjiEntry.getOnYomi(), ", ");
-		String separator = onYomi.length() > 0 && kunYomi.length() > 0 ? " / " : "";
-		resultReading.setText(kunYomi + separator + onYomi);
-		resultMeaning.setText(StringUtils.join(kanjiEntry.getMeanings(), ", "));
+		resultReading.setText(kanjiEntry.getReadingSummary());
+		resultMeaning.setText(kanjiEntry.getMeaningSummary(getConfiguredLanguages()));
 
 		kanjiView.setOnClickListener(new KanjiViewListener(this, kanjiEntry));
 		return kanjiView;
@@ -271,11 +266,9 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	}
 
 	private int addMeanings(Sense sense) {
-		ArrayList<Language> languages = PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
-
 		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);
 		int meaningsCount = 0;
-		for (Language language : languages) {
+		for (Language language : getConfiguredLanguages()) {
 			CharSequence meaning = Meaning.getMeaningString(language, sense.getMeanings());
 			if (meaning.length() > 0) {
 				meaningsGroupView.addView(factory.makeView(meaning, language));
@@ -283,6 +276,10 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			}
 		}
 		return meaningsCount;
+	}
+
+	private List<Language> getConfiguredLanguages() {
+		return PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 	}
 
 	private void addAdditionalInfo(Sense sense) {

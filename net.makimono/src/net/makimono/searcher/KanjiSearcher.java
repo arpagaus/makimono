@@ -22,7 +22,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 
-public class KanjiSearcher implements Closeable {
+public class KanjiSearcher implements Closeable, Searcher {
 
 	private Directory dictionaryDirectory;
 	private IndexSearcher indexSearcher;
@@ -38,7 +38,12 @@ public class KanjiSearcher implements Closeable {
 		return indexSearcher;
 	}
 
-	public ArrayList<KanjiEntry> getKanjiEntries(String string) throws IOException {
+	@Override
+	public List<KanjiEntry> search(String queryString) throws IOException {
+		return getKanjiEntries("郵便局");
+	}
+
+	public List<KanjiEntry> getKanjiEntries(String string) throws IOException {
 		if (string == null || string.equals("")) {
 			return new ArrayList<KanjiEntry>(0);
 		}

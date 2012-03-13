@@ -7,9 +7,16 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="10dp"
         android:text="Welcome to Makimono!"
         android:textSize="18dp"
         android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/search_kanji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:text="Search Kanji" />
 
 </LinearLayout>

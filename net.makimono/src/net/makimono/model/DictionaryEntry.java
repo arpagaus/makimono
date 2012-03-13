@@ -7,10 +7,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class DictionaryEntry {
+import org.apache.commons.lang3.StringUtils;
+
+public class DictionaryEntry implements Entry {
 	private int id;
 	transient private int docId;
 	private ArrayList<String> expressions;
@@ -88,6 +91,34 @@ public class DictionaryEntry {
 			senses = new ArrayList<Sense>();
 		}
 		return senses;
+	}
+
+	@Override
+	public String getExpression() {
+		if (getExpressions().isEmpty()) {
+			return getReadingSummary();
+		} else {
+			return getExpressions().get(0);
+		}
+	}
+
+	@Override
+	public String getReadingSummary() {
+		return StringUtils.join(getReadings(), ", ");
+	}
+
+	@Override
+	public String getMeaningSummary(List<Language> languages) {
+		StringBuilder meaning = new StringBuilder();
+		for (Sense s : getSenses()) {
+			for (Language language : languages) {
+				if (meaning.length() > 0) {
+					meaning.append(", ");
+				}
+				meaning.append(Meaning.getMeaningString(language, s.getMeanings()));
+			}
+		}
+		return meaning.toString();
 	}
 
 	@Override

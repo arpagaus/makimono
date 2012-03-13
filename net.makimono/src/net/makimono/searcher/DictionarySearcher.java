@@ -20,7 +20,6 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermEnum;
-import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
@@ -31,7 +30,7 @@ import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 
-public class DictionarySearcher implements Closeable {
+public class DictionarySearcher implements Closeable, Searcher {
 	private static final int MAX_SIZE = 20;
 
 	private List<Language> languages;
@@ -55,7 +54,7 @@ public class DictionarySearcher implements Closeable {
 		return indexSearcher;
 	}
 
-	public List<DictionaryEntry> search(String queryString) throws IOException, ParseException {
+	public List<DictionaryEntry> search(String queryString) throws IOException {
 		if (queryString == null || queryString.equals("")) {
 			return new ArrayList<DictionaryEntry>(0);
 		}

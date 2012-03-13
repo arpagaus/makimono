@@ -6,10 +6,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class KanjiEntry implements Parcelable {
+public class KanjiEntry implements Parcelable, Entry {
 
 	private static final Properties RADICAL_KANA = new Properties();
 	private static final Properties RADICAL_KANJI = new Properties();
@@ -155,6 +157,33 @@ public class KanjiEntry implements Parcelable {
 			meanings = new ArrayList<Meaning>();
 		}
 		return meanings;
+	}
+
+	@Override
+	public String getExpression() {
+		return getLiteral();
+	}
+
+	@Override
+	public String getReadingSummary() {
+		String kunYomi = StringUtils.join(getKunYomi(), ", ");
+		String onYomi = StringUtils.join(getOnYomi(), ", ");
+		String separator = onYomi.length() > 0 && kunYomi.length() > 0 ? " / " : "";
+		return kunYomi + separator + onYomi;
+	}
+
+	@Override
+	public String getMeaningSummary(List<Language> languages) {
+		StringBuilder meaning = new StringBuilder();
+		for (Meaning g : getMeanings()) {
+			if (languages.contains(g.getLanguage())) {
+				if (meaning.length() > 0) {
+					meaning.append(", ");
+				}
+				meaning.append(g.getValue());
+			}
+		}
+		return meaning.toString();
 	}
 
 	@Override

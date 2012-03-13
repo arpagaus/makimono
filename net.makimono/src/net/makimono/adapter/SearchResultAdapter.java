@@ -5,10 +5,8 @@ import java.util.List;
 
 import net.makimono.R;
 import net.makimono.activity.PreferenceActivity;
-import net.makimono.model.DictionaryEntry;
+import net.makimono.model.Entry;
 import net.makimono.model.Language;
-import net.makimono.model.Meaning;
-import net.makimono.model.Sense;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -24,7 +22,7 @@ public class SearchResultAdapter extends BaseAdapter {
 	private LayoutInflater inflater;
 	private SharedPreferences sharedPreferences;
 
-	private List<DictionaryEntry> entries = new ArrayList<DictionaryEntry>();
+	private List<? extends Entry> entries = new ArrayList<Entry>();
 
 	public SearchResultAdapter(Context context) {
 		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -48,7 +46,7 @@ public class SearchResultAdapter extends BaseAdapter {
 
 	@Override
 	public long getItemId(int position) {
-		return entries.get(position).getDocId();
+		return position;
 	}
 
 	@Override
@@ -60,44 +58,14 @@ public class SearchResultAdapter extends BaseAdapter {
 		TextView resultReading = (TextView) convertView.findViewById(R.id.result_reading);
 		TextView resultMeaning = (TextView) convertView.findViewById(R.id.result_meaning);
 
-		resultExpression.setText(getExpression(entries.get(position)));
-		resultReading.setText(getReading(entries.get(position)));
-		resultMeaning.setText(getMeaning(entries.get(position)));
+		Entry entry = entries.get(position);
+		resultExpression.setText(entry.getExpression());
+		resultReading.setText(entry.getReadingSummary());
+		resultMeaning.setText(entry.getMeaningSummary(languages));
 		return convertView;
 	}
 
-	private CharSequence getExpression(DictionaryEntry entry) {
-		if (entry.getExpressions().isEmpty()) {
-			return entry.getReadings().get(0);
-		} else {
-			return entry.getExpressions().get(0);
-		}
-	}
-
-	private CharSequence getReading(DictionaryEntry entry) {
-		if (entry.getExpressions().isEmpty()) {
-			return null;
-		} else {
-			return entry.getReadings().get(0);
-		}
-	}
-
-	private CharSequence getMeaning(DictionaryEntry entry) {
-		StringBuilder meaning = new StringBuilder();
-		for (Sense s : entry.getSenses()) {
-			for (Meaning g : s.getMeanings()) {
-				if (languages.contains(g.getLanguage())) {
-					if (meaning.length() > 0) {
-						meaning.append(", ");
-					}
-					meaning.append(g.getValue());
-				}
-			}
-		}
-		return meaning.toString();
-	}
-
-	public void updateEntries(List<DictionaryEntry> entries) {
+	public void updateEntries(List<? extends Entry> entries) {
 		updateLanguages();
 		this.entries = entries;
 		notifyDataSetChanged();

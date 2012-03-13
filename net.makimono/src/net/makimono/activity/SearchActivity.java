@@ -9,6 +9,9 @@ import net.makimono.R;
 import net.makimono.adapter.SearchResultAdapter;
 import net.makimono.content.SearchSuggestionProvider;
 import net.makimono.model.DictionaryEntry;
+import net.makimono.model.Entry;
+import net.makimono.model.KanjiEntry;
+import net.makimono.searcher.Searcher;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
 import android.app.SearchManager;
@@ -25,6 +28,23 @@ import android.widget.TextView;
 
 public class SearchActivity extends AbstractDefaultActivity implements OnItemClickListener {
 	private static final String CLASS_NAME = SearchActivity.class.getName();
+	public static final String EXTRA_SEARCH_CONTENT = SearchActivity.class.getName() + ".EXTRA_SEARCH_CONTENT";
+
+	public enum SearchContent {
+		Dictionary {
+			@Override
+			public Searcher getSearcher(SearcherServiceConnection connection) {
+				return connection.getDictionarySearcher();
+			}
+		},
+		Kanji {
+			@Override
+			public Searcher getSearcher(SearcherServiceConnection connection) {
+				return connection.getKanjiSearcher();
+			}
+		};
+		public abstract Searcher getSearcher(SearcherServiceConnection connection);
+	}
 
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
 
@@ -70,29 +90,47 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 		setIntent(intent);
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
-			new DictionarySearchTask().execute(query);
+			Bundle bundle = getIntent().getBundleExtra(SearchManager.APP_DATA);
+
+			SearchContent searchContent = SearchContent.Dictionary;
+			if (bundle != null && bundle.containsKey(EXTRA_SEARCH_CONTENT)) {
+				searchContent = SearchContent.valueOf(bundle.getString(EXTRA_SEARCH_CONTENT));
+			}
+			new DictionarySearchTask(searchContent).execute(query);
 		}
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> view, View v, int position, long id) {
-		Intent intent = new Intent(this, DictionaryEntryActivity.class);
-		DictionaryEntry entry = (DictionaryEntry) view.getAdapter().getItem(position);
-		try {
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			DictionaryEntry.writeEntry(new ObjectOutputStream(out), entry);
-			intent.putExtra(DictionaryEntryActivity.EXTRA_DICTIONARY_ENTRY, out.toByteArray());
+		Entry entry = (Entry) view.getAdapter().getItem(position);
+		if (entry instanceof DictionaryEntry) {
+			try {
+				Intent intent = new Intent(this, DictionaryEntryActivity.class);
+				ByteArrayOutputStream out = new ByteArrayOutputStream();
+				DictionaryEntry.writeEntry(new ObjectOutputStream(out), (DictionaryEntry) entry);
+				intent.putExtra(DictionaryEntryActivity.EXTRA_DICTIONARY_ENTRY, out.toByteArray());
+				startActivity(intent);
+			} catch (IOException e) {
+				Log.e(CLASS_NAME, "Failed to serialize entry", e);
+			}
+		} else if (entry instanceof KanjiEntry) {
+			Intent intent = new Intent(this, KanjiEntryActivity.class);
+			intent.putExtra(KanjiEntryActivity.EXTRA_KANJI_ENTRY, (KanjiEntry) entry);
 			startActivity(intent);
-		} catch (IOException e) {
-			Log.e(CLASS_NAME, "Failed to serialize entry", e);
 		}
 	}
 
-	private class DictionarySearchTask extends AsyncTask<String, Void, List<DictionaryEntry>> {
-		protected List<DictionaryEntry> doInBackground(String... queries) {
+	private class DictionarySearchTask extends AsyncTask<String, Void, List<? extends Entry>> {
+		private SearchContent searchContent;
+
+		public DictionarySearchTask(SearchContent searchContent) {
+			this.searchContent = searchContent;
+		}
+
+		protected List<? extends Entry> doInBackground(String... queries) {
 			try {
 				String query = queries[0];
-				List<DictionaryEntry> entries = connection.getDictionarySearcher().search(query);
+				List<? extends Entry> entries = searchContent.getSearcher(connection).search(query);
 				if (!entries.isEmpty()) {
 					SearchSuggestionProvider.getSearchRecentSuggestions(SearchActivity.this).saveRecentQuery(query, null);
 				}
@@ -103,7 +141,7 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 			}
 		}
 
-		protected void onPostExecute(List<DictionaryEntry> entries) {
+		protected void onPostExecute(List<? extends Entry> entries) {
 			if (entries.isEmpty()) {
 				noEntriesTextView.setVisibility(View.VISIBLE);
 				listView.setVisibility(View.GONE);
