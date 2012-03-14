@@ -81,6 +81,14 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 	}
 
 	@Override
+	public boolean onSearchRequested() {
+		Bundle bundle = new Bundle();
+		bundle.putString(SearchActivity.EXTRA_SEARCH_CONTENT, getSearchContent().name());
+		startSearch(null, false, bundle, false);
+		return true;
+	}
+
+	@Override
 	protected void onNewIntent(Intent intent) {
 		super.onNewIntent(intent);
 		handleIntent(intent);
@@ -90,14 +98,17 @@ public class SearchActivity extends AbstractDefaultActivity implements OnItemCli
 		setIntent(intent);
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
-			Bundle bundle = getIntent().getBundleExtra(SearchManager.APP_DATA);
-
-			SearchContent searchContent = SearchContent.Dictionary;
-			if (bundle != null && bundle.containsKey(EXTRA_SEARCH_CONTENT)) {
-				searchContent = SearchContent.valueOf(bundle.getString(EXTRA_SEARCH_CONTENT));
-			}
-			new DictionarySearchTask(searchContent).execute(query);
+			new DictionarySearchTask(getSearchContent()).execute(query);
 		}
+	}
+
+	private SearchContent getSearchContent() {
+		Bundle bundle = getIntent().getBundleExtra(SearchManager.APP_DATA);
+		SearchContent searchContent = SearchContent.Dictionary;
+		if (bundle != null && bundle.containsKey(EXTRA_SEARCH_CONTENT)) {
+			searchContent = SearchContent.valueOf(bundle.getString(EXTRA_SEARCH_CONTENT));
+		}
+		return searchContent;
 	}
 
 	@Override
