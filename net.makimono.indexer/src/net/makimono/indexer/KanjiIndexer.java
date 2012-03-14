@@ -75,7 +75,7 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 		addMeanings(document, rm.getRmgroup().getMeaning());
 
 		for (String nanori : rm.getNanori()) {
-			document.add(new Field(KanjiDictionaryFields.NANORI.name(), nanori, Store.YES, Index.NOT_ANALYZED));
+			document.add(new Field(KanjiDictionaryFields.NANORI.name(), nanori, Store.YES, Index.NO));
 		}
 
 		short freq = character.getMisc().getFreq();
@@ -104,7 +104,8 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 			} else {
 				lang = m.getMLang().toUpperCase();
 			}
-			document.add(new Field("MEANING_" + lang, m.getValue(), Store.YES, Index.ANALYZED));
+			document.add(new Field("MEANING_" + lang, m.getValue(), Store.YES, Index.NOT_ANALYZED));
+			document.add(new Field("MEANING_ANALYZED_" + lang, m.getValue(), Store.NO, Index.ANALYZED));
 		}
 	}
 

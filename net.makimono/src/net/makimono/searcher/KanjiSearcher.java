@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.lang.Character.UnicodeBlock;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import net.makimono.model.KanjiEntry;
@@ -16,7 +17,11 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.PhraseQuery;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
@@ -40,7 +45,29 @@ public class KanjiSearcher implements Closeable, Searcher {
 
 	@Override
 	public List<KanjiEntry> search(String queryString) throws IOException {
-		return getKanjiEntries("郵便局");
+		if (queryString == null || queryString.equals("")) {
+			return Collections.emptyList();
+		}
+		queryString = queryString.toLowerCase();
+
+		BooleanQuery query = new BooleanQuery();
+
+		for (KanjiDictionaryFields field : KanjiDictionaryFields.values()) {
+			PhraseQuery phraseQuery = new PhraseQuery();
+			phraseQuery.add(new Term(field.name(), queryString));
+			query.add(phraseQuery, Occur.SHOULD);
+		}
+
+		ArrayList<KanjiEntry> entries = new ArrayList<KanjiEntry>();
+		IndexSearcher searcher = getIndexSearcher();
+		TopDocs topDocs = searcher.search(query, 100);
+		for (ScoreDoc d : topDocs.scoreDocs) {
+			KanjiEntry entry = getKanjiEntryForDocument(getIndexSearcher().doc(d.doc));
+			if (!entries.contains(entry)) {
+				entries.add(entry);
+			}
+		}
+		return entries;
 	}
 
 	public List<KanjiEntry> getKanjiEntries(String string) throws IOException {

@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.lang.Character.UnicodeBlock;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -56,7 +57,7 @@ public class DictionarySearcher implements Closeable, Searcher {
 
 	public List<DictionaryEntry> search(String queryString) throws IOException {
 		if (queryString == null || queryString.equals("")) {
-			return new ArrayList<DictionaryEntry>(0);
+			return Collections.emptyList();
 		}
 		queryString = queryString.toLowerCase();
 
@@ -72,7 +73,6 @@ public class DictionarySearcher implements Closeable, Searcher {
 					booleanQuery.add(termQuery, Occur.SHOULD);
 				}
 				booleanQuery.add(prefixQuery, Occur.SHOULD);
-
 			}
 		}
 

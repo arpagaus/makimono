@@ -143,4 +143,31 @@ public class KanjiSearcherTest {
 			assertTrue("Radical " + i, entry.getRadicalKana().length() > 0);
 		}
 	}
+
+	@Test
+	public void searchKunYomi() throws Exception {
+		List<KanjiEntry> entries = searcher.search("みなみ");
+		assertEquals(1, entries.size());
+		assertEquals("南", entries.get(0).getLiteral());
+	}
+
+	@Test
+	public void searchOnYomi() throws Exception {
+		List<KanjiEntry> entries = searcher.search("エイ");
+		assertFalse(entries.isEmpty());
+		for (KanjiEntry entry : entries) {
+			assertTrue(entry.getOnYomi().contains("エイ"));
+		}
+	}
+
+	@Test
+	public void searchSpanish() throws Exception {
+		List<KanjiEntry> entries = searcher.search("contador de cosas planas");
+		assertEquals(1, entries.size());
+		assertEquals("葉", entries.get(0).getLiteral());
+
+		entries = searcher.search("follaje");
+		assertEquals(1, entries.size());
+		assertEquals("葉", entries.get(0).getLiteral());
+	}
 }

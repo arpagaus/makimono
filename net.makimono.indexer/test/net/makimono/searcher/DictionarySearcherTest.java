@@ -67,6 +67,12 @@ public class DictionarySearcherTest {
 	}
 
 	@Test
+	public void searchWithSpace() throws Exception {
+		List<DictionaryEntry> entries = searcher.search("memory card");
+		assertFalse(entries.isEmpty());
+	}
+
+	@Test
 	public void searchGerman() throws Exception {
 		List<DictionaryEntry> entries = searcher.search("Einkaufswagen");
 		assertEquals(1, entries.size());
