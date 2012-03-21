@@ -391,35 +391,38 @@ containing a value of this type.
         public static final int entry_separator_line_meanings=0x7f050022;
         public static final int entry_separator_meanings=0x7f050021;
         public static final int homeAsUp=0x7f050006;
-        public static final int kanji_frequency=0x7f05003a;
-        public static final int kanji_grade=0x7f050039;
-        public static final int kanji_hangul=0x7f05002f;
-        public static final int kanji_jlpt=0x7f050038;
-        public static final int kanji_kun_yomi=0x7f05002d;
-        public static final int kanji_literal=0x7f050028;
-        public static final int kanji_meanings=0x7f050033;
-        public static final int kanji_meanings_separator_line=0x7f050032;
-        public static final int kanji_meanings_separator_text=0x7f050031;
-        public static final int kanji_misc_separator_line=0x7f050035;
-        public static final int kanji_misc_separator_text=0x7f050034;
-        public static final int kanji_nanori=0x7f05002e;
-        public static final int kanji_on_yomi=0x7f05002c;
-        public static final int kanji_pinyin=0x7f050030;
-        public static final int kanji_radical=0x7f050036;
-        public static final int kanji_readings=0x7f05002b;
-        public static final int kanji_readings_separator_line=0x7f05002a;
-        public static final int kanji_readings_separator_text=0x7f050029;
-        public static final int kanji_stroke_count=0x7f050037;
-        public static final int kanji_unicode=0x7f05003b;
+        public static final int kanji_frequency=0x7f05003d;
+        public static final int kanji_grade=0x7f05003c;
+        public static final int kanji_hangul=0x7f050032;
+        public static final int kanji_jlpt=0x7f05003b;
+        public static final int kanji_kun_yomi=0x7f050030;
+        public static final int kanji_literal=0x7f05002b;
+        public static final int kanji_meanings=0x7f050036;
+        public static final int kanji_meanings_separator_line=0x7f050035;
+        public static final int kanji_meanings_separator_text=0x7f050034;
+        public static final int kanji_misc_separator_line=0x7f050038;
+        public static final int kanji_misc_separator_text=0x7f050037;
+        public static final int kanji_nanori=0x7f050031;
+        public static final int kanji_on_yomi=0x7f05002f;
+        public static final int kanji_pinyin=0x7f050033;
+        public static final int kanji_radical=0x7f050039;
+        public static final int kanji_readings=0x7f05002e;
+        public static final int kanji_readings_separator_line=0x7f05002d;
+        public static final int kanji_readings_separator_text=0x7f05002c;
+        public static final int kanji_stroke_count=0x7f05003a;
+        public static final int kanji_unicode=0x7f05003e;
         public static final int listMode=0x7f050002;
-        public static final int menu_preferences=0x7f050041;
-        public static final int menu_search=0x7f050040;
-        public static final int no_entries=0x7f05003c;
+        public static final int menu_preferences=0x7f050044;
+        public static final int menu_search=0x7f050043;
+        public static final int no_entries=0x7f05003f;
         public static final int normal=0x7f050001;
-        public static final int result_expression=0x7f05003d;
-        public static final int result_meaning=0x7f05003f;
-        public static final int result_reading=0x7f05003e;
-        public static final int search_kanji=0x7f050027;
+        public static final int result_expression=0x7f050040;
+        public static final int result_meaning=0x7f050042;
+        public static final int result_reading=0x7f050041;
+        public static final int search_dictionary=0x7f050027;
+        public static final int search_kanji=0x7f050028;
+        public static final int search_kanji_by_radicals=0x7f050029;
+        public static final int search_sentence=0x7f05002a;
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
         public static final int showTitle=0x7f050007;
@@ -570,7 +573,7 @@ containing a value of this type.
         public static final int frequency=0x7f09007c;
         public static final int general=0x7f090073;
         public static final int grade=0x7f09007b;
-        public static final int kanjis=0x7f090077;
+        public static final int kanji=0x7f090077;
         public static final int languages=0x7f090074;
         public static final int meanings=0x7f090079;
         public static final int miscellaneous=0x7f09007a;
@@ -622,8 +625,10 @@ containing a value of this type.
         public static final int Widget_Sherlock_TextView_SpinnerItem_ActionBar=0x7f0b0009;
     }
     public static final class xml {
-        public static final int preference=0x7f040000;
-        public static final int searchable=0x7f040001;
+        public static final int dictionary_searchable=0x7f040000;
+        public static final int kanji_searchable=0x7f040001;
+        public static final int preference=0x7f040002;
+        public static final int searchable=0x7f040003;
     }
     public static final class styleable {
         /** Attributes that can be used with a SherlockTheme.

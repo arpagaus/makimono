@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.SearchActivity"
+            android:name=".activity.DictionarySearchActivity"
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -30,18 +30,27 @@
 
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                android:resource="@xml/dictionary_searchable" />
         </activity>
+        <activity
+            android:name=".activity.KanjiSearchActivity"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/kanji_searchable" />
+        </activity>
+        
+        
         <activity android:name=".activity.DictionaryEntryActivity" >
         </activity>
         <activity android:name=".activity.KanjiEntryActivity" >
         </activity>
         <activity android:name=".activity.PreferenceActivity" >
         </activity>
-
-        <meta-data
-            android:name="android.app.default_searchable"
-            android:value=".activity.SearchActivity" />
 
         <provider
             android:name=".content.SearchSuggestionProvider"

@@ -5,18 +5,39 @@
     android:orientation="vertical" >
 
     <TextView
+        android:id="@+id/search_dictionary"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Welcome to Makimono!"
-        android:textSize="18dp"
-        android:textStyle="bold" />
+        android:drawableLeft="@drawable/ic_menu_search_holo_light"
+        android:text="Search dictionary"
+        android:textSize="10pt" />
 
-    <Button
+    <TextView
         android:id="@+id/search_kanji"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
-        android:text="Search Kanji" />
+        android:drawableLeft="@drawable/ic_menu_search_holo_light"
+        android:text="Search kanji"
+        android:textSize="10pt" />
+
+    <TextView
+        android:id="@+id/search_kanji_by_radicals"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:drawableLeft="@drawable/ic_menu_search_holo_light"
+        android:text="Find kanji by radicals"
+        android:textSize="10pt" />
+
+    <TextView
+        android:id="@+id/search_sentence"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:drawableLeft="@drawable/ic_menu_search_holo_light"
+        android:text="Search sentence"
+        android:textSize="10pt" />
 
 </LinearLayout>
