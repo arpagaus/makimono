@@ -412,8 +412,8 @@ containing a value of this type.
         public static final int kanji_stroke_count=0x7f05003a;
         public static final int kanji_unicode=0x7f05003e;
         public static final int listMode=0x7f050002;
-        public static final int menu_preferences=0x7f050044;
-        public static final int menu_search=0x7f050043;
+        public static final int menu_preferences=0x7f050043;
+        public static final int menu_search=0x7f050044;
         public static final int no_entries=0x7f05003f;
         public static final int normal=0x7f050001;
         public static final int result_expression=0x7f050040;
@@ -452,7 +452,8 @@ containing a value of this type.
         public static final int search_result_entry=0x7f03000f;
     }
     public static final class menu {
-        public static final int actionbar=0x7f0c0000;
+        public static final int base=0x7f0c0000;
+        public static final int search=0x7f0c0001;
     }
     public static final class string {
         public static final int JMdict_Buddh=0x7f090012;

@@ -10,7 +10,7 @@ public abstract class AbstractDefaultActivity extends FragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.actionbar, menu);
+		getMenuInflater().inflate(R.menu.base, menu);
 		return true;
 	}
 

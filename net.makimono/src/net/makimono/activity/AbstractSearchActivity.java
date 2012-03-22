@@ -60,9 +60,8 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		super.onCreateOptionsMenu(menu);
-		menu.findItem(R.id.menu_search).setVisible(true);
-		return true;
+		getMenuInflater().inflate(R.menu.search, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
