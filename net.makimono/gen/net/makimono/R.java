@@ -382,12 +382,12 @@ containing a value of this type.
         public static final int abs__up=0x7f050010;
         public static final int entry_expression=0x7f05001d;
         public static final int entry_expression_alternative_ind=0x7f05001e;
-        public static final int entry_kanjis=0x7f050026;
+        public static final int entry_kanji=0x7f050026;
         public static final int entry_meanings=0x7f050023;
         public static final int entry_reading=0x7f05001f;
         public static final int entry_reading_alternative_ind=0x7f050020;
-        public static final int entry_separator_kanjis=0x7f050024;
-        public static final int entry_separator_line_kanjis=0x7f050025;
+        public static final int entry_separator_kanji=0x7f050024;
+        public static final int entry_separator_line_kanji=0x7f050025;
         public static final int entry_separator_line_meanings=0x7f050022;
         public static final int entry_separator_meanings=0x7f050021;
         public static final int homeAsUp=0x7f050006;

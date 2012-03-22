@@ -54,7 +54,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	private TextSwitcher readingTextSwitcher;
 	private TextView readingAlternativeIndTextView;
 	private LinearLayout meaningsGroupView;
-	private LinearLayout kanjisGroupView;
+	private LinearLayout kanjiGroupView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -78,7 +78,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		readingTextSwitcher = createReadingTextSwitcher();
 		readingAlternativeIndTextView = createReadingAlternativeIndTextView();
 		meaningsGroupView = (LinearLayout) findViewById(R.id.entry_meanings);
-		kanjisGroupView = (LinearLayout) findViewById(R.id.entry_kanjis);
+		kanjiGroupView = (LinearLayout) findViewById(R.id.entry_kanji);
 	}
 
 	@Override
@@ -225,24 +225,24 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		}
 	}
 
-	private void updateKanjisView(HashSet<KanjiEntry> kanjiEntries) {
-		kanjisGroupView.removeAllViews();
+	private void updateKanjiView(HashSet<KanjiEntry> kanjiEntries) {
+		kanjiGroupView.removeAllViews();
 		if (kanjiEntries.isEmpty()) {
-			findViewById(R.id.entry_separator_kanjis).setVisibility(View.GONE);
-			findViewById(R.id.entry_separator_line_kanjis).setVisibility(View.GONE);
-			kanjisGroupView.setVisibility(View.GONE);
+			findViewById(R.id.entry_separator_kanji).setVisibility(View.GONE);
+			findViewById(R.id.entry_separator_line_kanji).setVisibility(View.GONE);
+			kanjiGroupView.setVisibility(View.GONE);
 		} else {
 			for (KanjiEntry kanjiEntry : kanjiEntries) {
-				if (kanjisGroupView.getChildCount() > 0) {
-					kanjisGroupView.addView(createSeparator());
+				if (kanjiGroupView.getChildCount() > 0) {
+					kanjiGroupView.addView(createSeparator());
 				}
-				kanjisGroupView.addView(createKanjiView(kanjiEntry));
+				kanjiGroupView.addView(createKanjiView(kanjiEntry));
 			}
 		}
 	}
 
 	private View createKanjiView(KanjiEntry kanjiEntry) {
-		View kanjiView = layoutInflater.inflate(R.layout.search_result_entry, kanjisGroupView, false);
+		View kanjiView = layoutInflater.inflate(R.layout.search_result_entry, kanjiGroupView, false);
 		kanjiView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
 
 		TextView resultExpression = (TextView) kanjiView.findViewById(R.id.result_expression);
@@ -326,13 +326,13 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 				}
 				return kanjiEntries;
 			} catch (IOException e) {
-				Log.e(LoadKanjiEntriesTask.class.getSimpleName(), "Failed to get kanjis entry", e);
+				Log.e(LoadKanjiEntriesTask.class.getSimpleName(), "Failed to get kanji entry", e);
 				return null;
 			}
 		}
 
-		protected void onPostExecute(HashSet<KanjiEntry> kanjis) {
-			updateKanjisView(kanjis);
+		protected void onPostExecute(HashSet<KanjiEntry> kanji) {
+			updateKanjiView(kanji);
 		}
 	}
 }
