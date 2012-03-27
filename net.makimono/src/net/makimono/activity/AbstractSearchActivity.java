@@ -4,7 +4,7 @@ import java.util.List;
 
 import net.makimono.R;
 import net.makimono.adapter.SearchResultAdapter;
-import net.makimono.content.SearchSuggestionProvider;
+import net.makimono.content.AbstractSearchSuggestionProvider;
 import net.makimono.model.Entry;
 import net.makimono.searcher.Searcher;
 import net.makimono.service.SearcherService;
@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.SearchRecentSuggestions;
 import android.support.v4.view.Menu;
 import android.util.Log;
 import android.view.View;
@@ -80,6 +81,8 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 
 	protected abstract Searcher getSearcher();
 
+	protected abstract Class<? extends AbstractSearchSuggestionProvider> getSearchSuggestionProviderClass();
+
 	private class SearchTask extends AsyncTask<String, Void, List<? extends Entry>> {
 
 		protected List<? extends Entry> doInBackground(String... queries) {
@@ -87,7 +90,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 				String query = queries[0];
 				List<? extends Entry> entries = getSearcher().search(query);
 				if (!entries.isEmpty()) {
-					SearchSuggestionProvider.getSearchRecentSuggestions(AbstractSearchActivity.this).saveRecentQuery(query, null);
+					new SearchRecentSuggestions(AbstractSearchActivity.this, AbstractSearchActivity.this.getClass().getName(), AbstractSearchSuggestionProvider.MODE).saveRecentQuery(query, null);
 				}
 				return entries;
 			} catch (Exception e) {
@@ -108,4 +111,5 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 			}
 		}
 	}
+
 }

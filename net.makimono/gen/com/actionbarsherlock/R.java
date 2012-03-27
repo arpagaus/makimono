@@ -629,7 +629,6 @@ containing a value of this type.
         public static final int dictionary_searchable=0x7f040000;
         public static final int kanji_searchable=0x7f040001;
         public static final int preference=0x7f040002;
-        public static final int searchable=0x7f040003;
     }
     public static final class styleable {
         /** Attributes that can be used with a SherlockTheme.

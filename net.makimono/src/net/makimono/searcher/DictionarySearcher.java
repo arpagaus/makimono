@@ -62,10 +62,10 @@ public class DictionarySearcher implements Closeable, Searcher {
 		queryString = queryString.toLowerCase();
 
 		BooleanQuery booleanQuery = new BooleanQuery();
-		for (DictionaryFields field : DictionaryFields.values()) {
-			if (!field.isSenseField() || languages.contains(field.getLanguage())) {
+		for (DictionaryFieldName field : DictionaryFieldName.values()) {
+			if (!field.isMeaning() || languages.contains(field.getLanguage())) {
 				PrefixQuery prefixQuery = new PrefixQuery(new Term(field.name(), queryString));
-				if (field.isAnalyzedField()) {
+				if (field.isAnalyzed()) {
 					prefixQuery.setBoost(Float.MIN_NORMAL);
 				} else {
 					TermQuery termQuery = new TermQuery(new Term(field.name(), queryString));
@@ -138,21 +138,21 @@ public class DictionarySearcher implements Closeable, Searcher {
 	public TreeSet<String> suggest(String prefix) throws IOException {
 		TreeSet<String> suggestions = new TreeSet<String>();
 		if (isQualifiedForSuggestions(prefix)) {
-			Set<DictionaryFields> fields = new HashSet<DictionaryFields>();
+			Set<DictionaryFieldName> fields = new HashSet<DictionaryFieldName>();
 			if (containsKanji(prefix)) {
-				fields.add(DictionaryFields.EXPRESSION);
+				fields.add(DictionaryFieldName.EXPRESSION);
 			} else if (isKana(prefix)) {
-				fields.add(DictionaryFields.READING);
+				fields.add(DictionaryFieldName.READING);
 			} else {
-				for (DictionaryFields field : DictionaryFields.values()) {
-					if (field.isSenseField() && languages.contains(field.getLanguage())) {
+				for (DictionaryFieldName field : DictionaryFieldName.values()) {
+					if (field.isMeaning() && languages.contains(field.getLanguage())) {
 						fields.add(field);
 					}
 				}
 			}
 
 			IndexReader reader = getIndexSearcher().getIndexReader();
-			for (DictionaryFields field : fields) {
+			for (DictionaryFieldName field : fields) {
 				TermEnum terms = reader.terms(new Term(field.name(), prefix));
 				do {
 					if (terms.term().text().toLowerCase().startsWith(prefix.toLowerCase())) {

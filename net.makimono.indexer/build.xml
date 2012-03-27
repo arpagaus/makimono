@@ -3,12 +3,12 @@
 
 	<property name="jdk.dir" location="/usr/lib/jvm/java-6-openjdk/" />
 
-	<property name="lib.dir" location="../makimono/lib" />
+	<property name="lib.dir" location="../net.makimono/lib" />
 
 	<property name="build.dir" location="${java.io.tmpdir}/indexer" />
 	<property name="dist.dir" location="dist" />
 
-	<property name="src.dir" location="../makimono/src" />
+	<property name="src.dir" location="../net.makimono/src" />
 
 	<property name="indexer.src.dir" location="src" />
 	<property name="indexer.gen.dir" location="gen" />
@@ -87,7 +87,12 @@
 
 		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on">
 			<include name="net/makimono/model/**.java" />
-			<include name="net/makimono/searcher/*Fields.java" />
+			<include name="net/makimono/searcher/*FieldName.java" />
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="*.jar" />
+				</fileset>
+			</classpath>
 		</javac>
 
 		<javac srcdir="${indexer.src.dir}" destdir="${build.dir}" debug="on">

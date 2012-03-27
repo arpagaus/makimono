@@ -1,13 +1,15 @@
 package net.makimono.searcher;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.lang.Character.UnicodeBlock;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
@@ -15,7 +17,6 @@ import net.makimono.model.Meaning;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Fieldable;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
@@ -24,23 +25,11 @@ import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.SimpleFSDirectory;
 
-public class KanjiSearcher implements Closeable, Searcher {
-
-	private Directory dictionaryDirectory;
-	private IndexSearcher indexSearcher;
+public class KanjiSearcher extends AbstractSearcher {
 
 	public KanjiSearcher(File dictionaryPath) throws IOException {
-		this.dictionaryDirectory = new SimpleFSDirectory(dictionaryPath);
-	}
-
-	private IndexSearcher getIndexSearcher() throws IOException {
-		if (indexSearcher == null) {
-			indexSearcher = new IndexSearcher(IndexReader.open(dictionaryDirectory, true));
-		}
-		return indexSearcher;
+		super(dictionaryPath);
 	}
 
 	@Override
@@ -52,7 +41,7 @@ public class KanjiSearcher implements Closeable, Searcher {
 
 		BooleanQuery query = new BooleanQuery();
 
-		for (KanjiDictionaryFields field : KanjiDictionaryFields.values()) {
+		for (KanjiFieldName field : KanjiFieldName.values()) {
 			PhraseQuery phraseQuery = new PhraseQuery();
 			phraseQuery.add(new Term(field.name(), queryString));
 			query.add(phraseQuery, Occur.SHOULD);
@@ -88,7 +77,7 @@ public class KanjiSearcher implements Closeable, Searcher {
 	}
 
 	public KanjiEntry getKanjiEntry(String literal) throws IOException {
-		TermQuery query = new TermQuery(new Term(KanjiDictionaryFields.LITERAL.name(), literal));
+		TermQuery query = new TermQuery(new Term(KanjiFieldName.LITERAL.name(), literal));
 
 		TopDocs topDocs = getIndexSearcher().search(query, 1);
 		if (topDocs.totalHits > 0) {
@@ -99,40 +88,40 @@ public class KanjiSearcher implements Closeable, Searcher {
 
 	KanjiEntry getKanjiEntryForDocument(Document document) {
 		KanjiEntry entry = new KanjiEntry();
-		entry.setLiteral(document.getFieldable(KanjiDictionaryFields.LITERAL.name()).stringValue());
-		entry.setCodePoint(ByteBuffer.wrap(document.getFieldable(KanjiDictionaryFields.CODE_POINT.name()).getBinaryValue()).getInt());
+		entry.setLiteral(document.getFieldable(KanjiFieldName.LITERAL.name()).stringValue());
+		entry.setCodePoint(ByteBuffer.wrap(document.getFieldable(KanjiFieldName.CODE_POINT.name()).getBinaryValue()).getInt());
 
-		Fieldable fieldable = document.getFieldable(KanjiDictionaryFields.GRADE.name());
+		Fieldable fieldable = document.getFieldable(KanjiFieldName.GRADE.name());
 		if (fieldable != null) {
 			entry.setGrade(fieldable.getBinaryValue()[0]);
 		}
-		fieldable = document.getFieldable(KanjiDictionaryFields.FREQUENCY.name());
+		fieldable = document.getFieldable(KanjiFieldName.FREQUENCY.name());
 		if (fieldable != null) {
 			entry.setFrequency(ByteBuffer.wrap(fieldable.getBinaryValue()).getShort());
 		}
-		fieldable = document.getFieldable(KanjiDictionaryFields.JLPT.name());
+		fieldable = document.getFieldable(KanjiFieldName.JLPT.name());
 		if (fieldable != null) {
 			entry.setJlpt(fieldable.getBinaryValue()[0]);
 		}
 
-		entry.setRadical(ByteBuffer.wrap(document.getFieldable(KanjiDictionaryFields.RADICAL.name()).getBinaryValue()).getShort());
-		entry.setStrokeCount(document.getFieldable(KanjiDictionaryFields.STROKE_COUNT.name()).getBinaryValue()[0]);
+		entry.setRadical(ByteBuffer.wrap(document.getFieldable(KanjiFieldName.RADICAL.name()).getBinaryValue()).getShort());
+		entry.setStrokeCount(document.getFieldable(KanjiFieldName.STROKE_COUNT.name()).getBinaryValue()[0]);
 
-		entry.getOnYomi().addAll(getStringsForField(document, KanjiDictionaryFields.ONYOMI));
-		entry.getKunYomi().addAll(getStringsForField(document, KanjiDictionaryFields.KUNYOMI));
-		entry.getNanori().addAll(getStringsForField(document, KanjiDictionaryFields.NANORI));
-		entry.getPinyin().addAll(getStringsForField(document, KanjiDictionaryFields.PINYIN));
-		entry.getHangul().addAll(getStringsForField(document, KanjiDictionaryFields.HANGUL));
+		entry.getOnYomi().addAll(getStringsForField(document, KanjiFieldName.ONYOMI));
+		entry.getKunYomi().addAll(getStringsForField(document, KanjiFieldName.KUNYOMI));
+		entry.getNanori().addAll(getStringsForField(document, KanjiFieldName.NANORI));
+		entry.getPinyin().addAll(getStringsForField(document, KanjiFieldName.PINYIN));
+		entry.getHangul().addAll(getStringsForField(document, KanjiFieldName.HANGUL));
 
-		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiDictionaryFields.MEANING_EN.name()), Language.en));
-		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiDictionaryFields.MEANING_FR.name()), Language.fr));
-		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiDictionaryFields.MEANING_ES.name()), Language.es));
-		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiDictionaryFields.MEANING_PT.name()), Language.pt));
+		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiFieldName.MEANING_EN.name()), Language.en));
+		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiFieldName.MEANING_FR.name()), Language.fr));
+		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiFieldName.MEANING_ES.name()), Language.es));
+		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiFieldName.MEANING_PT.name()), Language.pt));
 
 		return entry;
 	}
 
-	private ArrayList<String> getStringsForField(Document document, KanjiDictionaryFields field) {
+	private ArrayList<String> getStringsForField(Document document, KanjiFieldName field) {
 		ArrayList<String> strings = new ArrayList<String>();
 		for (Fieldable f : document.getFieldables(field.name())) {
 			strings.add(f.stringValue());
@@ -148,37 +137,8 @@ public class KanjiSearcher implements Closeable, Searcher {
 		return meanings;
 	}
 
-	public void close() throws IOException {
-		IOException exception = null;
-		if (indexSearcher != null) {
-			try {
-				indexSearcher.close();
-			} catch (IOException e) {
-				exception = e;
-			}
-			try {
-				indexSearcher.getIndexReader().close();
-			} catch (IOException e) {
-				if (exception == null) {
-					exception = e;
-				}
-			} finally {
-				indexSearcher = null;
-			}
-		}
-		if (dictionaryDirectory != null) {
-			try {
-				dictionaryDirectory.close();
-			} catch (IOException e) {
-				if (exception == null) {
-					exception = e;
-				}
-			}
-		}
-
-		if (exception != null) {
-			throw exception;
-		}
+	@Override
+	protected Set<? extends IndexFieldName> getFieldNames() {
+		return new HashSet<IndexFieldName>(Arrays.asList(KanjiFieldName.values()));
 	}
-
 }

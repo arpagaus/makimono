@@ -3,7 +3,7 @@ package net.makimono.activity;
 import java.util.ArrayList;
 
 import net.makimono.R;
-import net.makimono.content.SearchSuggestionProvider;
+import net.makimono.content.AbstractSearchSuggestionProvider;
 import net.makimono.model.Language;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -58,7 +58,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		if (preference.getKey().equals(CLEAR_SEARCH_HISTORY)) {
-			SearchSuggestionProvider.getSearchRecentSuggestions(this).clearHistory();
+			AbstractSearchSuggestionProvider.clearHistory(this);
 			return true;
 		}
 		return false;

@@ -182,9 +182,9 @@ public class DictionarySearcherTest {
 
 	@Test
 	public void suggestEnglish() throws Exception {
-		Set<String> suggestions = searcher.suggest("motorboa");
+		Set<String> suggestions = searcher.suggest("memory sw");
 		assertEquals(1, suggestions.size());
-		assertEquals("motorboat", suggestions.iterator().next());
+		assertEquals("memory switch", suggestions.iterator().next());
 	}
 
 	@Test

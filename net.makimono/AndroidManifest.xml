@@ -52,9 +52,13 @@
         <activity android:name=".activity.PreferenceActivity" >
         </activity>
 
-        <provider
-            android:name=".content.SearchSuggestionProvider"
-            android:authorities="net.makimono.content.SearchSuggestionProvider" >
+        <provider 
+            android:name=".content.DictionarySearchSuggestionProvider"
+            android:authorities="net.makimono.content.DictionarySearchSuggestionProvider" >
+        </provider>
+        <provider 
+            android:name=".content.KanjiSearchSuggestionProvider"
+            android:authorities="net.makimono.content.KanjiSearchSuggestionProvider" >
         </provider>
 
         <service

@@ -3,7 +3,7 @@ package net.makimono.indexer;
 import java.nio.ByteBuffer;
 import java.util.List;
 
-import net.makimono.searcher.KanjiDictionaryFields;
+import net.makimono.searcher.KanjiFieldName;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -45,42 +45,42 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 
 		Document document = new Document();
 		String literal = String.valueOf(Character.toChars(codePoint));
-		document.add(new Field(KanjiDictionaryFields.LITERAL.name(), literal, Store.YES, Index.NOT_ANALYZED));
-		document.add(new Field(KanjiDictionaryFields.CODE_POINT.name(), ByteBuffer.allocate(4).putInt(codePoint).array()));
+		document.add(new Field(KanjiFieldName.LITERAL.name(), literal, Store.YES, Index.NOT_ANALYZED));
+		document.add(new Field(KanjiFieldName.CODE_POINT.name(), ByteBuffer.allocate(4).putInt(codePoint).array()));
 
 		Byte jlpt = character.getMisc().getJlpt();
 		if (jlpt != null) {
-			document.add(new Field(KanjiDictionaryFields.JLPT.name(), new byte[] { jlpt }));
+			document.add(new Field(KanjiFieldName.JLPT.name(), new byte[] { jlpt }));
 		}
 
 		Byte grade = character.getMisc().getGrade();
 		if (grade != null) {
-			document.add(new Field(KanjiDictionaryFields.GRADE.name(), new byte[] { grade }));
+			document.add(new Field(KanjiFieldName.GRADE.name(), new byte[] { grade }));
 		}
 
 		Byte strokeCount = character.getMisc().getStrokeCount().get(0);
-		document.add(new Field(KanjiDictionaryFields.STROKE_COUNT.name(), new byte[] { strokeCount }));
+		document.add(new Field(KanjiFieldName.STROKE_COUNT.name(), new byte[] { strokeCount }));
 
 		for (RadValue r : character.getRadical().getRadValue()) {
 			if (r.getRadType().equalsIgnoreCase("classical")) {
-				document.add(new Field(KanjiDictionaryFields.RADICAL.name(), ByteBuffer.allocate(2).putShort(r.getValue()).array()));
+				document.add(new Field(KanjiFieldName.RADICAL.name(), ByteBuffer.allocate(2).putShort(r.getValue()).array()));
 			}
 		}
 
 		for (String radicalName : character.getMisc().getRadName()) {
-			document.add(new Field(KanjiDictionaryFields.RADICAL_NAME.name(), radicalName, Store.YES, Index.NOT_ANALYZED));
+			document.add(new Field(KanjiFieldName.RADICAL_NAME.name(), radicalName, Store.YES, Index.NOT_ANALYZED));
 		}
 
 		addReadings(document, rm.getRmgroup().getReading());
 		addMeanings(document, rm.getRmgroup().getMeaning());
 
 		for (String nanori : rm.getNanori()) {
-			document.add(new Field(KanjiDictionaryFields.NANORI.name(), nanori, Store.YES, Index.NO));
+			document.add(new Field(KanjiFieldName.NANORI.name(), nanori, Store.YES, Index.NO));
 		}
 
 		short freq = character.getMisc().getFreq();
 		if (freq > 0.0) {
-			document.add(new Field(KanjiDictionaryFields.FREQUENCY.name(), ByteBuffer.allocate(2).putShort(freq).array()));
+			document.add(new Field(KanjiFieldName.FREQUENCY.name(), ByteBuffer.allocate(2).putShort(freq).array()));
 			document.setBoost(1.0f + (100.0f / FREQ_MAX * (FREQ_MAX + 1 - Math.min(freq, FREQ_MAX))));
 		}
 		return document;
@@ -112,13 +112,13 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 	private void addReadings(Document document, List<Reading> readings) {
 		for (Reading r : readings) {
 			if (r.getRType().equalsIgnoreCase("ja_on")) {
-				document.add(new Field(KanjiDictionaryFields.ONYOMI.name(), r.getValue(), Store.YES, Index.NOT_ANALYZED));
+				document.add(new Field(KanjiFieldName.ONYOMI.name(), r.getValue(), Store.YES, Index.NOT_ANALYZED));
 			} else if (r.getRType().equalsIgnoreCase("ja_kun")) {
-				document.add(new Field(KanjiDictionaryFields.KUNYOMI.name(), r.getValue(), Store.YES, Index.NOT_ANALYZED));
+				document.add(new Field(KanjiFieldName.KUNYOMI.name(), r.getValue(), Store.YES, Index.NOT_ANALYZED));
 			} else if (r.getRType().equalsIgnoreCase("pinyin")) {
-				document.add(new Field(KanjiDictionaryFields.PINYIN.name(), r.getValue(), Store.YES, Index.NO));
+				document.add(new Field(KanjiFieldName.PINYIN.name(), r.getValue(), Store.YES, Index.NO));
 			} else if (r.getRType().equalsIgnoreCase("korean_h")) {
-				document.add(new Field(KanjiDictionaryFields.HANGUL.name(), r.getValue(), Store.YES, Index.NO));
+				document.add(new Field(KanjiFieldName.HANGUL.name(), r.getValue(), Store.YES, Index.NO));
 			}
 		}
 	}

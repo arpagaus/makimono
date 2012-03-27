@@ -16,7 +16,7 @@ import net.makimono.model.FieldOfApplication;
 import net.makimono.model.Language;
 import net.makimono.model.Miscellaneous;
 import net.makimono.model.PartOfSpeech;
-import net.makimono.searcher.DictionaryFields;
+import net.makimono.searcher.DictionaryFieldName;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -73,12 +73,12 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 		Document document = new Document();
 
 		for (KEle kanjiElement : entry.getKEle()) {
-			Field expression = new Field(DictionaryFields.EXPRESSION.name(), kanjiElement.getKeb(), Store.NO, Index.NOT_ANALYZED);
+			Field expression = new Field(DictionaryFieldName.EXPRESSION.name(), kanjiElement.getKeb(), Store.NO, Index.NOT_ANALYZED);
 			document.add(expression);
 		}
 
 		for (REle readingElement : entry.getREle()) {
-			Field reading = new Field(DictionaryFields.READING.name(), readingElement.getReb(), Store.NO, Index.NOT_ANALYZED);
+			Field reading = new Field(DictionaryFieldName.READING.name(), readingElement.getReb(), Store.NO, Index.NOT_ANALYZED);
 			document.add(reading);
 		}
 
@@ -93,8 +93,8 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 				String lang = gloss.getXmlLang().toUpperCase();
 				languageCount.put(lang, (languageCount.get(lang) == null ? 0 : languageCount.get(lang)) + 1);
 
-				document.add(new Field("SENSE_" + lang, meaningValue, Store.NO, Index.NOT_ANALYZED));
-				document.add(new Field("SENSE_ANALYZED_" + lang, meaningValue, Store.NO, Index.ANALYZED));
+				document.add(new Field(DictionaryFieldName.valueOf("MEANING_" + lang).name(), meaningValue, Store.NO, Index.NOT_ANALYZED));
+				document.add(new Field(DictionaryFieldName.valueOf("MEANING_ANALYZED_" + lang).name(), meaningValue, Store.NO, Index.ANALYZED));
 			}
 		}
 

@@ -1,5 +1,7 @@
 package net.makimono.activity;
 
+import net.makimono.content.AbstractSearchSuggestionProvider;
+import net.makimono.content.KanjiSearchSuggestionProvider;
 import net.makimono.model.KanjiEntry;
 import net.makimono.searcher.Searcher;
 import android.content.Intent;
@@ -18,5 +20,10 @@ public class KanjiSearchActivity extends AbstractSearchActivity {
 	@Override
 	protected Searcher getSearcher() {
 		return connection.getKanjiSearcher();
+	}
+
+	@Override
+	protected Class<? extends AbstractSearchSuggestionProvider> getSearchSuggestionProviderClass() {
+		return KanjiSearchSuggestionProvider.class;
 	}
 }
