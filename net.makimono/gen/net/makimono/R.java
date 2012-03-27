@@ -582,6 +582,8 @@ containing a value of this type.
         public static final int radical=0x7f09007f;
         public static final int readings=0x7f090078;
         public static final int search=0x7f090072;
+        public static final int search_expression=0x7f090082;
+        public static final int search_kanji=0x7f090081;
         public static final int settings=0x7f090075;
         public static final int stroke_count=0x7f09007e;
         public static final int unicode=0x7f09007d;

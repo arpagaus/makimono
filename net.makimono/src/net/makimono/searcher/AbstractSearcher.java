@@ -36,6 +36,10 @@ public abstract class AbstractSearcher implements Closeable, Searcher {
 		this.languages = languages;
 	}
 
+	protected List<Language> getLanguages() {
+		return languages;
+	}
+
 	protected IndexSearcher getIndexSearcher() throws IOException {
 		if (indexSearcher == null) {
 			indexSearcher = new IndexSearcher(IndexReader.open(dictionaryDirectory, true));
@@ -98,7 +102,7 @@ public abstract class AbstractSearcher implements Closeable, Searcher {
 			for (IndexFieldName field : fields) {
 				TermEnum terms = reader.terms(new Term(field.name(), prefix));
 				do {
-					if (terms.term().text().toLowerCase().startsWith(prefix.toLowerCase())) {
+					if (terms.term() != null && terms.term().text().toLowerCase().startsWith(prefix.toLowerCase())) {
 						suggestions.add(terms.term().text().trim());
 					} else {
 						break;

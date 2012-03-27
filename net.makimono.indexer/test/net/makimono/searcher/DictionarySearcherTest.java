@@ -172,7 +172,7 @@ public class DictionarySearcherTest {
 		assertFalse(suggestions.isEmpty());
 
 		suggestions = searcher.suggest("に");
-		assertTrue(suggestions.isEmpty());
+		assertFalse(suggestions.isEmpty());
 		suggestions = searcher.suggest("にほ");
 		assertFalse(suggestions.isEmpty());
 

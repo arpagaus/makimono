@@ -17,5 +17,7 @@
     <string name="stroke_count">Stroke count</string>
     <string name="radical">Radical</string>
     <string name="no_entries">No entries found</string>
+    <string name="search_kanji">Search kanji</string>
+    <string name="search_expression">Search expression</string>
 
 </resources>

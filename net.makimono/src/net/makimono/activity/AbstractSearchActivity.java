@@ -90,7 +90,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 				String query = queries[0];
 				List<? extends Entry> entries = getSearcher().search(query);
 				if (!entries.isEmpty()) {
-					new SearchRecentSuggestions(AbstractSearchActivity.this, AbstractSearchActivity.this.getClass().getName(), AbstractSearchSuggestionProvider.MODE).saveRecentQuery(query, null);
+					new SearchRecentSuggestions(AbstractSearchActivity.this, getSearchSuggestionProviderClass().getName(), AbstractSearchSuggestionProvider.MODE).saveRecentQuery(query, null);
 				}
 				return entries;
 			} catch (Exception e) {
