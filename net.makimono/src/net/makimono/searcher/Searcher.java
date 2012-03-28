@@ -6,8 +6,8 @@ import java.util.TreeSet;
 
 import net.makimono.model.Entry;
 
-public interface Searcher {
-	public List<? extends Entry> search(String queryString) throws IOException;
+public interface Searcher<T extends Entry> {
+	public List<T> search(String queryString) throws IOException;
 
 	public TreeSet<String> suggest(String prefix) throws IOException;
 }

@@ -47,20 +47,6 @@ public class DictionarySearcherTest {
 	}
 
 	@Test
-	public void getByDocId() throws Exception {
-		List<DictionaryEntry> entries = searcher.search("Einkaufswagen");
-		assertEquals(1, entries.size());
-
-		DictionaryEntry entry = entries.get(0);
-		searcher.close();
-		searcher = new DictionarySearcher(new File("res/indexes/dictionary"));
-
-		DictionaryEntry entryByDocId = searcher.getByDocId(entry.getDocId());
-
-		assertEquals(entry, entryByDocId);
-	}
-
-	@Test
 	public void searchPartial() throws Exception {
 		List<DictionaryEntry> entries = searcher.search("memor");
 		assertFalse(entries.isEmpty());
@@ -69,6 +55,9 @@ public class DictionarySearcherTest {
 	@Test
 	public void searchWithSpace() throws Exception {
 		List<DictionaryEntry> entries = searcher.search("memory card");
+		assertFalse(entries.isEmpty());
+
+		entries = searcher.search("card memory");
 		assertFalse(entries.isEmpty());
 	}
 

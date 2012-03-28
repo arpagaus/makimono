@@ -3,24 +3,44 @@ package net.makimono.searcher;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.lang.Character.UnicodeBlock;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import net.makimono.model.Entry;
 import net.makimono.model.Language;
 
+import org.apache.lucene.analysis.SimpleAnalyzer;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.IndexReader.FieldOption;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermEnum;
+import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.PrefixQuery;
+import org.apache.lucene.search.ScoreDoc;
+import org.apache.lucene.search.TermQuery;
+import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
+import org.apache.lucene.util.Version;
 
-public abstract class AbstractSearcher implements Closeable, Searcher {
+public abstract class AbstractSearcher<T extends Entry> implements Closeable, Searcher<T> {
 	private static final int MAX_SUGGESTION = 10;
+	private static final int MAX_SIZE = 20;
+
+	private static final float MAX_BOOST = 1f;
+	private static final float MIN_BOOST = 0.0001f;
 
 	private List<Language> languages;
 
@@ -80,21 +100,70 @@ public abstract class AbstractSearcher implements Closeable, Searcher {
 		}
 	}
 
+	public List<T> search(String queryString) throws IOException {
+		if (queryString == null || queryString.equals("")) {
+			return Collections.emptyList();
+		}
+		queryString = queryString.toLowerCase();
+
+		Set<String> tokens = extractTokens(queryString);
+
+		BooleanQuery booleanQuery = new BooleanQuery();
+		for (String fieldName : getFieldNames()) {
+			IndexFieldName field = getIndexFieldName(fieldName);
+			if (!field.isMeaning() || getLanguages().contains(field.getLanguage())) {
+				if (field.isAnalyzed()) {
+					for (String token : tokens) {
+						TermQuery termQuery = new TermQuery(new Term(field.name(), token));
+						termQuery.setBoost(MIN_BOOST);
+						booleanQuery.add(termQuery, Occur.SHOULD);
+					}
+				} else {
+					PrefixQuery prefixQuery = new PrefixQuery(new Term(field.name(), queryString));
+					prefixQuery.setBoost(MAX_BOOST);
+					booleanQuery.add(prefixQuery, Occur.SHOULD);
+				}
+			}
+		}
+
+		List<T> entries = new ArrayList<T>();
+		TopDocs topDocs = getIndexSearcher().search(booleanQuery, MAX_SIZE);
+		for (ScoreDoc d : topDocs.scoreDocs) {
+			T entry = getEntryByDocId(d.doc);
+			if (!entries.contains(entry)) {
+				entries.add(entry);
+			}
+		}
+		return entries;
+	}
+
+	protected Collection<String> getFieldNames() throws IOException {
+		return getIndexSearcher().getIndexReader().getFieldNames(FieldOption.INDEXED);
+	}
+
+	protected abstract T getEntryByDocId(int doc) throws IOException;
+
+	protected Set<String> extractTokens(String queryString) throws IOException {
+		Set<String> token = new HashSet<String>();
+		TokenStream tokenStream = new SimpleAnalyzer(Version.LUCENE_35).tokenStream(null, new StringReader(queryString));
+		while (tokenStream.incrementToken()) {
+			token.add(tokenStream.getAttribute(CharTermAttribute.class).toString());
+		}
+		return token;
+	}
+
 	public TreeSet<String> suggest(String prefix) throws IOException {
 		TreeSet<String> suggestions = new TreeSet<String>();
 		if (isQualifiedForSuggestions(prefix)) {
 			Set<IndexFieldName> fields = new HashSet<IndexFieldName>();
-			if (containsJapanese(prefix)) {
-				for (IndexFieldName field : getFieldNames()) {
-					if (!field.isMeaning()) {
-						fields.add(field);
-					}
-				}
-			} else {
-				for (IndexFieldName field : getFieldNames()) {
-					if (languages.contains(field.getLanguage())) {
-						fields.add(field);
-					}
+			final boolean containsJapanese = containsJapanese(prefix);
+
+			for (String fieldName : getFieldNames()) {
+				IndexFieldName field = getIndexFieldName(fieldName);
+				if (containsJapanese && !field.isMeaning()) {
+					fields.add(field);
+				} else if (languages.contains(field.getLanguage())) {
+					fields.add(field);
 				}
 			}
 
@@ -113,7 +182,7 @@ public abstract class AbstractSearcher implements Closeable, Searcher {
 		return suggestions;
 	}
 
-	protected abstract Set<? extends IndexFieldName> getFieldNames();
+	protected abstract IndexFieldName getIndexFieldName(String fieldName);
 
 	private boolean isQualifiedForSuggestions(String prefix) {
 		if (prefix == null || prefix.length() == 0) {

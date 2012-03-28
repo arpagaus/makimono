@@ -129,6 +129,14 @@ public class KanjiSearcherTest {
 	}
 
 	@Test
+	public void searchExpression() throws Exception {
+		List<KanjiEntry> entries = searcher.search("お休み");
+
+		assertEquals(1, entries.size());
+		assertEquals("休", entries.get(0).getLiteral());
+	}
+
+	@Test
 	public void findAllRadicals() throws Exception {
 		for (short i = 1; i <= 214; i++) {
 			KanjiEntry entry = new KanjiEntry();
@@ -163,7 +171,7 @@ public class KanjiSearcherTest {
 	@Test
 	public void searchSpanish() throws Exception {
 		List<KanjiEntry> entries = searcher.search("contador de cosas planas");
-		assertEquals(1, entries.size());
+		assertFalse(entries.isEmpty());
 		assertEquals("葉", entries.get(0).getLiteral());
 
 		entries = searcher.search("follaje");

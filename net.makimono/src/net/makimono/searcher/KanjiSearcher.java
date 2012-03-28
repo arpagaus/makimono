@@ -5,11 +5,8 @@ import java.io.IOException;
 import java.lang.Character.UnicodeBlock;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
@@ -18,15 +15,10 @@ import net.makimono.model.Meaning;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.search.BooleanClause.Occur;
-import org.apache.lucene.search.BooleanQuery;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.PhraseQuery;
-import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 
-public class KanjiSearcher extends AbstractSearcher {
+public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 
 	public KanjiSearcher(File dictionaryPath) throws IOException {
 		super(dictionaryPath);
@@ -34,34 +26,16 @@ public class KanjiSearcher extends AbstractSearcher {
 
 	@Override
 	public List<KanjiEntry> search(String queryString) throws IOException {
-		if (queryString == null || queryString.equals("")) {
-			return Collections.emptyList();
+		List<KanjiEntry> kanjiEntries = getKanjiEntries(queryString);
+		if (!kanjiEntries.isEmpty()) {
+			return kanjiEntries;
 		}
-		queryString = queryString.toLowerCase();
-
-		BooleanQuery query = new BooleanQuery();
-
-		for (KanjiFieldName field : KanjiFieldName.values()) {
-			PhraseQuery phraseQuery = new PhraseQuery();
-			phraseQuery.add(new Term(field.name(), queryString));
-			query.add(phraseQuery, Occur.SHOULD);
-		}
-
-		ArrayList<KanjiEntry> entries = new ArrayList<KanjiEntry>();
-		IndexSearcher searcher = getIndexSearcher();
-		TopDocs topDocs = searcher.search(query, 100);
-		for (ScoreDoc d : topDocs.scoreDocs) {
-			KanjiEntry entry = getKanjiEntryForDocument(getIndexSearcher().doc(d.doc));
-			if (!entries.contains(entry)) {
-				entries.add(entry);
-			}
-		}
-		return entries;
+		return super.search(queryString);
 	}
 
 	public List<KanjiEntry> getKanjiEntries(String string) throws IOException {
 		if (string == null || string.equals("")) {
-			return new ArrayList<KanjiEntry>(0);
+			return Collections.emptyList();
 		}
 
 		ArrayList<KanjiEntry> entries = new ArrayList<KanjiEntry>();
@@ -84,6 +58,11 @@ public class KanjiSearcher extends AbstractSearcher {
 			return getKanjiEntryForDocument(getIndexSearcher().doc(topDocs.scoreDocs[0].doc));
 		}
 		return null;
+	}
+
+	@Override
+	protected KanjiEntry getEntryByDocId(int doc) throws IOException {
+		return getKanjiEntryForDocument(getIndexSearcher().doc(doc));
 	}
 
 	KanjiEntry getKanjiEntryForDocument(Document document) {
@@ -138,7 +117,7 @@ public class KanjiSearcher extends AbstractSearcher {
 	}
 
 	@Override
-	protected Set<? extends IndexFieldName> getFieldNames() {
-		return new HashSet<IndexFieldName>(Arrays.asList(KanjiFieldName.values()));
+	protected IndexFieldName getIndexFieldName(String fieldName) {
+		return KanjiFieldName.valueOf(fieldName);
 	}
 }
