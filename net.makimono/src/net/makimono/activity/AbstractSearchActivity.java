@@ -79,7 +79,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 		}
 	}
 
-	protected abstract Searcher getSearcher();
+	protected abstract Searcher<? extends Entry> getSearcher();
 
 	protected abstract Class<? extends AbstractSearchSuggestionProvider> getSearchSuggestionProviderClass();
 

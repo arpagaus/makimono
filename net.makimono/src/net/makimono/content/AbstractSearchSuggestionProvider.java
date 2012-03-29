@@ -3,6 +3,7 @@ package net.makimono.content;
 import java.io.IOException;
 import java.util.TreeSet;
 
+import net.makimono.model.Entry;
 import net.makimono.searcher.Searcher;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
@@ -60,7 +61,7 @@ public abstract class AbstractSearchSuggestionProvider extends SearchRecentSugge
 		return cursor;
 	}
 
-	protected abstract Searcher getSearcher(SearcherServiceConnection connection);
+	protected abstract Searcher<? extends Entry> getSearcher(SearcherServiceConnection connection);
 
 	public static void clearHistory(Context context) {
 		new SearchRecentSuggestions(context, DictionarySearchSuggestionProvider.class.getName(), MODE).clearHistory();

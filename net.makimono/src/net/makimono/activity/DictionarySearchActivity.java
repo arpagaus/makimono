@@ -7,7 +7,7 @@ import java.io.ObjectOutputStream;
 import net.makimono.content.AbstractSearchSuggestionProvider;
 import net.makimono.content.DictionarySearchSuggestionProvider;
 import net.makimono.model.DictionaryEntry;
-import net.makimono.searcher.Searcher;
+import net.makimono.searcher.DictionarySearcher;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +32,7 @@ public class DictionarySearchActivity extends AbstractSearchActivity implements 
 	}
 
 	@Override
-	protected Searcher getSearcher() {
+	protected DictionarySearcher getSearcher() {
 		return connection.getDictionarySearcher();
 	}
 
