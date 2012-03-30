@@ -2,7 +2,7 @@ package net.makimono.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import net.makimono.activity.PreferenceActivity;
 import net.makimono.model.Language;
@@ -91,7 +91,7 @@ public class SearcherService extends Service {
 	}
 
 	private void updateSearcherLanguages(SharedPreferences sharedPreferences) {
-		ArrayList<Language> languages = PreferenceActivity.getConfiguredLanguages(sharedPreferences);
+		List<Language> languages = PreferenceActivity.getConfiguredLanguages(sharedPreferences);
 		dictionarySearcher.setLanguages(languages);
 	}
 

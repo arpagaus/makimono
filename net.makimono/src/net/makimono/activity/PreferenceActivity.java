@@ -1,6 +1,7 @@
 package net.makimono.activity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.makimono.R;
 import net.makimono.content.AbstractSearchSuggestionProvider;
@@ -10,11 +11,8 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.util.Log;
 
 public class PreferenceActivity extends android.preference.PreferenceActivity implements OnPreferenceChangeListener, OnPreferenceClickListener {
-	private final static String LOG_TAG = PreferenceActivity.class.getSimpleName();
-
 	public static final String CLEAR_SEARCH_HISTORY = "clear_search_history";
 	public static final String LANGUAGE_EN = "language_en";
 	public static final String LANGUAGE_DE = "language_de";
@@ -23,7 +21,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
 	public static final String LANGUAGE_ES = "language_es";
 	public static final String LANGUAGE_PT = "language_pt";
 
-	public static ArrayList<Language> getConfiguredLanguages(SharedPreferences preferences) {
+	public static List<Language> getConfiguredLanguages(SharedPreferences preferences) {
 		ArrayList<Language> languages = new ArrayList<Language>();
 		if (preferences.getBoolean(LANGUAGE_EN, true)) {
 			languages.add(Language.en);
@@ -43,8 +41,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
 		if (preferences.getBoolean(LANGUAGE_PT, true)) {
 			languages.add(Language.pt);
 		}
-		Log.d(LOG_TAG, "languages=" + languages);
-		return languages;
+		return languages.isEmpty() ? Language.getDefaultLanguage() : languages;
 	}
 
 	@Override
