@@ -3,7 +3,7 @@
 
 	<property name="jdk.dir" location="/usr/lib/jvm/java-6-openjdk/" />
 
-	<property name="lib.dir" location="../net.makimono/lib" />
+	<property name="lib.dir" location="../net.makimono/libs" />
 
 	<property name="build.dir" location="${java.io.tmpdir}/indexer" />
 	<property name="dist.dir" location="dist" />
