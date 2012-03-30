@@ -106,6 +106,13 @@ public class DictionarySearcherTest {
 	}
 
 	@Test
+	public void exectMatchFirst() throws Exception {
+		List<DictionaryEntry> entries = searcher.search("日本");
+		assertFalse(entries.isEmpty());
+		assertEquals("日本", entries.get(0).getExpression());
+	}
+
+	@Test
 	public void testPartOfSpeech() throws Exception {
 		DictionaryEntry entry = searchUniqueEntry("うみのいえ");
 		assertEquals(1976570, entry.getId());
