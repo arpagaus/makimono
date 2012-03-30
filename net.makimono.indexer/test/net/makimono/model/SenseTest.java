@@ -41,13 +41,6 @@ public class SenseTest {
 	}
 
 	@Test
-	public void getMeaningString() throws Exception {
-		Sense sense = createSense();
-		CharSequence meaningString = Meaning.getMeaningString(Language.en, sense.getMeanings());
-		assertEquals("grapefruit, orange", meaningString.toString());
-	}
-
-	@Test
 	public void getAdditionalInfo() throws Exception {
 		Sense sense = createSense();
 		ArrayList<String> additionalInfo = sense.getAdditionalInfo();

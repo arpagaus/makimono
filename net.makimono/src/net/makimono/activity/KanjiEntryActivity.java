@@ -2,6 +2,7 @@ package net.makimono.activity;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import net.makimono.R;
 import net.makimono.model.KanjiEntry;
@@ -111,7 +112,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		meaningsGroupView.removeAllViews();
 		ArrayList<Language> languages = PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 		for (Language language : languages) {
-			CharSequence meaning = Meaning.getMeaningString(language, entry.getMeanings());
+			CharSequence meaning = entry.getMeaningSummary(Collections.singletonList(language));
 			if (meaning.length() > 0) {
 				meaningsGroupView.addView(factory.makeView(meaning, language));
 			}

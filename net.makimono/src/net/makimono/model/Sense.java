@@ -4,45 +4,42 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 public class Sense {
 
-	private TreeSet<PartOfSpeech> partsOfSpeech;
-	private TreeSet<Miscellaneous> miscellaneous;
-	private TreeSet<FieldOfApplication> fieldsOfApplication;
-	private TreeSet<Dialect> dialects;
+	private TreeSet<PartOfSpeech> partsOfSpeech = new TreeSet<PartOfSpeech>();
+	private TreeSet<Miscellaneous> miscellaneous = new TreeSet<Miscellaneous>();
+	private TreeSet<FieldOfApplication> fieldsOfApplication = new TreeSet<FieldOfApplication>();
+	private TreeSet<Dialect> dialects = new TreeSet<Dialect>();
 
 	private ArrayList<Meaning> meanings;
 
 	public TreeSet<PartOfSpeech> getPartsOfSpeech() {
-		if (partsOfSpeech == null) {
-			partsOfSpeech = new TreeSet<PartOfSpeech>();
-
-		}
 		return partsOfSpeech;
 	}
 
 	public TreeSet<Miscellaneous> getMiscellaneous() {
-		if (miscellaneous == null) {
-			miscellaneous = new TreeSet<Miscellaneous>();
-		}
 		return miscellaneous;
 	}
 
 	public TreeSet<FieldOfApplication> getFieldsOfApplication() {
-		if (fieldsOfApplication == null) {
-			fieldsOfApplication = new TreeSet<FieldOfApplication>();
-
-		}
 		return fieldsOfApplication;
 	}
 
 	public TreeSet<Dialect> getDialects() {
-		if (dialects == null) {
-			dialects = new TreeSet<Dialect>();
-		}
 		return dialects;
+	}
+
+	public List<Meaning> getMeanings(Language language) {
+		List<Meaning> meanings = new ArrayList<Meaning>();
+		for (Meaning meaning : getMeanings()) {
+			if (meaning.getLanguage() == language) {
+				meanings.add(meaning);
+			}
+		}
+		return meanings;
 	}
 
 	public ArrayList<Meaning> getMeanings() {

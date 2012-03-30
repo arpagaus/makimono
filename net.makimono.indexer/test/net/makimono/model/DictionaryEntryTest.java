@@ -7,11 +7,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.Arrays;
+import java.util.Collections;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class DictionaryEntrySerializationTest {
+public class DictionaryEntryTest {
 
 	private DictionaryEntry entry;
 
@@ -43,6 +45,11 @@ public class DictionaryEntrySerializationTest {
 		sense.getMeanings().add(createMeaning("sucrerie", Language.fr));
 		sense.getMeanings().add(createMeaning("Bonbon", Language.de));
 		sense.getMeanings().add(createMeaning("Verlockung", Language.de));
+
+		sense = new Sense();
+		entry.getSenses().add(sense);
+
+		sense.getMeanings().add(createMeaning("language", Language.en));
 	}
 
 	private Meaning createMeaning(String value, Language language) {
@@ -86,6 +93,21 @@ public class DictionaryEntrySerializationTest {
 		assertEquals(sense.getFieldsOfApplication(), newSense.getFieldsOfApplication());
 
 		assertEquals(entry, newEntry);
+	}
+
+	@Test
+	public void testGeMeaningString() {
+		String summary = entry.getMeaningSummary(Collections.<Language> emptyList());
+		assertEquals("", summary);
+
+		summary = entry.getMeaningSummary(Collections.singletonList(Language.de));
+		assertEquals("Bonbon, Verlockung", summary);
+
+		summary = entry.getMeaningSummary(Arrays.asList(Language.de, Language.en));
+		assertEquals("Bonbon, Verlockung, (hard) candy, toffee, language", summary);
+
+		summary = entry.getMeaningSummary(Arrays.asList(Language.en, Language.fr, Language.de));
+		assertEquals("(hard) candy, toffee, language, bonbon, sucrerie, Bonbon, Verlockung", summary);
 	}
 
 }

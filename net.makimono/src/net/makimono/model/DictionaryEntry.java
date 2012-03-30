@@ -109,16 +109,13 @@ public class DictionaryEntry implements Entry {
 
 	@Override
 	public String getMeaningSummary(List<Language> languages) {
-		StringBuilder meaning = new StringBuilder();
-		for (Sense s : getSenses()) {
-			for (Language language : languages) {
-				if (meaning.length() > 0) {
-					meaning.append(", ");
-				}
-				meaning.append(Meaning.getMeaningString(language, s.getMeanings()));
+		List<Meaning> meanings = new ArrayList<Meaning>();
+		for (Language lang : languages) {
+			for (Sense sense : getSenses()) {
+				meanings.addAll(sense.getMeanings(lang));
 			}
 		}
-		return meaning.toString();
+		return StringUtils.join(meanings, ", ");
 	}
 
 	@Override

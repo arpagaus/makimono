@@ -1,6 +1,5 @@
 package net.makimono.model;
 
-import java.util.Collection;
 
 public class Meaning {
 	private String value;
@@ -61,19 +60,6 @@ public class Meaning {
 		} else if (!value.equals(other.value))
 			return false;
 		return true;
-	}
-
-	public static CharSequence getMeaningString(Language language, Collection<Meaning> meanings) {
-		StringBuilder builder = new StringBuilder();
-		for (Meaning g : meanings) {
-			if (g.getLanguage() == language) {
-				if (builder.length() > 0) {
-					builder.append(", ");
-				}
-				builder.append(g.getValue());
-			}
-		}
-		return builder;
 	}
 
 }

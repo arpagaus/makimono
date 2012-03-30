@@ -13,11 +13,13 @@ import net.makimono.listener.KanjiViewListener;
 import net.makimono.model.DictionaryEntry;
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
-import net.makimono.model.Meaning;
 import net.makimono.model.Sense;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
 import net.makimono.util.MeaningTextViewFactory;
+
+import org.apache.commons.lang3.StringUtils;
+
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -269,7 +271,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);
 		int meaningsCount = 0;
 		for (Language language : getConfiguredLanguages()) {
-			CharSequence meaning = Meaning.getMeaningString(language, sense.getMeanings());
+			CharSequence meaning = StringUtils.join(sense.getMeanings(language), ", ");
 			if (meaning.length() > 0) {
 				meaningsGroupView.addView(factory.makeView(meaning, language));
 				meaningsCount++;
