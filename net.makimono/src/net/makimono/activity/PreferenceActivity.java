@@ -44,6 +44,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
 		return languages.isEmpty() ? Language.getDefaultLanguage() : languages;
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

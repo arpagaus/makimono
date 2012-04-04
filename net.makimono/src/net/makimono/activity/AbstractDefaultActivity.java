@@ -2,15 +2,16 @@ package net.makimono.activity;
 
 import net.makimono.R;
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.Menu;
-import android.support.v4.view.MenuItem;
 
-public abstract class AbstractDefaultActivity extends FragmentActivity {
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+public abstract class AbstractDefaultActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.base, menu);
+		getSupportMenuInflater().inflate(R.menu.base, menu);
 		return true;
 	}
 

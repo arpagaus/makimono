@@ -15,12 +15,13 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.SearchRecentSuggestions;
-import android.support.v4.view.Menu;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.actionbarsherlock.view.Menu;
 
 public abstract class AbstractSearchActivity extends AbstractDefaultActivity implements OnItemClickListener {
 	private static final String CLASS_NAME = AbstractSearchActivity.class.getName();
@@ -61,7 +62,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.search, menu);
+		getSupportMenuInflater().inflate(R.menu.search, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

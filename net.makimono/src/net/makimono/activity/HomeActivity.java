@@ -5,21 +5,21 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
+
+import com.actionbarsherlock.view.MenuItem;
 
 public class HomeActivity extends AbstractDefaultActivity {
 
-	private TextView searchDictionaryTextView;
-	private TextView searchKanjiTextView;
+	private View searchDictionaryTextView;
+	private View searchKanjiTextView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home_screen);
 
-		searchDictionaryTextView = (TextView) findViewById(R.id.search_dictionary);
+		searchDictionaryTextView = (View) findViewById(R.id.search_dictionary);
 		searchDictionaryTextView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -27,7 +27,7 @@ public class HomeActivity extends AbstractDefaultActivity {
 			}
 		});
 
-		searchKanjiTextView = (TextView) findViewById(R.id.search_kanji);
+		searchKanjiTextView = (View) findViewById(R.id.search_kanji);
 		searchKanjiTextView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

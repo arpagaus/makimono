@@ -1,43 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:stretchColumns="*" >
 
-    <TextView
+    <LinearLayout
         android:id="@+id/search_dictionary"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:drawableLeft="@drawable/ic_menu_search_holo_light"
-        android:text="Search dictionary"
-        android:textSize="10pt" />
+        android:background="@drawable/clickable_background"
+        android:orientation="vertical"
+        android:padding="10dp" >
 
-    <TextView
-        android:id="@+id/search_kanji"
-        android:layout_width="fill_parent"
+        <TextView
+            style="@style/PileText"
+            android:text="Search dictionary" />
+
+        <TextView
+            style="@style/PileTextJapanese"
+            android:text="辞典" />
+    </LinearLayout>
+
+    <TableRow android:paddingTop="2dp" >
+
+        <LinearLayout
+            android:id="@+id/search_kanji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/clickable_background"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <TextView
+                style="@style/PileText"
+                android:text="Search kanji" />
+
+            <TextView
+                style="@style/PileTextJapanese"
+                android:text="字引" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/find_by_radical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/clickable_background"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <TextView
+                style="@style/PileText"
+                android:text="Find by radical" />
+
+            <TextView
+                style="@style/PileTextJapanese"
+                android:text="部首" />
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow android:paddingTop="2dp" >
+
+        <LinearLayout
+            android:id="@+id/search_example"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:background="@drawable/clickable_background"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <TextView
+                style="@style/PileText"
+                android:text="Search example" />
+
+            <TextView
+                style="@style/PileTextJapanese"
+                android:text="例え" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/browse_lists"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/clickable_background"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <TextView
+                style="@style/PileText"
+                android:text="Browse lists" />
+
+            <TextView
+                style="@style/PileTextJapanese"
+                android:text="列挙" />
+        </LinearLayout>
+    </TableRow>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:drawableLeft="@drawable/ic_menu_search_holo_light"
-        android:text="Search kanji"
-        android:textSize="10pt" />
+        android:layout_marginTop="2dp"
+        android:layout_weight="1.0"
+        android:background="@android:color/background_light"
+        android:orientation="vertical"
+        android:padding="10dp" >
+    </LinearLayout>
 
-    <TextView
-        android:id="@+id/search_kanji_by_radicals"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:drawableLeft="@drawable/ic_menu_search_holo_light"
-        android:text="Find kanji by radicals"
-        android:textSize="10pt" />
-
-    <TextView
-        android:id="@+id/search_sentence"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:drawableLeft="@drawable/ic_menu_search_holo_light"
-        android:text="Search sentence"
-        android:textSize="10pt" />
-
-</LinearLayout>
+</TableLayout>

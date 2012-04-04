@@ -259,6 +259,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		return kanjiView;
 	}
 
+	@SuppressWarnings("deprecation")
 	private View createSeparator() {
 		View separator = new View(this);
 		separator.setBackgroundResource(R.drawable.secondary_separator);
@@ -284,6 +285,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		return PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 	}
 
+	@SuppressWarnings("deprecation")
 	private void addAdditionalInfo(Sense sense) {
 		StringBuilder additionalInfo = new StringBuilder();
 		for (String s : sense.getAdditionalInfo()) {
