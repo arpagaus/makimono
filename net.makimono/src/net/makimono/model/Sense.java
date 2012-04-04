@@ -49,6 +49,15 @@ public class Sense {
 		return meanings;
 	}
 
+	public boolean hasMeaningsForLanguage(List<Language> languages) {
+		for (Meaning meaning : getMeanings()) {
+			if (languages.contains(meaning.getLanguage())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public String toString() {
 		return "partsOfSpeech=" + partsOfSpeech + ", miscellaneous=" + miscellaneous + ", fieldsOfApplication=" + fieldsOfApplication + ", dialects=" + dialects + ", meanings=" + meanings + "";

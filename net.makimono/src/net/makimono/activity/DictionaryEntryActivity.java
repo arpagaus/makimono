@@ -218,11 +218,11 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		meaningsGroupView.removeAllViews();
 		for (Sense sense : entry.getSenses()) {
 			if (meaningsGroupView.getChildCount() > 0) {
-				meaningsGroupView.addView(createSeparator());
+				meaningsGroupView.addView(createSeparatorWithMargin());
 			}
-			int meaningsCount = addMeanings(sense);
-			if (meaningsCount > 0) {
+			if (sense.hasMeaningsForLanguage(getConfiguredLanguages())) {
 				addAdditionalInfo(sense);
+				addMeanings(sense);
 			}
 		}
 	}
@@ -259,33 +259,37 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		return kanjiView;
 	}
 
-	@SuppressWarnings("deprecation")
+	private View createSeparatorWithMargin() {
+		View separator = createSeparator();
+		LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) separator.getLayoutParams();
+		layoutParams.bottomMargin = getPixelForDip(8);
+		layoutParams.topMargin = getPixelForDip(8);
+		return separator;
+	}
+
 	private View createSeparator() {
 		View separator = new View(this);
 		separator.setBackgroundResource(R.drawable.secondary_separator);
 		separator.setMinimumHeight(getPixelForDip(1));
-		separator.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		separator.setLayoutParams(layoutParams);
 		return separator;
 	}
 
-	private int addMeanings(Sense sense) {
+	private void addMeanings(Sense sense) {
 		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);
-		int meaningsCount = 0;
 		for (Language language : getConfiguredLanguages()) {
 			CharSequence meaning = StringUtils.join(sense.getMeanings(language), ", ");
 			if (meaning.length() > 0) {
 				meaningsGroupView.addView(factory.makeView(meaning, language));
-				meaningsCount++;
 			}
 		}
-		return meaningsCount;
 	}
 
 	private List<Language> getConfiguredLanguages() {
 		return PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 	}
 
-	@SuppressWarnings("deprecation")
 	private void addAdditionalInfo(Sense sense) {
 		StringBuilder additionalInfo = new StringBuilder();
 		for (String s : sense.getAdditionalInfo()) {
@@ -300,8 +304,8 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			textView.setText(additionalInfo);
 			textView.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC), Typeface.ITALIC);
 			textView.setTextColor(Color.GRAY);
-			textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
-			textView.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+			textView.setPadding(0, getPixelForDip(5), 0, 0);
+			textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 			meaningsGroupView.addView(textView);
 		}
 	}
