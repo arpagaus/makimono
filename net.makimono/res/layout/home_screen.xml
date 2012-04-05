@@ -1,111 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.apps.iosched.ui.widget.DashboardLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/black"
-    android:stretchColumns="*" >
+    android:layout_height="fill_parent" >
 
-    <LinearLayout
+    <Button
         android:id="@+id/search_dictionary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/clickable_background"
-        android:orientation="vertical"
-        android:padding="10dp" >
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/btn_home_dictionary"
+        android:text="Search in dictionary" />
 
-        <TextView
-            style="@style/PileText"
-            android:text="Search dictionary" />
+    <Button
+        android:id="@+id/search_kanji"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/btn_home_kanji"
+        android:text="Search kanji" />
 
-        <TextView
-            style="@style/PileTextJapanese"
-            android:text="辞典" />
-    </LinearLayout>
+    <Button
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/btn_home_examples"
+        android:text="Examples" />
 
-    <TableRow android:paddingTop="2dp" >
+    <Button
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/btn_home_lists"
+        android:text="Browse lists" />
 
-        <LinearLayout
-            android:id="@+id/search_kanji"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"
-            android:background="@drawable/clickable_background"
-            android:orientation="vertical"
-            android:padding="10dp" >
+    <Button
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/btn_home_settings"
+        android:text="Settings" />
 
-            <TextView
-                style="@style/PileText"
-                android:text="Search kanji" />
+    <Button
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/btn_home_about"
+        android:text="About" />
 
-            <TextView
-                style="@style/PileTextJapanese"
-                android:text="字引" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/find_by_radical"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/clickable_background"
-            android:orientation="vertical"
-            android:padding="10dp" >
-
-            <TextView
-                style="@style/PileText"
-                android:text="Find by radical" />
-
-            <TextView
-                style="@style/PileTextJapanese"
-                android:text="部首" />
-        </LinearLayout>
-    </TableRow>
-
-    <TableRow android:paddingTop="2dp" >
-
-        <LinearLayout
-            android:id="@+id/search_example"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="2dp"
-            android:background="@drawable/clickable_background"
-            android:orientation="vertical"
-            android:padding="10dp" >
-
-            <TextView
-                style="@style/PileText"
-                android:text="Search example" />
-
-            <TextView
-                style="@style/PileTextJapanese"
-                android:text="例え" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/browse_lists"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/clickable_background"
-            android:orientation="vertical"
-            android:padding="10dp" >
-
-            <TextView
-                style="@style/PileText"
-                android:text="Browse lists" />
-
-            <TextView
-                style="@style/PileTextJapanese"
-                android:text="列挙" />
-        </LinearLayout>
-    </TableRow>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_weight="1.0"
-        android:background="@android:color/background_light"
-        android:orientation="vertical"
-        android:padding="10dp" >
-    </LinearLayout>
-
-</TableLayout>
+</com.google.android.apps.iosched.ui.widget.DashboardLayout>
