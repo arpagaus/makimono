@@ -4,7 +4,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -227,7 +226,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		}
 	}
 
-	private void updateKanjiView(HashSet<KanjiEntry> kanjiEntries) {
+	private void updateKanjiView(List<KanjiEntry> kanjiEntries) {
 		kanjiGroupView.removeAllViews();
 		if (kanjiEntries.isEmpty()) {
 			findViewById(R.id.entry_separator_kanji).setVisibility(View.GONE);
@@ -322,13 +321,13 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) dip, getResources().getDisplayMetrics());
 	}
 
-	private class LoadKanjiEntriesTask extends AsyncTask<DictionaryEntry, Void, HashSet<KanjiEntry>> {
+	private class LoadKanjiEntriesTask extends AsyncTask<DictionaryEntry, Void, List<KanjiEntry>> {
 
-		protected HashSet<KanjiEntry> doInBackground(DictionaryEntry... dictionaryEntries) {
+		protected List<KanjiEntry> doInBackground(DictionaryEntry... dictionaryEntries) {
 			try {
 				DictionaryEntry dictionaryEntry = dictionaryEntries[0];
 
-				HashSet<KanjiEntry> kanjiEntries = new HashSet<KanjiEntry>();
+				List<KanjiEntry> kanjiEntries = new ArrayList<KanjiEntry>();
 				for (String e : dictionaryEntry.getExpressions()) {
 					kanjiEntries.addAll(connection.getKanjiSearcher().getKanjiEntries(e));
 				}
@@ -339,7 +338,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			}
 		}
 
-		protected void onPostExecute(HashSet<KanjiEntry> kanji) {
+		protected void onPostExecute(List<KanjiEntry> kanji) {
 			updateKanjiView(kanji);
 		}
 	}
