@@ -1100,12 +1100,12 @@ containing a value of this type.
         public static final int unicode=0x7f0a0086;
     }
     public static final class style {
-        public static final int DashboardButton=0x7f0b0058;
+        public static final int DashboardButton=0x7f0b005a;
         public static final int DialogWindowTitle_Sherlock=0x7f0b0033;
         public static final int DialogWindowTitle_Sherlock_Light=0x7f0b0034;
-        public static final int EntryMainExpression=0x7f0b0059;
-        public static final int SeparatorLine=0x7f0b005b;
-        public static final int SeparatorText=0x7f0b005a;
+        public static final int EntryMainExpression=0x7f0b005b;
+        public static final int SeparatorLine=0x7f0b005d;
+        public static final int SeparatorText=0x7f0b005c;
         public static final int Sherlock___TextAppearance_Small=0x7f0b0047;
         public static final int Sherlock___Theme=0x7f0b004a;
         public static final int Sherlock___Theme_DarkActionBar=0x7f0b004c;
@@ -1147,6 +1147,7 @@ containing a value of this type.
         public static final int Theme_Sherlock_Light_ForceOverflow=0x7f0b0054;
         public static final int Theme_Sherlock_Light_NoActionBar=0x7f0b0052;
         public static final int Theme_Sherlock_NoActionBar=0x7f0b0051;
+        public static final int Theme_Styled=0x7f0b0058;
         public static final int Widget=0x7f0b0000;
         public static final int Widget_Sherlock_ActionBar=0x7f0b0002;
         public static final int Widget_Sherlock_ActionBar_Solid=0x7f0b0003;
@@ -1192,6 +1193,7 @@ containing a value of this type.
         public static final int Widget_Sherlock_ProgressBar_Horizontal=0x7f0b0030;
         public static final int Widget_Sherlock_Spinner_DropDown_ActionBar=0x7f0b0024;
         public static final int Widget_Sherlock_TextView_SpinnerItem=0x7f0b0032;
+        public static final int Widget_Styled_ActionBar=0x7f0b0059;
     }
     public static final class xml {
         public static final int dictionary_searchable=0x7f040000;

@@ -18,7 +18,7 @@
     <Button
         style="@style/DashboardButton"
         android:drawableTop="@drawable/btn_home_examples"
-        android:text="Examples" />
+        android:text="Search examples" />
 
     <Button
         style="@style/DashboardButton"
