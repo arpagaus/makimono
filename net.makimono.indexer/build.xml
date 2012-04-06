@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Indexer" default="create-kanjidic-index" basedir=".">
 
-	<property name="jdk.dir" location="/usr/lib/jvm/java-6-openjdk/" />
+	<property name="jdk.dir" location="/usr/lib/jvm/java-7-openjdk-amd64/" />
+	<property name="android.dir" location="/opt/android-sdk-linux/platforms/android-8/" />
 
 	<property name="lib.dir" location="../net.makimono/libs" />
 
@@ -87,10 +88,14 @@
 
 		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="on">
 			<include name="net/makimono/model/**.java" />
+			<include name="net/makimono/converter/**.java" />
 			<include name="net/makimono/searcher/*FieldName.java" />
 			<classpath>
 				<fileset dir="${lib.dir}">
 					<include name="*.jar" />
+				</fileset>
+				<fileset dir="${android.dir}">
+					<include name="android.jar" />
 				</fileset>
 			</classpath>
 		</javac>

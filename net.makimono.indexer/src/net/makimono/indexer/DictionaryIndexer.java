@@ -80,6 +80,10 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 		for (REle readingElement : entry.getREle()) {
 			Field reading = new Field(DictionaryFieldName.READING.name(), readingElement.getReb(), Store.NO, Index.NOT_ANALYZED);
 			document.add(reading);
+
+			String romaji = getRomajiConverter().convertKana(readingElement.getReb());
+			Field readingRomaji = new Field(DictionaryFieldName.READING.name(), romaji, Store.NO, Index.NOT_ANALYZED);
+			document.add(readingRomaji);
 		}
 
 		for (Sense sense : entry.getSense()) {

@@ -211,6 +211,13 @@ public class DictionarySearcherTest {
 	}
 
 	@Test
+	public void suggestRomaji() throws Exception {
+		Set<String> suggestions = searcher.suggest("appurupa");
+		assertEquals(1, suggestions.size());
+		assertEquals("appurupai", suggestions.iterator().next());
+	}
+
+	@Test
 	public void testOnlyEnglish() throws Exception {
 		assertFalse(searcher.search("Abfalleimer").isEmpty());
 		searcher.setLanguages(Arrays.asList(Language.en));

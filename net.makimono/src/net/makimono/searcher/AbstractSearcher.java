@@ -110,7 +110,7 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 		Set<String> tokens = extractTokens(queryString);
 
 		BooleanQuery booleanQuery = new BooleanQuery();
-		for (String fieldName : getFieldNames()) {
+		for (String fieldName : getIndexedFieldNames()) {
 			IndexFieldName field = getIndexFieldName(fieldName);
 			if (!field.isMeaning() || getLanguages().contains(field.getLanguage())) {
 				if (field.isAnalyzed()) {
@@ -142,7 +142,7 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 		return entries;
 	}
 
-	protected Collection<String> getFieldNames() throws IOException {
+	protected Collection<String> getIndexedFieldNames() throws IOException {
 		return getIndexSearcher().getIndexReader().getFieldNames(FieldOption.INDEXED);
 	}
 
@@ -161,11 +161,10 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 		TreeSet<String> suggestions = new TreeSet<String>();
 		if (isQualifiedForSuggestions(prefix)) {
 			Set<IndexFieldName> fields = new HashSet<IndexFieldName>();
-			final boolean containsJapanese = containsJapanese(prefix);
 
-			for (String fieldName : getFieldNames()) {
+			for (String fieldName : getIndexedFieldNames()) {
 				IndexFieldName field = getIndexFieldName(fieldName);
-				if (containsJapanese && !field.isMeaning()) {
+				if (!field.isMeaning()) {
 					fields.add(field);
 				} else if (languages.contains(field.getLanguage())) {
 					fields.add(field);

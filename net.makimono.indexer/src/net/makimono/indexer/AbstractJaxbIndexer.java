@@ -12,6 +12,8 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamReader;
 
+import net.makimono.converter.KanaToRomajiConverter;
+
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
@@ -23,8 +25,14 @@ public abstract class AbstractJaxbIndexer<ROOT, IT> {
 
 	private final String contextPath;
 
+	private KanaToRomajiConverter kanaToRomajiConverter = new KanaToRomajiConverter();
+
 	protected AbstractJaxbIndexer(String contextPath) {
 		this.contextPath = contextPath;
+	}
+
+	protected KanaToRomajiConverter getRomajiConverter() {
+		return kanaToRomajiConverter;
 	}
 
 	public void createIndex(File gzipXmlFile, Directory luceneDirectory) throws Exception {
