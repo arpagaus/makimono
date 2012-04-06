@@ -791,36 +791,40 @@ containing a value of this type.
         public static final int abs__tab_unselected_focused_holo=0x7f02005a;
         public static final int abs__tab_unselected_holo=0x7f02005b;
         public static final int abs__tab_unselected_pressed_holo=0x7f02005c;
-        public static final int btn_home_about=0x7f02005d;
-        public static final int btn_home_about_default=0x7f02005e;
-        public static final int btn_home_about_pressed=0x7f02005f;
-        public static final int btn_home_dictionary=0x7f020060;
-        public static final int btn_home_dictionary_default=0x7f020061;
-        public static final int btn_home_dictionary_pressed=0x7f020062;
-        public static final int btn_home_examples=0x7f020063;
-        public static final int btn_home_examples_default=0x7f020064;
-        public static final int btn_home_examples_pressed=0x7f020065;
-        public static final int btn_home_kanji=0x7f020066;
-        public static final int btn_home_kanji_default=0x7f020067;
-        public static final int btn_home_kanji_pressed=0x7f020068;
-        public static final int btn_home_lists=0x7f020069;
-        public static final int btn_home_lists_default=0x7f02006a;
-        public static final int btn_home_lists_pressed=0x7f02006b;
-        public static final int btn_home_settings=0x7f02006c;
-        public static final int btn_home_settings_default=0x7f02006d;
-        public static final int btn_home_settings_pressed=0x7f02006e;
-        public static final int clickable_background=0x7f02006f;
-        public static final int ic_english=0x7f020070;
-        public static final int ic_french=0x7f020071;
-        public static final int ic_german=0x7f020072;
-        public static final int ic_launcher=0x7f020073;
-        public static final int ic_menu_preferences=0x7f020074;
-        public static final int ic_menu_search_holo_light=0x7f020075;
-        public static final int ic_portugese=0x7f020076;
-        public static final int ic_russian=0x7f020077;
-        public static final int ic_spanish=0x7f020078;
-        public static final int primary_separator=0x7f020079;
-        public static final int secondary_separator=0x7f02007a;
+        public static final int bg_striped=0x7f02005d;
+        public static final int bg_striped_img=0x7f02005e;
+        public static final int bg_striped_split=0x7f02005f;
+        public static final int bg_striped_split_img=0x7f020060;
+        public static final int btn_home_about=0x7f020061;
+        public static final int btn_home_about_default=0x7f020062;
+        public static final int btn_home_about_pressed=0x7f020063;
+        public static final int btn_home_dictionary=0x7f020064;
+        public static final int btn_home_dictionary_default=0x7f020065;
+        public static final int btn_home_dictionary_pressed=0x7f020066;
+        public static final int btn_home_examples=0x7f020067;
+        public static final int btn_home_examples_default=0x7f020068;
+        public static final int btn_home_examples_pressed=0x7f020069;
+        public static final int btn_home_kanji=0x7f02006a;
+        public static final int btn_home_kanji_default=0x7f02006b;
+        public static final int btn_home_kanji_pressed=0x7f02006c;
+        public static final int btn_home_lists=0x7f02006d;
+        public static final int btn_home_lists_default=0x7f02006e;
+        public static final int btn_home_lists_pressed=0x7f02006f;
+        public static final int btn_home_settings=0x7f020070;
+        public static final int btn_home_settings_default=0x7f020071;
+        public static final int btn_home_settings_pressed=0x7f020072;
+        public static final int clickable_background=0x7f020073;
+        public static final int ic_english=0x7f020074;
+        public static final int ic_french=0x7f020075;
+        public static final int ic_german=0x7f020076;
+        public static final int ic_launcher=0x7f020077;
+        public static final int ic_menu_preferences=0x7f020078;
+        public static final int ic_menu_search_holo_light=0x7f020079;
+        public static final int ic_portugese=0x7f02007a;
+        public static final int ic_russian=0x7f02007b;
+        public static final int ic_spanish=0x7f02007c;
+        public static final int primary_separator=0x7f02007d;
+        public static final int secondary_separator=0x7f02007e;
     }
     public static final class id {
         public static final int abs__action_bar=0x7f050022;
@@ -1100,12 +1104,12 @@ containing a value of this type.
         public static final int unicode=0x7f0a0086;
     }
     public static final class style {
-        public static final int DashboardButton=0x7f0b005a;
+        public static final int DashboardButton=0x7f0b0058;
         public static final int DialogWindowTitle_Sherlock=0x7f0b0033;
         public static final int DialogWindowTitle_Sherlock_Light=0x7f0b0034;
-        public static final int EntryMainExpression=0x7f0b005b;
-        public static final int SeparatorLine=0x7f0b005d;
-        public static final int SeparatorText=0x7f0b005c;
+        public static final int EntryMainExpression=0x7f0b0059;
+        public static final int SeparatorLine=0x7f0b005b;
+        public static final int SeparatorText=0x7f0b005a;
         public static final int Sherlock___TextAppearance_Small=0x7f0b0047;
         public static final int Sherlock___Theme=0x7f0b004a;
         public static final int Sherlock___Theme_DarkActionBar=0x7f0b004c;
@@ -1147,7 +1151,6 @@ containing a value of this type.
         public static final int Theme_Sherlock_Light_ForceOverflow=0x7f0b0054;
         public static final int Theme_Sherlock_Light_NoActionBar=0x7f0b0052;
         public static final int Theme_Sherlock_NoActionBar=0x7f0b0051;
-        public static final int Theme_Styled=0x7f0b0058;
         public static final int Widget=0x7f0b0000;
         public static final int Widget_Sherlock_ActionBar=0x7f0b0002;
         public static final int Widget_Sherlock_ActionBar_Solid=0x7f0b0003;
@@ -1193,7 +1196,6 @@ containing a value of this type.
         public static final int Widget_Sherlock_ProgressBar_Horizontal=0x7f0b0030;
         public static final int Widget_Sherlock_Spinner_DropDown_ActionBar=0x7f0b0024;
         public static final int Widget_Sherlock_TextView_SpinnerItem=0x7f0b0032;
-        public static final int Widget_Styled_ActionBar=0x7f0b0059;
     }
     public static final class xml {
         public static final int dictionary_searchable=0x7f040000;
