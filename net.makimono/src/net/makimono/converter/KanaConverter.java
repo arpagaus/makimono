@@ -5,7 +5,7 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class KanaToRomajiConverter {
+public class KanaConverter {
 
 	private static final int MAX_LENGTH = 4;
 
@@ -959,15 +959,15 @@ public class KanaToRomajiConverter {
 		return kanaToHepburn;
 	}
 
-	public String convertKanaSimple(String input) {
-		return convertKana(input).replaceAll("\\^|'", "");
+	public String convertKanaToRomajiSimple(String input) {
+		return convertKanaToRomaji(input).replaceAll("\\^|'", "");
 	}
 
-	public String convertKana(String input) {
-		return convertKana(input, getKanaToHepburnMap());
+	public String convertKanaToRomaji(String input) {
+		return convertKanaToRomaji(input, getKanaToHepburnMap());
 	}
 
-	private String convertKana(String input, Map<String, String> map) {
+	private String convertKanaToRomaji(String input, Map<String, String> map) {
 		if (input == null) {
 			return null;
 		}
@@ -987,6 +987,22 @@ public class KanaToRomajiConverter {
 					builder.append(input.charAt(i));
 					i++;
 				}
+			}
+		}
+		return builder.toString();
+	}
+
+	public String convertKatakanaToHiragana(String string) {
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < string.length(); i++) {
+			int ch = string.codePointAt(i);
+			if ((ch >= '\u30a1' && ch <= '\u30f3') || ch == '\u30fd' || ch == '\u30fe') {
+				builder.append((char) (ch - 0x60));
+			} else if (ch == '\u30f4') {
+				builder.append('\u3046');
+				builder.append('\u309b');
+			} else {
+				builder.append((char) ch);
 			}
 		}
 		return builder.toString();

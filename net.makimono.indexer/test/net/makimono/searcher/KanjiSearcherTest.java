@@ -169,6 +169,9 @@ public class KanjiSearcherTest {
 		for (KanjiEntry entry : entries) {
 			assertTrue(entry.getOnYomi().contains("エイ"));
 		}
+
+		entries = searcher.search("ほん");
+		assertFalse(entries.isEmpty());
 	}
 
 	@Test
