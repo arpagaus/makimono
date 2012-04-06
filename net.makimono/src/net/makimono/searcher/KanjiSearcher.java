@@ -44,7 +44,10 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 			UnicodeBlock block = UnicodeBlock.of(codePoint);
 			if (block.equals(UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS)) {
 				String literal = String.valueOf(Character.toChars(codePoint));
-				entries.add(getKanjiEntry(literal));
+				KanjiEntry kanjiEntry = getKanjiEntry(literal);
+				if (kanjiEntry != null) {
+					entries.add(kanjiEntry);
+				}
 			}
 		}
 		return entries;
@@ -103,7 +106,9 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 	private ArrayList<String> getStringsForField(Document document, KanjiFieldName field) {
 		ArrayList<String> strings = new ArrayList<String>();
 		for (Fieldable f : document.getFieldables(field.name())) {
-			strings.add(f.stringValue());
+			if (f.isStored()) {
+				strings.add(f.stringValue());
+			}
 		}
 		return strings;
 	}

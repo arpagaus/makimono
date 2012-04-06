@@ -110,15 +110,19 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 	}
 
 	private void addReadings(Document document, List<Reading> readings) {
-		for (Reading r : readings) {
-			if (r.getRType().equalsIgnoreCase("ja_on")) {
-				document.add(new Field(KanjiFieldName.ONYOMI.name(), r.getValue(), Store.YES, Index.NOT_ANALYZED));
-			} else if (r.getRType().equalsIgnoreCase("ja_kun")) {
-				document.add(new Field(KanjiFieldName.KUNYOMI.name(), r.getValue(), Store.YES, Index.NOT_ANALYZED));
-			} else if (r.getRType().equalsIgnoreCase("pinyin")) {
-				document.add(new Field(KanjiFieldName.PINYIN.name(), r.getValue(), Store.YES, Index.NO));
-			} else if (r.getRType().equalsIgnoreCase("korean_h")) {
-				document.add(new Field(KanjiFieldName.HANGUL.name(), r.getValue(), Store.YES, Index.NO));
+		for (Reading reading : readings) {
+			if (reading.getRType().equalsIgnoreCase("ja_on")) {
+				String romaji = getRomajiConverter().convertKanaSimple(reading.getValue());
+				document.add(new Field(KanjiFieldName.ONYOMI.name(), romaji, Store.NO, Index.NOT_ANALYZED));
+				document.add(new Field(KanjiFieldName.ONYOMI.name(), reading.getValue(), Store.YES, Index.NOT_ANALYZED));
+			} else if (reading.getRType().equalsIgnoreCase("ja_kun")) {
+				String romaji = getRomajiConverter().convertKanaSimple(reading.getValue());
+				document.add(new Field(KanjiFieldName.KUNYOMI.name(), romaji, Store.NO, Index.NOT_ANALYZED));
+				document.add(new Field(KanjiFieldName.KUNYOMI.name(), reading.getValue(), Store.YES, Index.NOT_ANALYZED));
+			} else if (reading.getRType().equalsIgnoreCase("pinyin")) {
+				document.add(new Field(KanjiFieldName.PINYIN.name(), reading.getValue(), Store.YES, Index.NO));
+			} else if (reading.getRType().equalsIgnoreCase("korean_h")) {
+				document.add(new Field(KanjiFieldName.HANGUL.name(), reading.getValue(), Store.YES, Index.NO));
 			}
 		}
 	}

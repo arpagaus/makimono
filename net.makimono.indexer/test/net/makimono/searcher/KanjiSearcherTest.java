@@ -60,8 +60,8 @@ public class KanjiSearcherTest {
 		assertEquals('言', entry.getRadicalKanji());
 		assertEquals("ことば", entry.getRadicalKana());
 
-		assertEquals(asArrayList("ゴ"), entry.getOnYomi());
 		assertEquals(asArrayList("かた.る", "かた.らう"), entry.getKunYomi());
+		assertEquals(asArrayList("ゴ"), entry.getOnYomi());
 
 		assertEquals(asArrayList("や"), entry.getNanori());
 		assertEquals(asArrayList("yu3", "yu4"), entry.getPinyin());
@@ -126,6 +126,9 @@ public class KanjiSearcherTest {
 		assertEquals("日", entries.get(0).getLiteral());
 		assertEquals("本", entries.get(1).getLiteral());
 		assertEquals("語", entries.get(2).getLiteral());
+
+		entries = searcher.getKanjiEntries("酛");
+		assertTrue(entries.isEmpty());
 	}
 
 	@Test

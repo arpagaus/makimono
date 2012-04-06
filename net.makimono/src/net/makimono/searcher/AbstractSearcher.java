@@ -27,8 +27,6 @@ import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MultiTermQuery;
-import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
@@ -123,10 +121,6 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 					TermQuery termQuery = new TermQuery(new Term(field.name(), queryString));
 					termQuery.setBoost(MAX_BOOST);
 					booleanQuery.add(termQuery, Occur.SHOULD);
-
-					PrefixQuery prefixQuery = new PrefixQuery(new Term(field.name(), queryString));
-					prefixQuery.setRewriteMethod(MultiTermQuery.SCORING_BOOLEAN_QUERY_REWRITE);
-					booleanQuery.add(prefixQuery, Occur.SHOULD);
 				}
 			}
 		}
