@@ -60,6 +60,8 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getSupportActionBar().setTitle(R.string.dictionary);
+
 		bindSearcher();
 		initializeContentView();
 		handleIntent(getIntent());

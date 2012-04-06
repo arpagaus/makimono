@@ -48,6 +48,8 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getSupportActionBar().setTitle(R.string.kanji);
+
 		bindSearcher();
 		initializeContentView();
 		handleIntent(getIntent());

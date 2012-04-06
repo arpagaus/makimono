@@ -7,6 +7,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 public class HomeActivity extends AbstractDefaultActivity {
@@ -34,6 +35,11 @@ public class HomeActivity extends AbstractDefaultActivity {
 				startSearch(KanjiSearchActivity.class);
 			}
 		});
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return true;
 	}
 
 	private void startSearch(Class<?> clazz) {

@@ -2,6 +2,7 @@ package net.makimono.activity;
 
 import net.makimono.R;
 import android.content.Intent;
+import android.os.Bundle;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -10,8 +11,14 @@ import com.actionbarsherlock.view.MenuItem;
 public abstract class AbstractDefaultActivity extends SherlockFragmentActivity {
 
 	@Override
+	protected void onCreate(Bundle bundle) {
+		super.onCreate(bundle);
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.base, menu);
+		getSupportActionBar().setHomeButtonEnabled(true);
 		return true;
 	}
 

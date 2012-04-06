@@ -1081,6 +1081,7 @@ containing a value of this type.
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f0a0009;
         public static final int app_name=0x7f0a007a;
+        public static final int dictionary=0x7f0a008c;
         public static final int entry_copyright=0x7f0a007f;
         public static final int frequency=0x7f0a0085;
         public static final int general=0x7f0a007c;

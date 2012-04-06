@@ -4,11 +4,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import net.makimono.R;
 import net.makimono.content.AbstractSearchSuggestionProvider;
 import net.makimono.content.DictionarySearchSuggestionProvider;
 import net.makimono.model.DictionaryEntry;
 import net.makimono.searcher.DictionarySearcher;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -16,6 +18,12 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class DictionarySearchActivity extends AbstractSearchActivity implements OnItemClickListener {
 	private static final String CLASS_NAME = DictionarySearchActivity.class.getName();
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		getSupportActionBar().setTitle(R.string.dictionary);
+	}
 
 	@Override
 	public void onItemClick(AdapterView<?> view, View v, int position, long id) {

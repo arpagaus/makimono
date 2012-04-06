@@ -19,5 +19,6 @@
     <string name="no_entries">No entries found</string>
     <string name="search_kanji">Search kanji</string>
     <string name="search_expression">Search expression</string>
+    <string name="dictionary">Dictionary</string>
 
 </resources>
