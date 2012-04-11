@@ -12,6 +12,14 @@
             style="@style/EntryMainExpression"
             android:textSize="48dp" />
 
+        <net.makimono.view.KanjiAnimationView
+            android:id="@+id/kanji_animation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/kanji_literal"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/kanji_literal" />
+
         <!-- Readings -->
 
         <TextView
