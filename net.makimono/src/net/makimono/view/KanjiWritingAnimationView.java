@@ -52,7 +52,7 @@ public class KanjiWritingAnimationView extends KanjiWritingView {
 		@Override
 		public void run() {
 			postInvalidate();
-			currentStroke = (currentStroke + 1) % paths.length;
+			strokeIndex = (strokeIndex + 1) % paths.length;
 		}
 	}
 }

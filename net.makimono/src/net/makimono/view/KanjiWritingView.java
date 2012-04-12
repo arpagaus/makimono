@@ -17,7 +17,7 @@ import com.larvalabs.svgandroid.SVGParser;
 public class KanjiWritingView extends View {
 	private static final int VIRTUAL_AXIS_LENGTH = 109;
 
-	int currentStroke;
+	int strokeIndex;
 
 	private Paint kanjiStrokesPaint;
 	private Paint kanjiStrokeStartPaint;
@@ -97,11 +97,11 @@ public class KanjiWritingView extends View {
 		canvas.drawLine(0, VIRTUAL_AXIS_LENGTH / 2f, VIRTUAL_AXIS_LENGTH, VIRTUAL_AXIS_LENGTH / 2f, getGridLinePaint());
 		canvas.drawLine(VIRTUAL_AXIS_LENGTH / 2f, 0, VIRTUAL_AXIS_LENGTH / 2f, VIRTUAL_AXIS_LENGTH, getGridLinePaint());
 
-		for (int i = 0; i <= currentStroke; i++) {
+		for (int i = 0; i <= strokeIndex; i++) {
 			Path path = SVGParser.parsePath(paths[i]);
 			canvas.drawPath(path, getKanjiStrokesPaint());
 
-			if (i == currentStroke) {
+			if (i == strokeIndex) {
 				PathMeasure pm = new PathMeasure(path, false);
 				float coordinates[] = { 0f, 0f };
 				pm.getPosTan(0, coordinates, null);
