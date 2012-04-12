@@ -10,15 +10,15 @@
         <TextView
             android:id="@+id/kanji_literal"
             style="@style/EntryMainExpression"
-            android:textSize="48dp" />
+            android:textSize="56dp" />
 
-        <net.makimono.view.KanjiAnimationView
+        <net.makimono.view.KanjiWritingAnimationView
             android:id="@+id/kanji_animation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/kanji_literal"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@id/kanji_literal" />
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/kanji_literal"
+            android:layout_marginRight="10dp" />
 
         <!-- Readings -->
 

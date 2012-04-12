@@ -1,8 +1,5 @@
 package net.makimono.view;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -13,34 +10,29 @@ import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import com.larvalabs.svgandroid.SVGParser;
 
-public class KanjiAnimationView extends View {
-	private static final String LOG_TAG = KanjiAnimationView.class.getName();
-
-	private static final int TIMER_PERIOD = 1500;
+public class KanjiWritingView extends View {
 	private static final int VIRTUAL_AXIS_LENGTH = 109;
 
-	private Timer timer;
-	private int currentStroke;
+	int currentStroke;
 
 	private Paint kanjiStrokesPaint;
 	private Paint kanjiStrokeStartPaint;
 	private Paint gridFramePaint;
 	private Paint gridLinePaint;
 
-	public KanjiAnimationView(Context context, AttributeSet attrs, int defStyle) {
+	public KanjiWritingView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
 
-	public KanjiAnimationView(Context context, AttributeSet attrs) {
+	public KanjiWritingView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
 
-	public KanjiAnimationView(Context context) {
+	public KanjiWritingView(Context context) {
 		super(context);
 	}
 
@@ -115,36 +107,6 @@ public class KanjiAnimationView extends View {
 				pm.getPosTan(0, coordinates, null);
 				canvas.drawPoint(coordinates[0], coordinates[1], getKanjiStrokeStartPaint());
 			}
-		}
-	}
-
-	@Override
-	protected void onAttachedToWindow() {
-		Log.v(LOG_TAG, "onAttachedToWindow");
-		super.onAttachedToWindow();
-
-		if (timer == null) {
-			timer = new Timer("Kanji animation", true);
-			timer.scheduleAtFixedRate(new IncrementAndRedrawTask(), TIMER_PERIOD, TIMER_PERIOD);
-		} else {
-			Log.e(LOG_TAG, "The timer was not null");
-		}
-	}
-
-	@Override
-	protected void onDetachedFromWindow() {
-		Log.v(LOG_TAG, "onDetachedFromWindow");
-		super.onDetachedFromWindow();
-
-		timer.cancel();
-		timer = null;
-	}
-
-	private class IncrementAndRedrawTask extends TimerTask {
-		@Override
-		public void run() {
-			postInvalidate();
-			currentStroke = (currentStroke + 1) % paths.length;
 		}
 	}
 }
