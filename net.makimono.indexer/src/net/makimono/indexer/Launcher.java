@@ -25,7 +25,12 @@ public class Launcher {
 			System.exit(1);
 		}
 
-		Directory luceneDirectory = new SimpleFSDirectory(new File(args[1]));
+		File directory = new File(args[1]);
+		for (File f : directory.listFiles()) {
+			f.delete();
+		}
+
+		Directory luceneDirectory = new SimpleFSDirectory(directory);
 
 		if (args.length < 3 || args[2].equalsIgnoreCase("JMDICT")) {
 			new DictionaryIndexer().createIndex(gzipFile, luceneDirectory);
