@@ -40,6 +40,7 @@ public class KanjiEntry implements Parcelable, Entry {
 	private List<String> pinyin;
 	private List<String> hangul;
 	private List<Meaning> meanings;
+	private List<String> strokePaths;
 
 	public String getLiteral() {
 		return literal;
@@ -157,6 +158,13 @@ public class KanjiEntry implements Parcelable, Entry {
 			meanings = new ArrayList<Meaning>();
 		}
 		return meanings;
+	}
+
+	public List<String> getStrokePaths() {
+		if (strokePaths == null) {
+			strokePaths = new ArrayList<String>();
+		}
+		return strokePaths;
 	}
 
 	@Override

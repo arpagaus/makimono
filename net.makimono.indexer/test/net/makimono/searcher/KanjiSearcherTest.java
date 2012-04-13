@@ -110,6 +110,14 @@ public class KanjiSearcherTest {
 	}
 
 	@Test
+	public void getStrokePaths() throws Exception {
+		KanjiEntry entry = searcher.getKanjiEntry("語");
+		assertNotNull(entry);
+
+		assertEquals(14, entry.getStrokePaths().size());
+	}
+
+	@Test
 	public void decomposeEmptyString() throws Exception {
 		List<KanjiEntry> entries = searcher.getKanjiEntries("");
 		assertTrue(entries.isEmpty());

@@ -5,13 +5,17 @@ import java.io.IOException;
 import java.lang.Character.UnicodeBlock;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.zip.DataFormatException;
 
 import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
 import net.makimono.model.Meaning;
 
+import org.apache.lucene.document.CompressionTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.Term;
@@ -68,7 +72,7 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 		return getKanjiEntryForDocument(getIndexSearcher().doc(doc));
 	}
 
-	KanjiEntry getKanjiEntryForDocument(Document document) {
+	KanjiEntry getKanjiEntryForDocument(Document document) throws IOException {
 		KanjiEntry entry = new KanjiEntry();
 		entry.setLiteral(document.getFieldable(KanjiFieldName.LITERAL.name()).stringValue());
 		entry.setCodePoint(ByteBuffer.wrap(document.getFieldable(KanjiFieldName.CODE_POINT.name()).getBinaryValue()).getInt());
@@ -100,6 +104,8 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiFieldName.MEANING_ES.name()), Language.es));
 		entry.getMeanings().addAll(getMeanings(document.getFieldables(KanjiFieldName.MEANING_PT.name()), Language.pt));
 
+		entry.getStrokePaths().addAll(getLines(document.getFieldables(KanjiFieldName.STROKE_PATHS.name())));
+
 		return entry;
 	}
 
@@ -119,6 +125,20 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 			meanings.add(new Meaning(f.stringValue(), lang));
 		}
 		return meanings;
+	}
+
+	private Collection<? extends String> getLines(Fieldable[] fieldables) throws IOException {
+		List<String> lines = new ArrayList<String>();
+		for (Fieldable field : fieldables) {
+			try {
+				byte[] binary = CompressionTools.decompress(field.getBinaryValue());
+				String text = new String(binary, "UTF-8");
+				lines.addAll(Arrays.asList(text.split("\n")));
+			} catch (DataFormatException e) {
+				throw new IOException(e);
+			}
+		}
+		return lines;
 	}
 
 	@Override

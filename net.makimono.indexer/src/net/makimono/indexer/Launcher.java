@@ -36,6 +36,9 @@ public class Launcher {
 			new DictionaryIndexer().createIndex(gzipFile, luceneDirectory);
 		} else if (args[2].equalsIgnoreCase("KANJIDIC2")) {
 			new KanjiIndexer().createIndex(gzipFile, luceneDirectory);
+			if (args.length >= 4) {
+				new KanjiVgIndexer().enhanceIndex(new File(args[3]), luceneDirectory);
+			}
 		} else {
 			System.err.println("Unrecognized dictionary format " + args[2]);
 		}
