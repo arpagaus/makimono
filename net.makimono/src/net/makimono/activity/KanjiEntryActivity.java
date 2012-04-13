@@ -21,6 +21,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 
 	private TextView literalTextView;
 	private KanjiWritingView kanjiAnimationView;
+	private TextView kanjiAnimationCopyrightView;
 	private TextView onYomiTextView;
 	private TextView kunYomiTextView;
 	private TextView nanoriTextView;
@@ -73,6 +75,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 
 		literalTextView = (TextView) findViewById(R.id.kanji_literal);
 		kanjiAnimationView = (KanjiWritingView) findViewById(R.id.kanji_animation);
+		kanjiAnimationCopyrightView = (TextView) findViewById(R.id.kanji_animation_copyright);
 		onYomiTextView = (TextView) findViewById(R.id.kanji_on_yomi);
 		kunYomiTextView = (TextView) findViewById(R.id.kanji_kun_yomi);
 		nanoriTextView = (TextView) findViewById(R.id.kanji_nanori);
@@ -100,8 +103,16 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 	private void updateView(KanjiEntry entry) {
 		this.entry = entry;
 
-		literalTextView.setText(entry.getLiteral());
 		kanjiAnimationView.setStrokePaths(entry.getStrokePaths());
+		if (entry.getStrokePaths().isEmpty()) {
+			kanjiAnimationView.setVisibility(View.GONE);
+			kanjiAnimationCopyrightView.setVisibility(View.GONE);
+		} else {
+			kanjiAnimationView.setVisibility(View.VISIBLE);
+			kanjiAnimationCopyrightView.setVisibility(View.VISIBLE);
+		}
+
+		literalTextView.setText(entry.getLiteral());
 		onYomiTextView.setText(StringUtils.join(entry.getOnYomi(), ", "));
 		kunYomiTextView.setText(StringUtils.join(entry.getKunYomi(), ", "));
 		nanoriTextView.setText(StringUtils.join(entry.getNanori(), ", "));

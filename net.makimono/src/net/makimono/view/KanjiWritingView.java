@@ -43,12 +43,6 @@ public class KanjiWritingView extends View {
 	}
 
 	public void setStrokePaths(List<String> strokePaths) {
-		if (strokePaths.isEmpty()) {
-			setVisibility(GONE);
-		} else {
-			setVisibility(VISIBLE);
-		}
-
 		strokeIndex = 0;
 		this.strokePaths = strokePaths;
 	}
