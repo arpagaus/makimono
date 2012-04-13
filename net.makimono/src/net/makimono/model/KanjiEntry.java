@@ -253,6 +253,8 @@ public class KanjiEntry implements Parcelable, Entry {
 		for (byte i = 0; i < meaningCount; i++) {
 			getMeanings().add(new Meaning(parcel.readString(), Language.values()[parcel.readByte()]));
 		}
+
+		strokePaths = Arrays.asList((String[]) parcel.readValue(null));
 	}
 
 	@Override
@@ -269,17 +271,19 @@ public class KanjiEntry implements Parcelable, Entry {
 		parcel.writeInt(radical);
 		parcel.writeByte(strokeCount);
 
-		parcel.writeValue(onYomi.toArray(new String[onYomi.size()]));
-		parcel.writeValue(kunYomi.toArray(new String[kunYomi.size()]));
-		parcel.writeValue(nanori.toArray(new String[nanori.size()]));
-		parcel.writeValue(hangul.toArray(new String[hangul.size()]));
-		parcel.writeValue(pinyin.toArray(new String[pinyin.size()]));
+		parcel.writeValue(getOnYomi().toArray(new String[getOnYomi().size()]));
+		parcel.writeValue(getKunYomi().toArray(new String[getKunYomi().size()]));
+		parcel.writeValue(getNanori().toArray(new String[getNanori().size()]));
+		parcel.writeValue(getHangul().toArray(new String[getHangul().size()]));
+		parcel.writeValue(getPinyin().toArray(new String[getPinyin().size()]));
 
-		parcel.writeByte((byte) meanings.size());
-		for (Meaning m : meanings) {
+		parcel.writeByte((byte) getMeanings().size());
+		for (Meaning m : getMeanings()) {
 			parcel.writeString(m.getValue());
 			parcel.writeByte((byte) m.getLanguage().ordinal());
 		}
+
+		parcel.writeValue(getStrokePaths().toArray(new String[getStrokePaths().size()]));
 	}
 
 }

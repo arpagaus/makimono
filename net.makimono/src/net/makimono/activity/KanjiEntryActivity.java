@@ -11,6 +11,7 @@ import net.makimono.model.Meaning;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
 import net.makimono.util.MeaningTextViewFactory;
+import net.makimono.view.KanjiWritingView;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -32,6 +33,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 	private KanjiEntry entry;
 
 	private TextView literalTextView;
+	private KanjiWritingView kanjiAnimationView;
 	private TextView onYomiTextView;
 	private TextView kunYomiTextView;
 	private TextView nanoriTextView;
@@ -68,7 +70,9 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 
 	private void initializeContentView() {
 		setContentView(R.layout.kanji_entry);
+
 		literalTextView = (TextView) findViewById(R.id.kanji_literal);
+		kanjiAnimationView = (KanjiWritingView) findViewById(R.id.kanji_animation);
 		onYomiTextView = (TextView) findViewById(R.id.kanji_on_yomi);
 		kunYomiTextView = (TextView) findViewById(R.id.kanji_kun_yomi);
 		nanoriTextView = (TextView) findViewById(R.id.kanji_nanori);
@@ -97,6 +101,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		this.entry = entry;
 
 		literalTextView.setText(entry.getLiteral());
+		kanjiAnimationView.setStrokePaths(entry.getStrokePaths());
 		onYomiTextView.setText(StringUtils.join(entry.getOnYomi(), ", "));
 		kunYomiTextView.setText(StringUtils.join(entry.getKunYomi(), ", "));
 		nanoriTextView.setText(StringUtils.join(entry.getNanori(), ", "));

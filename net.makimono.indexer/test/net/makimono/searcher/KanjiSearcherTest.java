@@ -43,6 +43,12 @@ public class KanjiSearcherTest {
 		searcher = null;
 	}
 
+	@Test(expected = ArithmeticException.class)
+	public void moduloZero() {
+		@SuppressWarnings("unused")
+		int a = 3 % 0;
+	}
+
 	@Test
 	public void getKanjiEntryForDocument() throws Exception {
 		Document document = new KanjiIndexer().createDocument(testKanji);

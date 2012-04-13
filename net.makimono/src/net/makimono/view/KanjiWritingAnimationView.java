@@ -51,8 +51,8 @@ public class KanjiWritingAnimationView extends KanjiWritingView {
 	private class IncrementAndRedrawTask extends TimerTask {
 		@Override
 		public void run() {
+			setStrokeIndex(getStrokeIndex() + 1);
 			postInvalidate();
-			strokeIndex = (strokeIndex + 1) % paths.length;
 		}
 	}
 }
