@@ -25,11 +25,14 @@ public class KanjiWritingView extends View {
 	private List<String> strokePaths = Collections.emptyList();
 	private int strokeIndex;
 
+	boolean showStrokeIndex = true;
+
 	private Paint kanjiStrokesPaint;
 	private Paint kanjiLastStrokePaint;
 	private Paint kanjiStrokeStartPaint;
 	private Paint gridFramePaint;
 	private Paint gridLinePaint;
+	private Paint strokeIndexPaint;
 
 	public KanjiWritingView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
@@ -114,6 +117,17 @@ public class KanjiWritingView extends View {
 		return gridLinePaint;
 	}
 
+	public Paint getStrokeIndexPaint() {
+		if (strokeIndexPaint == null) {
+			strokeIndexPaint = new Paint();
+			strokeIndexPaint.setAntiAlias(true);
+			strokeIndexPaint.setColor(Color.BLACK);
+			strokeIndexPaint.setTextSize(10);
+		}
+
+		return strokeIndexPaint;
+	}
+
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
@@ -139,6 +153,10 @@ public class KanjiWritingView extends View {
 				canvas.drawPoint(coordinates[0], coordinates[1], getKanjiStrokeStartPaint());
 			}
 
+		}
+
+		if (showStrokeIndex) {
+			canvas.drawText(String.valueOf(strokeIndex + 1), 8, 15, getStrokeIndexPaint());
 		}
 	}
 }

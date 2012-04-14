@@ -34,6 +34,8 @@ public class KanjiWritingAnimationView extends KanjiWritingView {
 	}
 
 	private void initializeView() {
+		showStrokeIndex = false;
+
 		setOnClickListener(new OnClickListener() {
 
 			@Override
