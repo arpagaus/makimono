@@ -26,6 +26,7 @@ public class KanjiWritingView extends View {
 	private int strokeIndex;
 
 	private Paint kanjiStrokesPaint;
+	private Paint kanjiLastStrokePaint;
 	private Paint kanjiStrokeStartPaint;
 	private Paint gridFramePaint;
 	private Paint gridLinePaint;
@@ -40,6 +41,10 @@ public class KanjiWritingView extends View {
 
 	public KanjiWritingView(Context context) {
 		super(context);
+	}
+
+	List<String> getStrokePaths() {
+		return strokePaths;
 	}
 
 	public void setStrokePaths(List<String> strokePaths) {
@@ -63,9 +68,8 @@ public class KanjiWritingView extends View {
 	public Paint getKanjiStrokesPaint() {
 		if (kanjiStrokesPaint == null) {
 			kanjiStrokesPaint = new Paint();
-			kanjiStrokesPaint.setDither(true);
 			kanjiStrokesPaint.setAntiAlias(true);
-			kanjiStrokesPaint.setColor(Color.BLACK);
+			kanjiStrokesPaint.setColor(Color.GRAY);
 			kanjiStrokesPaint.setStyle(Paint.Style.STROKE);
 			kanjiStrokesPaint.setStrokeJoin(Paint.Join.ROUND);
 			kanjiStrokesPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -74,19 +78,27 @@ public class KanjiWritingView extends View {
 		return kanjiStrokesPaint;
 	}
 
+	public Paint getKanjiLastStrokePaint() {
+		if (kanjiLastStrokePaint == null) {
+			kanjiLastStrokePaint = new Paint(getKanjiStrokesPaint());
+			kanjiLastStrokePaint.setColor(Color.BLACK);
+		}
+		return kanjiLastStrokePaint;
+	}
+
 	public Paint getKanjiStrokeStartPaint() {
 		if (kanjiStrokeStartPaint == null) {
 			kanjiStrokeStartPaint = new Paint(getKanjiStrokesPaint());
 			kanjiStrokeStartPaint.setColor(Color.RED);
 			kanjiStrokeStartPaint.setStyle(Style.FILL);
-			kanjiStrokeStartPaint.setStrokeWidth(10);
+			kanjiStrokeStartPaint.setStrokeWidth(8);
 		}
 		return kanjiStrokeStartPaint;
 	}
 
 	public Paint getGridFramePaint() {
 		if (gridFramePaint == null) {
-			gridFramePaint = new Paint(getKanjiStrokesPaint());
+			gridFramePaint = new Paint();
 			gridFramePaint.setColor(Color.LTGRAY);
 			gridFramePaint.setStrokeWidth(4);
 			gridFramePaint.setStyle(Paint.Style.STROKE);
@@ -97,7 +109,7 @@ public class KanjiWritingView extends View {
 	public Paint getGridLinePaint() {
 		if (gridLinePaint == null) {
 			gridLinePaint = new Paint(getGridFramePaint());
-			gridLinePaint.setPathEffect(new DashPathEffect(new float[] { 10, 4 }, 1));
+			gridLinePaint.setPathEffect(new DashPathEffect(new float[] { 10, 10 }, 1));
 		}
 		return gridLinePaint;
 	}
@@ -119,11 +131,14 @@ public class KanjiWritingView extends View {
 			canvas.drawPath(path, getKanjiStrokesPaint());
 
 			if (i == strokeIndex) {
+				canvas.drawPath(path, getKanjiLastStrokePaint());
+
 				PathMeasure pm = new PathMeasure(path, false);
 				float coordinates[] = { 0f, 0f };
 				pm.getPosTan(0, coordinates, null);
 				canvas.drawPoint(coordinates[0], coordinates[1], getKanjiStrokeStartPaint());
 			}
+
 		}
 	}
 }

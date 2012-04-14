@@ -1,11 +1,15 @@
 package net.makimono.view;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.makimono.activity.KanjiWritingActivity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
 
 public class KanjiWritingAnimationView extends KanjiWritingView {
 	private static final String LOG_TAG = KanjiWritingAnimationView.class.getName();
@@ -16,14 +20,29 @@ public class KanjiWritingAnimationView extends KanjiWritingView {
 
 	public KanjiWritingAnimationView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		initializeView();
 	}
 
 	public KanjiWritingAnimationView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		initializeView();
 	}
 
 	public KanjiWritingAnimationView(Context context) {
 		super(context);
+		initializeView();
+	}
+
+	private void initializeView() {
+		setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getContext(), KanjiWritingActivity.class);
+				intent.putStringArrayListExtra(net.makimono.Intent.EXTRA_STROKE_PATHS, new ArrayList<String>(getStrokePaths()));
+				getContext().startActivity(intent);
+			}
+		});
 	}
 
 	@Override
