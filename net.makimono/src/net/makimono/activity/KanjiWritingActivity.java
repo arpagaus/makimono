@@ -2,6 +2,7 @@ package net.makimono.activity;
 
 import java.util.List;
 
+import net.makimono.R;
 import net.makimono.view.KanjiWritingLayout;
 import net.makimono.view.KanjiWritingView;
 import android.app.Activity;
@@ -21,8 +22,8 @@ public class KanjiWritingActivity extends Activity {
 	}
 
 	private void initializeContentView() {
-		layout = new KanjiWritingLayout(this);
-		setContentView(layout);
+		setContentView(R.layout.kanji_writing);
+		this.layout = (KanjiWritingLayout) findViewById(R.id.kanji_writing);
 	}
 
 	private void handleIntent(Intent intent) {

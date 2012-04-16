@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 
 public class KanjiWritingLayout extends ViewGroup {
 
+	private int edgeLength;
+
 	public KanjiWritingLayout(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
@@ -20,11 +22,16 @@ public class KanjiWritingLayout extends ViewGroup {
 	}
 
 	@Override
-	protected void onLayout(final boolean changed, final int left, final int top, final int right, final int bottom) {
-		final int width = right - left;
-		final int height = bottom - top;
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		final int width = MeasureSpec.getSize(widthMeasureSpec);
+		final int height = MeasureSpec.getSize(heightMeasureSpec);
 
 		final int childCount = getChildCount();
+
+		if (childCount == 0) {
+			setMeasuredDimension(0, 0);
+			return;
+		}
 
 		int rowCount = 1;
 		int columnCount = childCount;
@@ -32,7 +39,7 @@ public class KanjiWritingLayout extends ViewGroup {
 		int childWidth = (int) (width / columnCount);
 		int childHeight = (int) (height / rowCount);
 
-		int edgeLength = Math.min(childWidth, childHeight);
+		edgeLength = Math.min(childWidth, childHeight);
 
 		// Find the maximum edge length
 		while (childWidth < childHeight) {
@@ -44,14 +51,27 @@ public class KanjiWritingLayout extends ViewGroup {
 
 			int length = Math.min(childWidth, childHeight);
 			edgeLength = Math.max(edgeLength, length);
+			if (edgeLength > length) {
+				rowCount--;
+				columnCount = Math.round((childCount + 0.5f) / ((float) rowCount));
+				break;
+			}
 		}
+
+		setMeasuredDimension(columnCount * edgeLength, rowCount * edgeLength);
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+	}
+
+	@Override
+	protected void onLayout(final boolean changed, final int left, final int top, final int right, final int bottom) {
+		final int width = right - left;
 
 		int childLeft = 0;
 		int childTop = 0;
 		int childRight = childLeft + edgeLength;
 		int childBottom = childTop + edgeLength;
 
-		for (int i = 0; i < childCount; i++) {
+		for (int i = 0; i < getChildCount(); i++) {
 			final View child = getChildAt(i);
 			child.layout(childLeft, childTop, childRight, childBottom);
 

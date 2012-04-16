@@ -886,14 +886,15 @@ containing a value of this type.
         public static final int kanji_readings_separator_text=0x7f050036;
         public static final int kanji_stroke_count=0x7f050044;
         public static final int kanji_unicode=0x7f050048;
+        public static final int kanji_writing=0x7f050049;
         public static final int listMode=0x7f050002;
-        public static final int menu_preferences=0x7f05004d;
-        public static final int menu_search=0x7f05004e;
-        public static final int no_entries=0x7f050049;
+        public static final int menu_preferences=0x7f05004e;
+        public static final int menu_search=0x7f05004f;
+        public static final int no_entries=0x7f05004a;
         public static final int normal=0x7f050001;
-        public static final int result_expression=0x7f05004a;
-        public static final int result_meaning=0x7f05004c;
-        public static final int result_reading=0x7f05004b;
+        public static final int result_expression=0x7f05004b;
+        public static final int result_meaning=0x7f05004d;
+        public static final int result_reading=0x7f05004c;
         public static final int search_dictionary=0x7f050031;
         public static final int search_kanji=0x7f050032;
         public static final int showCustom=0x7f050008;
@@ -930,10 +931,11 @@ containing a value of this type.
         public static final int dictionary_entry=0x7f030014;
         public static final int home_screen=0x7f030015;
         public static final int kanji_entry=0x7f030016;
-        public static final int search_result=0x7f030017;
-        public static final int search_result_entry=0x7f030018;
-        public static final int sherlock_spinner_dropdown_item=0x7f030019;
-        public static final int sherlock_spinner_item=0x7f03001a;
+        public static final int kanji_writing=0x7f030017;
+        public static final int search_result=0x7f030018;
+        public static final int search_result_entry=0x7f030019;
+        public static final int sherlock_spinner_dropdown_item=0x7f03001a;
+        public static final int sherlock_spinner_item=0x7f03001b;
     }
     public static final class menu {
         public static final int base=0x7f0c0000;
