@@ -49,7 +49,7 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 			if (block.equals(UnicodeBlock.CJK_UNIFIED_IDEOGRAPHS)) {
 				String literal = String.valueOf(Character.toChars(codePoint));
 				KanjiEntry kanjiEntry = getKanjiEntry(literal);
-				if (kanjiEntry != null) {
+				if (kanjiEntry != null && !entries.contains(kanjiEntry)) {
 					entries.add(kanjiEntry);
 				}
 			}

@@ -329,11 +329,8 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			try {
 				DictionaryEntry dictionaryEntry = dictionaryEntries[0];
 
-				List<KanjiEntry> kanjiEntries = new ArrayList<KanjiEntry>();
-				for (String e : dictionaryEntry.getExpressions()) {
-					kanjiEntries.addAll(connection.getKanjiSearcher().getKanjiEntries(e));
-				}
-				return kanjiEntries;
+				String expressions = StringUtils.join(dictionaryEntry.getExpressions(), "");
+				return connection.getKanjiSearcher().getKanjiEntries(expressions);
 			} catch (IOException e) {
 				Log.e(LoadKanjiEntriesTask.class.getSimpleName(), "Failed to get kanji entry", e);
 				return null;

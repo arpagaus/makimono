@@ -135,7 +135,6 @@ public class KanjiSearcherTest {
 	@Test
 	public void decomposeString() throws Exception {
 		List<KanjiEntry> entries = searcher.getKanjiEntries("日本語");
-
 		assertEquals(3, entries.size());
 		assertEquals("日", entries.get(0).getLiteral());
 		assertEquals("本", entries.get(1).getLiteral());
@@ -143,6 +142,9 @@ public class KanjiSearcherTest {
 
 		entries = searcher.getKanjiEntries("酛");
 		assertTrue(entries.isEmpty());
+
+		entries = searcher.getKanjiEntries("日日");
+		assertEquals(1, entries.size());
 	}
 
 	@Test
