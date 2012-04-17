@@ -20,16 +20,6 @@
             android:layout_alignTop="@id/kanji_literal"
             android:layout_marginRight="10dp" />
 
-        <TextView
-            android:id="@+id/kanji_animation_copyright"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/kanji_animation"
-            android:layout_below="@id/kanji_animation"
-            android:text="© Ulrich Apel"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="8sp" />
-
         <!-- Readings -->
 
         <TextView

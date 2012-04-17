@@ -35,7 +35,6 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 
 	private TextView literalTextView;
 	private KanjiWritingView kanjiAnimationView;
-	private TextView kanjiAnimationCopyrightView;
 	private TextView onYomiTextView;
 	private TextView kunYomiTextView;
 	private TextView nanoriTextView;
@@ -75,7 +74,6 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 
 		literalTextView = (TextView) findViewById(R.id.kanji_literal);
 		kanjiAnimationView = (KanjiWritingView) findViewById(R.id.kanji_animation);
-		kanjiAnimationCopyrightView = (TextView) findViewById(R.id.kanji_animation_copyright);
 		onYomiTextView = (TextView) findViewById(R.id.kanji_on_yomi);
 		kunYomiTextView = (TextView) findViewById(R.id.kanji_kun_yomi);
 		nanoriTextView = (TextView) findViewById(R.id.kanji_nanori);
@@ -106,10 +104,8 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		kanjiAnimationView.setStrokePaths(entry.getStrokePaths());
 		if (entry.getStrokePaths().isEmpty()) {
 			kanjiAnimationView.setVisibility(View.GONE);
-			kanjiAnimationCopyrightView.setVisibility(View.GONE);
 		} else {
 			kanjiAnimationView.setVisibility(View.VISIBLE);
-			kanjiAnimationCopyrightView.setVisibility(View.VISIBLE);
 		}
 
 		literalTextView.setText(entry.getLiteral());
