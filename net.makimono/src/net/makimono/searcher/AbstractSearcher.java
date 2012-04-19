@@ -36,7 +36,7 @@ import org.apache.lucene.util.Version;
 
 public abstract class AbstractSearcher<T extends Entry> implements Closeable, Searcher<T> {
 	private static final int MAX_SUGGESTION = 10;
-	private static final int MAX_SIZE = 20;
+	private static final int MAX_SIZE = 100;
 
 	private static final float MAX_BOOST = 1f;
 	private static final float MIN_BOOST = 0.0001f;

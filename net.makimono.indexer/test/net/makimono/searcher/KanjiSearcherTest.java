@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
@@ -16,6 +18,7 @@ import net.makimono.model.KanjiEntry;
 import net.makimono.model.Language;
 import net.makimono.model.Meaning;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.Document;
 import org.junit.After;
 import org.junit.Before;
@@ -176,6 +179,29 @@ public class KanjiSearcherTest {
 		List<KanjiEntry> entries = searcher.search("みなみ");
 		assertEquals(1, entries.size());
 		assertEquals("南", entries.get(0).getLiteral());
+
+		entries = searcher.search("minami");
+		assertEquals(1, entries.size());
+		assertEquals("南", entries.get(0).getLiteral());
+	}
+
+	@Test
+	public void searchKunYomi_WithoutPunctiation() throws Exception {
+		List<KanjiEntry> entries = searcher.search("つくる");
+		assertTrue(entries.isEmpty());
+
+		entries = searcher.search("つく.る");
+		assertTrue(entries.isEmpty());
+
+		Set<String> kanjis = new TreeSet<String>();
+		entries = searcher.search("つく");
+		for (KanjiEntry e : entries) {
+			if (e.getKunYomi().contains("つく.る")) {
+				kanjis.add(e.getLiteral());
+			}
+		}
+
+		assertEquals("作, 做, 刅, 創, 戧, 為, 爲, 造", StringUtils.join(kanjis, ", "));
 	}
 
 	@Test
@@ -200,4 +226,5 @@ public class KanjiSearcherTest {
 		assertEquals(1, entries.size());
 		assertEquals("葉", entries.get(0).getLiteral());
 	}
+
 }

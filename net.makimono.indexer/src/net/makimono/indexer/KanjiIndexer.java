@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.makimono.searcher.KanjiFieldName;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
@@ -111,20 +112,26 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 
 	private void addReadings(Document document, List<Reading> readings) {
 		for (Reading reading : readings) {
+			String cleanValue = cleanReadingString(reading.getValue());
+
 			if (reading.getRType().equalsIgnoreCase("ja_on")) {
-				String romaji = getRomajiConverter().convertKanaToRomajiSimple(reading.getValue());
+				document.add(new Field(KanjiFieldName.ONYOMI.name(), reading.getValue(), Store.YES, Index.NO));
+
+				document.add(new Field(KanjiFieldName.ONYOMI.name(), cleanValue, Store.NO, Index.NOT_ANALYZED));
+
+				String romaji = getRomajiConverter().convertKanaToRomajiSimple(cleanValue);
 				document.add(new Field(KanjiFieldName.ONYOMI.name(), romaji, Store.NO, Index.NOT_ANALYZED));
 
-				String hiragana = getRomajiConverter().convertKatakanaToHiragana(reading.getValue());
+				String hiragana = getRomajiConverter().convertKatakanaToHiragana(cleanValue);
 				document.add(new Field(KanjiFieldName.ONYOMI.name(), hiragana, Store.NO, Index.NOT_ANALYZED));
 
-				document.add(new Field(KanjiFieldName.ONYOMI.name(), reading.getValue(), Store.YES, Index.NOT_ANALYZED));
-
 			} else if (reading.getRType().equalsIgnoreCase("ja_kun")) {
-				String romaji = getRomajiConverter().convertKanaToRomajiSimple(reading.getValue());
-				document.add(new Field(KanjiFieldName.KUNYOMI.name(), romaji, Store.NO, Index.NOT_ANALYZED));
+				document.add(new Field(KanjiFieldName.KUNYOMI.name(), reading.getValue(), Store.YES, Index.NO));
 
-				document.add(new Field(KanjiFieldName.KUNYOMI.name(), reading.getValue(), Store.YES, Index.NOT_ANALYZED));
+				document.add(new Field(KanjiFieldName.KUNYOMI.name(), cleanValue, Store.NO, Index.NOT_ANALYZED));
+
+				String romaji = getRomajiConverter().convertKanaToRomajiSimple(cleanValue);
+				document.add(new Field(KanjiFieldName.KUNYOMI.name(), romaji, Store.NO, Index.NOT_ANALYZED));
 
 			} else if (reading.getRType().equalsIgnoreCase("pinyin")) {
 				document.add(new Field(KanjiFieldName.PINYIN.name(), reading.getValue(), Store.YES, Index.NO));
@@ -133,5 +140,11 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 				document.add(new Field(KanjiFieldName.HANGUL.name(), reading.getValue(), Store.YES, Index.NO));
 			}
 		}
+	}
+
+	String cleanReadingString(String value) {
+		String cleanValue = StringUtils.substringBefore(value, ".");
+		cleanValue = cleanValue.replaceAll("\\p{Punct}", "");
+		return cleanValue;
 	}
 }
