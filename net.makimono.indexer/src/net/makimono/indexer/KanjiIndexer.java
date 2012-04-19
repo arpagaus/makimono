@@ -1,11 +1,15 @@
 package net.makimono.indexer;
 
 import java.nio.ByteBuffer;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.makimono.searcher.KanjiFieldName;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.document.CompressionTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
@@ -19,12 +23,18 @@ import au.edu.monash.csse.kanjidic.model.Reading;
 import au.edu.monash.csse.kanjidic.model.ReadingMeaning;
 
 public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.csse.kanjidic.model.Character> {
-
 	private static final int FREQ_MAX = 2500;
 	public static final int RADICAL_UNICODE_OFFSET = 0x2F00;
 
+	private Map<Integer, String> strokePaths = new HashMap<Integer, String>();
+
 	public KanjiIndexer() {
+		this(Collections.<Integer, String> emptyMap());
+	}
+
+	public KanjiIndexer(Map<Integer, String> strokePaths) {
 		super(Kanjidic2.class.getPackage().getName());
+		this.strokePaths = strokePaths;
 	}
 
 	@Override
@@ -84,6 +94,12 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 			document.add(new Field(KanjiFieldName.FREQUENCY.name(), ByteBuffer.allocate(2).putShort(freq).array()));
 			document.setBoost(1.0f + (100.0f / FREQ_MAX * (FREQ_MAX + 1 - Math.min(freq, FREQ_MAX))));
 		}
+
+		if (strokePaths.containsKey(codePoint)) {
+			byte[] binary = CompressionTools.compress(strokePaths.get(codePoint).getBytes("UTF-8"));
+			document.add(new Field(KanjiFieldName.STROKE_PATHS.name(), binary));
+		}
+
 		return document;
 	}
 

@@ -1,6 +1,7 @@
 package net.makimono.indexer;
 
 import java.io.File;
+import java.util.Map;
 
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
@@ -35,13 +36,16 @@ public class Launcher {
 		if (args.length < 3 || args[2].equalsIgnoreCase("JMDICT")) {
 			new DictionaryIndexer().createIndex(gzipFile, luceneDirectory);
 		} else if (args[2].equalsIgnoreCase("KANJIDIC2")) {
-			new KanjiIndexer().createIndex(gzipFile, luceneDirectory);
+			KanjiIndexer indexer;
 			if (args.length >= 4) {
-				new KanjiVgIndexer().enhanceIndex(new File(args[3]), luceneDirectory);
+				Map<Integer, String> strokePaths = new KanjiVgIndexer().getStrokePaths(new File(args[3]));
+				indexer = new KanjiIndexer(strokePaths);
+			} else {
+				indexer = new KanjiIndexer();
 			}
+			indexer.createIndex(gzipFile, luceneDirectory);
 		} else {
 			System.err.println("Unrecognized dictionary format " + args[2]);
 		}
 	}
-
 }
