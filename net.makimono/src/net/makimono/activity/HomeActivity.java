@@ -15,6 +15,7 @@ public class HomeActivity extends AbstractDefaultActivity {
 
 	private View searchDictionaryTextView;
 	private View searchKanjiTextView;
+	private View settingsTextView;
 	private View aboutTextView;
 
 	@Override
@@ -35,6 +36,15 @@ public class HomeActivity extends AbstractDefaultActivity {
 			@Override
 			public void onClick(View v) {
 				startSearch(KanjiSearchActivity.class);
+			}
+		});
+
+		settingsTextView = (View) findViewById(R.id.settings);
+		settingsTextView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(HomeActivity.this, PreferenceActivity.class);
+				startActivity(intent);
 			}
 		});
 

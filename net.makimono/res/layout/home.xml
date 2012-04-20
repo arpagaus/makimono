@@ -26,6 +26,7 @@
         android:text="Browse lists" />
 
     <Button
+        android:id="@+id/settings"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/btn_home_settings"
         android:text="Settings" />
