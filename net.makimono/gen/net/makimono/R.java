@@ -1088,24 +1088,22 @@ containing a value of this type.
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f0a0009;
         public static final int app_name=0x7f0a007a;
-        public static final int dictionary=0x7f0a008c;
-        public static final int entry_copyright=0x7f0a007f;
-        public static final int frequency=0x7f0a0085;
-        public static final int general=0x7f0a007c;
-        public static final int grade=0x7f0a0084;
-        public static final int kanji=0x7f0a0080;
-        public static final int languages=0x7f0a007d;
-        public static final int meanings=0x7f0a0082;
-        public static final int miscellaneous=0x7f0a0083;
-        public static final int no_entries=0x7f0a0089;
-        public static final int radical=0x7f0a0088;
-        public static final int readings=0x7f0a0081;
+        public static final int dictionary=0x7f0a008a;
+        public static final int frequency=0x7f0a0083;
+        public static final int grade=0x7f0a0082;
+        public static final int kanji=0x7f0a007e;
+        public static final int languages=0x7f0a007c;
+        public static final int meanings=0x7f0a0080;
+        public static final int miscellaneous=0x7f0a0081;
+        public static final int no_entries=0x7f0a0087;
+        public static final int radical=0x7f0a0086;
+        public static final int readings=0x7f0a007f;
         public static final int search=0x7f0a007b;
-        public static final int search_expression=0x7f0a008b;
-        public static final int search_kanji=0x7f0a008a;
-        public static final int settings=0x7f0a007e;
-        public static final int stroke_count=0x7f0a0087;
-        public static final int unicode=0x7f0a0086;
+        public static final int search_expression=0x7f0a0089;
+        public static final int search_kanji=0x7f0a0088;
+        public static final int settings=0x7f0a007d;
+        public static final int stroke_count=0x7f0a0085;
+        public static final int unicode=0x7f0a0084;
     }
     public static final class style {
         public static final int DashboardButton=0x7f0b0058;

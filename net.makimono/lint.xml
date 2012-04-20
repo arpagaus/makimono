@@ -2,4 +2,7 @@
 <lint>
     <issue id="ContentDescription" severity="ignore" />
     <issue id="HardcodedText" severity="ignore" />
+    <issue id="UnusedResources">
+        <ignore path="res/values/additional_info.xml" />
+    </issue>
 </lint>
