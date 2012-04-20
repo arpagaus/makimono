@@ -26,6 +26,8 @@ import com.actionbarsherlock.view.Menu;
 public abstract class AbstractSearchActivity extends AbstractDefaultActivity implements OnItemClickListener {
 	private static final String CLASS_NAME = AbstractSearchActivity.class.getName();
 
+	private String searchString = "";
+
 	protected SearcherServiceConnection connection = new SearcherServiceConnection();
 
 	private SearchResultAdapter resultAdapter;
@@ -55,6 +57,12 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 	}
 
 	@Override
+	public boolean onSearchRequested() {
+		startSearch(searchString, true, null, false);
+		return true;
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		unbindService(connection);
@@ -76,6 +84,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 		setIntent(intent);
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
+			searchString = query;
 			new SearchTask().execute(query);
 		}
 	}
