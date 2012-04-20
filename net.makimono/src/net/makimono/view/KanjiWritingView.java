@@ -34,6 +34,9 @@ public class KanjiWritingView extends View {
 	private Paint gridLinePaint;
 	private Paint strokeIndexPaint;
 
+	private Rect frame = new Rect(2, 2, VIRTUAL_AXIS_LENGTH - 2, VIRTUAL_AXIS_LENGTH - 2);
+	private PathMeasure pm = new PathMeasure();
+
 	public KanjiWritingView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 	}
@@ -135,7 +138,7 @@ public class KanjiWritingView extends View {
 		final int currentAxisLength = Math.min(getWidth(), getHeight());
 		canvas.scale(currentAxisLength / (float) VIRTUAL_AXIS_LENGTH, currentAxisLength / (float) VIRTUAL_AXIS_LENGTH);
 
-		canvas.drawRect(new Rect(2, 2, VIRTUAL_AXIS_LENGTH - 2, VIRTUAL_AXIS_LENGTH - 2), getGridFramePaint());
+		canvas.drawRect(frame, getGridFramePaint());
 
 		canvas.drawLine(0, VIRTUAL_AXIS_HALF_LENGTH, VIRTUAL_AXIS_LENGTH, VIRTUAL_AXIS_HALF_LENGTH, getGridLinePaint());
 		canvas.drawLine(VIRTUAL_AXIS_HALF_LENGTH, 0, VIRTUAL_AXIS_HALF_LENGTH, VIRTUAL_AXIS_LENGTH, getGridLinePaint());
@@ -147,8 +150,8 @@ public class KanjiWritingView extends View {
 			if (i == strokeIndex) {
 				canvas.drawPath(path, getKanjiLastStrokePaint());
 
-				PathMeasure pm = new PathMeasure(path, false);
 				float coordinates[] = { 0f, 0f };
+				pm.setPath(path, false);
 				pm.getPosTan(0, coordinates, null);
 				canvas.drawPoint(coordinates[0], coordinates[1], getKanjiStrokeStartPaint());
 			}
