@@ -246,7 +246,8 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 	private View createKanjiView(KanjiEntry kanjiEntry) {
 		View kanjiView = layoutInflater.inflate(R.layout.search_result_entry, kanjiGroupView, false);
-		kanjiView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
+		kanjiView.setBackgroundResource(R.drawable.clickable_background);
+		kanjiView.setPadding(getPixelForDip(10), getPixelForDip(5), getPixelForDip(10), getPixelForDip(5));
 
 		TextView resultExpression = (TextView) kanjiView.findViewById(R.id.result_expression);
 		TextView resultReading = (TextView) kanjiView.findViewById(R.id.result_reading);
