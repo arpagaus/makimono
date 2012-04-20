@@ -4,6 +4,7 @@ import net.makimono.R;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -14,11 +15,12 @@ public class HomeActivity extends AbstractDefaultActivity {
 
 	private View searchDictionaryTextView;
 	private View searchKanjiTextView;
+	private View aboutTextView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.home_screen);
+		setContentView(R.layout.home);
 
 		searchDictionaryTextView = (View) findViewById(R.id.search_dictionary);
 		searchDictionaryTextView.setOnClickListener(new View.OnClickListener() {
@@ -33,6 +35,15 @@ public class HomeActivity extends AbstractDefaultActivity {
 			@Override
 			public void onClick(View v) {
 				startSearch(KanjiSearchActivity.class);
+			}
+		});
+
+		aboutTextView = (View) findViewById(R.id.about);
+		aboutTextView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(HomeActivity.this, AboutActivity.class);
+				startActivity(intent);
 			}
 		});
 	}

@@ -31,6 +31,7 @@
         android:text="Settings" />
 
     <Button
+        android:id="@+id/about"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/btn_home_about"
         android:text="About" />

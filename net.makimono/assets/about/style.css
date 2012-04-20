@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+
+body {
+	font-family: sans-serif;
+}
+
+h1 {
+	font-size: x-large;
+}
+
+h2 {
+	font-size: medium;
+}
