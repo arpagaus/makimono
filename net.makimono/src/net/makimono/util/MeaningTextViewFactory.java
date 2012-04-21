@@ -36,7 +36,7 @@ public class MeaningTextViewFactory {
 		textView.setText(text);
 		textView.setCompoundDrawablesWithIntrinsicBounds(LANGUAGE_ICONS.get(language), 0, 0, 0);
 		textView.setCompoundDrawablePadding(getPixelForDip(10));
-		textView.setPadding(0, getPixelForDip(5), 0, getPixelForDip(5));
+		textView.setPadding(getPixelForDip(10), getPixelForDip(5), getPixelForDip(10), getPixelForDip(5));
 		textView.setGravity(Gravity.CENTER_VERTICAL);
 		return textView;
 	}

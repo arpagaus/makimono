@@ -219,7 +219,10 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		meaningsGroupView.removeAllViews();
 		for (Sense sense : entry.getSenses()) {
 			if (meaningsGroupView.getChildCount() > 0) {
-				meaningsGroupView.addView(createSeparatorWithMargin());
+				View separator = createSeparator();
+				((LinearLayout.LayoutParams) separator.getLayoutParams()).bottomMargin = getPixelForDip(8);
+				((LinearLayout.LayoutParams) separator.getLayoutParams()).topMargin = getPixelForDip(8);
+				meaningsGroupView.addView(separator);
 			}
 			if (sense.hasMeaningsForLanguage(getConfiguredLanguages())) {
 				addAdditionalInfo(sense);
@@ -261,20 +264,14 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		return kanjiView;
 	}
 
-	private View createSeparatorWithMargin() {
-		View separator = createSeparator();
-		LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) separator.getLayoutParams();
-		layoutParams.bottomMargin = getPixelForDip(8);
-		layoutParams.topMargin = getPixelForDip(8);
-		return separator;
-	}
-
 	private View createSeparator() {
 		View separator = new View(this);
 		separator.setBackgroundResource(R.drawable.secondary_separator);
 		separator.setMinimumHeight(getPixelForDip(1));
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		separator.setLayoutParams(layoutParams);
+		layoutParams.leftMargin = getPixelForDip(10);
+		layoutParams.rightMargin = getPixelForDip(10);
 		return separator;
 	}
 
@@ -306,7 +303,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			textView.setText(additionalInfo);
 			textView.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC), Typeface.ITALIC);
 			textView.setTextColor(Color.GRAY);
-			textView.setPadding(0, getPixelForDip(5), 0, 0);
+			textView.setPadding(getPixelForDip(10), getPixelForDip(5), getPixelForDip(10), 0);
 			textView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 			meaningsGroupView.addView(textView);
 		}
