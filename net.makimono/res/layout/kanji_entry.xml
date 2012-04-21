@@ -138,6 +138,7 @@
             android:layout_below="@id/kanji_misc_separator_line"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
+            android:paddingBottom="10dp"
             android:stretchColumns="1" >
 
             <TableRow android:gravity="center_vertical" >
