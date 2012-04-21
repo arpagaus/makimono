@@ -133,6 +133,7 @@
             android:layout_below="@id/kanji_misc_separator_text" />
 
         <TableLayout
+            android:id="@+id/kanji_misc"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/kanji_misc_separator_line"
@@ -201,6 +202,14 @@
                     android:paddingLeft="15dp" />
             </TableRow>
         </TableLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/kanji_misc"
+            android:padding="10dp"
+            android:text="@string/acknowledgement_edrdg"
+            android:textSize="10sp" />
     </RelativeLayout>
 
 </ScrollView>

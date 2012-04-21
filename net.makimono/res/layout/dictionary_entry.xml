@@ -95,6 +95,14 @@
             android:layout_below="@id/entry_separator_line_kanji"
             android:orientation="vertical"
             android:paddingBottom="10dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry_kanji"
+            android:padding="10dp"
+            android:text="@string/acknowledgement_edrdg"
+            android:textSize="10sp" />
     </RelativeLayout>
 
 </ScrollView>
