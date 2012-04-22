@@ -3,6 +3,10 @@ package net.makimono.indexer;
 import java.io.File;
 import java.util.Map;
 
+import net.makimono.indexer.parser.EdictParser;
+import net.makimono.model.DictionaryEntry;
+import net.makimono.model.Language;
+
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
 
@@ -34,7 +38,9 @@ public class Launcher {
 		Directory luceneDirectory = new SimpleFSDirectory(directory);
 
 		if (args.length < 3 || args[2].equalsIgnoreCase("JMDICT")) {
-			new DictionaryIndexer().createIndex(gzipFile, luceneDirectory);
+			Map<String, DictionaryEntry> mixinMeanings = new EdictParser(Language.es).parse(new File("res/hispadic.utf8"));
+			DictionaryIndexer indexer = new DictionaryIndexer(mixinMeanings);
+			indexer.createIndex(gzipFile, luceneDirectory);
 		} else if (args[2].equalsIgnoreCase("KANJIDIC2")) {
 			KanjiIndexer indexer;
 			if (args.length >= 4) {

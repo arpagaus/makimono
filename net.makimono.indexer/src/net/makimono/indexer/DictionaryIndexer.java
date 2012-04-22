@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,9 +55,15 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 	}
 
 	public DictionaryIndexer() {
-		super(JMdict.class.getPackage().getName());
+		this(Collections.<String, DictionaryEntry> emptyMap());
 	}
 
+	public DictionaryIndexer(Map<String, DictionaryEntry> mixinMeanings) {
+		super(JMdict.class.getPackage().getName());
+		this.mixinMeanings = mixinMeanings;
+	}
+
+	private Map<String, DictionaryEntry> mixinMeanings;
 	private Map<String, Integer> languageCount = new HashMap<String, Integer>();
 
 	@Override
@@ -72,9 +79,10 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 
 	@Override
 	protected Document createDocument(Entry jmdictEntry) throws Exception {
-		Document document = new Document();
 		DictionaryEntry entry = transformEntry(jmdictEntry);
+		entry = mixinAdditionalMeanings(entry);
 
+		Document document = new Document();
 		for (String expression : entry.getExpressions()) {
 			document.add(new Field(DictionaryFieldName.EXPRESSION.name(), expression, Store.NO, Index.NOT_ANALYZED));
 		}
@@ -236,5 +244,19 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 
 	private String resolveEnumStringForEntityReference(String entityReference) {
 		return "JMdict_" + JMDICT_ENTITY_REFERENCES.get(entityReference).replaceAll("-", "_");
+	}
+
+	private DictionaryEntry mixinAdditionalMeanings(DictionaryEntry entry) {
+		List<String> keys = entry.getExpressions();
+		if (keys.isEmpty()) {
+			keys = entry.getReadings();
+		}
+		for (String key : keys) {
+			if (mixinMeanings.containsKey(key)) {
+				DictionaryEntry e = mixinMeanings.remove(key);
+				entry.getSenses().add(e.getSenses().get(0));
+			}
+		}
+		return entry;
 	}
 }

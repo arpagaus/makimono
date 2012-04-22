@@ -7,6 +7,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import net.makimono.model.DictionaryEntry;
 import net.makimono.model.Language;
@@ -70,10 +71,10 @@ public class EdictParserTest {
 	@Test
 	public void testParse() throws Exception {
 		Reader reader = new StringReader(TEST_LINE + "\n" + TEST_LINE_NO_KANJI);
-		List<DictionaryEntry> entries = parser.parse(reader);
+		Map<String, DictionaryEntry> entries = parser.parse(reader);
 
 		assertEquals(2, entries.size());
-		assertEquals("出入口", entries.get(0).getExpression());
-		assertEquals("スペイン", entries.get(1).getExpression());
+		assertTrue(entries.keySet().contains("出入口"));
+		assertTrue(entries.keySet().contains("スペイン"));
 	}
 }

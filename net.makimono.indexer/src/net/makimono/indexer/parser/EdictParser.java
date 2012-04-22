@@ -3,10 +3,13 @@ package net.makimono.indexer.parser;
 import static org.apache.commons.lang3.StringUtils.*;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import net.makimono.model.DictionaryEntry;
 import net.makimono.model.Language;
@@ -58,19 +61,26 @@ public class EdictParser {
 		return entry;
 	}
 
-	public List<DictionaryEntry> parse(Reader reader) throws IOException {
-		BufferedReader bufferedReader = new BufferedReader(reader);
+	public Map<String, DictionaryEntry> parse(File file) throws IOException {
+		System.out.println("Parsing " + file.getName());
+		return parse(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+	}
 
-		List<DictionaryEntry> entries = new ArrayList<DictionaryEntry>();
+	public Map<String, DictionaryEntry> parse(Reader reader) throws IOException {
+		final long time = System.currentTimeMillis();
+
+		BufferedReader bufferedReader = new BufferedReader(reader);
+		Map<String, DictionaryEntry> entries = new HashMap<String, DictionaryEntry>();
 		String line = bufferedReader.readLine();
 		while (line != null) {
 			DictionaryEntry entry = parseLine(line);
 			if (entry != null) {
-				entries.add(entry);
+				entries.put(entry.getExpression(), entry);
 			}
 			line = bufferedReader.readLine();
 		}
+
+		System.out.println("Finished parsing EDICT file with " + entries.size() + " entries in " + (System.currentTimeMillis() - time) + "ms");
 		return entries;
 	}
-
 }
