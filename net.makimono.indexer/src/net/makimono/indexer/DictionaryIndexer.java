@@ -12,8 +12,10 @@ import java.util.Map;
 import java.util.Properties;
 
 import net.makimono.model.Dialect;
+import net.makimono.model.DictionaryEntry;
 import net.makimono.model.FieldOfApplication;
 import net.makimono.model.Language;
+import net.makimono.model.Meaning;
 import net.makimono.model.Miscellaneous;
 import net.makimono.model.PartOfSpeech;
 import net.makimono.searcher.DictionaryFieldName;
@@ -69,32 +71,28 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 	}
 
 	@Override
-	protected Document createDocument(Entry entry) throws Exception {
+	protected Document createDocument(Entry jmdictEntry) throws Exception {
 		Document document = new Document();
+		DictionaryEntry entry = transformEntry(jmdictEntry);
 
-		for (KEle kanjiElement : entry.getKEle()) {
-			Field expression = new Field(DictionaryFieldName.EXPRESSION.name(), kanjiElement.getKeb(), Store.NO, Index.NOT_ANALYZED);
-			document.add(expression);
+		for (String expression : entry.getExpressions()) {
+			document.add(new Field(DictionaryFieldName.EXPRESSION.name(), expression, Store.NO, Index.NOT_ANALYZED));
 		}
 
-		for (REle readingElement : entry.getREle()) {
-			Field reading = new Field(DictionaryFieldName.READING.name(), readingElement.getReb(), Store.NO, Index.NOT_ANALYZED);
-			document.add(reading);
+		for (String reading : entry.getReadings()) {
+			document.add(new Field(DictionaryFieldName.READING.name(), reading, Store.NO, Index.NOT_ANALYZED));
 
-			String romaji = getRomajiConverter().convertKanaToRomaji(readingElement.getReb());
-			Field readingRomaji = new Field(DictionaryFieldName.READING.name(), romaji, Store.NO, Index.NOT_ANALYZED);
-			document.add(readingRomaji);
+			String romaji = getRomajiConverter().convertKanaToRomaji(reading);
+			document.add(new Field(DictionaryFieldName.READING.name(), romaji, Store.NO, Index.NOT_ANALYZED));
 		}
 
-		for (Sense sense : entry.getSense()) {
-			for (Gloss gloss : sense.getGloss()) {
-				String meaningValue = cleanMeaning(gloss.getvalue());
-				gloss.setvalue(meaningValue);
-
+		for (net.makimono.model.Sense sense : entry.getSenses()) {
+			for (Meaning meaning : sense.getMeanings()) {
+				String meaningValue = meaning.getValue();
 				meaningValue = meaningValue.replaceAll("\\(.*\\)", "");
 				meaningValue = meaningValue.toLowerCase();
 
-				String lang = gloss.getXmlLang().toUpperCase();
+				String lang = meaning.getLanguage().name().toUpperCase();
 				languageCount.put(lang, (languageCount.get(lang) == null ? 0 : languageCount.get(lang)) + 1);
 
 				document.add(new Field(DictionaryFieldName.valueOf("MEANING_" + lang).name(), meaningValue, Store.NO, Index.NOT_ANALYZED));
@@ -102,9 +100,9 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 			}
 		}
 
-		byte[] compressByteArray = getSerializedEntry(transformEntry(entry));
+		byte[] compressByteArray = getSerializedEntry(entry);
 		document.add(new Field("entry", compressByteArray));
-		document.setBoost((float) getBoostForEntry(entry));
+		document.setBoost((float) getBoostForEntry(jmdictEntry));
 		return document;
 	}
 
@@ -185,8 +183,8 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 		return -1;
 	}
 
-	net.makimono.model.DictionaryEntry transformEntry(Entry jmdictEntry) throws Exception {
-		net.makimono.model.DictionaryEntry entry = new net.makimono.model.DictionaryEntry();
+	DictionaryEntry transformEntry(Entry jmdictEntry) throws Exception {
+		DictionaryEntry entry = new net.makimono.model.DictionaryEntry();
 		entry.setId(Integer.valueOf(jmdictEntry.getEntSeq()));
 
 		for (KEle kEle : jmdictEntry.getKEle()) {
@@ -217,7 +215,7 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 			for (Gloss gloss : jmdictSense.getGloss()) {
 				net.makimono.model.Meaning meaning = new net.makimono.model.Meaning();
 				meaning.setLanguage(Language.valueOf(gloss.getXmlLang()));
-				meaning.setValue(gloss.getvalue());
+				meaning.setValue(cleanMeaning(gloss.getvalue()));
 
 				sense.getMeanings().add(meaning);
 			}
