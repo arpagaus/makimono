@@ -18,6 +18,6 @@
     <string name="search_kanji">Search kanji</string>
     <string name="search_expression">Search expression</string>
     <string name="dictionary">Dictionary</string>
-    <string name="acknowledgement_edrdg">This application uses the JMDict and KANJIDIC2 dictionary files. These files are the property of the Electronic Dictionary Research and Development Group, and are used in conformance with the Group's licence.</string>
+    <string name="acknowledgement_edrdg">This application uses the JMDict and KANJIDIC2 dictionary files. These files are the property of the Electronic Dictionary Research and Development Group, and are used in conformance with the Group\s licence.</string>
 
 </resources>
