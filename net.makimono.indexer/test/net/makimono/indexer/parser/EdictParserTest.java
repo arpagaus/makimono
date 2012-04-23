@@ -8,10 +8,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import net.makimono.model.DictionaryEntry;
+import net.makimono.model.FieldOfApplication;
 import net.makimono.model.Language;
 import net.makimono.model.Meaning;
+import net.makimono.model.Miscellaneous;
+import net.makimono.model.PartOfSpeech;
+import net.makimono.model.Sense;
 
 import org.junit.Test;
 
@@ -40,6 +45,14 @@ public class EdictParserTest {
 	}
 
 	@Test
+	public void testPartsOfSpeech() {
+		DictionaryEntry entry = parser.parseLine("樹立 [じゅりつ] /(n,vs) establecimiento/fundación/(P)/");
+		TreeSet<PartOfSpeech> partsOfSpeech = entry.getSenses().get(0).getPartsOfSpeech();
+		assertTrue(partsOfSpeech.contains(PartOfSpeech.JMdict_n));
+		assertTrue(partsOfSpeech.contains(PartOfSpeech.JMdict_vs));
+	}
+
+	@Test
 	public void testMeaning() {
 		final List<Language> languages = Collections.singletonList(Language.es);
 
@@ -57,6 +70,34 @@ public class EdictParserTest {
 		assertTrue(meanings.contains(new Meaning("factura", Language.es)));
 		assertTrue(meanings.contains(new Meaning("vale", Language.es)));
 		assertEquals(5, meanings.size());
+	}
+
+	@Test
+	public void testPartOfSpeech() {
+		DictionaryEntry entry = parser.parseLine("お喋り [おしゃべり] /(n,vs,adj) parlanchín/locuaz/(P)/");
+		Sense sense = entry.getSenses().get(0);
+		assertTrue(sense.getPartsOfSpeech().contains(PartOfSpeech.JMdict_n));
+		assertTrue(sense.getPartsOfSpeech().contains(PartOfSpeech.JMdict_vs));
+
+		assertEquals("[parlanchín, locuaz]", sense.getMeanings().toString());
+	}
+
+	@Test
+	public void testMiscellaneous() {
+		DictionaryEntry entry = parser.parseLine("為れる [される] /(v1) (uk) forma pasiva u honorífica del verbo \"suru\"/");
+		Sense sense = entry.getSenses().get(0);
+		assertTrue(sense.getMiscellaneous().contains(Miscellaneous.JMdict_uk));
+
+		assertEquals("forma pasiva u honorífica del verbo \"suru\"", sense.getMeanings().get(0).getValue());
+	}
+
+	@Test
+	public void testFieldsOfApplication() {
+		DictionaryEntry entry = parser.parseLine("無限遠点 [むげんえんてん] /(n) (comp) infinito/");
+		Sense sense = entry.getSenses().get(0);
+		assertTrue(sense.getFieldsOfApplication().contains(FieldOfApplication.JMdict_comp));
+
+		assertEquals("infinito", sense.getMeanings().get(0).getValue());
 	}
 
 	@Test
