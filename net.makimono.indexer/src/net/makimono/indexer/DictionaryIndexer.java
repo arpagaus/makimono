@@ -58,12 +58,12 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 		this(Collections.<String, DictionaryEntry> emptyMap());
 	}
 
-	public DictionaryIndexer(Map<String, DictionaryEntry> mixinMeanings) {
+	public DictionaryIndexer(Map<String, DictionaryEntry> additionalMeanings) {
 		super(JMdict.class.getPackage().getName());
-		this.mixinMeanings = mixinMeanings;
+		this.additionalMeanings = additionalMeanings;
 	}
 
-	private Map<String, DictionaryEntry> mixinMeanings;
+	private Map<String, DictionaryEntry> additionalMeanings;
 	private Map<String, Integer> languageCount = new HashMap<String, Integer>();
 
 	@Override
@@ -246,17 +246,27 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 		return "JMdict_" + JMDICT_ENTITY_REFERENCES.get(entityReference).replaceAll("-", "_");
 	}
 
-	private DictionaryEntry mixinAdditionalMeanings(DictionaryEntry entry) {
-		List<String> keys = entry.getExpressions();
+	private DictionaryEntry mixinAdditionalMeanings(DictionaryEntry baseEntry) {
+		List<String> keys = baseEntry.getExpressions();
 		if (keys.isEmpty()) {
-			keys = entry.getReadings();
+			keys = baseEntry.getReadings();
 		}
 		for (String key : keys) {
-			if (mixinMeanings.containsKey(key)) {
-				DictionaryEntry e = mixinMeanings.remove(key);
-				entry.getSenses().add(e.getSenses().get(0));
+			if (additionalMeanings.containsKey(key)) {
+				net.makimono.model.Sense sense = additionalMeanings.remove(key).getSenses().get(0);
+
+				for (net.makimono.model.Sense baseSense : baseEntry.getSenses()) {
+					if (baseSense.getPartsOfSpeech().containsAll(sense.getPartsOfSpeech())) {
+						baseSense.getMeanings().addAll(sense.getMeanings());
+						sense.getMeanings().clear();
+					}
+				}
+
+				if (!sense.getMeanings().isEmpty()) {
+					baseEntry.getSenses().add(sense);
+				}
 			}
 		}
-		return entry;
+		return baseEntry;
 	}
 }
