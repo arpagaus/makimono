@@ -12,8 +12,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.makimono.model.DictionaryEntry;
+import net.makimono.model.FieldOfApplication;
 import net.makimono.model.Language;
 import net.makimono.model.Meaning;
+import net.makimono.model.Miscellaneous;
 import net.makimono.model.PartOfSpeech;
 import net.makimono.model.Sense;
 
@@ -53,29 +55,49 @@ public class EdictParser {
 		Sense sense = new Sense();
 		entry.getSenses().add(sense);
 		for (int i = 1; i < parts.length; i++) {
-			String meaning = parts[i].replaceAll("^\\(.*?\\)", "").trim();
-			if (!meaning.isEmpty()) {
-				sense.getMeanings().add(new Meaning(meaning, language));
-				addGeneralInfos(sense, substringsBetween(parts[i], "(", ")"));
+			String meaning = parts[i].trim();
+			if (!meaning.isEmpty() && !"(P)".equals(meaning)) {
+				String[] substrings = substringsBetween(parts[i], "(", ")");
+				if (substrings != null) {
+					for (String substring : substrings) {
+						if (addAdditionalInfos(sense, substring)) {
+							meaning = remove(meaning, "(" + substring + ")");
+						}
+					}
+				}
+				sense.getMeanings().add(new Meaning(meaning.trim(), language));
 			}
 		}
-
 		return entry;
 	}
 
-	private void addGeneralInfos(Sense sense, String[] generalInfos) {
-		if (generalInfos == null) {
-			return;
-		}
-		for (String generalInfo : generalInfos) {
-			String[] additionalInfos = split(generalInfo, ',');
-			for (String info : additionalInfos) {
-				final String enumName = "JMdict_" + info.replaceAll("-", "_");
-				if (PartOfSpeech.exists(enumName)) {
-					sense.getPartsOfSpeech().add(PartOfSpeech.valueOf(enumName));
-				}
+	private boolean addAdditionalInfos(Sense sense, String substring) {
+		boolean foundGeneralInfo = false;
+		String[] additionalInfos = split(substring, ',');
+		for (String info : additionalInfos) {
+			final String enumName = "JMdict_" + info.replaceAll("-", "_");
+			if (enumContainsValue(PartOfSpeech.values(), enumName)) {
+				sense.getPartsOfSpeech().add(PartOfSpeech.valueOf(enumName));
+				foundGeneralInfo = true;
+			} else if (enumContainsValue(Miscellaneous.values(), enumName)) {
+				sense.getMiscellaneous().add(Miscellaneous.valueOf(enumName));
+				foundGeneralInfo = true;
+			} else if (enumContainsValue(FieldOfApplication.values(), enumName)) {
+				sense.getFieldsOfApplication().add(FieldOfApplication.valueOf(enumName));
+				foundGeneralInfo = true;
 			}
 		}
+		return foundGeneralInfo;
+	}
+
+	@SuppressWarnings("rawtypes")
+	private boolean enumContainsValue(Enum[] enums, String enumName) {
+		for (Enum e : enums) {
+			if (e.name().equals(enumName)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Map<String, DictionaryEntry> parse(File file) throws IOException {
