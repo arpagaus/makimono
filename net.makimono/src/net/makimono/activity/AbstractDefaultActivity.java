@@ -4,11 +4,11 @@ import net.makimono.R;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-public abstract class AbstractDefaultActivity extends SherlockFragmentActivity {
+public abstract class AbstractDefaultActivity extends SherlockActivity {
 
 	@Override
 	protected void onCreate(Bundle bundle) {
