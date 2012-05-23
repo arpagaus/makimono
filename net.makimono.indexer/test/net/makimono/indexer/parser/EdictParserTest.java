@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeSet;
 
 import net.makimono.model.DictionaryEntry;
 import net.makimono.model.Language;
 import net.makimono.model.Meaning;
+import net.makimono.model.PartOfSpeech;
 
 import org.junit.Test;
 
@@ -37,6 +39,14 @@ public class EdictParserTest {
 
 		entry = parser.parseLine(TEST_LINE_NO_KANJI);
 		assertEquals("スペイン", entry.getReadings().get(0));
+	}
+
+	@Test
+	public void testPartsOfSpeech() {
+		DictionaryEntry entry = parser.parseLine("樹立 [じゅりつ] /(n,vs) establecimiento/fundación/(P)/");
+		TreeSet<PartOfSpeech> partsOfSpeech = entry.getSenses().get(0).getPartsOfSpeech();
+		assertTrue(partsOfSpeech.contains(PartOfSpeech.JMdict_n));
+		assertTrue(partsOfSpeech.contains(PartOfSpeech.JMdict_vs));
 	}
 
 	@Test

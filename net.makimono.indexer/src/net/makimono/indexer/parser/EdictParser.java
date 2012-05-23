@@ -14,6 +14,7 @@ import java.util.Map;
 import net.makimono.model.DictionaryEntry;
 import net.makimono.model.Language;
 import net.makimono.model.Meaning;
+import net.makimono.model.PartOfSpeech;
 import net.makimono.model.Sense;
 
 public class EdictParser {
@@ -55,10 +56,26 @@ public class EdictParser {
 			String meaning = parts[i].replaceAll("^\\(.*?\\)", "").trim();
 			if (!meaning.isEmpty()) {
 				sense.getMeanings().add(new Meaning(meaning, language));
+				addGeneralInfos(sense, substringsBetween(parts[i], "(", ")"));
 			}
 		}
 
 		return entry;
+	}
+
+	private void addGeneralInfos(Sense sense, String[] generalInfos) {
+		if (generalInfos == null) {
+			return;
+		}
+		for (String generalInfo : generalInfos) {
+			String[] additionalInfos = split(generalInfo, ',');
+			for (String info : additionalInfos) {
+				final String enumName = "JMdict_" + info.replaceAll("-", "_");
+				if (PartOfSpeech.exists(enumName)) {
+					sense.getPartsOfSpeech().add(PartOfSpeech.valueOf(enumName));
+				}
+			}
+		}
 	}
 
 	public Map<String, DictionaryEntry> parse(File file) throws IOException {
