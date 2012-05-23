@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
@@ -100,7 +99,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 				String query = queries[0];
 				List<? extends Entry> entries = getSearcher().search(query);
 				if (!entries.isEmpty()) {
-					new SearchRecentSuggestions(AbstractSearchActivity.this, getSearchSuggestionProviderClass().getName(), AbstractSearchSuggestionProvider.MODE).saveRecentQuery(query, null);
+					AbstractSearchSuggestionProvider.saveRecentQuery(getApplicationContext(), getSearchSuggestionProviderClass(), query);
 				}
 				return entries;
 			} catch (Exception e) {

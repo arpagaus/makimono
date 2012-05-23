@@ -8,32 +8,26 @@ import net.makimono.searcher.Searcher;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
 import android.app.SearchManager;
+import android.content.ContentProvider;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SearchRecentSuggestionsProvider;
 import android.database.Cursor;
 import android.database.MatrixCursor;
 import android.database.MergeCursor;
 import android.net.Uri;
 import android.provider.BaseColumns;
-import android.provider.SearchRecentSuggestions;
 import android.util.Log;
 
-public abstract class AbstractSearchSuggestionProvider extends SearchRecentSuggestionsProvider {
+public abstract class AbstractSearchSuggestionProvider extends ContentProvider {
 	private static final String LOG_TAG = AbstractSearchSuggestionProvider.class.getSimpleName();
-	public static final int MODE = DATABASE_MODE_QUERIES;
 
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
 
-	public AbstractSearchSuggestionProvider() {
-		setupSuggestions(this.getClass().getName(), MODE);
-	}
-
 	@Override
 	public boolean onCreate() {
-		boolean success = super.onCreate();
 		bindSearcher();
-		return success;
+		return true;
 	}
 
 	private void bindSearcher() {
@@ -42,18 +36,43 @@ public abstract class AbstractSearchSuggestionProvider extends SearchRecentSugge
 	}
 
 	@Override
+	public Uri insert(Uri uri, ContentValues values) {
+		return null;
+	}
+
+	@Override
+	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+		return 0;
+	}
+
+	@Override
+	public int delete(Uri uri, String selection, String[] selectionArgs) {
+		return 0;
+	}
+
+	@Override
+	public String getType(Uri uri) {
+		return null;
+	}
+
+	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-		Cursor recentSearchesCursor = super.query(uri, projection, selection, selectionArgs, sortOrder);
-		Cursor dictionarySuggestionsCursor = queryDictionarySuggestions(selectionArgs[0]);
+		Cursor recentSearchesCursor = queryRecentSearches(uri.getLastPathSegment());
+		Cursor dictionarySuggestionsCursor = queryDictionarySuggestions(uri.getLastPathSegment());
 		return new MergeCursor(new Cursor[] { recentSearchesCursor, dictionarySuggestionsCursor });
 	}
 
+	private Cursor queryRecentSearches(String string) {
+		RecentSearchesOpenHelper recentSearchesOpenHelper = new RecentSearchesOpenHelper(getContext());
+		return recentSearchesOpenHelper.getRecentSearches(getClass().getSimpleName(), string);
+	}
+
 	private Cursor queryDictionarySuggestions(String string) {
-		MatrixCursor cursor = new MatrixCursor(new String[] { SearchManager.SUGGEST_COLUMN_FORMAT, SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_QUERY, BaseColumns._ID });
+		MatrixCursor cursor = new MatrixCursor(new String[] { BaseColumns._ID, SearchManager.SUGGEST_COLUMN_ICON_1, SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_QUERY });
 		try {
 			TreeSet<String> suggestions = getSearcher(connection).suggest(string);
-			for (String s : suggestions) {
-				cursor.addRow(new Object[] { null, s, s, s.hashCode() });
+			for (String suggestion : suggestions) {
+				cursor.addRow(new Object[] { suggestion.hashCode(), android.R.drawable.ic_menu_search, suggestion, suggestion });
 			}
 		} catch (IOException e) {
 			Log.e(LOG_TAG, "Failed to get suggestions", e);
@@ -64,7 +83,14 @@ public abstract class AbstractSearchSuggestionProvider extends SearchRecentSugge
 	protected abstract Searcher<? extends Entry> getSearcher(SearcherServiceConnection connection);
 
 	public static void clearHistory(Context context) {
-		new SearchRecentSuggestions(context, DictionarySearchSuggestionProvider.class.getName(), MODE).clearHistory();
-		new SearchRecentSuggestions(context, KanjiSearchSuggestionProvider.class.getName(), MODE).clearHistory();
+		RecentSearchesOpenHelper helper = new RecentSearchesOpenHelper(context);
+		helper.clearHistory();
+		helper.close();
+	}
+
+	public static void saveRecentQuery(Context context, Class<? extends AbstractSearchSuggestionProvider> providerClass, String string) {
+		RecentSearchesOpenHelper helper = new RecentSearchesOpenHelper(context);
+		helper.saveRecentQuery(providerClass.getSimpleName(), string);
+		helper.close();
 	}
 }
