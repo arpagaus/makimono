@@ -135,9 +135,14 @@ public class HomeActivity extends AbstractDefaultActivity {
 
 		while (entries.hasMoreElements()) {
 			ZipEntry zipEntry = entries.nextElement();
+			if (zipEntry.isDirectory()) {
+				continue;
+			}
+
 			File file = new File(destination, zipEntry.getName());
 			if (!file.exists() || file.length() != zipEntry.getSize()) {
-				Log.i(LOG_TAG, "Missing or wrong size: " + zipEntry.getName());
+				Log.i(LOG_TAG, "Missing or wrong size: " + zipEntry.getName() + " (file.exists()=" + file.exists() + ", (file.length() - zipEntry.getSize())=" + (file.length() - zipEntry.getSize())
+						+ ")");
 				zipFile.close();
 				return false;
 			}
