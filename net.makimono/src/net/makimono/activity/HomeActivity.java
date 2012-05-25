@@ -11,6 +11,7 @@ import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import net.makimono.R;
+import net.makimono.util.ExternalStorageUtil;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -21,7 +22,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 
@@ -102,7 +102,7 @@ public class HomeActivity extends AbstractDefaultActivity {
 			startActivity(intent);
 		} else {
 			try {
-				File destination = new File(Environment.getExternalStorageDirectory(), "/Android/data/" + this.getPackageName() + "/files/");
+				File destination = ExternalStorageUtil.getExternalFilesDir(this);
 				if (!checkIndexFiles(destination)) {
 					ProgressDialog progressDialog = new ProgressDialog(this);
 					progressDialog.setTitle("Initialization");

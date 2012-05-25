@@ -8,6 +8,7 @@ import net.makimono.activity.PreferenceActivity;
 import net.makimono.model.Language;
 import net.makimono.searcher.DictionarySearcher;
 import net.makimono.searcher.KanjiSearcher;
+import net.makimono.util.ExternalStorageUtil;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,10 +33,10 @@ public class SearcherService extends Service {
 		try {
 			String storageState = Environment.getExternalStorageState();
 			if (Environment.MEDIA_MOUNTED.equals(storageState) || Environment.MEDIA_MOUNTED_READ_ONLY.equals(storageState)) {
-				File directory = new File(Environment.getExternalStorageDirectory(), "makimono/indexes/dictionary/");
+				File directory = new File(ExternalStorageUtil.getExternalFilesDir(getApplicationContext()), "indexes/dictionary/");
 				dictionarySearcher = new DictionarySearcher(directory);
 
-				directory = new File(Environment.getExternalStorageDirectory(), "makimono/indexes/kanji/");
+				directory = new File(ExternalStorageUtil.getExternalFilesDir(getApplicationContext()), "indexes/kanji/");
 				kanjiSearcher = new KanjiSearcher(directory);
 
 				updateSearcherLanguages(PreferenceManager.getDefaultSharedPreferences(this));
