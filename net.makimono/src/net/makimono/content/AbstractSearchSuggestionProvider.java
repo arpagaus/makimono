@@ -23,6 +23,14 @@ public abstract class AbstractSearchSuggestionProvider extends ContentProvider {
 	private static final String LOG_TAG = AbstractSearchSuggestionProvider.class.getSimpleName();
 
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
+	private RecentSearchesOpenHelper recentSearchesOpenHelper;
+
+	private RecentSearchesOpenHelper getRecentSearchesOpenHelper() {
+		if (recentSearchesOpenHelper == null) {
+			recentSearchesOpenHelper = new RecentSearchesOpenHelper(getContext());
+		}
+		return recentSearchesOpenHelper;
+	}
 
 	@Override
 	public boolean onCreate() {
@@ -63,8 +71,7 @@ public abstract class AbstractSearchSuggestionProvider extends ContentProvider {
 	}
 
 	private Cursor queryRecentSearches(String string) {
-		RecentSearchesOpenHelper recentSearchesOpenHelper = new RecentSearchesOpenHelper(getContext());
-		return recentSearchesOpenHelper.getRecentSearches(getClass().getSimpleName(), string);
+		return getRecentSearchesOpenHelper().getRecentSearches(getClass().getSimpleName(), string);
 	}
 
 	private Cursor queryDictionarySuggestions(String string) {
