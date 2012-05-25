@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.view.Menu;
@@ -32,6 +33,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 	private SearchResultAdapter resultAdapter;
 	private ListView listView;
 	private TextView noEntriesTextView;
+	private ProgressBar progressBar;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 		setContentView(R.layout.search_result);
 		listView = (ListView) findViewById(android.R.id.list);
 		noEntriesTextView = (TextView) findViewById(R.id.no_entries);
+		progressBar = (ProgressBar) findViewById(R.id.progress_bar);
 		listView.setOnItemClickListener(this);
 		resultAdapter = new SearchResultAdapter(this);
 		listView.setAdapter(resultAdapter);
@@ -84,6 +87,10 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			searchString = query;
+
+			progressBar.setVisibility(View.VISIBLE);
+			noEntriesTextView.setVisibility(View.GONE);
+			listView.setVisibility(View.GONE);
 			new SearchTask().execute(query);
 		}
 	}
@@ -109,6 +116,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 		}
 
 		protected void onPostExecute(List<? extends Entry> entries) {
+			progressBar.setVisibility(View.GONE);
 			if (entries.isEmpty()) {
 				noEntriesTextView.setVisibility(View.VISIBLE);
 				listView.setVisibility(View.GONE);
@@ -116,7 +124,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 				noEntriesTextView.setVisibility(View.GONE);
 				listView.setVisibility(View.VISIBLE);
 				resultAdapter.updateEntries(entries);
-				listView.scrollTo(0, 0);
+				listView.setSelectionAfterHeaderView();
 			}
 		}
 	}
