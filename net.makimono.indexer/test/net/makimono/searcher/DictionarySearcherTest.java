@@ -100,6 +100,19 @@ public class DictionarySearcherTest {
 	}
 
 	@Test
+	public void searchRomaji() throws Exception {
+		List<DictionaryEntry> entries = searcher.search("ANI");
+
+		for (DictionaryEntry e : entries) {
+			if (e.getReadings().contains("あんい")) {
+				// success
+				return;
+			}
+		}
+		fail();
+	}
+
+	@Test
 	public void exectMatchFirst() throws Exception {
 		List<DictionaryEntry> entries = searcher.search("日本");
 		assertFalse(entries.isEmpty());

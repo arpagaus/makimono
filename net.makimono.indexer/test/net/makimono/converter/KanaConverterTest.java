@@ -32,13 +32,13 @@ public class KanaConverterTest {
 	@Test
 	public void testHepburnKatakana() {
 		String romaji = converter.convertKanaToRomaji("ヘボンローマ");
-		assertEquals("hebonro^ma", romaji);
+		assertEquals("hebonro-ma", romaji);
 	}
 
 	@Test
 	public void testMixed() {
 		String romaji = converter.convertKanaToRomaji("CDプレーヤー");
-		assertEquals("CDpure^ya^", romaji);
+		assertEquals("CDpure-ya-", romaji);
 	}
 
 	@Test

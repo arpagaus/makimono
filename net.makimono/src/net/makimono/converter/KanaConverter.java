@@ -710,7 +710,7 @@ public class KanaConverter {
 			katakanaToHepburn.put("\u30f4\u30a9", "vo");
 			katakanaToHepburn.put("\u30f5", "ka");
 			katakanaToHepburn.put("\u30f6", "ke");
-			katakanaToHepburn.put("\u30fc", "^");
+			katakanaToHepburn.put("\u30fc", "-");
 		}
 		return katakanaToHepburn;
 	}
@@ -945,7 +945,7 @@ public class KanaConverter {
 			katakanaToKunrei.put("\u30f4\u30a9", "vo");
 			katakanaToKunrei.put("\u30f5", "ka");
 			katakanaToKunrei.put("\u30f6", "ke");
-			katakanaToKunrei.put("\u30fc", "^");
+			katakanaToKunrei.put("\u30fc", "-");
 		}
 		return katakanaToKunrei;
 	}
@@ -960,7 +960,7 @@ public class KanaConverter {
 	}
 
 	public String convertKanaToRomajiSimple(String input) {
-		return convertKanaToRomaji(input).replaceAll("\\^|'", "");
+		return convertKanaToRomaji(input).replaceAll("\\-|'", "");
 	}
 
 	public String convertKanaToRomaji(String input) {
