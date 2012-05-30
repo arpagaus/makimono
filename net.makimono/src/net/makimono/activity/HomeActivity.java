@@ -32,6 +32,8 @@ import com.google.android.vending.expansion.downloader.Helpers;
 public class HomeActivity extends AbstractDefaultActivity {
 	private static final String LOG_TAG = HomeActivity.class.getSimpleName();
 
+	private Thread initializationThread;
+
 	private View searchDictionaryTextView;
 	private View searchKanjiTextView;
 	private View settingsTextView;
@@ -97,6 +99,10 @@ public class HomeActivity extends AbstractDefaultActivity {
 	}
 
 	private void initializeIndexFiles() {
+		if (initializationThread != null && initializationThread.isAlive()) {
+			return;
+		}
+
 		if (!expansionFileExists()) {
 			Intent intent = new Intent(this, ExpansionFileDownloaderActivity.class);
 			startActivity(intent);
@@ -110,7 +116,8 @@ public class HomeActivity extends AbstractDefaultActivity {
 					progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 					progressDialog.show();
 
-					new Thread(new FileExtractorTask(destination, progressDialog)).start();
+					initializationThread = new Thread(new FileExtractorTask(destination, progressDialog));
+					initializationThread.start();
 				}
 			} catch (Exception e) {
 				Log.e(LOG_TAG, "Error when checking index files", e);
