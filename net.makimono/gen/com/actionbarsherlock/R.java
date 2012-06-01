@@ -696,6 +696,8 @@ containing a value of this type.
  Minimum width for an action button in the menu area of an action bar 
          */
         public static final int action_button_min_width=0x7f0a000b;
+        public static final int content_text_size=0x7f0a000c;
+        public static final int label_text_size=0x7f0a000d;
     }
     public static final class drawable {
         public static final int abs__ab_bottom_solid_dark_holo=0x7f020000;

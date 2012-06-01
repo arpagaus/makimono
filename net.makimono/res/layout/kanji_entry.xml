@@ -44,56 +44,71 @@
 
             <TableRow android:gravity="center_vertical" >
 
-                <TextView android:text="On-Yomi" />
+                <TextView
+                    android:text="On-Yomi"
+                    android:textSize="@dimen/label_text_size" />
 
                 <TextView
                     android:id="@+id/kanji_on_yomi"
                     android:layout_margin="3dp"
-                    android:paddingLeft="15dp" />
+                    android:paddingLeft="15dp"
+                    android:textSize="@dimen/content_text_size" />
             </TableRow>
 
             <TableRow android:gravity="center_vertical" >
 
-                <TextView android:text="Kun-Yomi" />
+                <TextView
+                    android:text="Kun-Yomi"
+                    android:textSize="@dimen/label_text_size" />
 
                 <TextView
                     android:id="@+id/kanji_kun_yomi"
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
-                    android:paddingLeft="15dp" />
+                    android:paddingLeft="15dp"
+                    android:textSize="@dimen/content_text_size" />
             </TableRow>
 
             <TableRow android:gravity="center_vertical" >
 
-                <TextView android:text="Nanori" />
+                <TextView
+                    android:text="Nanori"
+                    android:textSize="@dimen/label_text_size" />
 
                 <TextView
                     android:id="@+id/kanji_nanori"
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
-                    android:paddingLeft="15dp" />
+                    android:paddingLeft="15dp"
+                    android:textSize="@dimen/content_text_size" />
             </TableRow>
 
             <TableRow android:gravity="center_vertical" >
 
-                <TextView android:text="Hangul" />
+                <TextView
+                    android:text="Hangul"
+                    android:textSize="@dimen/label_text_size" />
 
                 <TextView
                     android:id="@+id/kanji_hangul"
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
-                    android:paddingLeft="15dp" />
+                    android:paddingLeft="15dp"
+                    android:textSize="@dimen/content_text_size" />
             </TableRow>
 
             <TableRow android:gravity="center_vertical" >
 
-                <TextView android:text="Pinyin" />
+                <TextView
+                    android:text="Pinyin"
+                    android:textSize="@dimen/label_text_size" />
 
                 <TextView
                     android:id="@+id/kanji_pinyin"
                     android:layout_height="wrap_content"
                     android:layout_margin="3dp"
-                    android:paddingLeft="15dp" />
+                    android:paddingLeft="15dp"
+                    android:textSize="@dimen/content_text_size" />
             </TableRow>
         </TableLayout>
 
@@ -144,62 +159,80 @@
 
             <TableRow android:gravity="center_vertical" >
 
-                <TextView android:text="@string/radical" />
+                <TextView
+                    android:text="@string/radical"
+                    android:textSize="@dimen/label_text_size" />
 
                 <TextView
                     android:id="@+id/kanji_radical"
                     android:layout_margin="3dp"
-                    android:paddingLeft="15dp" />
+                    android:paddingLeft="15dp"
+                    android:textSize="@dimen/content_text_size" />
             </TableRow>
 
             <TableRow android:gravity="center_vertical" >
 
-                <TextView android:text="@string/stroke_count" />
+                <TextView
+                    android:text="@string/stroke_count"
+                    android:textSize="@dimen/label_text_size" />
 
                 <TextView
                     android:id="@+id/kanji_stroke_count"
                     android:layout_margin="3dp"
-                    android:paddingLeft="15dp" />
+                    android:paddingLeft="15dp"
+                    android:textSize="@dimen/content_text_size" />
             </TableRow>
 
             <TableRow android:gravity="center_vertical" >
 
-                <TextView android:text="JLPT" />
+                <TextView
+                    android:text="JLPT"
+                    android:textSize="@dimen/label_text_size" />
 
                 <TextView
                     android:id="@+id/kanji_jlpt"
                     android:layout_margin="3dp"
-                    android:paddingLeft="15dp" />
+                    android:paddingLeft="15dp"
+                    android:textSize="@dimen/content_text_size" />
             </TableRow>
 
             <TableRow android:gravity="center_vertical" >
 
-                <TextView android:text="@string/grade" />
+                <TextView
+                    android:text="@string/grade"
+                    android:textSize="@dimen/label_text_size" />
 
                 <TextView
                     android:id="@+id/kanji_grade"
                     android:layout_margin="3dp"
-                    android:paddingLeft="15dp" />
+                    android:paddingLeft="15dp"
+                    android:textSize="@dimen/content_text_size" />
             </TableRow>
 
             <TableRow android:gravity="center_vertical" >
 
-                <TextView android:text="@string/frequency" />
+                <TextView
+                    android:text="@string/frequency"
+                    android:textSize="@dimen/label_text_size" />
 
                 <TextView
                     android:id="@+id/kanji_frequency"
                     android:layout_margin="3dp"
-                    android:paddingLeft="15dp" />
+                    android:paddingLeft="15dp"
+                    android:textSize="@dimen/content_text_size" />
             </TableRow>
 
             <TableRow android:gravity="center_vertical" >
 
-                <TextView android:text="@string/unicode" />
+                <TextView
+                    android:text="@string/unicode"
+                    android:textSize="@dimen/label_text_size" />
 
                 <TextView
                     android:id="@+id/kanji_unicode"
                     android:layout_margin="3dp"
-                    android:paddingLeft="15dp" />
+                    android:paddingLeft="15dp"
+                    android:textSize="@dimen/content_text_size" />
             </TableRow>
         </TableLayout>
 
@@ -209,7 +242,7 @@
             android:layout_below="@id/kanji_misc"
             android:padding="10dp"
             android:text="@string/acknowledgement_edrdg"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
     </RelativeLayout>
 
 </ScrollView>

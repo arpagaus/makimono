@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="例えば"
-        android:textSize="24dp" />
+        android:textSize="24sp" />
 
     <TextView
         android:id="@+id/result_reading"
@@ -22,7 +22,7 @@
         android:singleLine="true"
         android:text="たとえば"
         android:textColor="@android:color/darker_gray"
-        android:textSize="16dp" />
+        android:textSize="@dimen/content_text_size" />
 
     <TextView
         android:id="@+id/result_meaning"

@@ -102,7 +102,7 @@
             android:layout_below="@id/entry_kanji"
             android:padding="10dp"
             android:text="@string/acknowledgement_edrdg"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
     </RelativeLayout>
 
 </ScrollView>

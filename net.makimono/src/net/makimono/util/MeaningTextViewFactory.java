@@ -34,6 +34,7 @@ public class MeaningTextViewFactory {
 	public TextView makeView(CharSequence text, Language language) {
 		TextView textView = new TextView(context);
 		textView.setText(text);
+		textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, context.getResources().getDimension(R.dimen.content_text_size));
 		textView.setCompoundDrawablesWithIntrinsicBounds(LANGUAGE_ICONS.get(language), 0, 0, 0);
 		textView.setCompoundDrawablePadding(getPixelForDip(10));
 		textView.setPadding(getPixelForDip(10), getPixelForDip(5), getPixelForDip(10), getPixelForDip(5));

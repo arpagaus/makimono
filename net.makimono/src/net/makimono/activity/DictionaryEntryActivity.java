@@ -108,6 +108,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			public View makeView() {
 				TextView textView = new TextView(DictionaryEntryActivity.this);
 				textView.setTextColor(Color.GRAY);
+				textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.content_text_size));
 				return textView;
 			}
 		});
