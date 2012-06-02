@@ -10,6 +10,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
+import net.makimono.Application;
 import net.makimono.R;
 import net.makimono.util.ExternalStorageUtil;
 
@@ -24,6 +25,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -31,8 +33,6 @@ import com.google.android.vending.expansion.downloader.Helpers;
 
 public class HomeActivity extends AbstractDefaultActivity {
 	private static final String LOG_TAG = HomeActivity.class.getSimpleName();
-
-	private Thread initializationThread;
 
 	private View searchDictionaryTextView;
 	private View searchKanjiTextView;
@@ -81,6 +81,17 @@ public class HomeActivity extends AbstractDefaultActivity {
 	}
 
 	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+
+		FileExtractorTask fileExtractorTask = ((Application) getApplication()).getFileExtractorTask();
+		if (fileExtractorTask != null && fileExtractorTask.isAlive()) {
+			fileExtractorTask.dismissDialog();
+			return;
+		}
+	}
+
+	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return true;
 	}
@@ -99,7 +110,9 @@ public class HomeActivity extends AbstractDefaultActivity {
 	}
 
 	private void initializeIndexFiles() {
-		if (initializationThread != null && initializationThread.isAlive()) {
+		FileExtractorTask fileExtractorTask = ((Application) getApplication()).getFileExtractorTask();
+		if (fileExtractorTask != null && fileExtractorTask.isAlive()) {
+			fileExtractorTask.showDialog(this);
 			return;
 		}
 
@@ -110,14 +123,10 @@ public class HomeActivity extends AbstractDefaultActivity {
 			try {
 				File destination = ExternalStorageUtil.getExternalFilesDir(this);
 				if (!checkIndexFiles(destination)) {
-					ProgressDialog progressDialog = new ProgressDialog(this);
-					progressDialog.setTitle("Initialization");
-					progressDialog.setMessage("Extracting dictionary data files");
-					progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-					progressDialog.show();
-
-					initializationThread = new Thread(new FileExtractorTask(destination, progressDialog));
-					initializationThread.start();
+					fileExtractorTask = new FileExtractorTask(destination);
+					((Application) getApplication()).setFileExtractorTask(fileExtractorTask);
+					fileExtractorTask.showDialog(this);
+					fileExtractorTask.start();
 				}
 			} catch (Exception e) {
 				Log.e(LOG_TAG, "Error when checking index files", e);
@@ -159,28 +168,55 @@ public class HomeActivity extends AbstractDefaultActivity {
 		return true;
 	}
 
-	private class FileExtractorTask implements Runnable {
+	public class FileExtractorTask extends Thread {
 		private File destination;
 		private ProgressDialog progressDialog;
 
-		public FileExtractorTask(File destination, ProgressDialog progressDialog) {
+		private int maxProgress;
+		private int currentProgress;
+
+		public FileExtractorTask(File destination) {
+			super(FileExtractorTask.class.getSimpleName());
+			setDaemon(false);
 			this.destination = destination;
-			this.progressDialog = progressDialog;
 		}
 
-		public void run() {
-			Thread.currentThread().setName(FileExtractorTask.class.getSimpleName());
+		private synchronized void showDialog(Context context) {
+			progressDialog = new ProgressDialog(context);
+			progressDialog.setTitle("Initialization");
+			progressDialog.setMessage("Extracting dictionary data files");
+			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			progressDialog.setCancelable(false);
+			progressDialog.show();
+		}
 
+		private synchronized void dismissDialog() {
+			if (progressDialog != null) {
+				progressDialog.dismiss();
+				progressDialog = null;
+			}
+		}
+
+		private synchronized void updateDialog() {
+			if (progressDialog != null) {
+				progressDialog.setMax(maxProgress);
+				progressDialog.setProgress(currentProgress);
+			}
+		}
+
+		@Override
+		public void run() {
 			try {
 				FileUtils.deleteDirectory(destination);
 
 				ZipFile zipFile = new ZipFile(getExpansionFile());
-				progressDialog.setMax(zipFile.size());
-				int count = 0;
+				maxProgress = zipFile.size();
+				currentProgress = 0;
 
 				Enumeration<? extends ZipEntry> entries = zipFile.entries();
 
 				while (entries.hasMoreElements()) {
+					currentProgress++;
 					ZipEntry zipEntry = entries.nextElement();
 					if (zipEntry.isDirectory()) {
 						continue;
@@ -198,17 +234,15 @@ public class HomeActivity extends AbstractDefaultActivity {
 					IOUtils.closeQuietly(outputStream);
 
 					Log.d(LOG_TAG, "Extracting " + zipEntry.getName() + " took " + (System.currentTimeMillis() - time) + "ms");
-
-					progressDialog.setProgress(++count);
+					updateDialog();
 				}
 
 				zipFile.close();
 			} catch (IOException e) {
 				Log.e("", "Error when extracting index files", e);
-				// TODO notify the user
+				Toast.makeText(HomeActivity.this, "Initialization failed", Toast.LENGTH_LONG);
 			} finally {
-				progressDialog.dismiss();
-				progressDialog = null;
+				dismissDialog();
 			}
 		}
 	}
