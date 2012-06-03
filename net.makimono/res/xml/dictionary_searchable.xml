@@ -2,6 +2,7 @@
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
     android:hint="@string/search_dictionary"
     android:label="@string/app_name"
-    android:searchSuggestAuthority="net.makimono.content.DictionarySearchSuggestionProvider" >
+    android:searchSuggestAuthority="net.makimono.content.DictionarySearchSuggestionProvider"
+    android:searchSuggestSelection=" ?" >
 
 </searchable>

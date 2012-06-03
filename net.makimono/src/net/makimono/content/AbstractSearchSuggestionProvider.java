@@ -65,8 +65,9 @@ public abstract class AbstractSearchSuggestionProvider extends ContentProvider {
 
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-		Cursor recentSearchesCursor = queryRecentSearches(uri.getLastPathSegment());
-		Cursor dictionarySuggestionsCursor = queryDictionarySuggestions(uri.getLastPathSegment());
+		String queryString = selectionArgs != null && selectionArgs.length > 0 ? selectionArgs[0] : "";
+		Cursor recentSearchesCursor = queryRecentSearches(queryString);
+		Cursor dictionarySuggestionsCursor = queryDictionarySuggestions(queryString);
 		return new MergeCursor(new Cursor[] { recentSearchesCursor, dictionarySuggestionsCursor });
 	}
 

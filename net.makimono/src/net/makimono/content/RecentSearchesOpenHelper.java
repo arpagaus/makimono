@@ -3,6 +3,8 @@ package net.makimono.content;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.SearchManager;
 import android.content.ContentValues;
 import android.content.Context;
@@ -41,8 +43,10 @@ public class RecentSearchesOpenHelper extends SQLiteOpenHelper {
 	public Cursor getRecentSearches(String authority, String searchString) {
 		SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
 		queryBuilder.setTables(TABLE_NAME);
-		queryBuilder.appendWhere(RECENT_COLUMN_AUTHORITY + " = '" + authority + "' AND ");
-		queryBuilder.appendWhere(RECENT_COLUMN_SEARCH_STRING + " LIKE '" + searchString + "%'");
+		queryBuilder.appendWhere(RECENT_COLUMN_AUTHORITY + " = '" + authority + "' ");
+		if (StringUtils.isNotBlank(searchString)) {
+			queryBuilder.appendWhere(" AND " + RECENT_COLUMN_SEARCH_STRING + " LIKE '" + searchString + "%'");
+		}
 
 		Map<String, String> columnMap = new HashMap<String, String>();
 		columnMap.put(BaseColumns._ID, BaseColumns._ID);
@@ -53,7 +57,7 @@ public class RecentSearchesOpenHelper extends SQLiteOpenHelper {
 
 		String[] projection = new String[] { BaseColumns._ID, SearchManager.SUGGEST_COLUMN_ICON_1, SearchManager.SUGGEST_COLUMN_TEXT_1, SearchManager.SUGGEST_COLUMN_QUERY };
 		Log.d("SQL", queryBuilder.buildQuery(projection, null, null, null, null, RECENT_COLUMN_LAST_SEARCH + " DESC", null));
-		return queryBuilder.query(getReadableDatabase(), projection, null, null, null, null, RECENT_COLUMN_LAST_SEARCH + " DESC");
+		return queryBuilder.query(getReadableDatabase(), projection, null, null, null, null, RECENT_COLUMN_LAST_SEARCH + " DESC", "50");
 	}
 
 	public void clearHistory() {
