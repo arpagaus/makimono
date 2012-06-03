@@ -1078,6 +1078,7 @@ containing a value of this type.
         public static final int JMdict_vt=0x7f05008f;
         public static final int JMdict_vulg=0x7f050090;
         public static final int JMdict_vz=0x7f05007c;
+        public static final int about=0x7f0500a2;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abs__action_bar_home_description=0x7f050017;
@@ -1108,9 +1109,9 @@ containing a value of this type.
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f050020;
-        public static final int acknowledgement_edrdg=0x7f0500a2;
+        public static final int acknowledgement_edrdg=0x7f0500a1;
         public static final int app_name=0x7f050091;
-        public static final int dictionary=0x7f0500a1;
+        public static final int dictionary=0x7f0500a0;
         public static final int frequency=0x7f05009a;
         public static final int grade=0x7f050099;
         public static final int kanji=0x7f050095;
@@ -1136,7 +1137,7 @@ containing a value of this type.
         public static final int radical=0x7f05009d;
         public static final int readings=0x7f050096;
         public static final int search=0x7f050092;
-        public static final int search_expression=0x7f0500a0;
+        public static final int search_dictionary=0x7f0500a3;
         public static final int search_kanji=0x7f05009f;
         public static final int settings=0x7f050094;
         public static final int state_completed=0x7f050007;
@@ -1158,17 +1159,17 @@ containing a value of this type.
         public static final int state_paused_wifi_disabled=0x7f05000c;
         public static final int state_unknown=0x7f050002;
         public static final int stroke_count=0x7f05009c;
-        public static final int text_button_cancel=0x7f0500ac;
-        public static final int text_button_cancel_verify=0x7f0500ad;
-        public static final int text_button_pause=0x7f0500aa;
-        public static final int text_button_resume=0x7f0500ab;
-        public static final int text_button_resume_cellular=0x7f0500a5;
-        public static final int text_button_wifi_settings=0x7f0500a6;
-        public static final int text_paused_cellular=0x7f0500a3;
-        public static final int text_paused_cellular_2=0x7f0500a4;
-        public static final int text_validation_complete=0x7f0500a8;
-        public static final int text_validation_failed=0x7f0500a9;
-        public static final int text_verifying_download=0x7f0500a7;
+        public static final int text_button_cancel=0x7f0500ad;
+        public static final int text_button_cancel_verify=0x7f0500ae;
+        public static final int text_button_pause=0x7f0500ab;
+        public static final int text_button_resume=0x7f0500ac;
+        public static final int text_button_resume_cellular=0x7f0500a6;
+        public static final int text_button_wifi_settings=0x7f0500a7;
+        public static final int text_paused_cellular=0x7f0500a4;
+        public static final int text_paused_cellular_2=0x7f0500a5;
+        public static final int text_validation_complete=0x7f0500a9;
+        public static final int text_validation_failed=0x7f0500aa;
+        public static final int text_verifying_download=0x7f0500a8;
         public static final int time_remaining=0x7f050015;
         public static final int time_remaining_notification=0x7f050016;
         public static final int unicode=0x7f05009b;
