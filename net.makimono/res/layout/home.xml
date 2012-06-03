@@ -16,16 +16,6 @@
         android:text="Search kanji" />
 
     <Button
-        style="@style/DashboardButton"
-        android:drawableTop="@drawable/btn_home_examples"
-        android:text="Search examples" />
-
-    <Button
-        style="@style/DashboardButton"
-        android:drawableTop="@drawable/btn_home_lists"
-        android:text="Browse lists" />
-
-    <Button
         android:id="@+id/settings"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/btn_home_settings"
@@ -36,5 +26,9 @@
         style="@style/DashboardButton"
         android:drawableTop="@drawable/btn_home_about"
         android:text="About" />
+
+    <Button style="@style/DashboardButton" />
+
+    <Button style="@style/DashboardButton" />
 
 </com.google.android.apps.iosched.ui.widget.DashboardLayout>
