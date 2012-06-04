@@ -256,9 +256,20 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 		}
 		for (String key : keys) {
 			if (mixinMeanings.containsKey(key)) {
-				DictionaryEntry e = mixinMeanings.remove(key);
-				entry.getSenses().add(e.getSenses().get(0));
+				net.makimono.model.Sense mixinSense = mixinMeanings.remove(key).getSenses().get(0);
+
+				for (net.makimono.model.Sense s : entry.getSenses()) {
+					if (s.getPartsOfSpeech().containsAll(mixinSense.getPartsOfSpeech())) {
+						s.getMeanings().addAll(mixinSense.getMeanings());
+						mixinSense = null;
+						break;
+					}
+				}
+				if (mixinSense != null) {
+					entry.getSenses().add(mixinSense);
+				}
 			}
+
 		}
 		return entry;
 	}
