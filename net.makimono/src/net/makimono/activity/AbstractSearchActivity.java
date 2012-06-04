@@ -17,8 +17,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.actionbarsherlock.view.Menu;
@@ -33,7 +33,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 	private SearchResultAdapter resultAdapter;
 	private ListView listView;
 	private TextView noEntriesTextView;
-	private ProgressBar progressBar;
+	private LinearLayout progressView;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 		setContentView(R.layout.search_result);
 		listView = (ListView) findViewById(android.R.id.list);
 		noEntriesTextView = (TextView) findViewById(R.id.no_entries);
-		progressBar = (ProgressBar) findViewById(R.id.progress_bar);
+		progressView = (LinearLayout) findViewById(R.id.progress_bar);
 		listView.setOnItemClickListener(this);
 		resultAdapter = new SearchResultAdapter(this);
 		listView.setAdapter(resultAdapter);
@@ -88,7 +88,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			searchString = query;
 
-			progressBar.setVisibility(View.VISIBLE);
+			progressView.setVisibility(View.VISIBLE);
 			noEntriesTextView.setVisibility(View.GONE);
 			listView.setVisibility(View.GONE);
 			new SearchTask().execute(query);
@@ -116,7 +116,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 		}
 
 		protected void onPostExecute(List<? extends Entry> entries) {
-			progressBar.setVisibility(View.GONE);
+			progressView.setVisibility(View.GONE);
 			if (entries.isEmpty()) {
 				noEntriesTextView.setVisibility(View.VISIBLE);
 				listView.setVisibility(View.GONE);
