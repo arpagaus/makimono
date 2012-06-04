@@ -136,7 +136,7 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 				document.add(new Field(KanjiFieldName.ONYOMI.name(), cleanValue, Store.NO, Index.NOT_ANALYZED));
 
 				String romaji = getRomajiConverter().convertKanaToRomajiSimple(cleanValue);
-				document.add(new Field(KanjiFieldName.ONYOMI.name(), romaji, Store.NO, Index.NOT_ANALYZED));
+				document.add(new Field(KanjiFieldName.ROMAJI.name(), romaji, Store.NO, Index.NOT_ANALYZED));
 
 				String hiragana = getRomajiConverter().convertKatakanaToHiragana(cleanValue);
 				document.add(new Field(KanjiFieldName.ONYOMI.name(), hiragana, Store.NO, Index.NOT_ANALYZED));
@@ -147,7 +147,7 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 				document.add(new Field(KanjiFieldName.KUNYOMI.name(), cleanValue, Store.NO, Index.NOT_ANALYZED));
 
 				String romaji = getRomajiConverter().convertKanaToRomajiSimple(cleanValue);
-				document.add(new Field(KanjiFieldName.KUNYOMI.name(), romaji, Store.NO, Index.NOT_ANALYZED));
+				document.add(new Field(KanjiFieldName.ROMAJI.name(), romaji, Store.NO, Index.NOT_ANALYZED));
 
 			} else if (reading.getRType().equalsIgnoreCase("pinyin")) {
 				document.add(new Field(KanjiFieldName.PINYIN.name(), reading.getValue(), Store.YES, Index.NO));

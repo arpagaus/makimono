@@ -183,6 +183,10 @@ public class KanjiSearcherTest {
 		entries = searcher.search("minami");
 		assertEquals(1, entries.size());
 		assertEquals("南", entries.get(0).getLiteral());
+
+		searcher.setRomajiSearchEnabled(false);
+		entries = searcher.search("minami");
+		assertEquals(0, entries.size());
 	}
 
 	@Test

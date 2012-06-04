@@ -42,6 +42,7 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 	private static final float MIN_BOOST = 0.0001f;
 
 	private List<Language> languages;
+	private boolean romajiSearchEnabled = true;
 
 	private Directory dictionaryDirectory;
 	private IndexSearcher indexSearcher;
@@ -57,6 +58,14 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 
 	protected List<Language> getLanguages() {
 		return languages;
+	}
+
+	public void setRomajiSearchEnabled(boolean romajiSearchEnabled) {
+		this.romajiSearchEnabled = romajiSearchEnabled;
+	}
+
+	public boolean isRomajiSearchEnabled() {
+		return romajiSearchEnabled;
 	}
 
 	protected IndexSearcher getIndexSearcher() throws IOException {
@@ -110,7 +119,7 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 		BooleanQuery booleanQuery = new BooleanQuery();
 		for (String fieldName : getIndexedFieldNames()) {
 			IndexFieldName field = getIndexFieldName(fieldName);
-			if (!field.isMeaning() || getLanguages().contains(field.getLanguage())) {
+			if (includeFieldInQuery(field)) {
 				if (field.isAnalyzed()) {
 					for (String token : tokens) {
 						TermQuery termQuery = new TermQuery(new Term(field.name(), token));
@@ -136,6 +145,10 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 		return entries;
 	}
 
+	private boolean includeFieldInQuery(IndexFieldName field) {
+		return (!field.isMeaning() || getLanguages().contains(field.getLanguage())) && (isRomajiSearchEnabled() || !field.isRomaji());
+	}
+
 	protected Collection<String> getIndexedFieldNames() throws IOException {
 		return getIndexSearcher().getIndexReader().getFieldNames(FieldOption.INDEXED);
 	}
@@ -158,7 +171,7 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 
 			for (String fieldName : getIndexedFieldNames()) {
 				IndexFieldName field = getIndexFieldName(fieldName);
-				if (!field.isMeaning()) {
+				if (!field.isMeaning() && (!field.isRomaji() || isRomajiSearchEnabled())) {
 					fields.add(field);
 				} else if (languages.contains(field.getLanguage())) {
 					fields.add(field);

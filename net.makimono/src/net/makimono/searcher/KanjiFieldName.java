@@ -3,7 +3,12 @@ package net.makimono.searcher;
 import net.makimono.model.Language;
 
 public enum KanjiFieldName implements IndexFieldName {
-	LITERAL, CODE_POINT, JLPT, GRADE, FREQUENCY, RADICAL, STROKE_COUNT, ONYOMI, KUNYOMI, NANORI, PINYIN, HANGUL, RADICAL_NAME, MEANING_EN, MEANING_ES, MEANING_FR, MEANING_PT, MEANING_ANALYZED_EN, MEANING_ANALYZED_ES, MEANING_ANALYZED_FR, MEANING_ANALYZED_PT, STROKE_PATHS;
+	LITERAL, CODE_POINT, JLPT, GRADE, FREQUENCY, RADICAL, STROKE_COUNT, ONYOMI, KUNYOMI, NANORI, PINYIN, HANGUL, RADICAL_NAME, MEANING_EN, MEANING_ES, MEANING_FR, MEANING_PT, MEANING_ANALYZED_EN, MEANING_ANALYZED_ES, MEANING_ANALYZED_FR, MEANING_ANALYZED_PT, STROKE_PATHS, ROMAJI;
+
+	@Override
+	public boolean isMeaning() {
+		return name().startsWith("MEANING");
+	}
 
 	@Override
 	public boolean isAnalyzed() {
@@ -11,8 +16,8 @@ public enum KanjiFieldName implements IndexFieldName {
 	}
 
 	@Override
-	public boolean isMeaning() {
-		return name().startsWith("MEANING");
+	public boolean isRomaji() {
+		return this.equals(ROMAJI);
 	}
 
 	@Override

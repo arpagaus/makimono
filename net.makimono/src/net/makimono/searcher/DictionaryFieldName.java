@@ -3,12 +3,7 @@ package net.makimono.searcher;
 import net.makimono.model.Language;
 
 public enum DictionaryFieldName implements IndexFieldName {
-	EXPRESSION, READING, MEANING_EN, MEANING_DE, MEANING_FR, MEANING_RU, MEANING_ES, MEANING_ANALYZED_EN, MEANING_ANALYZED_DE, MEANING_ANALYZED_FR, MEANING_ANALYZED_RU, MEANING_ANALYZED_ES;
-
-	@Override
-	public boolean isMeaning() {
-		return name().startsWith("MEANING");
-	}
+	EXPRESSION, READING, MEANING_EN, MEANING_DE, MEANING_FR, MEANING_RU, MEANING_ES, MEANING_ANALYZED_EN, MEANING_ANALYZED_DE, MEANING_ANALYZED_FR, MEANING_ANALYZED_RU, MEANING_ANALYZED_ES, ROMAJI;
 
 	@Override
 	public Language getLanguage() {
@@ -20,7 +15,17 @@ public enum DictionaryFieldName implements IndexFieldName {
 	}
 
 	@Override
+	public boolean isMeaning() {
+		return name().startsWith("MEANING");
+	}
+
+	@Override
 	public boolean isAnalyzed() {
 		return name().contains("ANALYZED");
+	}
+
+	@Override
+	public boolean isRomaji() {
+		return this.equals(ROMAJI);
 	}
 }

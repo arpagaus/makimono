@@ -10,4 +10,6 @@ public interface IndexFieldName {
 	public boolean isAnalyzed();
 
 	public boolean isMeaning();
+
+	public boolean isRomaji();
 }

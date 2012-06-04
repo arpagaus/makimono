@@ -113,6 +113,22 @@ public class DictionarySearcherTest {
 	}
 
 	@Test
+	public void searchRomajiDisable() throws Exception {
+		assertTrue(DictionaryFieldName.ROMAJI.isRomaji());
+		assertFalse(DictionaryFieldName.EXPRESSION.isRomaji());
+
+		List<DictionaryEntry> entries = searcher.search("appurudesukutoppubasu");
+		assertEquals(1, entries.size());
+
+		searcher.setRomajiSearchEnabled(false);
+		entries = searcher.search("appurudesukutoppubasu");
+		assertEquals(0, entries.size());
+
+		entries = searcher.search("アップルデスクトップバス");
+		assertEquals(1, entries.size());
+	}
+
+	@Test
 	public void exectMatchFirst() throws Exception {
 		List<DictionaryEntry> entries = searcher.search("日本");
 		assertFalse(entries.isEmpty());
@@ -222,6 +238,10 @@ public class DictionarySearcherTest {
 		Set<String> suggestions = searcher.suggest("appurupa");
 		assertEquals(1, suggestions.size());
 		assertEquals("appurupai", suggestions.iterator().next());
+
+		searcher.setRomajiSearchEnabled(false);
+		suggestions = searcher.suggest("appurupa");
+		assertEquals(0, suggestions.size());
 	}
 
 	@Test

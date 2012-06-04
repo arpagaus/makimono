@@ -91,10 +91,10 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 			document.add(new Field(DictionaryFieldName.READING.name(), reading, Store.NO, Index.NOT_ANALYZED));
 
 			String romaji = getRomajiConverter().convertKanaToRomaji(reading);
-			document.add(new Field(DictionaryFieldName.READING.name(), romaji, Store.NO, Index.NOT_ANALYZED));
+			document.add(new Field(DictionaryFieldName.ROMAJI.name(), romaji, Store.NO, Index.NOT_ANALYZED));
 
 			romaji = getRomajiConverter().convertKanaToRomajiSimple(reading);
-			document.add(new Field(DictionaryFieldName.READING.name(), romaji, Store.NO, Index.NOT_ANALYZED));
+			document.add(new Field(DictionaryFieldName.ROMAJI.name(), romaji, Store.NO, Index.NOT_ANALYZED));
 		}
 
 		for (net.makimono.model.Sense sense : entry.getSenses()) {
