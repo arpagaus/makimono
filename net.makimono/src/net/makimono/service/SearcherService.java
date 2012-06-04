@@ -39,7 +39,7 @@ public class SearcherService extends Service {
 				directory = new File(ExternalStorageUtil.getExternalFilesDir(getApplicationContext()), "indexes/kanji/");
 				kanjiSearcher = new KanjiSearcher(directory);
 
-				updateSearcherLanguages(PreferenceManager.getDefaultSharedPreferences(this));
+				updatePreferences(PreferenceManager.getDefaultSharedPreferences(this));
 				preferenceChangeListener = new PreferenceChangeListener();
 				PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(preferenceChangeListener);
 			}
@@ -91,17 +91,16 @@ public class SearcherService extends Service {
 		}
 	}
 
-	private void updateSearcherLanguages(SharedPreferences sharedPreferences) {
+	private void updatePreferences(SharedPreferences sharedPreferences) {
 		List<Language> languages = PreferenceActivity.getConfiguredLanguages(sharedPreferences);
 		dictionarySearcher.setLanguages(languages);
+		dictionarySearcher.setRomajiSearchEnabled(sharedPreferences.getBoolean(PreferenceActivity.ROMAJI_SEARCH, true));
 	}
 
 	private class PreferenceChangeListener implements OnSharedPreferenceChangeListener {
 		@Override
 		public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-			if (key.contains("language")) {
-				updateSearcherLanguages(sharedPreferences);
-			}
+			updatePreferences(sharedPreferences);
 		}
 
 	}

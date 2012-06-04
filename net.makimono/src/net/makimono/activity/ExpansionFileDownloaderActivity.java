@@ -89,7 +89,7 @@ public class ExpansionFileDownloaderActivity extends SherlockActivity implements
 		}
 	}
 
-	public static final XAPKFile MAIN_FILE = new XAPKFile(1, 24759323L);
+	public static final XAPKFile MAIN_FILE = new XAPKFile(1, 24795121L);
 
 	/**
 	 * Go through each of the Expansion APK files defined in the project and

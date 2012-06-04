@@ -33,6 +33,13 @@
             android:key="language_pt"
             android:title="Portugese" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/romaji" >
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="romaji_search"
+            android:summary="Allows you using rōmaji when searching Japanese expressions"
+            android:title="Rōmaji Search" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/search" >
         <Preference
             android:key="clear_search_history"

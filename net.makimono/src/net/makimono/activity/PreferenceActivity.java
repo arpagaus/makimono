@@ -14,6 +14,8 @@ import android.preference.Preference.OnPreferenceClickListener;
 
 public class PreferenceActivity extends android.preference.PreferenceActivity implements OnPreferenceChangeListener, OnPreferenceClickListener {
 	public static final String CLEAR_SEARCH_HISTORY = "clear_search_history";
+	public static final String ROMAJI_SEARCH = "romaji_search";
+
 	public static final String LANGUAGE_EN = "language_en";
 	public static final String LANGUAGE_DE = "language_de";
 	public static final String LANGUAGE_FR = "language_fr";

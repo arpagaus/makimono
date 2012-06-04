@@ -20,5 +20,6 @@
     <string name="acknowledgement_edrdg">This application uses the JMDict and KANJIDIC2 dictionary files. These files are the property of the Electronic Dictionary Research and Development Group, and are used in conformance with the Group\s licence.</string>
     <string name="about">About</string>
     <string name="search_dictionary">Search dictionary</string>
+    <string name="romaji">Rōmaji</string>
 
 </resources>
