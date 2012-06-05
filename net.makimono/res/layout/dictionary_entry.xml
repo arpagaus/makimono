@@ -22,13 +22,21 @@
             -->
         </TextSwitcher>
 
-        <TextView
-            android:id="@+id/entry_expression_alternative_ind"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/previous_expression"
+            style="@style/AlternativeButton"
             android:layout_alignBottom="@id/entry_expression"
+            android:layout_alignTop="@id/entry_expression"
+            android:layout_toLeftOf="@id/entry_expression"
+            android:src="@drawable/ic_btn_previous" />
+
+        <ImageButton
+            android:id="@+id/next_expression"
+            style="@style/AlternativeButton"
+            android:layout_alignBottom="@id/entry_expression"
+            android:layout_alignTop="@id/entry_expression"
             android:layout_toRightOf="@id/entry_expression"
-            android:textColor="@android:color/darker_gray" />
+            android:src="@drawable/ic_btn_next" />
 
         <TextSwitcher
             android:id="@+id/entry_reading"
@@ -47,17 +55,25 @@
                 android:layout_height="wrap_content"
                 android:text="たとえば"
                 android:textColor="@android:color/darker_gray"
-                android:textSize="16dp" />
+                android:textSize="24dp" />
             -->
         </TextSwitcher>
 
-        <TextView
-            android:id="@+id/entry_reading_alternative_ind"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/previous_reading"
+            style="@style/AlternativeButton"
             android:layout_alignBottom="@id/entry_reading"
+            android:layout_alignTop="@id/entry_reading"
+            android:layout_toLeftOf="@id/entry_reading"
+            android:src="@drawable/ic_btn_previous" />
+
+        <ImageButton
+            android:id="@+id/next_reading"
+            style="@style/AlternativeButton"
+            android:layout_alignBottom="@id/entry_reading"
+            android:layout_alignTop="@id/entry_reading"
             android:layout_toRightOf="@id/entry_reading"
-            android:textColor="@android:color/darker_gray" />
+            android:src="@drawable/ic_btn_next" />
 
         <TextView
             android:id="@+id/entry_separator_meanings"

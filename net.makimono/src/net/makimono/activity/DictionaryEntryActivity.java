@@ -3,9 +3,7 @@ package net.makimono.activity;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import net.makimono.R;
 import net.makimono.listener.KanjiViewListener;
@@ -15,6 +13,7 @@ import net.makimono.model.Language;
 import net.makimono.model.Sense;
 import net.makimono.service.SearcherService;
 import net.makimono.service.SearcherServiceConnection;
+import net.makimono.util.DictionaryAlternativesSwitcher;
 import net.makimono.util.MeaningTextViewFactory;
 
 import org.apache.commons.lang3.StringUtils;
@@ -31,7 +30,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
@@ -43,17 +41,12 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
 
-	private DictionaryEntry entry;
-
-	private AtomicInteger currentExpressionIndex = new AtomicInteger();
-	private AtomicInteger currentReadingIndex = new AtomicInteger();
-
 	private LayoutInflater layoutInflater;
 
+	private DictionaryAlternativesSwitcher alternativesSwitcher;
+
 	private TextSwitcher expressionTextSwitcher;
-	private TextView expressionAlternativeIndTextView;
 	private TextSwitcher readingTextSwitcher;
-	private TextView readingAlternativeIndTextView;
 	private LinearLayout meaningsGroupView;
 	private LinearLayout kanjiGroupView;
 
@@ -77,28 +70,17 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 		setContentView(R.layout.dictionary_entry);
 		expressionTextSwitcher = createExpressionTextSwitcher();
-		expressionAlternativeIndTextView = createExpressionAlternativeIndTextView();
 		readingTextSwitcher = createReadingTextSwitcher();
-		readingAlternativeIndTextView = createReadingAlternativeIndTextView();
 		meaningsGroupView = (LinearLayout) findViewById(R.id.entry_meanings);
 		kanjiGroupView = (LinearLayout) findViewById(R.id.entry_kanji);
+
+		alternativesSwitcher = new DictionaryAlternativesSwitcher(this);
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
 		unbindService(connection);
-	}
-
-	private TextView createReadingAlternativeIndTextView() {
-		readingAlternativeIndTextView = (TextView) findViewById(R.id.entry_reading_alternative_ind);
-		readingAlternativeIndTextView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showNextReading();
-			}
-		});
-		return readingAlternativeIndTextView;
 	}
 
 	private TextSwitcher createReadingTextSwitcher() {
@@ -108,14 +90,8 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			public View makeView() {
 				TextView textView = new TextView(DictionaryEntryActivity.this);
 				textView.setTextColor(Color.GRAY);
-				textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, getResources().getDimension(R.dimen.content_text_size));
+				textView.setTextSize(24);
 				return textView;
-			}
-		});
-		readingTextSwitcher.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showNextReading();
 			}
 		});
 		return readingTextSwitcher;
@@ -127,62 +103,12 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			@Override
 			public View makeView() {
 				TextView textView = new TextView(DictionaryEntryActivity.this);
-				textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 32);
+				textView.setTextSize(32);
 				textView.setGravity(Gravity.CENTER_HORIZONTAL);
 				return textView;
 			}
 		});
-		expressionTextSwitcher.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showNextExpression();
-			}
-		});
 		return expressionTextSwitcher;
-	}
-
-	private TextView createExpressionAlternativeIndTextView() {
-		expressionAlternativeIndTextView = (TextView) findViewById(R.id.entry_expression_alternative_ind);
-		expressionAlternativeIndTextView.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				showNextExpression();
-			}
-		});
-		return expressionAlternativeIndTextView;
-	}
-
-	private void showNextExpression() {
-		if (entry != null) {
-			showNextAlternative(entry.getExpressions(), expressionTextSwitcher, expressionAlternativeIndTextView, currentExpressionIndex);
-			currentReadingIndex.set(-1);
-			showNextReading();
-		}
-	}
-
-	private void showNextReading() {
-		if (entry != null) {
-			ArrayList<String> readings;
-			if (entry.getExpressions().isEmpty()) {
-				readings = entry.getReadings();
-			} else {
-				readings = entry.getReadings(entry.getExpressions().get(currentExpressionIndex.get()));
-			}
-			showNextAlternative(readings, readingTextSwitcher, readingAlternativeIndTextView, currentReadingIndex);
-		}
-	}
-
-	private void showNextAlternative(ArrayList<String> alternatives, TextSwitcher textSwitcher, TextView indTextView, AtomicInteger index) {
-		if (alternatives.size() > 1) {
-			index.set(index.incrementAndGet() % alternatives.size());
-			textSwitcher.setText(alternatives.get(index.get()));
-			indTextView.setText("(" + (index.get() + 1) + "/" + alternatives.size() + ")");
-			indTextView.setVisibility(View.VISIBLE);
-		} else if (alternatives.size() == 1) {
-			index.set(0);
-			textSwitcher.setText(alternatives.get(0));
-			indTextView.setVisibility(View.GONE);
-		}
 	}
 
 	private void handleIntent(Intent intent) {
@@ -200,22 +126,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	}
 
 	private void updateView(DictionaryEntry entry) {
-		this.entry = entry;
-		currentExpressionIndex.set(0);
-		currentReadingIndex.set(0);
-
-		String reading = entry.getReadings().get(0);
-		if (entry.getExpressions().isEmpty()) {
-			expressionTextSwitcher.setText(reading);
-			readingTextSwitcher.setVisibility(View.GONE);
-		} else {
-			expressionTextSwitcher.setText(entry.getExpressions().get(0));
-			readingTextSwitcher.setVisibility(View.VISIBLE);
-			readingTextSwitcher.setText(reading);
-		}
-
-		currentExpressionIndex.set(-1);
-		showNextExpression();
+		alternativesSwitcher.updateEntry(entry);
 
 		meaningsGroupView.removeAllViews();
 		for (Sense sense : entry.getSenses()) {
