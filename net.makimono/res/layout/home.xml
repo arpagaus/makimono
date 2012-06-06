@@ -7,13 +7,13 @@
         android:id="@+id/search_dictionary"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/btn_home_dictionary"
-        android:text="@string/search_dictionary" />
+        android:text="@string/dictionary_search" />
 
     <Button
         android:id="@+id/search_kanji"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/btn_home_kanji"
-        android:text="@string/search_kanji" />
+        android:text="@string/kanji_search" />
 
     <Button
         android:id="@+id/settings"

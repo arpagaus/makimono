@@ -22,5 +22,9 @@
     <string name="search_dictionary">Search dictionary</string>
     <string name="romaji">Rōmaji</string>
     <string name="loading_">Loading ...</string>
+    <string name="search_for_kanji">Search for kanji</string>
+    <string name="search_the_dictionary">Search the dictionary</string>
+    <string name="dictionary_search">Dictionary search</string>
+    <string name="kanji_search">Kanji search</string>
 
 </resources>
