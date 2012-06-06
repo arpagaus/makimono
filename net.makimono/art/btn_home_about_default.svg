@@ -31,14 +31,14 @@
    viewBox="0 0 100 100"
    enable-background="new 0 0 100 100"
    xml:space="preserve"
-   inkscape:version="0.48.2 r9819"
+   inkscape:version="0.48.3.1 r9886"
    sodipodi:docname="btn_home_about_default.svg"
    inkscape:export-filename="/home/remo/git/makimono/net.makimono/res/drawable-hdpi/btn_home_about_default.png"
    inkscape:export-xdpi="85.540001"
    inkscape:export-ydpi="85.540001"><defs
    id="defs11"><linearGradient
      id="linearGradient3764"><stop
-       style="stop-color:#505050;stop-opacity:1;"
+       style="stop-color:#a0a0a0;stop-opacity:1;"
        offset="0"
        id="stop3766" /><stop
        style="stop-color:#3c3c3c;stop-opacity:1;"
@@ -87,10 +87,10 @@
    id="namedview9"
    showgrid="false"
    inkscape:zoom="2.36"
-   inkscape:cx="59.365132"
+   inkscape:cx="-33.643343"
    inkscape:cy="50"
-   inkscape:window-x="173"
-   inkscape:window-y="186"
+   inkscape:window-x="494"
+   inkscape:window-y="351"
    inkscape:window-maximized="0"
    inkscape:current-layer="Ebene_1" />
 <metadata
@@ -626,7 +626,7 @@
   </rdf:Description>
  <cc:Work
    rdf:about=""><dc:format>image/svg+xml</dc:format><dc:type
-     rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title></dc:title></cc:Work></rdf:RDF></metadata></x:xmpmeta>                                                                                         
+     rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata></x:xmpmeta>                                                                                         
 <?xpacket end="w"?>
 	</metadata>
 	<g

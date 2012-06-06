@@ -14,8 +14,8 @@
    height="576"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.2 r9819"
-   sodipodi:docname="btn_home_lists.svg"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="btn_home_lists_default.svg"
    inkscape:export-filename="/home/remo/git/makimono/net.makimono/res/drawable-hdpi/btn_home_lists_default.png"
    inkscape:export-xdpi="17.996485"
    inkscape:export-ydpi="17.996485">
@@ -24,7 +24,7 @@
     <linearGradient
        id="linearGradient4244">
       <stop
-         style="stop-color:#505050;stop-opacity:1;"
+         style="stop-color:#a0a0a0;stop-opacity:1;"
          offset="0"
          id="stop4246" />
       <stop
@@ -2236,16 +2236,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="138.10458"
+     inkscape:cx="-81.39542"
      inkscape:cy="225.9598"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1920"
+     inkscape:window-width="1855"
      inkscape:window-height="1056"
-     inkscape:window-x="0"
+     inkscape:window-x="65"
      inkscape:window-y="24"
      inkscape:window-maximized="1">
     <sodipodi:guide
@@ -2273,7 +2273,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
