@@ -21,5 +21,6 @@
     <string name="about">About</string>
     <string name="search_dictionary">Search dictionary</string>
     <string name="romaji">Rōmaji</string>
+    <string name="loading_">Loading ...</string>
 
 </resources>
