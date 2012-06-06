@@ -260,7 +260,12 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 
 				for (net.makimono.model.Sense s : entry.getSenses()) {
 					if (s.getPartsOfSpeech().containsAll(mixinSense.getPartsOfSpeech())) {
-						s.getMeanings().addAll(mixinSense.getMeanings());
+						for (Meaning m : mixinSense.getMeanings()) {
+							// Avoid duplicates
+							if (!s.getMeanings().contains(m)) {
+								s.getMeanings().add(m);
+							}
+						}
 						mixinSense = null;
 						break;
 					}
