@@ -130,13 +130,13 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 		meaningsGroupView.removeAllViews();
 		for (Sense sense : entry.getSenses()) {
-			if (meaningsGroupView.getChildCount() > 0) {
-				View separator = createSeparator();
-				((LinearLayout.LayoutParams) separator.getLayoutParams()).bottomMargin = getPixelForDip(8);
-				((LinearLayout.LayoutParams) separator.getLayoutParams()).topMargin = getPixelForDip(8);
-				meaningsGroupView.addView(separator);
-			}
 			if (sense.hasMeaningsForLanguage(getConfiguredLanguages())) {
+				if (meaningsGroupView.getChildCount() > 0) {
+					View separator = createSeparator();
+					((LinearLayout.LayoutParams) separator.getLayoutParams()).bottomMargin = getPixelForDip(8);
+					((LinearLayout.LayoutParams) separator.getLayoutParams()).topMargin = getPixelForDip(8);
+					meaningsGroupView.addView(separator);
+				}
 				addAdditionalInfo(sense);
 				addMeanings(sense);
 			}
