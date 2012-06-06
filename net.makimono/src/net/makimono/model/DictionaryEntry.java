@@ -96,7 +96,7 @@ public class DictionaryEntry implements Entry {
 	@Override
 	public String getExpression() {
 		if (getExpressions().isEmpty()) {
-			return getReadingSummary();
+			return getReadings().get(0);
 		} else {
 			return getExpressions().get(0);
 		}
@@ -104,7 +104,11 @@ public class DictionaryEntry implements Entry {
 
 	@Override
 	public String getReadingSummary() {
-		return StringUtils.join(getReadings(), ", ");
+		if (!getExpressions().isEmpty()) {
+			return StringUtils.join(getReadings(), ", ");
+		} else {
+			return null;
+		}
 	}
 
 	@Override
