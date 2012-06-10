@@ -46,4 +46,25 @@
         <item name="android:background">@drawable/primary_separator</item>
     </style>
 
+    <!-- Custom Theme -->
+    <style name="Theme.Makimono" parent="Theme.Sherlock.Light">
+        <item name="actionBarStyle">@style/Widget.Makimono.ActionBar</item>
+        <item name="textColorPrimary">@android:color/white</item>
+        <item name="textColorPrimaryDisableOnly">@android:color/white</item>
+        <item name="textColorPrimaryInverse">@android:color/white</item>
+    </style>
+
+    <style name="Widget.Makimono.ActionBar" parent="Widget.Sherlock.ActionBar">
+        <item name="titleTextStyle">@style/TextAppearance.Makimono.Widget.ActionBar.Title</item>
+        <!-- <item name="subtitleTextStyle">@style/TextAppearance.Sherlock.Widget.ActionBar.Subtitle</item> -->
+        <item name="background">@drawable/actionbar_background</item>
+        <item name="backgroundStacked">@drawable/actionbar_background</item>
+        <item name="backgroundSplit">@drawable/actionbar_background</item>
+    </style>
+
+    <style name="TextAppearance.Makimono.Widget.ActionBar.Title" parent="TextAppearance.Sherlock.Widget.ActionBar.Title">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

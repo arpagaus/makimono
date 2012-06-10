@@ -34,7 +34,7 @@
     <linearGradient
        id="linearGradient3754">
       <stop
-         style="stop-color:#a0a0a0;stop-opacity:1;"
+         style="stop-color:#8c8c8c;stop-opacity:1;"
          offset="0"
          id="stop3756" />
       <stop
@@ -70,16 +70,16 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1855"
-     inkscape:window-height="1056"
+     inkscape:window-width="1162"
+     inkscape:window-height="640"
      id="namedview3053"
      showgrid="false"
      inkscape:zoom="1"
-     inkscape:cx="-78.5"
+     inkscape:cx="238.73025"
      inkscape:cy="233"
-     inkscape:window-x="65"
-     inkscape:window-y="24"
-     inkscape:window-maximized="1"
+     inkscape:window-x="707"
+     inkscape:window-y="368"
+     inkscape:window-maximized="0"
      inkscape:current-layer="svg3041" />
   <circle
      cx="233"
@@ -103,7 +103,7 @@
      cy="120"
      r="30"
      id="circle3049"
-     style="fill:#969696;fill-opacity:1" />
+     style="fill:#787878;fill-opacity:1" />
   <circle
      cx="233"
      cy="346"

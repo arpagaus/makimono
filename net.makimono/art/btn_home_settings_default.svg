@@ -27,7 +27,7 @@
          rdf:resource="http://purl.org/dc/dcmitype/StillImage" /><dc:title /></cc:Work></rdf:RDF></metadata><defs
    id="defs15"><linearGradient
      id="linearGradient3754"><stop
-       style="stop-color:#a0a0a0;stop-opacity:1;"
+       style="stop-color:#8c8c8c;stop-opacity:1;"
        offset="0"
        id="stop3756" /><stop
        style="stop-color:#3c3c3c;stop-opacity:1;"
@@ -54,7 +54,7 @@
    id="namedview13"
    showgrid="false"
    inkscape:zoom="2.4180328"
-   inkscape:cx="-46.229678"
+   inkscape:cx="56.675753"
    inkscape:cy="48.799999"
    inkscape:window-x="399"
    inkscape:window-y="187"
