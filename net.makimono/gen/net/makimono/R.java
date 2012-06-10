@@ -1209,7 +1209,6 @@ containing a value of this type.
         public static final int Sherlock___Widget_Holo_DropDownItem=0x7f06002d;
         public static final int Sherlock___Widget_Holo_ListView=0x7f06002a;
         public static final int Sherlock___Widget_Holo_Spinner=0x7f060027;
-        public static final int TextAppearance_Makimono_Widget_ActionBar_Title=0x7f060063;
         public static final int TextAppearance_Sherlock_DialogWindowTitle=0x7f060049;
         public static final int TextAppearance_Sherlock_Light_DialogWindowTitle=0x7f06004a;
         public static final int TextAppearance_Sherlock_Light_Small=0x7f06004d;
@@ -1230,9 +1229,6 @@ containing a value of this type.
         public static final int TextAppearance_Sherlock_Widget_PopupMenu_Large=0x7f060043;
         public static final int TextAppearance_Sherlock_Widget_PopupMenu_Small=0x7f060045;
         public static final int TextAppearance_Sherlock_Widget_TextView_SpinnerItem=0x7f060047;
-        /**  Custom Theme 
-         */
-        public static final int Theme_Makimono=0x7f060061;
         public static final int Theme_Sherlock=0x7f060052;
         public static final int Theme_Sherlock_Dialog=0x7f06005a;
         public static final int Theme_Sherlock_ForceOverflow=0x7f060057;
@@ -1244,7 +1240,6 @@ containing a value of this type.
         public static final int Theme_Sherlock_Light_NoActionBar=0x7f060056;
         public static final int Theme_Sherlock_NoActionBar=0x7f060055;
         public static final int Widget=0x7f060004;
-        public static final int Widget_Makimono_ActionBar=0x7f060062;
         public static final int Widget_Sherlock_ActionBar=0x7f060006;
         public static final int Widget_Sherlock_ActionBar_Solid=0x7f060007;
         public static final int Widget_Sherlock_ActionBar_TabBar=0x7f06000e;
