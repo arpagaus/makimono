@@ -15,13 +15,11 @@
     <string name="stroke_count">Stroke count</string>
     <string name="radical">Radical</string>
     <string name="no_entries">No entries found</string>
-    <string name="search_kanji">Search kanji</string>
     <string name="dictionary">Dictionary</string>
     <string name="acknowledgement_edrdg">This application uses the JMDict and KANJIDIC2 dictionary files. These files are the property of the Electronic Dictionary Research and Development Group, and are used in conformance with the Group\s licence.</string>
     <string name="about">About</string>
-    <string name="search_dictionary">Search dictionary</string>
     <string name="romaji">Rōmaji</string>
-    <string name="loading_">Loading ...</string>
+    <string name="loading_">Loading &#8230;</string>
     <string name="search_for_kanji">Search for kanji</string>
     <string name="search_the_dictionary">Search the dictionary</string>
     <string name="dictionary_search">Dictionary search</string>
