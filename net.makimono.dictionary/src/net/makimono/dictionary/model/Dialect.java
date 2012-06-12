@@ -9,5 +9,5 @@ package net.makimono.dictionary.model;
  * </ol>
  */
 public enum Dialect {
-	JMdict_ksb, JMdict_ktb, JMdict_kyb, JMdict_kyu, JMdict_nab, JMdict_osb, JMdict_rkb, JMdict_thb, JMdict_tsb, JMdict_tsug
+	JMdict_hob, JMdict_ksb, JMdict_ktb, JMdict_kyb, JMdict_kyu, JMdict_nab, JMdict_osb, JMdict_rkb, JMdict_thb, JMdict_tsb, JMdict_tsug
 }

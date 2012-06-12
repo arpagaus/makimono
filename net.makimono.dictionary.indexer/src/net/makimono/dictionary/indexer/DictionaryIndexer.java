@@ -246,7 +246,11 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 	}
 
 	private String resolveEnumStringForEntityReference(String entityReference) {
-		return "JMdict_" + JMDICT_ENTITY_REFERENCES.get(entityReference).replaceAll("-", "_");
+		try {
+			return "JMdict_" + JMDICT_ENTITY_REFERENCES.get(entityReference).replaceAll("-", "_");
+		} catch (RuntimeException e) {
+			throw new RuntimeException("Failed to resolve '" + entityReference + "'", e);
+		}
 	}
 
 	private DictionaryEntry mixinAdditionalMeanings(DictionaryEntry entry) {
