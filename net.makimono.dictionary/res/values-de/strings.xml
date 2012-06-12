@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Makimono</string>
+    <string name="search">Suche</string>
+    <string name="languages">Sprachen</string>
+    <string name="settings">Einstellungen</string>
+    <string name="kanji">Kanji</string>
+    <string name="readings">Lesungen</string>
+    <string name="meanings">Übersetzungen</string>
+    <string name="miscellaneous">Verschiedenes</string>
+    <string name="grade">Stufe</string>
+    <string name="frequency">Häufigkeit</string>
+    <string name="unicode">Unicode</string>
+    <string name="stroke_count">Strichzahl</string>
+    <string name="radical">Radikal</string>
+    <string name="no_entries">Keine Einträge gefunden</string>
+    <string name="dictionary">Wörterbuch</string>
+    <string name="acknowledgement_edrdg">Diese Applikation verwendet die JMDict und KANJIDIC2 Wörterbuch-Dateien. Diese Dateien sind Eigentum der Electronic Dictionary Research and Development Group und werden in Übereinstimmung mit deren Lizenz verwendet.</string>
+    <string name="about">Info</string>
+    <string name="romaji">Rōmaji</string>
+    <string name="loading_">Wird geladen …</string>
+    <string name="search_for_kanji">Suche nach Kanji</string>
+    <string name="search_the_dictionary">Suche im Wörterbuch</string>
+    <string name="dictionary_search">Wörterbuch-Suche</string>
+    <string name="kanji_search">Kanji-Suche</string>
+
+</resources>

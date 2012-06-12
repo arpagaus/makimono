@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="text_paused_cellular">Möchten Sie das Herunterladen über die Mobilfunkverbindung aktivieren? Je nach Daten-Plan könnte Sie das Geld kosten.</string>
+    <string name="text_paused_cellular_2">Falls Sie das Herunterladen über die Mobilfunkverbindung nicht aktivieren, wird der Download automatisch fortgesetzt sobald Wi-Fi verfügbar ist.</string>
+    <string name="text_button_resume_cellular">Herunterladen fortsetzen</string>
+    <string name="text_button_wifi_settings">Wi-Fi Einstellungen</string>
+    <string name="text_verifying_download">Download wird verifiziert</string>
+    <string name="text_validation_complete">Datei-Verifikation fertiggestellt. Wählen Sie OK um die Applikation zu starten.</string>
+    <string name="text_validation_failed">Datei-Verifikation fehlgeschlagen.</string>
+    <string name="text_button_pause">Download pausieren</string>
+    <string name="text_button_resume">Download fortsetzen</string>
+    <string name="text_button_cancel">Abbrechen</string>
+    <string name="text_button_cancel_verify">Verifikation Abbrechen</string>
+
+</resources>
