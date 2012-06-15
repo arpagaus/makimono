@@ -1,19 +1,21 @@
 package net.makimono.dictionary.activity;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Enumeration;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 
 import net.makimono.dictionary.Application;
 import net.makimono.dictionary.R;
 import net.makimono.dictionary.util.ExternalStorageUtil;
 
+import org.apache.commons.compress.archivers.ArchiveEntry;
+import org.apache.commons.compress.archivers.ArchiveInputStream;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.compressors.CompressorInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -22,17 +24,17 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.google.android.vending.expansion.downloader.Helpers;
 
 public class HomeActivity extends AbstractDefaultActivity {
 	private static final String LOG_TAG = HomeActivity.class.getSimpleName();
+	private static final String INDEXES_FILE_NAME = "indexes.bin";
 
 	private View searchDictionaryTextView;
 	private View searchKanjiTextView;
@@ -116,64 +118,76 @@ public class HomeActivity extends AbstractDefaultActivity {
 			return;
 		}
 
-		if (!expansionFileExists()) {
-			Intent intent = new Intent(this, ExpansionFileDownloaderActivity.class);
-			startActivity(intent);
-		} else {
-			try {
-				File destination = ExternalStorageUtil.getExternalFilesDir(this);
-				if (!checkIndexFiles(destination)) {
-					fileExtractorTask = new FileExtractorTask(destination);
-					((Application) getApplication()).setFileExtractorTask(fileExtractorTask);
-					fileExtractorTask.showDialog(this);
-					fileExtractorTask.start();
-				}
-			} catch (Exception e) {
-				Log.e(LOG_TAG, "Error when checking index files", e);
+		try {
+			File destination = ExternalStorageUtil.getExternalFilesDir(this);
+			if (!checkIndexFiles(destination)) {
+				fileExtractorTask = new FileExtractorTask(destination);
+				((Application) getApplication()).setFileExtractorTask(fileExtractorTask);
+				fileExtractorTask.showDialog(this);
+				fileExtractorTask.start();
 			}
+		} catch (Exception e) {
+			Log.e(LOG_TAG, "Error when checking index files", e);
 		}
-	}
-
-	private File getExpansionFile() {
-		String fileName = Helpers.getExpansionAPKFileName(this, true, ExpansionFileDownloaderActivity.MAIN_FILE.fileVersion);
-		fileName = Helpers.generateSaveFileName(this, fileName);
-		return new File(fileName);
-	}
-
-	private boolean expansionFileExists() {
-		File expansionFile = getExpansionFile();
-		return expansionFile.exists() && expansionFile.length() == ExpansionFileDownloaderActivity.MAIN_FILE.fileSize;
 	}
 
 	private boolean checkIndexFiles(File destination) throws ZipException, IOException {
-		ZipFile zipFile = new ZipFile(getExpansionFile());
-		Enumeration<? extends ZipEntry> entries = zipFile.entries();
-
-		while (entries.hasMoreElements()) {
-			ZipEntry zipEntry = entries.nextElement();
-			if (zipEntry.isDirectory()) {
-				continue;
+		long time = System.currentTimeMillis();
+		ArchiveInputStream archiveInputStream = getArchiveInputStream(INDEXES_FILE_NAME);
+		try {
+			ArchiveEntry entry;
+			while ((entry = archiveInputStream.getNextEntry()) != null) {
+				if (!entry.isDirectory()) {
+					File file = new File(destination, entry.getName());
+					if (!file.exists() || file.length() != entry.getSize()) {
+						Log.i(LOG_TAG, "Missing or wrong size: " + entry.getName() + " (file.exists()=" + file.exists() + ", (file.length() - zipEntry.getSize())=" + (file.length() - entry.getSize())
+								+ ")");
+						return false;
+					}
+				}
 			}
-
-			File file = new File(destination, zipEntry.getName());
-			if (!file.exists() || file.length() != zipEntry.getSize()) {
-				Log.i(LOG_TAG, "Missing or wrong size: " + zipEntry.getName() + " (file.exists()=" + file.exists() + ", (file.length() - zipEntry.getSize())=" + (file.length() - zipEntry.getSize())
-						+ ")");
-				zipFile.close();
-				return false;
-			}
+		} finally {
+			IOUtils.closeQuietly(archiveInputStream);
+			Log.i(LOG_TAG, "checkIndexFiles took " + (System.currentTimeMillis() - time) + "ms");
 		}
 		Log.d(LOG_TAG, "All index files present");
-		zipFile.close();
-		return true;
+		return false;
+
+		// ZipFile zipFile = new ZipFile(getExpansionFile());
+		// Enumeration<? extends ZipEntry> entries = zipFile.entries();
+		//
+		// while (entries.hasMoreElements()) {
+		// ZipEntry zipEntry = entries.nextElement();
+		// if (zipEntry.isDirectory()) {
+		// continue;
+		// }
+		//
+		// File file = new File(destination, zipEntry.getName());
+		// if (!file.exists() || file.length() != zipEntry.getSize()) {
+		// Log.i(LOG_TAG, "Missing or wrong size: " + zipEntry.getName() +
+		// " (file.exists()=" + file.exists() +
+		// ", (file.length() - zipEntry.getSize())=" + (file.length() -
+		// zipEntry.getSize())
+		// + ")");
+		// zipFile.close();
+		// return false;
+		// }
+		// }
+	}
+
+	private ArchiveInputStream getArchiveInputStream(String fileName) throws IOException {
+		InputStream bufferedInputStream = new BufferedInputStream(getAssets().open(fileName));
+		CompressorInputStream compressorInputStream = new GzipCompressorInputStream(bufferedInputStream);
+		ArchiveInputStream archiveInputStream = new TarArchiveInputStream(compressorInputStream);
+		return archiveInputStream;
 	}
 
 	public class FileExtractorTask extends Thread {
 		private File destination;
 		private ProgressDialog progressDialog;
 
-		private int maxProgress;
-		private int currentProgress;
+		private long maxProgress;
+		private long currentProgress;
 
 		public FileExtractorTask(File destination) {
 			super(FileExtractorTask.class.getSimpleName());
@@ -199,51 +213,49 @@ public class HomeActivity extends AbstractDefaultActivity {
 
 		private synchronized void updateDialog() {
 			if (progressDialog != null) {
-				progressDialog.setMax(maxProgress);
-				progressDialog.setProgress(currentProgress);
+				progressDialog.setMax((int) maxProgress);
+				progressDialog.setProgress((int) currentProgress);
 			}
 		}
 
 		@Override
 		public void run() {
+			long startTime = System.currentTimeMillis();
+
 			try {
 				FileUtils.deleteDirectory(destination);
 
-				ZipFile zipFile = new ZipFile(getExpansionFile());
-				maxProgress = zipFile.size();
+				AssetFileDescriptor fileDescriptor = getAssets().openFd(INDEXES_FILE_NAME);
+				System.out.println("fileDescriptor.getLength()=" + fileDescriptor.getLength());
+				maxProgress = fileDescriptor.getLength() / 1048576;
 				currentProgress = 0;
 
-				Enumeration<? extends ZipEntry> entries = zipFile.entries();
+				ArchiveInputStream archiveInputStream = getArchiveInputStream(INDEXES_FILE_NAME);
 
-				while (entries.hasMoreElements()) {
-					currentProgress++;
-					ZipEntry zipEntry = entries.nextElement();
-					if (zipEntry.isDirectory()) {
-						continue;
+				ArchiveEntry entry;
+				while ((entry = archiveInputStream.getNextEntry()) != null) {
+					long time = System.currentTimeMillis();
+					if (!entry.isDirectory()) {
+						File file = new File(destination, entry.getName());
+						file.getParentFile().mkdirs();
+						FileOutputStream outputStream = new FileOutputStream(file);
+						IOUtils.copy(archiveInputStream, outputStream);
+						IOUtils.closeQuietly(outputStream);
 					}
 
-					long time = System.currentTimeMillis();
-
-					File file = new File(destination, zipEntry.getName());
-					file.getParentFile().mkdirs();
-					InputStream inputStream = zipFile.getInputStream(zipEntry);
-					OutputStream outputStream = new FileOutputStream(file);
-
-					IOUtils.copy(inputStream, outputStream);
-					IOUtils.closeQuietly(inputStream);
-					IOUtils.closeQuietly(outputStream);
-
-					Log.d(LOG_TAG, "Extracting " + zipEntry.getName() + " took " + (System.currentTimeMillis() - time) + "ms");
+					currentProgress = archiveInputStream.getBytesRead() / 1048576;
 					updateDialog();
+					Log.d(LOG_TAG, "Extracting " + entry.getName() + " took " + (System.currentTimeMillis() - time) + "ms");
 				}
 
-				zipFile.close();
-			} catch (IOException e) {
+				IOUtils.closeQuietly(archiveInputStream);
+			} catch (Exception e) {
 				Log.e("", "Error when extracting index files", e);
-				Toast.makeText(HomeActivity.this, "Initialization failed", Toast.LENGTH_LONG);
 			} finally {
 				dismissDialog();
 			}
+
+			Log.i(LOG_TAG, "FileExtractorTask finished in " + (System.currentTimeMillis() - startTime) + "ms");
 		}
 	}
 }
