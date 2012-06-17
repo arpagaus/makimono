@@ -561,13 +561,13 @@ containing a value of this type.
         public static final int windowSplitActionBar=0x7f010035;
     }
     public static final class bool {
-        public static final int abs__action_bar_embed_tabs=0x7f080000;
-        public static final int abs__action_bar_expanded_action_views_exclusive=0x7f080002;
+        public static final int abs__action_bar_embed_tabs=0x7f060000;
+        public static final int abs__action_bar_expanded_action_views_exclusive=0x7f060002;
         /**  Whether action menu items should be displayed in ALLCAPS or not.
          Defaults to true. If this is not appropriate for specific locales
          it should be disabled in that locale's resources. 
          */
-        public static final int abs__config_actionMenuItemAllCaps=0x7f080004;
+        public static final int abs__config_actionMenuItemAllCaps=0x7f060004;
         /**  Whether action menu items should obey the "withText" showAsAction
          flag. This may be set to false for situations where space is
          extremely limited. 
@@ -575,27 +575,27 @@ containing a value of this type.
          flag. This may be set to false for situations where space is
          extremely limited. 
          */
-        public static final int abs__config_allowActionMenuItemTextWithIcon=0x7f080005;
+        public static final int abs__config_allowActionMenuItemTextWithIcon=0x7f060005;
         /**  Sets whether menu shortcuts should be displayed on panel menus when
          a keyboard is present. 
          */
-        public static final int abs__config_showMenuShortcutsWhenKeyboardPresent=0x7f080003;
-        public static final int abs__split_action_bar_is_narrow=0x7f080001;
+        public static final int abs__config_showMenuShortcutsWhenKeyboardPresent=0x7f060003;
+        public static final int abs__split_action_bar_is_narrow=0x7f060001;
     }
     public static final class color {
-        public static final int abs__background_holo_dark=0x7f090000;
-        public static final int abs__background_holo_light=0x7f090001;
-        public static final int abs__bright_foreground_disabled_holo_dark=0x7f090004;
-        public static final int abs__bright_foreground_disabled_holo_light=0x7f090005;
-        public static final int abs__bright_foreground_holo_dark=0x7f090002;
-        public static final int abs__bright_foreground_holo_light=0x7f090003;
-        public static final int abs__bright_foreground_inverse_holo_dark=0x7f090006;
-        public static final int abs__bright_foreground_inverse_holo_light=0x7f090007;
-        public static final int abs__holo_blue_light=0x7f090008;
-        public static final int abs__primary_text_disable_only_holo_dark=0x7f090009;
-        public static final int abs__primary_text_disable_only_holo_light=0x7f09000a;
-        public static final int abs__primary_text_holo_dark=0x7f09000b;
-        public static final int abs__primary_text_holo_light=0x7f09000c;
+        public static final int abs__background_holo_dark=0x7f070000;
+        public static final int abs__background_holo_light=0x7f070001;
+        public static final int abs__bright_foreground_disabled_holo_dark=0x7f070004;
+        public static final int abs__bright_foreground_disabled_holo_light=0x7f070005;
+        public static final int abs__bright_foreground_holo_dark=0x7f070002;
+        public static final int abs__bright_foreground_holo_light=0x7f070003;
+        public static final int abs__bright_foreground_inverse_holo_dark=0x7f070006;
+        public static final int abs__bright_foreground_inverse_holo_light=0x7f070007;
+        public static final int abs__holo_blue_light=0x7f070008;
+        public static final int abs__primary_text_disable_only_holo_dark=0x7f070009;
+        public static final int abs__primary_text_disable_only_holo_light=0x7f07000a;
+        public static final int abs__primary_text_holo_dark=0x7f07000b;
+        public static final int abs__primary_text_holo_light=0x7f07000c;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -607,7 +607,7 @@ containing a value of this type.
  Default height of an action bar. 
  Default height of an action bar. 
          */
-        public static final int abs__action_bar_default_height=0x7f0a0001;
+        public static final int abs__action_bar_default_height=0x7f080001;
         /**  Vertical padding around action bar icons. 
  Vertical padding around action bar icons. 
  Vertical padding around action bar icons. 
@@ -617,7 +617,7 @@ containing a value of this type.
  Vertical padding around action bar icons. 
  Vertical padding around action bar icons. 
          */
-        public static final int abs__action_bar_icon_vertical_padding=0x7f0a0002;
+        public static final int abs__action_bar_icon_vertical_padding=0x7f080002;
         /**  Bottom margin for action bar subtitles 
  Bottom margin for action bar subtitles 
  Bottom margin for action bar subtitles 
@@ -627,7 +627,7 @@ containing a value of this type.
  Bottom margin for action bar subtitles 
  Bottom margin for action bar subtitles 
          */
-        public static final int abs__action_bar_subtitle_bottom_margin=0x7f0a0006;
+        public static final int abs__action_bar_subtitle_bottom_margin=0x7f080006;
         /**  Text size for action bar subtitles 
  Text size for action bar subtitles 
  Text size for action bar subtitles 
@@ -637,7 +637,7 @@ containing a value of this type.
  Text size for action bar subtitles 
  Text size for action bar subtitles 
          */
-        public static final int abs__action_bar_subtitle_text_size=0x7f0a0004;
+        public static final int abs__action_bar_subtitle_text_size=0x7f080004;
         /**  Top margin for action bar subtitles 
  Top margin for action bar subtitles 
  Top margin for action bar subtitles 
@@ -647,7 +647,7 @@ containing a value of this type.
  Top margin for action bar subtitles 
  Top margin for action bar subtitles 
          */
-        public static final int abs__action_bar_subtitle_top_margin=0x7f0a0005;
+        public static final int abs__action_bar_subtitle_top_margin=0x7f080005;
         /**  Text size for action bar titles 
  Text size for action bar titles 
  Text size for action bar titles 
@@ -657,19 +657,19 @@ containing a value of this type.
  Text size for action bar titles 
  Text size for action bar titles 
          */
-        public static final int abs__action_bar_title_text_size=0x7f0a0003;
+        public static final int abs__action_bar_title_text_size=0x7f080003;
         /**  Minimum width for an action button in the menu area of an action bar 
  Minimum width for an action button in the menu area of an action bar 
          */
-        public static final int abs__action_button_min_width=0x7f0a0007;
+        public static final int abs__action_button_min_width=0x7f080007;
         /**  Dialog title height 
          */
-        public static final int abs__alert_dialog_title_height=0x7f0a0008;
+        public static final int abs__alert_dialog_title_height=0x7f080008;
         /**  The maximum width we would prefer dialogs to be.  0 if there is no
          maximum (let them grow as large as the screen).  Actual values are
          specified for -large and -xlarge configurations. 
          */
-        public static final int abs__config_prefDialogWidth=0x7f0a0000;
+        public static final int abs__config_prefDialogWidth=0x7f080000;
         /**  The platform's desired minimum size for a dialog's width when it
          is along the major axis (that is the screen is landscape).  This may
          be either a fraction or a dimension. 
@@ -680,7 +680,7 @@ containing a value of this type.
          is along the major axis (that is the screen is landscape).  This may
          be either a fraction or a dimension. 
          */
-        public static final int abs__dialog_min_width_major=0x7f0a0009;
+        public static final int abs__dialog_min_width_major=0x7f080009;
         /**  The platform's desired minimum size for a dialog's width when it
          is along the minor axis (that is the screen is portrait).  This may
          be either a fraction or a dimension. 
@@ -691,13 +691,13 @@ containing a value of this type.
          is along the minor axis (that is the screen is portrait).  This may
          be either a fraction or a dimension. 
          */
-        public static final int abs__dialog_min_width_minor=0x7f0a000a;
+        public static final int abs__dialog_min_width_minor=0x7f08000a;
         /**  Minimum width for an action button in the menu area of an action bar 
  Minimum width for an action button in the menu area of an action bar 
          */
-        public static final int action_button_min_width=0x7f0a000b;
-        public static final int content_text_size=0x7f0a000c;
-        public static final int label_text_size=0x7f0a000d;
+        public static final int action_button_min_width=0x7f08000b;
+        public static final int content_text_size=0x7f08000c;
+        public static final int label_text_size=0x7f08000d;
     }
     public static final class drawable {
         public static final int abs__ab_bottom_solid_dark_holo=0x7f020000;
@@ -814,118 +814,96 @@ containing a value of this type.
         public static final int secondary_separator=0x7f02006f;
     }
     public static final class id {
-        public static final int about=0x7f070047;
-        public static final int about_html=0x7f070011;
-        public static final int abs__action_bar=0x7f070024;
-        public static final int abs__action_bar_container=0x7f070023;
-        public static final int abs__action_bar_subtitle=0x7f070013;
-        public static final int abs__action_bar_title=0x7f070012;
-        public static final int abs__action_context_bar=0x7f070025;
-        public static final int abs__action_menu_divider=0x7f07000c;
-        public static final int abs__action_menu_presenter=0x7f07000d;
-        public static final int abs__action_mode_bar=0x7f070028;
-        public static final int abs__action_mode_bar_stub=0x7f070027;
-        public static final int abs__action_mode_close_button=0x7f070016;
-        public static final int abs__activity_chooser_view_content=0x7f070017;
-        public static final int abs__checkbox=0x7f070020;
-        public static final int abs__content=0x7f07001f;
-        public static final int abs__default_activity_button=0x7f07001a;
-        public static final int abs__expand_activities_button=0x7f070018;
-        public static final int abs__home=0x7f07000a;
-        public static final int abs__icon=0x7f07001c;
-        public static final int abs__image=0x7f070019;
-        public static final int abs__imageButton=0x7f070014;
-        public static final int abs__list_item=0x7f07001b;
-        public static final int abs__progress_circular=0x7f07000e;
-        public static final int abs__progress_horizontal=0x7f07000f;
-        public static final int abs__radio=0x7f070022;
-        public static final int abs__shortcut=0x7f070021;
-        public static final int abs__split_action_bar=0x7f070026;
-        public static final int abs__textButton=0x7f070015;
-        public static final int abs__title=0x7f07001d;
-        public static final int abs__titleDivider=0x7f07001e;
-        public static final int abs__up=0x7f07000b;
-        public static final int appIcon=0x7f070064;
-        public static final int approveCellular=0x7f07003e;
-        public static final int buttonRow=0x7f070041;
-        public static final int cancelButton=0x7f07003d;
-        public static final int description=0x7f070069;
-        public static final int disableHome=0x7f070009;
-        public static final int downloaderDashboard=0x7f070036;
-        public static final int entry_expression=0x7f070029;
-        public static final int entry_kanji=0x7f070034;
-        public static final int entry_meanings=0x7f070031;
-        public static final int entry_reading=0x7f07002c;
-        public static final int entry_separator_kanji=0x7f070032;
-        public static final int entry_separator_line_kanji=0x7f070033;
-        public static final int entry_separator_line_meanings=0x7f070030;
-        public static final int entry_separator_meanings=0x7f07002f;
-        public static final int homeAsUp=0x7f070006;
-        public static final int kanji_animation=0x7f070049;
-        public static final int kanji_frequency=0x7f07005c;
-        public static final int kanji_grade=0x7f07005b;
-        public static final int kanji_hangul=0x7f070050;
-        public static final int kanji_jlpt=0x7f07005a;
-        public static final int kanji_kun_yomi=0x7f07004e;
-        public static final int kanji_literal=0x7f070048;
-        public static final int kanji_meanings=0x7f070054;
-        public static final int kanji_meanings_separator_line=0x7f070053;
-        public static final int kanji_meanings_separator_text=0x7f070052;
-        public static final int kanji_misc=0x7f070057;
-        public static final int kanji_misc_separator_line=0x7f070056;
-        public static final int kanji_misc_separator_text=0x7f070055;
-        public static final int kanji_nanori=0x7f07004f;
-        public static final int kanji_on_yomi=0x7f07004d;
-        public static final int kanji_pinyin=0x7f070051;
-        public static final int kanji_radical=0x7f070058;
-        public static final int kanji_readings=0x7f07004c;
-        public static final int kanji_readings_separator_line=0x7f07004b;
-        public static final int kanji_readings_separator_text=0x7f07004a;
-        public static final int kanji_stroke_count=0x7f070059;
-        public static final int kanji_unicode=0x7f07005d;
-        public static final int kanji_writing=0x7f07005e;
-        public static final int listMode=0x7f070002;
-        public static final int menu_preferences=0x7f07006b;
-        public static final int menu_search=0x7f07006c;
-        public static final int next_expression=0x7f07002b;
-        public static final int next_reading=0x7f07002e;
-        public static final int no_entries=0x7f07005f;
-        public static final int normal=0x7f070001;
-        public static final int pauseButton=0x7f07003c;
-        public static final int paused_text=0x7f07006a;
-        public static final int previous_expression=0x7f07002a;
-        public static final int previous_reading=0x7f07002d;
-        public static final int progressAsFraction=0x7f070037;
-        public static final int progressAsPercentage=0x7f070038;
-        public static final int progressAverageSpeed=0x7f07003a;
-        public static final int progressBar=0x7f070039;
-        public static final int progressTimeRemaining=0x7f07003b;
-        public static final int progress_bar=0x7f070060;
-        public static final int progress_bar_frame=0x7f070068;
-        public static final int progress_text=0x7f070065;
-        public static final int result_expression=0x7f070061;
-        public static final int result_meaning=0x7f070063;
-        public static final int result_reading=0x7f070062;
-        public static final int resumeOverCellular=0x7f070042;
-        public static final int search_dictionary=0x7f070044;
-        public static final int search_kanji=0x7f070045;
-        public static final int settings=0x7f070046;
-        public static final int showCustom=0x7f070008;
-        public static final int showHome=0x7f070005;
-        public static final int showTitle=0x7f070007;
-        public static final int statusText=0x7f070035;
-        public static final int tabMode=0x7f070003;
-        public static final int textPausedParagraph1=0x7f07003f;
-        public static final int textPausedParagraph2=0x7f070040;
-        public static final int time_remaining=0x7f070067;
-        public static final int title=0x7f070066;
-        public static final int useLogo=0x7f070004;
-        public static final int version=0x7f070010;
-        public static final int wifiSettingsButton=0x7f070043;
-        public static final int wrap_content=0x7f070000;
+        public static final int about=0x7f050038;
+        public static final int about_html=0x7f050011;
+        public static final int abs__action_bar=0x7f050024;
+        public static final int abs__action_bar_container=0x7f050023;
+        public static final int abs__action_bar_subtitle=0x7f050013;
+        public static final int abs__action_bar_title=0x7f050012;
+        public static final int abs__action_context_bar=0x7f050025;
+        public static final int abs__action_menu_divider=0x7f05000c;
+        public static final int abs__action_menu_presenter=0x7f05000d;
+        public static final int abs__action_mode_bar=0x7f050028;
+        public static final int abs__action_mode_bar_stub=0x7f050027;
+        public static final int abs__action_mode_close_button=0x7f050016;
+        public static final int abs__activity_chooser_view_content=0x7f050017;
+        public static final int abs__checkbox=0x7f050020;
+        public static final int abs__content=0x7f05001f;
+        public static final int abs__default_activity_button=0x7f05001a;
+        public static final int abs__expand_activities_button=0x7f050018;
+        public static final int abs__home=0x7f05000a;
+        public static final int abs__icon=0x7f05001c;
+        public static final int abs__image=0x7f050019;
+        public static final int abs__imageButton=0x7f050014;
+        public static final int abs__list_item=0x7f05001b;
+        public static final int abs__progress_circular=0x7f05000e;
+        public static final int abs__progress_horizontal=0x7f05000f;
+        public static final int abs__radio=0x7f050022;
+        public static final int abs__shortcut=0x7f050021;
+        public static final int abs__split_action_bar=0x7f050026;
+        public static final int abs__textButton=0x7f050015;
+        public static final int abs__title=0x7f05001d;
+        public static final int abs__titleDivider=0x7f05001e;
+        public static final int abs__up=0x7f05000b;
+        public static final int disableHome=0x7f050009;
+        public static final int entry_expression=0x7f050029;
+        public static final int entry_kanji=0x7f050034;
+        public static final int entry_meanings=0x7f050031;
+        public static final int entry_reading=0x7f05002c;
+        public static final int entry_separator_kanji=0x7f050032;
+        public static final int entry_separator_line_kanji=0x7f050033;
+        public static final int entry_separator_line_meanings=0x7f050030;
+        public static final int entry_separator_meanings=0x7f05002f;
+        public static final int homeAsUp=0x7f050006;
+        public static final int kanji_animation=0x7f05003a;
+        public static final int kanji_frequency=0x7f05004d;
+        public static final int kanji_grade=0x7f05004c;
+        public static final int kanji_hangul=0x7f050041;
+        public static final int kanji_jlpt=0x7f05004b;
+        public static final int kanji_kun_yomi=0x7f05003f;
+        public static final int kanji_literal=0x7f050039;
+        public static final int kanji_meanings=0x7f050045;
+        public static final int kanji_meanings_separator_line=0x7f050044;
+        public static final int kanji_meanings_separator_text=0x7f050043;
+        public static final int kanji_misc=0x7f050048;
+        public static final int kanji_misc_separator_line=0x7f050047;
+        public static final int kanji_misc_separator_text=0x7f050046;
+        public static final int kanji_nanori=0x7f050040;
+        public static final int kanji_on_yomi=0x7f05003e;
+        public static final int kanji_pinyin=0x7f050042;
+        public static final int kanji_radical=0x7f050049;
+        public static final int kanji_readings=0x7f05003d;
+        public static final int kanji_readings_separator_line=0x7f05003c;
+        public static final int kanji_readings_separator_text=0x7f05003b;
+        public static final int kanji_stroke_count=0x7f05004a;
+        public static final int kanji_unicode=0x7f05004e;
+        public static final int kanji_writing=0x7f05004f;
+        public static final int listMode=0x7f050002;
+        public static final int menu_preferences=0x7f050055;
+        public static final int menu_search=0x7f050056;
+        public static final int next_expression=0x7f05002b;
+        public static final int next_reading=0x7f05002e;
+        public static final int no_entries=0x7f050050;
+        public static final int normal=0x7f050001;
+        public static final int previous_expression=0x7f05002a;
+        public static final int previous_reading=0x7f05002d;
+        public static final int progress_bar=0x7f050051;
+        public static final int result_expression=0x7f050052;
+        public static final int result_meaning=0x7f050054;
+        public static final int result_reading=0x7f050053;
+        public static final int search_dictionary=0x7f050035;
+        public static final int search_kanji=0x7f050036;
+        public static final int settings=0x7f050037;
+        public static final int showCustom=0x7f050008;
+        public static final int showHome=0x7f050005;
+        public static final int showTitle=0x7f050007;
+        public static final int tabMode=0x7f050003;
+        public static final int useLogo=0x7f050004;
+        public static final int version=0x7f050010;
+        public static final int wrap_content=0x7f050000;
     }
     public static final class integer {
-        public static final int abs__max_action_buttons=0x7f0b0000;
+        public static final int abs__max_action_buttons=0x7f090000;
     }
     public static final class layout {
         public static final int about=0x7f030000;
@@ -950,384 +928,332 @@ containing a value of this type.
         public static final int abs__screen_simple=0x7f030013;
         public static final int abs__screen_simple_overlay_action_mode=0x7f030014;
         public static final int dictionary_entry=0x7f030015;
-        public static final int expansion_downloader=0x7f030016;
-        public static final int home=0x7f030017;
-        public static final int kanji_entry=0x7f030018;
-        public static final int kanji_writing=0x7f030019;
-        public static final int search_result=0x7f03001a;
-        public static final int search_result_entry=0x7f03001b;
-        public static final int sherlock_spinner_dropdown_item=0x7f03001c;
-        public static final int sherlock_spinner_item=0x7f03001d;
-        public static final int status_bar_ongoing_event_progress_bar=0x7f03001e;
+        public static final int home=0x7f030016;
+        public static final int kanji_entry=0x7f030017;
+        public static final int kanji_writing=0x7f030018;
+        public static final int search_result=0x7f030019;
+        public static final int search_result_entry=0x7f03001a;
+        public static final int sherlock_spinner_dropdown_item=0x7f03001b;
+        public static final int sherlock_spinner_item=0x7f03001c;
     }
     public static final class menu {
         public static final int base=0x7f0c0000;
         public static final int search=0x7f0c0001;
     }
     public static final class string {
-        public static final int JMdict_Buddh=0x7f050032;
-        public static final int JMdict_MA=0x7f050021;
-        public static final int JMdict_Shinto=0x7f0500c1;
-        public static final int JMdict_X=0x7f050022;
-        public static final int JMdict_abbr=0x7f050023;
-        public static final int JMdict_adj=0x7f05002a;
-        public static final int JMdict_adj_f=0x7f050029;
-        public static final int JMdict_adj_i=0x7f050024;
-        public static final int JMdict_adj_kari=0x7f050091;
-        public static final int JMdict_adj_ku=0x7f050092;
-        public static final int JMdict_adj_na=0x7f050025;
-        public static final int JMdict_adj_nari=0x7f050094;
-        public static final int JMdict_adj_no=0x7f050026;
-        public static final int JMdict_adj_pn=0x7f050027;
-        public static final int JMdict_adj_shiku=0x7f050093;
-        public static final int JMdict_adj_t=0x7f050028;
-        public static final int JMdict_adv=0x7f05002b;
-        public static final int JMdict_adv_to=0x7f05002c;
-        public static final int JMdict_arch=0x7f05002d;
-        public static final int JMdict_archit=0x7f0500b4;
-        public static final int JMdict_astron=0x7f0500b5;
-        public static final int JMdict_ateji=0x7f05002e;
-        public static final int JMdict_aux=0x7f05002f;
-        public static final int JMdict_aux_adj=0x7f050031;
-        public static final int JMdict_aux_v=0x7f050030;
-        public static final int JMdict_baseb=0x7f0500b6;
-        public static final int JMdict_biol=0x7f0500b7;
-        public static final int JMdict_bot=0x7f0500b8;
-        public static final int JMdict_bus=0x7f0500b9;
-        public static final int JMdict_chem=0x7f050033;
-        public static final int JMdict_chn=0x7f050034;
-        public static final int JMdict_col=0x7f050035;
-        public static final int JMdict_comp=0x7f050036;
-        public static final int JMdict_conj=0x7f050037;
-        public static final int JMdict_ctr=0x7f050038;
-        public static final int JMdict_derog=0x7f050039;
-        public static final int JMdict_eK=0x7f05003a;
-        public static final int JMdict_econ=0x7f0500ba;
-        public static final int JMdict_ek=0x7f05003b;
-        public static final int JMdict_eng=0x7f0500bb;
-        public static final int JMdict_exp=0x7f05003c;
-        public static final int JMdict_fam=0x7f05003d;
-        public static final int JMdict_fem=0x7f05003e;
-        public static final int JMdict_fin=0x7f0500bc;
-        public static final int JMdict_food=0x7f05003f;
-        public static final int JMdict_geol=0x7f0500bd;
-        public static final int JMdict_geom=0x7f050040;
-        public static final int JMdict_gikun=0x7f050041;
-        public static final int JMdict_hob=0x7f05008e;
-        public static final int JMdict_hon=0x7f050042;
-        public static final int JMdict_hum=0x7f050043;
-        public static final int JMdict_iK=0x7f050044;
-        public static final int JMdict_id=0x7f050045;
-        public static final int JMdict_ik=0x7f050046;
-        public static final int JMdict_int=0x7f050047;
-        public static final int JMdict_io=0x7f050048;
-        public static final int JMdict_iv=0x7f050049;
-        public static final int JMdict_joc=0x7f0500c5;
-        public static final int JMdict_ksb=0x7f050086;
-        public static final int JMdict_ktb=0x7f050087;
-        public static final int JMdict_kyb=0x7f050084;
-        public static final int JMdict_kyu=0x7f05008b;
-        public static final int JMdict_law=0x7f0500be;
-        public static final int JMdict_ling=0x7f05004a;
-        public static final int JMdict_m_sl=0x7f05004b;
-        public static final int JMdict_male=0x7f05004c;
-        public static final int JMdict_male_sl=0x7f05004d;
-        public static final int JMdict_math=0x7f05004e;
-        public static final int JMdict_med=0x7f0500bf;
-        public static final int JMdict_mil=0x7f05004f;
-        public static final int JMdict_music=0x7f0500c0;
-        public static final int JMdict_n=0x7f050050;
-        public static final int JMdict_n_adv=0x7f050051;
-        public static final int JMdict_n_pr=0x7f050095;
-        public static final int JMdict_n_pref=0x7f050053;
-        public static final int JMdict_n_suf=0x7f050052;
-        public static final int JMdict_n_t=0x7f050054;
-        public static final int JMdict_nab=0x7f05008d;
-        public static final int JMdict_num=0x7f050055;
-        public static final int JMdict_oK=0x7f050056;
-        public static final int JMdict_obs=0x7f050057;
-        public static final int JMdict_obsc=0x7f050058;
-        public static final int JMdict_ok=0x7f050059;
-        public static final int JMdict_on_mim=0x7f05005a;
-        public static final int JMdict_osb=0x7f050085;
-        public static final int JMdict_physics=0x7f050061;
-        public static final int JMdict_pn=0x7f05005b;
-        public static final int JMdict_poet=0x7f05005c;
-        public static final int JMdict_pol=0x7f05005d;
-        public static final int JMdict_pref=0x7f05005e;
-        public static final int JMdict_proverb=0x7f05005f;
-        public static final int JMdict_prt=0x7f050060;
-        public static final int JMdict_rare=0x7f050062;
-        public static final int JMdict_rkb=0x7f05008c;
-        public static final int JMdict_sens=0x7f050063;
-        public static final int JMdict_sl=0x7f050064;
-        public static final int JMdict_sports=0x7f0500c2;
-        public static final int JMdict_suf=0x7f050065;
-        public static final int JMdict_sumo=0x7f0500c3;
-        public static final int JMdict_thb=0x7f050089;
-        public static final int JMdict_tsb=0x7f050088;
-        public static final int JMdict_tsug=0x7f05008a;
-        public static final int JMdict_uK=0x7f050066;
-        public static final int JMdict_uk=0x7f050067;
-        public static final int JMdict_v1=0x7f050068;
-        public static final int JMdict_v2a_s=0x7f050069;
-        public static final int JMdict_v2b_k=0x7f0500a3;
-        public static final int JMdict_v2b_s=0x7f0500af;
-        public static final int JMdict_v2d_k=0x7f0500a1;
-        public static final int JMdict_v2d_s=0x7f0500ac;
-        public static final int JMdict_v2g_k=0x7f05009f;
-        public static final int JMdict_v2g_s=0x7f0500a8;
-        public static final int JMdict_v2h_k=0x7f0500a2;
-        public static final int JMdict_v2h_s=0x7f0500ae;
-        public static final int JMdict_v2k_k=0x7f05009e;
-        public static final int JMdict_v2k_s=0x7f0500a7;
-        public static final int JMdict_v2m_k=0x7f0500a4;
-        public static final int JMdict_v2m_s=0x7f0500b0;
-        public static final int JMdict_v2n_s=0x7f0500ad;
-        public static final int JMdict_v2r_k=0x7f0500a6;
-        public static final int JMdict_v2r_s=0x7f0500b2;
-        public static final int JMdict_v2s_s=0x7f0500a9;
-        public static final int JMdict_v2t_k=0x7f0500a0;
-        public static final int JMdict_v2t_s=0x7f0500ab;
-        public static final int JMdict_v2w_s=0x7f0500b3;
-        public static final int JMdict_v2y_k=0x7f0500a5;
-        public static final int JMdict_v2y_s=0x7f0500b1;
-        public static final int JMdict_v2z_s=0x7f0500aa;
-        public static final int JMdict_v4b=0x7f05009c;
-        public static final int JMdict_v4g=0x7f050098;
-        public static final int JMdict_v4h=0x7f05006a;
-        public static final int JMdict_v4k=0x7f050097;
-        public static final int JMdict_v4m=0x7f05009d;
-        public static final int JMdict_v4n=0x7f05009b;
-        public static final int JMdict_v4r=0x7f05006b;
-        public static final int JMdict_v4s=0x7f050099;
-        public static final int JMdict_v4t=0x7f05009a;
-        public static final int JMdict_v5=0x7f05006c;
-        public static final int JMdict_v5aru=0x7f05006d;
-        public static final int JMdict_v5b=0x7f05006e;
-        public static final int JMdict_v5g=0x7f05006f;
-        public static final int JMdict_v5k=0x7f050070;
-        public static final int JMdict_v5k_s=0x7f050071;
-        public static final int JMdict_v5m=0x7f050072;
-        public static final int JMdict_v5n=0x7f050073;
-        public static final int JMdict_v5r=0x7f050074;
-        public static final int JMdict_v5r_i=0x7f050075;
-        public static final int JMdict_v5s=0x7f050076;
-        public static final int JMdict_v5t=0x7f050077;
-        public static final int JMdict_v5u=0x7f050078;
-        public static final int JMdict_v5u_s=0x7f050079;
-        public static final int JMdict_v5uru=0x7f05007a;
-        public static final int JMdict_v_unspec=0x7f050096;
-        public static final int JMdict_vi=0x7f05007c;
-        public static final int JMdict_vk=0x7f05007d;
-        public static final int JMdict_vn=0x7f05007e;
-        public static final int JMdict_vr=0x7f05007f;
-        public static final int JMdict_vs=0x7f050080;
-        public static final int JMdict_vs_c=0x7f050081;
-        public static final int JMdict_vs_i=0x7f050083;
-        public static final int JMdict_vs_s=0x7f050082;
-        public static final int JMdict_vt=0x7f05008f;
-        public static final int JMdict_vulg=0x7f050090;
-        public static final int JMdict_vz=0x7f05007b;
-        public static final int JMdict_zool=0x7f0500c4;
-        public static final int about=0x7f0500d6;
+        public static final int JMdict_Buddh=0x7f0a001b;
+        public static final int JMdict_MA=0x7f0a000a;
+        public static final int JMdict_Shinto=0x7f0a00aa;
+        public static final int JMdict_X=0x7f0a000b;
+        public static final int JMdict_abbr=0x7f0a000c;
+        public static final int JMdict_adj=0x7f0a0013;
+        public static final int JMdict_adj_f=0x7f0a0012;
+        public static final int JMdict_adj_i=0x7f0a000d;
+        public static final int JMdict_adj_kari=0x7f0a007a;
+        public static final int JMdict_adj_ku=0x7f0a007b;
+        public static final int JMdict_adj_na=0x7f0a000e;
+        public static final int JMdict_adj_nari=0x7f0a007d;
+        public static final int JMdict_adj_no=0x7f0a000f;
+        public static final int JMdict_adj_pn=0x7f0a0010;
+        public static final int JMdict_adj_shiku=0x7f0a007c;
+        public static final int JMdict_adj_t=0x7f0a0011;
+        public static final int JMdict_adv=0x7f0a0014;
+        public static final int JMdict_adv_to=0x7f0a0015;
+        public static final int JMdict_arch=0x7f0a0016;
+        public static final int JMdict_archit=0x7f0a009d;
+        public static final int JMdict_astron=0x7f0a009e;
+        public static final int JMdict_ateji=0x7f0a0017;
+        public static final int JMdict_aux=0x7f0a0018;
+        public static final int JMdict_aux_adj=0x7f0a001a;
+        public static final int JMdict_aux_v=0x7f0a0019;
+        public static final int JMdict_baseb=0x7f0a009f;
+        public static final int JMdict_biol=0x7f0a00a0;
+        public static final int JMdict_bot=0x7f0a00a1;
+        public static final int JMdict_bus=0x7f0a00a2;
+        public static final int JMdict_chem=0x7f0a001c;
+        public static final int JMdict_chn=0x7f0a001d;
+        public static final int JMdict_col=0x7f0a001e;
+        public static final int JMdict_comp=0x7f0a001f;
+        public static final int JMdict_conj=0x7f0a0020;
+        public static final int JMdict_ctr=0x7f0a0021;
+        public static final int JMdict_derog=0x7f0a0022;
+        public static final int JMdict_eK=0x7f0a0023;
+        public static final int JMdict_econ=0x7f0a00a3;
+        public static final int JMdict_ek=0x7f0a0024;
+        public static final int JMdict_eng=0x7f0a00a4;
+        public static final int JMdict_exp=0x7f0a0025;
+        public static final int JMdict_fam=0x7f0a0026;
+        public static final int JMdict_fem=0x7f0a0027;
+        public static final int JMdict_fin=0x7f0a00a5;
+        public static final int JMdict_food=0x7f0a0028;
+        public static final int JMdict_geol=0x7f0a00a6;
+        public static final int JMdict_geom=0x7f0a0029;
+        public static final int JMdict_gikun=0x7f0a002a;
+        public static final int JMdict_hob=0x7f0a0077;
+        public static final int JMdict_hon=0x7f0a002b;
+        public static final int JMdict_hum=0x7f0a002c;
+        public static final int JMdict_iK=0x7f0a002d;
+        public static final int JMdict_id=0x7f0a002e;
+        public static final int JMdict_ik=0x7f0a002f;
+        public static final int JMdict_int=0x7f0a0030;
+        public static final int JMdict_io=0x7f0a0031;
+        public static final int JMdict_iv=0x7f0a0032;
+        public static final int JMdict_joc=0x7f0a00ae;
+        public static final int JMdict_ksb=0x7f0a006f;
+        public static final int JMdict_ktb=0x7f0a0070;
+        public static final int JMdict_kyb=0x7f0a006d;
+        public static final int JMdict_kyu=0x7f0a0074;
+        public static final int JMdict_law=0x7f0a00a7;
+        public static final int JMdict_ling=0x7f0a0033;
+        public static final int JMdict_m_sl=0x7f0a0034;
+        public static final int JMdict_male=0x7f0a0035;
+        public static final int JMdict_male_sl=0x7f0a0036;
+        public static final int JMdict_math=0x7f0a0037;
+        public static final int JMdict_med=0x7f0a00a8;
+        public static final int JMdict_mil=0x7f0a0038;
+        public static final int JMdict_music=0x7f0a00a9;
+        public static final int JMdict_n=0x7f0a0039;
+        public static final int JMdict_n_adv=0x7f0a003a;
+        public static final int JMdict_n_pr=0x7f0a007e;
+        public static final int JMdict_n_pref=0x7f0a003c;
+        public static final int JMdict_n_suf=0x7f0a003b;
+        public static final int JMdict_n_t=0x7f0a003d;
+        public static final int JMdict_nab=0x7f0a0076;
+        public static final int JMdict_num=0x7f0a003e;
+        public static final int JMdict_oK=0x7f0a003f;
+        public static final int JMdict_obs=0x7f0a0040;
+        public static final int JMdict_obsc=0x7f0a0041;
+        public static final int JMdict_ok=0x7f0a0042;
+        public static final int JMdict_on_mim=0x7f0a0043;
+        public static final int JMdict_osb=0x7f0a006e;
+        public static final int JMdict_physics=0x7f0a004a;
+        public static final int JMdict_pn=0x7f0a0044;
+        public static final int JMdict_poet=0x7f0a0045;
+        public static final int JMdict_pol=0x7f0a0046;
+        public static final int JMdict_pref=0x7f0a0047;
+        public static final int JMdict_proverb=0x7f0a0048;
+        public static final int JMdict_prt=0x7f0a0049;
+        public static final int JMdict_rare=0x7f0a004b;
+        public static final int JMdict_rkb=0x7f0a0075;
+        public static final int JMdict_sens=0x7f0a004c;
+        public static final int JMdict_sl=0x7f0a004d;
+        public static final int JMdict_sports=0x7f0a00ab;
+        public static final int JMdict_suf=0x7f0a004e;
+        public static final int JMdict_sumo=0x7f0a00ac;
+        public static final int JMdict_thb=0x7f0a0072;
+        public static final int JMdict_tsb=0x7f0a0071;
+        public static final int JMdict_tsug=0x7f0a0073;
+        public static final int JMdict_uK=0x7f0a004f;
+        public static final int JMdict_uk=0x7f0a0050;
+        public static final int JMdict_v1=0x7f0a0051;
+        public static final int JMdict_v2a_s=0x7f0a0052;
+        public static final int JMdict_v2b_k=0x7f0a008c;
+        public static final int JMdict_v2b_s=0x7f0a0098;
+        public static final int JMdict_v2d_k=0x7f0a008a;
+        public static final int JMdict_v2d_s=0x7f0a0095;
+        public static final int JMdict_v2g_k=0x7f0a0088;
+        public static final int JMdict_v2g_s=0x7f0a0091;
+        public static final int JMdict_v2h_k=0x7f0a008b;
+        public static final int JMdict_v2h_s=0x7f0a0097;
+        public static final int JMdict_v2k_k=0x7f0a0087;
+        public static final int JMdict_v2k_s=0x7f0a0090;
+        public static final int JMdict_v2m_k=0x7f0a008d;
+        public static final int JMdict_v2m_s=0x7f0a0099;
+        public static final int JMdict_v2n_s=0x7f0a0096;
+        public static final int JMdict_v2r_k=0x7f0a008f;
+        public static final int JMdict_v2r_s=0x7f0a009b;
+        public static final int JMdict_v2s_s=0x7f0a0092;
+        public static final int JMdict_v2t_k=0x7f0a0089;
+        public static final int JMdict_v2t_s=0x7f0a0094;
+        public static final int JMdict_v2w_s=0x7f0a009c;
+        public static final int JMdict_v2y_k=0x7f0a008e;
+        public static final int JMdict_v2y_s=0x7f0a009a;
+        public static final int JMdict_v2z_s=0x7f0a0093;
+        public static final int JMdict_v4b=0x7f0a0085;
+        public static final int JMdict_v4g=0x7f0a0081;
+        public static final int JMdict_v4h=0x7f0a0053;
+        public static final int JMdict_v4k=0x7f0a0080;
+        public static final int JMdict_v4m=0x7f0a0086;
+        public static final int JMdict_v4n=0x7f0a0084;
+        public static final int JMdict_v4r=0x7f0a0054;
+        public static final int JMdict_v4s=0x7f0a0082;
+        public static final int JMdict_v4t=0x7f0a0083;
+        public static final int JMdict_v5=0x7f0a0055;
+        public static final int JMdict_v5aru=0x7f0a0056;
+        public static final int JMdict_v5b=0x7f0a0057;
+        public static final int JMdict_v5g=0x7f0a0058;
+        public static final int JMdict_v5k=0x7f0a0059;
+        public static final int JMdict_v5k_s=0x7f0a005a;
+        public static final int JMdict_v5m=0x7f0a005b;
+        public static final int JMdict_v5n=0x7f0a005c;
+        public static final int JMdict_v5r=0x7f0a005d;
+        public static final int JMdict_v5r_i=0x7f0a005e;
+        public static final int JMdict_v5s=0x7f0a005f;
+        public static final int JMdict_v5t=0x7f0a0060;
+        public static final int JMdict_v5u=0x7f0a0061;
+        public static final int JMdict_v5u_s=0x7f0a0062;
+        public static final int JMdict_v5uru=0x7f0a0063;
+        public static final int JMdict_v_unspec=0x7f0a007f;
+        public static final int JMdict_vi=0x7f0a0065;
+        public static final int JMdict_vk=0x7f0a0066;
+        public static final int JMdict_vn=0x7f0a0067;
+        public static final int JMdict_vr=0x7f0a0068;
+        public static final int JMdict_vs=0x7f0a0069;
+        public static final int JMdict_vs_c=0x7f0a006a;
+        public static final int JMdict_vs_i=0x7f0a006c;
+        public static final int JMdict_vs_s=0x7f0a006b;
+        public static final int JMdict_vt=0x7f0a0078;
+        public static final int JMdict_vulg=0x7f0a0079;
+        public static final int JMdict_vz=0x7f0a0064;
+        public static final int JMdict_zool=0x7f0a00ad;
+        public static final int about=0x7f0a00bf;
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
-        public static final int abs__action_bar_home_description=0x7f050017;
+        public static final int abs__action_bar_home_description=0x7f0a0000;
         /**  Content description for the action bar "up" affordance. [CHAR LIMIT=NONE] 
          */
-        public static final int abs__action_bar_up_description=0x7f050018;
+        public static final int abs__action_bar_up_description=0x7f0a0001;
         /**  Content description for the action menu overflow button. [CHAR LIMIT=NONE] 
          */
-        public static final int abs__action_menu_overflow_description=0x7f050019;
+        public static final int abs__action_menu_overflow_description=0x7f0a0002;
         /**  Label for the "Done" button on the far left of action mode toolbars. 
          */
-        public static final int abs__action_mode_done=0x7f05001a;
+        public static final int abs__action_mode_done=0x7f0a0003;
         /**  Title default for a dialog showing possible activities in ActivityChooserView [CHAR LIMIT=25] 
          */
-        public static final int abs__activity_chooser_view_dialog_title_default=0x7f05001c;
+        public static final int abs__activity_chooser_view_dialog_title_default=0x7f0a0005;
         /**  Title for a button to expand the list of activities in ActivityChooserView [CHAR LIMIT=25] 
          */
-        public static final int abs__activity_chooser_view_see_all=0x7f05001b;
+        public static final int abs__activity_chooser_view_see_all=0x7f0a0004;
         /**  Description of the shwoing of a popup window with activities to choose from. [CHAR LIMIT=NONE] 
          */
-        public static final int abs__activitychooserview_choose_application=0x7f05001e;
+        public static final int abs__activitychooserview_choose_application=0x7f0a0007;
         /**  Title for a dialog showing possible activities for sharing in ShareActionProvider [CHAR LIMIT=25] 
          */
-        public static final int abs__share_action_provider_share_with=0x7f05001d;
+        public static final int abs__share_action_provider_share_with=0x7f0a0006;
         /**  Description of the choose target button in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
-        public static final int abs__shareactionprovider_share_with=0x7f05001f;
+        public static final int abs__shareactionprovider_share_with=0x7f0a0008;
         /**  Description of a share target (both in the list of such or the default share button) in a ShareActionProvider (share UI). [CHAR LIMIT=NONE] 
          */
-        public static final int abs__shareactionprovider_share_with_application=0x7f050020;
-        public static final int acknowledgement_edrdg=0x7f0500d5;
-        public static final int app_name=0x7f0500c6;
-        public static final int dictionary=0x7f0500d4;
-        public static final int dictionary_search=0x7f0500db;
-        public static final int frequency=0x7f0500cf;
-        public static final int grade=0x7f0500ce;
-        public static final int kanji=0x7f0500ca;
-        public static final int kanji_search=0x7f0500dc;
-        public static final int kilobytes_per_second=0x7f050014;
-        public static final int languages=0x7f0500c8;
-        public static final int loading_=0x7f0500d8;
-        public static final int meanings=0x7f0500cc;
-        public static final int miscellaneous=0x7f0500cd;
-        public static final int no_entries=0x7f0500d3;
-        /**  When a download completes, a notification is displayed, and this
-        string is used to indicate that the download successfully completed.
-        Note that such a download could have been initiated by a variety of
-        applications, including (but not limited to) the browser, an email
-        application, a content marketplace. 
-         */
-        public static final int notification_download_complete=0x7f050000;
-        /**  When a download completes, a notification is displayed, and this
-        string is used to indicate that the download failed.
-        Note that such a download could have been initiated by a variety of
-        applications, including (but not limited to) the browser, an email
-        application, a content marketplace. 
-         */
-        public static final int notification_download_failed=0x7f050001;
-        public static final int radical=0x7f0500d2;
-        public static final int readings=0x7f0500cb;
-        public static final int romaji=0x7f0500d7;
-        public static final int search=0x7f0500c7;
-        public static final int search_for_kanji=0x7f0500d9;
-        public static final int search_the_dictionary=0x7f0500da;
-        public static final int settings=0x7f0500c9;
-        public static final int state_completed=0x7f050007;
-        public static final int state_connecting=0x7f050005;
-        public static final int state_downloading=0x7f050006;
-        public static final int state_failed=0x7f050013;
-        public static final int state_failed_cancelled=0x7f050012;
-        public static final int state_failed_fetching_url=0x7f050010;
-        public static final int state_failed_sdcard_full=0x7f050011;
-        public static final int state_failed_unlicensed=0x7f05000f;
-        public static final int state_fetching_url=0x7f050004;
-        public static final int state_idle=0x7f050003;
-        public static final int state_paused_by_request=0x7f05000a;
-        public static final int state_paused_need_cellular_permission=0x7f05000b;
-        public static final int state_paused_network_setup_failure=0x7f050009;
-        public static final int state_paused_network_unavailable=0x7f050008;
-        public static final int state_paused_roaming=0x7f05000d;
-        public static final int state_paused_sdcard_unavailable=0x7f05000e;
-        public static final int state_paused_wifi_disabled=0x7f05000c;
-        public static final int state_unknown=0x7f050002;
-        public static final int stroke_count=0x7f0500d1;
-        public static final int text_button_cancel=0x7f0500e6;
-        public static final int text_button_cancel_verify=0x7f0500e7;
-        public static final int text_button_pause=0x7f0500e4;
-        public static final int text_button_resume=0x7f0500e5;
-        public static final int text_button_resume_cellular=0x7f0500df;
-        public static final int text_button_wifi_settings=0x7f0500e0;
-        public static final int text_paused_cellular=0x7f0500dd;
-        public static final int text_paused_cellular_2=0x7f0500de;
-        public static final int text_validation_complete=0x7f0500e2;
-        public static final int text_validation_failed=0x7f0500e3;
-        public static final int text_verifying_download=0x7f0500e1;
-        public static final int time_remaining=0x7f050015;
-        public static final int time_remaining_notification=0x7f050016;
-        public static final int unicode=0x7f0500d0;
+        public static final int abs__shareactionprovider_share_with_application=0x7f0a0009;
+        public static final int acknowledgement_edrdg=0x7f0a00be;
+        public static final int app_name=0x7f0a00af;
+        public static final int dictionary=0x7f0a00bd;
+        public static final int dictionary_search=0x7f0a00c4;
+        public static final int frequency=0x7f0a00b8;
+        public static final int grade=0x7f0a00b7;
+        public static final int kanji=0x7f0a00b3;
+        public static final int kanji_search=0x7f0a00c5;
+        public static final int languages=0x7f0a00b1;
+        public static final int loading_=0x7f0a00c1;
+        public static final int meanings=0x7f0a00b5;
+        public static final int miscellaneous=0x7f0a00b6;
+        public static final int no_entries=0x7f0a00bc;
+        public static final int radical=0x7f0a00bb;
+        public static final int readings=0x7f0a00b4;
+        public static final int romaji=0x7f0a00c0;
+        public static final int search=0x7f0a00b0;
+        public static final int search_for_kanji=0x7f0a00c2;
+        public static final int search_the_dictionary=0x7f0a00c3;
+        public static final int settings=0x7f0a00b2;
+        public static final int stroke_count=0x7f0a00ba;
+        public static final int unicode=0x7f0a00b9;
     }
     public static final class style {
-        public static final int AlternativeButton=0x7f06005c;
-        public static final int ButtonBackground=0x7f060003;
-        public static final int DashboardButton=0x7f06005d;
-        public static final int DialogWindowTitle_Sherlock=0x7f060037;
-        public static final int DialogWindowTitle_Sherlock_Light=0x7f060038;
-        public static final int EntryMainExpression=0x7f06005e;
-        public static final int NotificationText=0x7f060000;
-        public static final int NotificationTextShadow=0x7f060001;
-        public static final int NotificationTitle=0x7f060002;
-        public static final int SeparatorLine=0x7f060060;
-        public static final int SeparatorText=0x7f06005f;
-        public static final int Sherlock___TextAppearance_Small=0x7f06004b;
-        public static final int Sherlock___Theme=0x7f06004e;
-        public static final int Sherlock___Theme_DarkActionBar=0x7f060050;
-        public static final int Sherlock___Theme_Dialog=0x7f060051;
-        public static final int Sherlock___Theme_Light=0x7f06004f;
-        public static final int Sherlock___Widget_ActionBar=0x7f060005;
-        public static final int Sherlock___Widget_ActionMode=0x7f06001a;
-        public static final int Sherlock___Widget_ActivityChooserView=0x7f060022;
-        public static final int Sherlock___Widget_Holo_DropDownItem=0x7f06002d;
-        public static final int Sherlock___Widget_Holo_ListView=0x7f06002a;
-        public static final int Sherlock___Widget_Holo_Spinner=0x7f060027;
-        public static final int TextAppearance_Sherlock_DialogWindowTitle=0x7f060049;
-        public static final int TextAppearance_Sherlock_Light_DialogWindowTitle=0x7f06004a;
-        public static final int TextAppearance_Sherlock_Light_Small=0x7f06004d;
-        public static final int TextAppearance_Sherlock_Light_Widget_PopupMenu_Large=0x7f060044;
-        public static final int TextAppearance_Sherlock_Light_Widget_PopupMenu_Small=0x7f060046;
-        public static final int TextAppearance_Sherlock_Small=0x7f06004c;
-        public static final int TextAppearance_Sherlock_Widget_ActionBar_Menu=0x7f060039;
-        public static final int TextAppearance_Sherlock_Widget_ActionBar_Subtitle=0x7f06003c;
-        public static final int TextAppearance_Sherlock_Widget_ActionBar_Subtitle_Inverse=0x7f06003d;
-        public static final int TextAppearance_Sherlock_Widget_ActionBar_Title=0x7f06003a;
-        public static final int TextAppearance_Sherlock_Widget_ActionBar_Title_Inverse=0x7f06003b;
-        public static final int TextAppearance_Sherlock_Widget_ActionMode_Subtitle=0x7f060040;
-        public static final int TextAppearance_Sherlock_Widget_ActionMode_Subtitle_Inverse=0x7f060041;
-        public static final int TextAppearance_Sherlock_Widget_ActionMode_Title=0x7f06003e;
-        public static final int TextAppearance_Sherlock_Widget_ActionMode_Title_Inverse=0x7f06003f;
-        public static final int TextAppearance_Sherlock_Widget_DropDownItem=0x7f060048;
-        public static final int TextAppearance_Sherlock_Widget_PopupMenu=0x7f060042;
-        public static final int TextAppearance_Sherlock_Widget_PopupMenu_Large=0x7f060043;
-        public static final int TextAppearance_Sherlock_Widget_PopupMenu_Small=0x7f060045;
-        public static final int TextAppearance_Sherlock_Widget_TextView_SpinnerItem=0x7f060047;
-        public static final int Theme_Sherlock=0x7f060052;
-        public static final int Theme_Sherlock_Dialog=0x7f06005a;
-        public static final int Theme_Sherlock_ForceOverflow=0x7f060057;
-        public static final int Theme_Sherlock_Light=0x7f060053;
-        public static final int Theme_Sherlock_Light_DarkActionBar=0x7f060054;
-        public static final int Theme_Sherlock_Light_DarkActionBar_ForceOverflow=0x7f060059;
-        public static final int Theme_Sherlock_Light_Dialog=0x7f06005b;
-        public static final int Theme_Sherlock_Light_ForceOverflow=0x7f060058;
-        public static final int Theme_Sherlock_Light_NoActionBar=0x7f060056;
-        public static final int Theme_Sherlock_NoActionBar=0x7f060055;
-        public static final int Widget=0x7f060004;
-        public static final int Widget_Sherlock_ActionBar=0x7f060006;
-        public static final int Widget_Sherlock_ActionBar_Solid=0x7f060007;
-        public static final int Widget_Sherlock_ActionBar_TabBar=0x7f06000e;
-        public static final int Widget_Sherlock_ActionBar_TabText=0x7f060011;
-        public static final int Widget_Sherlock_ActionBar_TabView=0x7f06000b;
-        public static final int Widget_Sherlock_ActionButton=0x7f060014;
-        public static final int Widget_Sherlock_ActionButton_CloseMode=0x7f060016;
-        public static final int Widget_Sherlock_ActionButton_Overflow=0x7f060018;
-        public static final int Widget_Sherlock_ActionMode=0x7f06001b;
-        public static final int Widget_Sherlock_ActivityChooserView=0x7f060023;
-        public static final int Widget_Sherlock_Button_Small=0x7f060025;
-        public static final int Widget_Sherlock_DropDownItem_Spinner=0x7f06002e;
-        public static final int Widget_Sherlock_Light_ActionBar=0x7f060008;
-        public static final int Widget_Sherlock_Light_ActionBar_Solid=0x7f060009;
-        public static final int Widget_Sherlock_Light_ActionBar_Solid_Inverse=0x7f06000a;
-        public static final int Widget_Sherlock_Light_ActionBar_TabBar=0x7f06000f;
-        public static final int Widget_Sherlock_Light_ActionBar_TabBar_Inverse=0x7f060010;
-        public static final int Widget_Sherlock_Light_ActionBar_TabText=0x7f060012;
-        public static final int Widget_Sherlock_Light_ActionBar_TabText_Inverse=0x7f060013;
-        public static final int Widget_Sherlock_Light_ActionBar_TabView=0x7f06000c;
-        public static final int Widget_Sherlock_Light_ActionBar_TabView_Inverse=0x7f06000d;
-        public static final int Widget_Sherlock_Light_ActionButton=0x7f060015;
-        public static final int Widget_Sherlock_Light_ActionButton_CloseMode=0x7f060017;
-        public static final int Widget_Sherlock_Light_ActionButton_Overflow=0x7f060019;
-        public static final int Widget_Sherlock_Light_ActionMode=0x7f06001c;
-        public static final int Widget_Sherlock_Light_ActionMode_Inverse=0x7f06001d;
-        public static final int Widget_Sherlock_Light_ActivityChooserView=0x7f060024;
-        public static final int Widget_Sherlock_Light_Button_Small=0x7f060026;
-        public static final int Widget_Sherlock_Light_DropDownItem_Spinner=0x7f06002f;
-        public static final int Widget_Sherlock_Light_ListPopupWindow=0x7f06001f;
-        public static final int Widget_Sherlock_Light_ListView_DropDown=0x7f06002c;
-        public static final int Widget_Sherlock_Light_PopupMenu=0x7f060021;
-        public static final int Widget_Sherlock_Light_PopupWindow_ActionMode=0x7f060031;
-        public static final int Widget_Sherlock_Light_ProgressBar=0x7f060033;
-        public static final int Widget_Sherlock_Light_ProgressBar_Horizontal=0x7f060035;
-        public static final int Widget_Sherlock_Light_Spinner_DropDown_ActionBar=0x7f060029;
-        public static final int Widget_Sherlock_ListPopupWindow=0x7f06001e;
-        public static final int Widget_Sherlock_ListView_DropDown=0x7f06002b;
-        public static final int Widget_Sherlock_PopupMenu=0x7f060020;
-        public static final int Widget_Sherlock_PopupWindow_ActionMode=0x7f060030;
-        public static final int Widget_Sherlock_ProgressBar=0x7f060032;
-        public static final int Widget_Sherlock_ProgressBar_Horizontal=0x7f060034;
-        public static final int Widget_Sherlock_Spinner_DropDown_ActionBar=0x7f060028;
-        public static final int Widget_Sherlock_TextView_SpinnerItem=0x7f060036;
+        public static final int AlternativeButton=0x7f0b0058;
+        public static final int DashboardButton=0x7f0b0059;
+        public static final int DialogWindowTitle_Sherlock=0x7f0b0033;
+        public static final int DialogWindowTitle_Sherlock_Light=0x7f0b0034;
+        public static final int EntryMainExpression=0x7f0b005a;
+        public static final int SeparatorLine=0x7f0b005c;
+        public static final int SeparatorText=0x7f0b005b;
+        public static final int Sherlock___TextAppearance_Small=0x7f0b0047;
+        public static final int Sherlock___Theme=0x7f0b004a;
+        public static final int Sherlock___Theme_DarkActionBar=0x7f0b004c;
+        public static final int Sherlock___Theme_Dialog=0x7f0b004d;
+        public static final int Sherlock___Theme_Light=0x7f0b004b;
+        public static final int Sherlock___Widget_ActionBar=0x7f0b0001;
+        public static final int Sherlock___Widget_ActionMode=0x7f0b0016;
+        public static final int Sherlock___Widget_ActivityChooserView=0x7f0b001e;
+        public static final int Sherlock___Widget_Holo_DropDownItem=0x7f0b0029;
+        public static final int Sherlock___Widget_Holo_ListView=0x7f0b0026;
+        public static final int Sherlock___Widget_Holo_Spinner=0x7f0b0023;
+        public static final int TextAppearance_Sherlock_DialogWindowTitle=0x7f0b0045;
+        public static final int TextAppearance_Sherlock_Light_DialogWindowTitle=0x7f0b0046;
+        public static final int TextAppearance_Sherlock_Light_Small=0x7f0b0049;
+        public static final int TextAppearance_Sherlock_Light_Widget_PopupMenu_Large=0x7f0b0040;
+        public static final int TextAppearance_Sherlock_Light_Widget_PopupMenu_Small=0x7f0b0042;
+        public static final int TextAppearance_Sherlock_Small=0x7f0b0048;
+        public static final int TextAppearance_Sherlock_Widget_ActionBar_Menu=0x7f0b0035;
+        public static final int TextAppearance_Sherlock_Widget_ActionBar_Subtitle=0x7f0b0038;
+        public static final int TextAppearance_Sherlock_Widget_ActionBar_Subtitle_Inverse=0x7f0b0039;
+        public static final int TextAppearance_Sherlock_Widget_ActionBar_Title=0x7f0b0036;
+        public static final int TextAppearance_Sherlock_Widget_ActionBar_Title_Inverse=0x7f0b0037;
+        public static final int TextAppearance_Sherlock_Widget_ActionMode_Subtitle=0x7f0b003c;
+        public static final int TextAppearance_Sherlock_Widget_ActionMode_Subtitle_Inverse=0x7f0b003d;
+        public static final int TextAppearance_Sherlock_Widget_ActionMode_Title=0x7f0b003a;
+        public static final int TextAppearance_Sherlock_Widget_ActionMode_Title_Inverse=0x7f0b003b;
+        public static final int TextAppearance_Sherlock_Widget_DropDownItem=0x7f0b0044;
+        public static final int TextAppearance_Sherlock_Widget_PopupMenu=0x7f0b003e;
+        public static final int TextAppearance_Sherlock_Widget_PopupMenu_Large=0x7f0b003f;
+        public static final int TextAppearance_Sherlock_Widget_PopupMenu_Small=0x7f0b0041;
+        public static final int TextAppearance_Sherlock_Widget_TextView_SpinnerItem=0x7f0b0043;
+        public static final int Theme_Sherlock=0x7f0b004e;
+        public static final int Theme_Sherlock_Dialog=0x7f0b0056;
+        public static final int Theme_Sherlock_ForceOverflow=0x7f0b0053;
+        public static final int Theme_Sherlock_Light=0x7f0b004f;
+        public static final int Theme_Sherlock_Light_DarkActionBar=0x7f0b0050;
+        public static final int Theme_Sherlock_Light_DarkActionBar_ForceOverflow=0x7f0b0055;
+        public static final int Theme_Sherlock_Light_Dialog=0x7f0b0057;
+        public static final int Theme_Sherlock_Light_ForceOverflow=0x7f0b0054;
+        public static final int Theme_Sherlock_Light_NoActionBar=0x7f0b0052;
+        public static final int Theme_Sherlock_NoActionBar=0x7f0b0051;
+        public static final int Widget=0x7f0b0000;
+        public static final int Widget_Sherlock_ActionBar=0x7f0b0002;
+        public static final int Widget_Sherlock_ActionBar_Solid=0x7f0b0003;
+        public static final int Widget_Sherlock_ActionBar_TabBar=0x7f0b000a;
+        public static final int Widget_Sherlock_ActionBar_TabText=0x7f0b000d;
+        public static final int Widget_Sherlock_ActionBar_TabView=0x7f0b0007;
+        public static final int Widget_Sherlock_ActionButton=0x7f0b0010;
+        public static final int Widget_Sherlock_ActionButton_CloseMode=0x7f0b0012;
+        public static final int Widget_Sherlock_ActionButton_Overflow=0x7f0b0014;
+        public static final int Widget_Sherlock_ActionMode=0x7f0b0017;
+        public static final int Widget_Sherlock_ActivityChooserView=0x7f0b001f;
+        public static final int Widget_Sherlock_Button_Small=0x7f0b0021;
+        public static final int Widget_Sherlock_DropDownItem_Spinner=0x7f0b002a;
+        public static final int Widget_Sherlock_Light_ActionBar=0x7f0b0004;
+        public static final int Widget_Sherlock_Light_ActionBar_Solid=0x7f0b0005;
+        public static final int Widget_Sherlock_Light_ActionBar_Solid_Inverse=0x7f0b0006;
+        public static final int Widget_Sherlock_Light_ActionBar_TabBar=0x7f0b000b;
+        public static final int Widget_Sherlock_Light_ActionBar_TabBar_Inverse=0x7f0b000c;
+        public static final int Widget_Sherlock_Light_ActionBar_TabText=0x7f0b000e;
+        public static final int Widget_Sherlock_Light_ActionBar_TabText_Inverse=0x7f0b000f;
+        public static final int Widget_Sherlock_Light_ActionBar_TabView=0x7f0b0008;
+        public static final int Widget_Sherlock_Light_ActionBar_TabView_Inverse=0x7f0b0009;
+        public static final int Widget_Sherlock_Light_ActionButton=0x7f0b0011;
+        public static final int Widget_Sherlock_Light_ActionButton_CloseMode=0x7f0b0013;
+        public static final int Widget_Sherlock_Light_ActionButton_Overflow=0x7f0b0015;
+        public static final int Widget_Sherlock_Light_ActionMode=0x7f0b0018;
+        public static final int Widget_Sherlock_Light_ActionMode_Inverse=0x7f0b0019;
+        public static final int Widget_Sherlock_Light_ActivityChooserView=0x7f0b0020;
+        public static final int Widget_Sherlock_Light_Button_Small=0x7f0b0022;
+        public static final int Widget_Sherlock_Light_DropDownItem_Spinner=0x7f0b002b;
+        public static final int Widget_Sherlock_Light_ListPopupWindow=0x7f0b001b;
+        public static final int Widget_Sherlock_Light_ListView_DropDown=0x7f0b0028;
+        public static final int Widget_Sherlock_Light_PopupMenu=0x7f0b001d;
+        public static final int Widget_Sherlock_Light_PopupWindow_ActionMode=0x7f0b002d;
+        public static final int Widget_Sherlock_Light_ProgressBar=0x7f0b002f;
+        public static final int Widget_Sherlock_Light_ProgressBar_Horizontal=0x7f0b0031;
+        public static final int Widget_Sherlock_Light_Spinner_DropDown_ActionBar=0x7f0b0025;
+        public static final int Widget_Sherlock_ListPopupWindow=0x7f0b001a;
+        public static final int Widget_Sherlock_ListView_DropDown=0x7f0b0027;
+        public static final int Widget_Sherlock_PopupMenu=0x7f0b001c;
+        public static final int Widget_Sherlock_PopupWindow_ActionMode=0x7f0b002c;
+        public static final int Widget_Sherlock_ProgressBar=0x7f0b002e;
+        public static final int Widget_Sherlock_ProgressBar_Horizontal=0x7f0b0030;
+        public static final int Widget_Sherlock_Spinner_DropDown_ActionBar=0x7f0b0024;
+        public static final int Widget_Sherlock_TextView_SpinnerItem=0x7f0b0032;
     }
     public static final class xml {
         public static final int dictionary_searchable=0x7f040000;
