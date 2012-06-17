@@ -6,13 +6,19 @@ import java.util.List;
 import net.makimono.dictionary.R;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
 import net.makimono.dictionary.model.Language;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceManager;
 
 public class PreferenceActivity extends android.preference.PreferenceActivity implements OnPreferenceChangeListener, OnPreferenceClickListener {
+	public static final String INDEX_FILES_VERSION = "index_files_version";
+	public static final String INDEX_FILES_VERSION_RESET = "index_files_version_reset";
+
 	public static final String CLEAR_SEARCH_HISTORY = "clear_search_history";
 	public static final String ROMAJI_SEARCH = "romaji_search";
 
@@ -53,12 +59,23 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
 		addPreferencesFromResource(R.xml.preference);
 
 		findPreference(CLEAR_SEARCH_HISTORY).setOnPreferenceClickListener(this);
+		findPreference(INDEX_FILES_VERSION_RESET).setOnPreferenceClickListener(this);
 	}
 
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		if (preference.getKey().equals(CLEAR_SEARCH_HISTORY)) {
 			AbstractSearchSuggestionProvider.clearHistory(this);
+			return true;
+		}
+		if (preference.getKey().equals(INDEX_FILES_VERSION_RESET)) {
+			Editor editor = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext()).edit();
+			editor.putInt(PreferenceActivity.INDEX_FILES_VERSION, 0);
+			editor.commit();
+
+			Intent intent = new Intent(this, HomeActivity.class);
+			startActivity(intent);
+
 			return true;
 		}
 		return false;

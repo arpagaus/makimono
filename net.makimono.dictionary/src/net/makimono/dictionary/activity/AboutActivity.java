@@ -35,8 +35,7 @@ public class AboutActivity extends AbstractDefaultActivity {
 		String versionName = "";
 		try {
 			PackageManager manager = this.getPackageManager();
-			PackageInfo info;
-			info = manager.getPackageInfo(this.getPackageName(), 0);
+			PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
 			versionName = info.versionName;
 		} catch (Exception e) {
 		}

@@ -46,5 +46,10 @@
             android:summary="Remove all the searches you have performed"
             android:title="Clear search history" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="Troubleshooting" >
+        <Preference
+            android:key="index_files_version_reset"
+            android:title="Initialize dictionary data files" />
+    </PreferenceCategory>
 
 </PreferenceScreen>
