@@ -1156,6 +1156,7 @@ containing a value of this type.
         public static final int readings=0x7f0a00b4;
         public static final int romaji=0x7f0a00c0;
         public static final int search=0x7f0a00b0;
+        public static final int search_error=0x7f0a00c6;
         public static final int search_for_kanji=0x7f0a00c2;
         public static final int search_the_dictionary=0x7f0a00c3;
         public static final int settings=0x7f0a00b2;

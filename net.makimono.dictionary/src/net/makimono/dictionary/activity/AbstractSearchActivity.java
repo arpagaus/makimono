@@ -20,6 +20,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
 
@@ -117,7 +118,9 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 
 		protected void onPostExecute(List<? extends Entry> entries) {
 			progressView.setVisibility(View.GONE);
-			if (entries.isEmpty()) {
+			if (entries == null) {
+				Toast.makeText(AbstractSearchActivity.this, getText(R.string.search_error), Toast.LENGTH_LONG).show();
+			} else if (entries.isEmpty()) {
 				noEntriesTextView.setVisibility(View.VISIBLE);
 				listView.setVisibility(View.GONE);
 			} else {

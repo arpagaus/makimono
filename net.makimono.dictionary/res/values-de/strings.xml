@@ -24,5 +24,6 @@
     <string name="search_the_dictionary">Suche im Wörterbuch</string>
     <string name="dictionary_search">Wörterbuch-Suche</string>
     <string name="kanji_search">Kanji-Suche</string>
+    <string name="search_error">Fehler: Suche fehlgeschlagen</string>
 
 </resources>

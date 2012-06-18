@@ -24,5 +24,6 @@
     <string name="search_the_dictionary">Search the dictionary</string>
     <string name="dictionary_search">Dictionary search</string>
     <string name="kanji_search">Kanji search</string>
+    <string name="search_error">Error: Failed to search. Try the troubleshooting section under settings.</string>
 
 </resources>
