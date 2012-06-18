@@ -19,6 +19,7 @@ public abstract class AbstractDefaultActivity extends SherlockActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportMenuInflater().inflate(R.menu.base, menu);
 		getSupportActionBar().setHomeButtonEnabled(true);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		return true;
 	}
 

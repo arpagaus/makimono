@@ -95,6 +95,7 @@ public class HomeActivity extends AbstractDefaultActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		getSupportActionBar().setDisplayUseLogoEnabled(false);
 		return true;
 	}
 
