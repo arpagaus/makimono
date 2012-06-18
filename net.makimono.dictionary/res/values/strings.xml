@@ -25,5 +25,9 @@
     <string name="dictionary_search">Dictionary search</string>
     <string name="kanji_search">Kanji search</string>
     <string name="search_error">Error: Failed to search. Try the troubleshooting section under settings.</string>
+    <string name="previous_expression_alternative">Previous expression alternative</string>
+    <string name="next_expression_alternative">Next expression alternative</string>
+    <string name="previous_reading_alternative">Previous reading alternative</string>
+    <string name="next_reading_alternative">Next reading alternative</string>
 
 </resources>

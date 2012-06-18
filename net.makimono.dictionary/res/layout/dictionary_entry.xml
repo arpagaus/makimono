@@ -27,14 +27,16 @@
             style="@style/AlternativeButton"
             android:layout_alignBottom="@id/entry_expression"
             android:layout_alignTop="@id/entry_expression"
-            android:layout_toLeftOf="@id/entry_expression" />
+            android:layout_toLeftOf="@id/entry_expression"
+            android:contentDescription="@string/previous_expression_alternative" />
 
         <ImageButton
             android:id="@+id/next_expression"
             style="@style/AlternativeButton"
             android:layout_alignBottom="@id/entry_expression"
             android:layout_alignTop="@id/entry_expression"
-            android:layout_toRightOf="@id/entry_expression" />
+            android:layout_toRightOf="@id/entry_expression"
+            android:contentDescription="@string/next_expression_alternative" />
 
         <TextSwitcher
             android:id="@+id/entry_reading"
@@ -62,14 +64,16 @@
             style="@style/AlternativeButton"
             android:layout_alignBottom="@id/entry_reading"
             android:layout_alignTop="@id/entry_reading"
-            android:layout_toLeftOf="@id/entry_reading" />
+            android:layout_toLeftOf="@id/entry_reading"
+            android:contentDescription="@string/previous_reading_alternative" />
 
         <ImageButton
             android:id="@+id/next_reading"
             style="@style/AlternativeButton"
             android:layout_alignBottom="@id/entry_reading"
             android:layout_alignTop="@id/entry_reading"
-            android:layout_toRightOf="@id/entry_reading" />
+            android:layout_toRightOf="@id/entry_reading"
+            android:contentDescription="@string/next_reading_alternative" />
 
         <TextView
             android:id="@+id/entry_separator_meanings"

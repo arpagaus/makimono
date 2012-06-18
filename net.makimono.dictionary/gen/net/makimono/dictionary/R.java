@@ -1151,7 +1151,11 @@ containing a value of this type.
         public static final int loading_=0x7f0a00c1;
         public static final int meanings=0x7f0a00b5;
         public static final int miscellaneous=0x7f0a00b6;
+        public static final int next_expression_alternative=0x7f0a00c8;
+        public static final int next_reading_alternative=0x7f0a00ca;
         public static final int no_entries=0x7f0a00bc;
+        public static final int previous_expression_alternative=0x7f0a00c7;
+        public static final int previous_reading_alternative=0x7f0a00c9;
         public static final int radical=0x7f0a00bb;
         public static final int readings=0x7f0a00b4;
         public static final int romaji=0x7f0a00c0;

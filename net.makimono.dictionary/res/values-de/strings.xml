@@ -25,5 +25,9 @@
     <string name="dictionary_search">Wörterbuch-Suche</string>
     <string name="kanji_search">Kanji-Suche</string>
     <string name="search_error">Fehler: Suche fehlgeschlagen</string>
+    <string name="previous_expression_alternative">Vorherige Ausdruck-Alternative</string>
+    <string name="next_expression_alternative">Nächste Ausdruck-Alternative</string>
+    <string name="previous_reading_alternative">Vorherige Lese-Alternative</string>
+    <string name="next_reading_alternative">Nächste Lese-Alternative</string>
 
 </resources>
