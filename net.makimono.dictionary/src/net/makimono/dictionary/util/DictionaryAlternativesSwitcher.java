@@ -7,6 +7,7 @@ import net.makimono.dictionary.model.DictionaryEntry;
 import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.TextSwitcher;
 
 public class DictionaryAlternativesSwitcher {
@@ -14,10 +15,10 @@ public class DictionaryAlternativesSwitcher {
 	private TextSwitcher expressionTextSwitcher;
 	private TextSwitcher readingTextSwitcher;
 
-	private View nextExpressionButton;
-	private View previousExpressionButton;
-	private View nextReadingButton;
-	private View previousReadingButton;
+	private ImageButton nextExpressionButton;
+	private ImageButton previousExpressionButton;
+	private ImageButton nextReadingButton;
+	private ImageButton previousReadingButton;
 
 	private DictionaryEntry entry;
 
@@ -28,7 +29,7 @@ public class DictionaryAlternativesSwitcher {
 		expressionTextSwitcher = (TextSwitcher) activity.findViewById(R.id.entry_expression);
 		readingTextSwitcher = (TextSwitcher) activity.findViewById(R.id.entry_reading);
 
-		nextExpressionButton = activity.findViewById(R.id.next_expression);
+		nextExpressionButton = (ImageButton) activity.findViewById(R.id.next_expression);
 		nextExpressionButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -37,7 +38,7 @@ public class DictionaryAlternativesSwitcher {
 			}
 		});
 
-		previousExpressionButton = activity.findViewById(R.id.previous_expression);
+		previousExpressionButton = (ImageButton) activity.findViewById(R.id.previous_expression);
 		previousExpressionButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -46,7 +47,7 @@ public class DictionaryAlternativesSwitcher {
 			}
 		});
 
-		nextReadingButton = activity.findViewById(R.id.next_reading);
+		nextReadingButton = (ImageButton) activity.findViewById(R.id.next_reading);
 		nextReadingButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -55,7 +56,7 @@ public class DictionaryAlternativesSwitcher {
 			}
 		});
 
-		previousReadingButton = activity.findViewById(R.id.previous_reading);
+		previousReadingButton = (ImageButton) activity.findViewById(R.id.previous_reading);
 		previousReadingButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -106,22 +107,30 @@ public class DictionaryAlternativesSwitcher {
 		}
 	}
 
-	private void updateTextSwitcher(TextSwitcher switcher, View previousButton, View nextButton, List<String> alternatives, int index) {
+	private void updateTextSwitcher(TextSwitcher switcher, ImageButton previousButton, ImageButton nextButton, List<String> alternatives, int index) {
 		if (index < alternatives.size()) {
 			switcher.setText(alternatives.get(index % alternatives.size()));
 		}
 
-		if (index == 0) {
-			previousButton.setVisibility(View.INVISIBLE);
+		int visibility;
+		if (alternatives.size() <= 1) {
+			visibility = View.INVISIBLE;
 		} else {
-			previousButton.setVisibility(View.VISIBLE);
+			visibility = View.VISIBLE;
+		}
+		previousButton.setVisibility(visibility);
+		nextButton.setVisibility(visibility);
+
+		if (index == 0) {
+			previousButton.setImageResource(R.drawable.ic_btn_previous_disabled);
+		} else {
+			previousButton.setImageResource(R.drawable.ic_btn_previous);
 		}
 
 		if (index == alternatives.size() - 1) {
-			nextButton.setVisibility(View.INVISIBLE);
+			nextButton.setImageResource(R.drawable.ic_btn_next_disabled);
 		} else {
-			nextButton.setVisibility(View.VISIBLE);
+			nextButton.setImageResource(R.drawable.ic_btn_next);
 		}
 	}
-
 }

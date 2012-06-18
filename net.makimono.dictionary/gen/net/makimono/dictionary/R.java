@@ -799,19 +799,21 @@ containing a value of this type.
         public static final int btn_home_settings_pressed=0x7f020060;
         public static final int clickable_background=0x7f020061;
         public static final int ic_btn_next=0x7f020062;
-        public static final int ic_btn_previous=0x7f020063;
-        public static final int ic_english=0x7f020064;
-        public static final int ic_french=0x7f020065;
-        public static final int ic_german=0x7f020066;
-        public static final int ic_launcher=0x7f020067;
-        public static final int ic_menu_home=0x7f020068;
-        public static final int ic_menu_preferences=0x7f020069;
-        public static final int ic_menu_search_holo_dark=0x7f02006a;
-        public static final int ic_portugese=0x7f02006b;
-        public static final int ic_russian=0x7f02006c;
-        public static final int ic_spanish=0x7f02006d;
-        public static final int primary_separator=0x7f02006e;
-        public static final int secondary_separator=0x7f02006f;
+        public static final int ic_btn_next_disabled=0x7f020063;
+        public static final int ic_btn_previous=0x7f020064;
+        public static final int ic_btn_previous_disabled=0x7f020065;
+        public static final int ic_english=0x7f020066;
+        public static final int ic_french=0x7f020067;
+        public static final int ic_german=0x7f020068;
+        public static final int ic_launcher=0x7f020069;
+        public static final int ic_menu_home=0x7f02006a;
+        public static final int ic_menu_preferences=0x7f02006b;
+        public static final int ic_menu_search_holo_dark=0x7f02006c;
+        public static final int ic_portugese=0x7f02006d;
+        public static final int ic_russian=0x7f02006e;
+        public static final int ic_spanish=0x7f02006f;
+        public static final int primary_separator=0x7f020070;
+        public static final int secondary_separator=0x7f020071;
     }
     public static final class id {
         public static final int about=0x7f050038;
