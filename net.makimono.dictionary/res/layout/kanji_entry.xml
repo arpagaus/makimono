@@ -16,9 +16,10 @@
             android:id="@+id/kanji_animation"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_alignBottom="@id/kanji_literal"
             android:layout_alignParentRight="true"
-            android:layout_alignTop="@id/kanji_literal"
-            android:layout_marginRight="10dp" />
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="18dp" />
 
         <!-- Readings -->
 
