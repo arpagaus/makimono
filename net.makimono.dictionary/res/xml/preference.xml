@@ -49,6 +49,7 @@
     <PreferenceCategory android:title="Troubleshooting" >
         <Preference
             android:key="index_files_version_reset"
+            android:summary="If you encounter errors when searching then try this option"
             android:title="Initialize dictionary data files" />
     </PreferenceCategory>
 

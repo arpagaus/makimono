@@ -29,5 +29,8 @@
     <string name="next_expression_alternative">Nächste Ausdruck-Alternative</string>
     <string name="previous_reading_alternative">Vorherige Lese-Alternative</string>
     <string name="next_reading_alternative">Nächste Lese-Alternative</string>
+    <string name="initialization">Initialisierung</string>
+    <string name="initialization_progress_message">Initialisiere Wörterbuch-Datenbank</string>
+    <string name="initialization_info_message">Makimono muss die Wörterbuch-Datenbank initialisieren</string>
 
 </resources>

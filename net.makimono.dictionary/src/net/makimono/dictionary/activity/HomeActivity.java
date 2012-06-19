@@ -1,6 +1,7 @@
 package net.makimono.dictionary.activity;
 
 import java.io.BufferedInputStream;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,15 +16,18 @@ import net.makimono.dictionary.util.ExternalStorageUtil;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -120,12 +124,22 @@ public class HomeActivity extends AbstractDefaultActivity {
 		}
 
 		try {
-			File destination = ExternalStorageUtil.getExternalFilesDir(this);
+			final File destination = ExternalStorageUtil.getExternalFilesDir(this);
 			if (isFileExtractionNecessary(destination)) {
-				fileExtractorTask = new FileExtractorTask(destination);
-				((Application) getApplication()).setFileExtractorTask(fileExtractorTask);
-				fileExtractorTask.showDialog(this);
-				fileExtractorTask.start();
+				AlertDialog dialog = new AlertDialog.Builder(this).create();
+				dialog.setTitle(R.string.initialization);
+				dialog.setMessage(getString(R.string.initialization_info_message));
+				dialog.setCancelable(false);
+				dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						FileExtractorTask fileExtractorTask = new FileExtractorTask(destination);
+						((Application) getApplication()).setFileExtractorTask(fileExtractorTask);
+						fileExtractorTask.showDialog(HomeActivity.this);
+						fileExtractorTask.start();
+					}
+				});
+				dialog.show();
 			}
 		} catch (Exception e) {
 			Log.e(LOG_TAG, "Error when checking index files", e);
@@ -141,10 +155,12 @@ public class HomeActivity extends AbstractDefaultActivity {
 		return info.versionCode > indexFilesVersion;
 	}
 
-	private ZipInputStream getArchiveInputStream(String fileName) throws IOException {
-		InputStream bufferedInputStream = new BufferedInputStream(getAssets().open(fileName));
-		ZipInputStream zipInputStream = new ZipInputStream(bufferedInputStream);
-		return zipInputStream;
+	private static void closeStream(Closeable closeable) {
+		try {
+			closeable.close();
+		} catch (IOException e) {
+			Log.e(LOG_TAG, "Failed to close stream properly", e);
+		}
 	}
 
 	public class FileExtractorTask extends Thread {
@@ -162,8 +178,8 @@ public class HomeActivity extends AbstractDefaultActivity {
 
 		private synchronized void showDialog(Context context) {
 			progressDialog = new ProgressDialog(context);
-			progressDialog.setTitle("Initialization");
-			progressDialog.setMessage("Extracting dictionary data files");
+			progressDialog.setTitle(R.string.initialization);
+			progressDialog.setMessage(getString(R.string.initialization_progress_message));
 			progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 			progressDialog.setCancelable(false);
 			progressDialog.show();
@@ -189,7 +205,9 @@ public class HomeActivity extends AbstractDefaultActivity {
 
 			try {
 				FileUtils.deleteDirectory(destination);
-				ZipInputStream zipInputStream = getArchiveInputStream(INDEXES_FILE_NAME);
+
+				InputStream bufferedInputStream = new BufferedInputStream(getAssets().open(INDEXES_FILE_NAME), AssetManager.ACCESS_STREAMING);
+				ZipInputStream zipInputStream = new ZipInputStream(bufferedInputStream);
 
 				ZipEntry entry;
 				while ((entry = zipInputStream.getNextEntry()) != null) {
@@ -199,7 +217,8 @@ public class HomeActivity extends AbstractDefaultActivity {
 						file.getParentFile().mkdirs();
 						FileOutputStream outputStream = new FileOutputStream(file);
 						IOUtils.copy(zipInputStream, outputStream);
-						IOUtils.closeQuietly(outputStream);
+
+						closeStream(outputStream);
 
 						currentProgress++;
 						updateDialog();
@@ -207,14 +226,19 @@ public class HomeActivity extends AbstractDefaultActivity {
 					}
 				}
 
-				IOUtils.closeQuietly(zipInputStream);
+				closeStream(zipInputStream);
 
-				PackageManager manager = HomeActivity.this.getPackageManager();
-				PackageInfo info = manager.getPackageInfo(HomeActivity.this.getPackageName(), 0);
+				if (currentProgress < INDEXES_FILE_COUNT) {
+					Log.e(LOG_TAG, "Not all files were extracted as expected");
+				} else {
+					PackageManager manager = HomeActivity.this.getPackageManager();
+					PackageInfo info = manager.getPackageInfo(HomeActivity.this.getPackageName(), 0);
 
-				Editor editor = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this.getApplicationContext()).edit();
-				editor.putInt(PreferenceActivity.INDEX_FILES_VERSION, info.versionCode);
-				editor.commit();
+					Editor editor = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this.getApplicationContext()).edit();
+					editor.putInt(PreferenceActivity.INDEX_FILES_VERSION, info.versionCode);
+					editor.commit();
+				}
+
 			} catch (Exception e) {
 				Log.e("", "Error when extracting index files", e);
 			} finally {
@@ -223,5 +247,6 @@ public class HomeActivity extends AbstractDefaultActivity {
 
 			Log.i(LOG_TAG, "FileExtractorTask finished in " + (System.currentTimeMillis() - startTime) + "ms");
 		}
+
 	}
 }

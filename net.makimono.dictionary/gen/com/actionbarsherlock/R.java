@@ -1145,6 +1145,9 @@ containing a value of this type.
         public static final int dictionary_search=0x7f0a00c4;
         public static final int frequency=0x7f0a00b8;
         public static final int grade=0x7f0a00b7;
+        public static final int initialization=0x7f0a00cb;
+        public static final int initialization_info_message=0x7f0a00cd;
+        public static final int initialization_progress_message=0x7f0a00cc;
         public static final int kanji=0x7f0a00b3;
         public static final int kanji_search=0x7f0a00c5;
         public static final int languages=0x7f0a00b1;
