@@ -11,7 +11,6 @@ import android.widget.ImageButton;
 import android.widget.TextSwitcher;
 
 public class DictionaryAlternativesSwitcher {
-
 	private TextSwitcher expressionTextSwitcher;
 	private TextSwitcher readingTextSwitcher;
 
@@ -94,7 +93,7 @@ public class DictionaryAlternativesSwitcher {
 			expressions = entry.getReadings();
 		}
 
-		updateTextSwitcher(expressionTextSwitcher, previousExpressionButton, nextExpressionButton, expressions, currentExpressionIndex);
+		currentExpressionIndex = updateTextSwitcher(expressionTextSwitcher, previousExpressionButton, nextExpressionButton, expressions, currentExpressionIndex);
 
 		currentReadingIndex = 0;
 		updateReadingText();
@@ -103,14 +102,18 @@ public class DictionaryAlternativesSwitcher {
 	private void updateReadingText() {
 		if (!entry.getExpressions().isEmpty()) {
 			List<String> readings = entry.getReadings(entry.getExpressions().get(currentExpressionIndex));
-			updateTextSwitcher(readingTextSwitcher, previousReadingButton, nextReadingButton, readings, currentReadingIndex);
+			currentReadingIndex = updateTextSwitcher(readingTextSwitcher, previousReadingButton, nextReadingButton, readings, currentReadingIndex);
 		}
 	}
 
-	private void updateTextSwitcher(TextSwitcher switcher, ImageButton previousButton, ImageButton nextButton, List<String> alternatives, int index) {
-		if (index < alternatives.size()) {
-			switcher.setText(alternatives.get(index % alternatives.size()));
+	private static int updateTextSwitcher(TextSwitcher switcher, ImageButton previousButton, ImageButton nextButton, List<String> alternatives, int index) {
+		if (index < 0) {
+			return 0;
+		} else if (index >= alternatives.size()) {
+			return alternatives.size() - 1;
 		}
+
+		switcher.setText(alternatives.get(index));
 
 		int visibility;
 		if (alternatives.size() <= 1) {
@@ -132,5 +135,7 @@ public class DictionaryAlternativesSwitcher {
 		} else {
 			nextButton.setImageResource(R.drawable.ic_btn_next);
 		}
+
+		return index;
 	}
 }
