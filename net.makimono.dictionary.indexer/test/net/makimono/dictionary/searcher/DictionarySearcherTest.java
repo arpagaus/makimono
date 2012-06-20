@@ -14,8 +14,6 @@ import net.makimono.dictionary.model.FieldOfApplication;
 import net.makimono.dictionary.model.Language;
 import net.makimono.dictionary.model.Miscellaneous;
 import net.makimono.dictionary.model.PartOfSpeech;
-import net.makimono.dictionary.searcher.DictionaryFieldName;
-import net.makimono.dictionary.searcher.DictionarySearcher;
 
 import org.apache.lucene.queryParser.ParseException;
 import org.junit.After;
@@ -205,6 +203,13 @@ public class DictionarySearcherTest {
 		Set<String> suggestions = searcher.suggest("memory sw");
 		assertEquals(1, suggestions.size());
 		assertEquals("memory switch", suggestions.iterator().next());
+	}
+
+	@Test
+	public void suggestGermanWithCapitalLetter() throws Exception {
+		Set<String> suggestions = searcher.suggest("Wörterbuc");
+		assertFalse(suggestions.isEmpty());
+		assertEquals("wörterbuch", suggestions.iterator().next());
 	}
 
 	@Test

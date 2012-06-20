@@ -167,8 +167,9 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 	public TreeSet<String> suggest(String prefix) throws IOException {
 		TreeSet<String> suggestions = new TreeSet<String>();
 		if (isQualifiedForSuggestions(prefix)) {
-			Set<IndexFieldName> fields = new HashSet<IndexFieldName>();
+			prefix = prefix.toLowerCase();
 
+			Set<IndexFieldName> fields = new HashSet<IndexFieldName>();
 			for (String fieldName : getIndexedFieldNames()) {
 				IndexFieldName field = getIndexFieldName(fieldName);
 				if (!field.isMeaning() && (!field.isRomaji() || isRomajiSearchEnabled())) {
@@ -182,7 +183,7 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 			for (IndexFieldName field : fields) {
 				TermEnum terms = reader.terms(new Term(field.name(), prefix));
 				do {
-					if (terms.term() != null && terms.term().text().toLowerCase().startsWith(prefix.toLowerCase())) {
+					if (terms.term() != null && terms.term().text().startsWith(prefix)) {
 						suggestions.add(terms.term().text().trim());
 					} else {
 						break;
