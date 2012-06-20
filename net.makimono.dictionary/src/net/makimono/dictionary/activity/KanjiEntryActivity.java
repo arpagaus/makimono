@@ -116,10 +116,10 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		pinyinTextView.setText(StringUtils.join(entry.getPinyin(), ", "));
 
 		updateRadicalTextView(entry, null);
-		strokeCountTextView.setText(entry.getStrokeCount() == 0 ? "-" : String.valueOf(entry.getStrokeCount()));
-		jlptTextView.setText(entry.getJlpt() == 0 ? "-" : String.valueOf(entry.getJlpt()));
-		gradeTextView.setText(entry.getGrade() == 0 ? "-" : String.valueOf(entry.getGrade()));
-		frequencyTextView.setText(entry.getFrequency() == 0 ? "-" : String.valueOf(entry.getFrequency()));
+		strokeCountTextView.setText(getDisplayString(entry.getStrokeCount()));
+		jlptTextView.setText(getJlptString(entry.getJlpt()));
+		gradeTextView.setText(getGradeString(entry.getGrade()));
+		frequencyTextView.setText(getDisplayString(entry.getFrequency()));
 		unicodeTextView.setText("U+" + Integer.toHexString(entry.getCodePoint()).toUpperCase());
 
 		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);
@@ -131,6 +131,35 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 				meaningsGroupView.addView(factory.makeView(meaning, language));
 			}
 		}
+	}
+
+	private String getGradeString(byte grade) {
+		if (grade >= 1 && grade <= 6) {
+			return "Kyōiku " + grade;
+		} else if (grade >= 7 && grade <= 8) {
+			return "Jōyō";
+		} else if (grade >= 9) {
+			return "Jinmeiyō";
+		}
+		return "-";
+	}
+
+	private String getJlptString(byte jlpt) {
+		switch (jlpt) {
+		case 1:
+			return "N1";
+		case 2:
+			return "N2 / N3";
+		case 3:
+			return "N3 / N4";
+		case 4:
+			return "N5";
+		}
+		return "-";
+	}
+
+	private String getDisplayString(int value) {
+		return value == 0 ? "-" : String.valueOf(value);
 	}
 
 	private void updateRadicalTextView(KanjiEntry kanji, KanjiEntry radical) {
