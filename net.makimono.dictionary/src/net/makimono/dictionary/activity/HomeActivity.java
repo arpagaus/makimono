@@ -127,8 +127,8 @@ public class HomeActivity extends AbstractDefaultActivity {
 			final File destination = ExternalStorageUtil.getExternalFilesDir(this);
 			if (isFileExtractionNecessary(destination)) {
 				AlertDialog dialog = new AlertDialog.Builder(this).create();
-				dialog.setTitle(R.string.initialization);
-				dialog.setMessage(getString(R.string.initialization_info_message));
+				dialog.setTitle(R.string.welcome);
+				dialog.setMessage(getString(R.string.welcome_info_message));
 				dialog.setCancelable(false);
 				dialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
 					@Override

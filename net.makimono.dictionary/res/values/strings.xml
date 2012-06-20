@@ -31,6 +31,7 @@
     <string name="next_reading_alternative">Next reading alternative</string>
     <string name="initialization">Initialization</string>
     <string name="initialization_progress_message">Initializing dictionary data files</string>
-    <string name="initialization_info_message">Makimono needs to initialize the dictionary data files</string>
+    <string name="welcome">Welcome</string>
+    <string name="welcome_info_message">Welcome to Makimono!\n\nI will need to initialize the dictionary data files. This may take up to one minute.</string>
 
 </resources>

@@ -31,6 +31,7 @@
     <string name="next_reading_alternative">Nächste Lese-Alternative</string>
     <string name="initialization">Initialisierung</string>
     <string name="initialization_progress_message">Initialisiere Wörterbuch-Datenbank</string>
-    <string name="initialization_info_message">Makimono muss die Wörterbuch-Datenbank initialisieren</string>
+    <string name="welcome">Wilkommen</string>
+    <string name="welcome_info_message">Willkommen bei Makimono!\n\nI werde jetzt die Wörterbuch-Datenbank initialisieren. Das sollte maximal eine Minute dauern.</string>
 
 </resources>

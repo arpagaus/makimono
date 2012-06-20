@@ -1146,7 +1146,6 @@ containing a value of this type.
         public static final int frequency=0x7f0a00b8;
         public static final int grade=0x7f0a00b7;
         public static final int initialization=0x7f0a00cb;
-        public static final int initialization_info_message=0x7f0a00cd;
         public static final int initialization_progress_message=0x7f0a00cc;
         public static final int kanji=0x7f0a00b3;
         public static final int kanji_search=0x7f0a00c5;
@@ -1169,6 +1168,8 @@ containing a value of this type.
         public static final int settings=0x7f0a00b2;
         public static final int stroke_count=0x7f0a00ba;
         public static final int unicode=0x7f0a00b9;
+        public static final int welcome=0x7f0a00cd;
+        public static final int welcome_info_message=0x7f0a00ce;
     }
     public static final class style {
         public static final int AlternativeButton=0x7f0b0058;
