@@ -6,51 +6,51 @@
             android:defaultValue="true"
             android:icon="@drawable/ic_english"
             android:key="language_en"
-            android:title="English" />
+            android:title="@string/english" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:icon="@drawable/ic_german"
             android:key="language_de"
-            android:title="German" />
+            android:title="@string/german" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:icon="@drawable/ic_french"
             android:key="language_fr"
-            android:title="French" />
+            android:title="@string/french" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:icon="@drawable/ic_russian"
             android:key="language_ru"
-            android:title="Russian" />
+            android:title="@string/russian" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:icon="@drawable/ic_spanish"
             android:key="language_es"
-            android:title="Spanish" />
+            android:title="@string/spanish" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:icon="@drawable/ic_portugese"
             android:key="language_pt"
-            android:title="Portugese" />
+            android:title="@string/portuguese" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/romaji" >
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="romaji_search"
-            android:summary="Allows you using rōmaji when searching Japanese expressions"
-            android:title="Rōmaji Search" />
+            android:summary="@string/romaji_search_summary"
+            android:title="@string/romaji_search" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/search" >
         <Preference
             android:key="clear_search_history"
-            android:summary="Remove all the searches you have performed"
-            android:title="Clear search history" />
+            android:summary="@string/clear_search_history_summary"
+            android:title="@string/clear_search_history" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="Troubleshooting" >
+    <PreferenceCategory android:title="@string/troubleshooting" >
         <Preference
             android:key="index_files_version_reset"
-            android:summary="If you encounter errors when searching then try this option"
-            android:title="Initialize dictionary data files" />
+            android:summary="@string/initialize_dictionary_data_files_summary"
+            android:title="@string/initialize_dictionary_data_files" />
     </PreferenceCategory>
 
 </PreferenceScreen>

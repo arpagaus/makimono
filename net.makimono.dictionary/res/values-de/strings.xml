@@ -24,7 +24,7 @@
     <string name="search_the_dictionary">Suche im Wörterbuch</string>
     <string name="dictionary_search">Wörterbuch-Suche</string>
     <string name="kanji_search">Kanji-Suche</string>
-    <string name="search_error">Fehler: Suche fehlgeschlagen</string>
+    <string name="search_error">Suche fehlgeschlagen. Gehen Sie zu Einstellungen / Problembehebung</string>
     <string name="previous_expression_alternative">Vorherige Ausdruck-Alternative</string>
     <string name="next_expression_alternative">Nächste Ausdruck-Alternative</string>
     <string name="previous_reading_alternative">Vorherige Lese-Alternative</string>
@@ -33,5 +33,18 @@
     <string name="initialization_progress_message">Initialisiere Wörterbuch-Datenbank</string>
     <string name="welcome">Wilkommen</string>
     <string name="welcome_info_message">Willkommen bei Makimono!\n\nI werde jetzt die Wörterbuch-Datenbank initialisieren. Das sollte maximal eine Minute dauern.</string>
+    <string name="english">Englisch</string>
+    <string name="german">Deutsch</string>
+    <string name="french">Französich</string>
+    <string name="russian">Russisch</string>
+    <string name="spanish">Spanisch</string>
+    <string name="portuguese">Portugiesisch</string>
+    <string name="romaji_search">Rōmaji Suche</string>
+    <string name="romaji_search_summary">Ermöglicht es bei der Suche nach japanischen Ausdrücken Rōmaji zu verwenden</string>
+    <string name="clear_search_history">Suchverlauf löschen</string>
+    <string name="troubleshooting">Problembehebung</string>
+    <string name="clear_search_history_summary">Alle Suchvorgänge aus dem Verlauf entfernen</string>
+    <string name="initialize_dictionary_data_files">Wörterbuch-Datenbank erneut initialisieren</string>
+    <string name="initialize_dictionary_data_files_summary">Falls bei der Suche eine Fehlermeldung erscheint, dann versuchen Sie es mit dieser Option</string>
 
 </resources>

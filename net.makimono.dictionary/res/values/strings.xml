@@ -24,7 +24,7 @@
     <string name="search_the_dictionary">Search the dictionary</string>
     <string name="dictionary_search">Dictionary search</string>
     <string name="kanji_search">Kanji search</string>
-    <string name="search_error">Error: Failed to search. Try the troubleshooting section under settings.</string>
+    <string name="search_error">Searching failed. Goto settings / troubleshooting</string>
     <string name="previous_expression_alternative">Previous expression alternative</string>
     <string name="next_expression_alternative">Next expression alternative</string>
     <string name="previous_reading_alternative">Previous reading alternative</string>
@@ -33,5 +33,18 @@
     <string name="initialization_progress_message">Initializing dictionary data files</string>
     <string name="welcome">Welcome</string>
     <string name="welcome_info_message">Welcome to Makimono!\n\nI will need to initialize the dictionary data files. This may take up to one minute.</string>
+    <string name="english">English</string>
+    <string name="german">German</string>
+    <string name="french">French</string>
+    <string name="russian">Russian</string>
+    <string name="spanish">Spanish</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="romaji_search">Rōmaji Search</string>
+    <string name="romaji_search_summary">Allows you using rōmaji when searching Japanese expressions</string>
+    <string name="clear_search_history">Clear search history</string>
+    <string name="troubleshooting">Troubleshooting</string>
+    <string name="clear_search_history_summary">Remove all the searches you have performed</string>
+    <string name="initialize_dictionary_data_files">Initialize dictionary data files</string>
+    <string name="initialize_dictionary_data_files_summary">If you encounter errors when searching then try this option</string>
 
 </resources>
