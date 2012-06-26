@@ -14,11 +14,11 @@
 
         <net.makimono.dictionary.view.KanjiWritingAnimationView
             android:id="@+id/kanji_animation"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
             android:layout_alignBottom="@id/kanji_literal"
             android:layout_alignParentRight="true"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="6dp"
             android:layout_marginRight="18dp" />
 
         <!-- Readings -->
