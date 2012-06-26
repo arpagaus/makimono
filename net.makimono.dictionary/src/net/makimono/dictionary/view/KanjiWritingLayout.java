@@ -44,7 +44,7 @@ public class KanjiWritingLayout extends ViewGroup {
 		// Find the maximum edge length
 		while (childWidth < childHeight) {
 			rowCount++;
-			columnCount = Math.round((childCount + 0.5f) / ((float) rowCount));
+			columnCount = (int) Math.ceil(childCount / (double) rowCount);
 
 			childWidth = (int) (width / columnCount);
 			childHeight = (int) (height / rowCount);
