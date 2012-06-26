@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="about">約</string>
+    <string name="acknowledgement_edrdg">このアプリケーションはJMDictとKANJIDIC2辞書ファイルを使用しています。これらのファイルは、電子辞書研究開発グループの財産であり、グループ\ sのライセンスに準拠して使用されています。</string>
+    <string name="app_name">Makimono</string>
+    <string name="clear_search_history">検索履歴を消去</string>
+    <string name="clear_search_history_summary">あなたが実行したすべての検索を削除します。</string>
+    <string name="dictionary">辞書</string>
+    <string name="dictionary_search">辞書検索</string>
+    <string name="english">英語</string>
+    <string name="french">フランス語</string>
+    <string name="frequency">周波数　</string>
+    <string name="german">ドイツ語</string>
+    <string name="grade">成績評価</string>
+    <string name="initialization">初期化</string>
+    <string name="initialization_progress_message">辞書データファイルを初期化する</string>
+    <string name="initialize_dictionary_data_files">辞書データファイルを初期化する</string>
+    <string name="initialize_dictionary_data_files_summary">検索するときにエラーが発生した場合、このオプションを試してみてください</string>
+    <string name="kanji">漢字</string>
+    <string name="kanji_search">漢字検索</string>
+    <string name="languages">言語</string>
+    <string name="loading_">読み込み中…</string>
+    <string name="meanings">の意味</string>
+    <string name="miscellaneous">その他</string>
+    <string name="next_expression_alternative">次の式の代替</string>
+    <string name="next_reading_alternative">次の読書の代替</string>
+    <string name="no_entries">エントリーがありません。</string>
+    <string name="portuguese">ポルトガル語</string>
+    <string name="previous_expression_alternative">前の式の代替</string>
+    <string name="previous_reading_alternative">前の読書の代替</string>
+    <string name="radical">漢字の部首</string>
+    <string name="readings">読み取り</string>
+    <string name="romaji">ローマ字</string>
+    <string name="romaji_search">ローマ字検索</string>
+    <string name="romaji_search_summary">日本語の表現を検索するときは、ローマ字を使用できます。</string>
+    <string name="russian">ロシア語</string>
+    <string name="search">検索</string>
+    <string name="search_error">検索に失敗しました。後藤の設定/トラブルシューティング</string>
+    <string name="search_for_kanji">漢字の検索</string>
+    <string name="search_the_dictionary">辞書を検索する</string>
+    <string name="settings">設定</string>
+    <string name="spanish">スペイン語</string>
+    <string name="stroke_count">画数</string>
+    <string name="troubleshooting">トラブルシューティング</string>
+    <string name="unicode">ユニコード</string>
+    <string name="welcome">ようこそ、 いらっしゃい</string>
+    <string name="welcome_info_message">Makimonoへようこそ！に\n\nIは、辞書データファイルを初期化する必要があります。これは、1分ほどかかる場合があります。</string>
+
+</resources>

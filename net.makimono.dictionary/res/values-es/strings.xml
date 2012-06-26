@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="about">Acerca de</string>
+    <string name="acknowledgement_edrdg">Esta aplicación usa los archivos de diccionario JMDict y KANJIDIC2. Estos archivos son propiedad del Grupo de Desarrollo e Investigación de Diccionarios Electrónicos, y son usados de acuerdo a la licencia de derechos de autor de dicho Grupo.</string>
+    <string name="app_name">Makimono</string>
+    <string name="clear_search_history">Borrar historial de búsqueda</string>
+    <string name="clear_search_history_summary">Eliminar todas las búsquedas que ha realizado</string>
+    <string name="dictionary">Diccionario</string>
+    <string name="dictionary_search">Búsqueda en diccionario</string>
+    <string name="english">Inglés</string>
+    <string name="french">Francés</string>
+    <string name="frequency">Frecuencia</string>
+    <string name="german">Alemán</string>
+    <string name="grade">Nivel</string>
+    <string name="initialization">Iniciando</string>
+    <string name="initialization_progress_message">Inicialización de archivos de diccionario de datos</string>
+    <string name="initialize_dictionary_data_files">Inicializar archivos de datos del diccionario</string>
+    <string name="initialize_dictionary_data_files_summary">Si encuentra errores en la búsqueda, intente esta opción</string>
+    <string name="kanji">Kanji</string>
+    <string name="kanji_search">Búsqueda de kanji</string>
+    <string name="languages">Idiomas</string>
+    <string name="loading_">Cargando…</string>
+    <string name="meanings">Significados</string>
+    <string name="miscellaneous">Varios</string>
+    <string name="next_expression_alternative">Ir a la expresión alternativa siguiente</string>
+    <string name="next_reading_alternative">Ir a la lectura alternativa siguiente</string>
+    <string name="no_entries">No se encontraron entradas</string>
+    <string name="portuguese">Portugués</string>
+    <string name="previous_expression_alternative">Ir a la expresión alternativa anterior</string>
+    <string name="previous_reading_alternative">Ir a la lectura alternativa anterior</string>
+    <string name="radical">Radical</string>
+    <string name="readings">Lecturas</string>
+    <string name="romaji">Rōmaji</string>
+    <string name="romaji_search">Búsqueda por rōmaji</string>
+    <string name="romaji_search_summary">Le permite usar rōmaji a la hora de buscar expresiones japonesas</string>
+    <string name="russian">Ruso</string>
+    <string name="search">Buscar</string>
+    <string name="search_error">La búsqueda ha fallado. Ir a configuración / solución de problemas</string>
+    <string name="search_for_kanji">Buscar kanji</string>
+    <string name="search_the_dictionary">Buscar en el diccionario</string>
+    <string name="settings">Configuración</string>
+    <string name="spanish">Español</string>
+    <string name="stroke_count">Número de trazos</string>
+    <string name="troubleshooting">Solución de problemas</string>
+    <string name="unicode">Unicode</string>
+    <string name="welcome">Bienvenido</string>
+    <string name="welcome_info_message">Bienvenido a Makimono!\n\nIniciará los archivos de diccionario de datos. Esto puede tomar algunos minutos.</string>
+
+</resources>
