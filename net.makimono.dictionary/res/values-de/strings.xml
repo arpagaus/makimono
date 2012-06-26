@@ -32,7 +32,7 @@
     <string name="initialization">Initialisierung</string>
     <string name="initialization_progress_message">Initialisiere Wörterbuch-Datenbank</string>
     <string name="welcome">Wilkommen</string>
-    <string name="welcome_info_message">Willkommen bei Makimono!\n\nI werde jetzt die Wörterbuch-Datenbank initialisieren. Das sollte maximal eine Minute dauern.</string>
+    <string name="welcome_info_message">Willkommen bei Makimono!\n\nIch werde jetzt die Wörterbuch-Datenbank initialisieren. Das sollte maximal eine Minute dauern.</string>
     <string name="english">Englisch</string>
     <string name="german">Deutsch</string>
     <string name="french">Französich</string>
