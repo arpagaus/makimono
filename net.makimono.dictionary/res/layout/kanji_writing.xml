@@ -14,8 +14,9 @@
     <net.makimono.dictionary.view.KanjiWritingLayout
         android:id="@+id/kanji_writing"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        android:background="@android:color/white" />
 
 </LinearLayout>

@@ -5,11 +5,17 @@ import java.util.List;
 import net.makimono.dictionary.R;
 import net.makimono.dictionary.view.KanjiWritingLayout;
 import net.makimono.dictionary.view.KanjiWritingView;
-import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.view.View;
 
-public class KanjiWritingActivity extends Activity {
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+public class KanjiWritingActivity extends AbstractDefaultActivity {
 
 	private KanjiWritingLayout layout;
 
@@ -19,6 +25,37 @@ public class KanjiWritingActivity extends Activity {
 
 		initializeContentView();
 		handleIntent(getIntent());
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getSupportMenuInflater().inflate(R.menu.share, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (super.onOptionsItemSelected(item)) {
+			return true;
+		} else {
+			if (item.getItemId() == R.id.menu_share) {
+				View view = this.layout;
+				view.setDrawingCacheEnabled(true);
+				Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+				view.setDrawingCacheEnabled(false);
+
+				String url = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, getString(R.string.app_name), "Kanji writing");
+
+				Intent shareIntent = new Intent(Intent.ACTION_SEND);
+				shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(url));
+				shareIntent.setType("image/png");
+				startActivity(Intent.createChooser(shareIntent, "Share with"));
+				return true;
+			}
+			return false;
+		}
+
 	}
 
 	private void initializeContentView() {

@@ -809,11 +809,12 @@ containing a value of this type.
         public static final int ic_menu_home=0x7f02006a;
         public static final int ic_menu_preferences=0x7f02006b;
         public static final int ic_menu_search_holo_dark=0x7f02006c;
-        public static final int ic_portugese=0x7f02006d;
-        public static final int ic_russian=0x7f02006e;
-        public static final int ic_spanish=0x7f02006f;
-        public static final int primary_separator=0x7f020070;
-        public static final int secondary_separator=0x7f020071;
+        public static final int ic_menu_share_holo_dark=0x7f02006d;
+        public static final int ic_portugese=0x7f02006e;
+        public static final int ic_russian=0x7f02006f;
+        public static final int ic_spanish=0x7f020070;
+        public static final int primary_separator=0x7f020071;
+        public static final int secondary_separator=0x7f020072;
     }
     public static final class id {
         public static final int about=0x7f050038;
@@ -883,6 +884,7 @@ containing a value of this type.
         public static final int listMode=0x7f050002;
         public static final int menu_preferences=0x7f050055;
         public static final int menu_search=0x7f050056;
+        public static final int menu_share=0x7f050057;
         public static final int next_expression=0x7f05002b;
         public static final int next_reading=0x7f05002e;
         public static final int no_entries=0x7f050050;
@@ -941,6 +943,7 @@ containing a value of this type.
     public static final class menu {
         public static final int base=0x7f0c0000;
         public static final int search=0x7f0c0001;
+        public static final int share=0x7f0c0002;
     }
     public static final class string {
         public static final int JMdict_Buddh=0x7f0a001b;
