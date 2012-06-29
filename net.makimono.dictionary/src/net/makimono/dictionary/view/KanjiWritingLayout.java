@@ -29,7 +29,7 @@ public class KanjiWritingLayout extends ViewGroup {
 		final int childCount = getChildCount();
 
 		if (childCount == 0) {
-			setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
+			setMeasuredDimension(0, 0);
 			return;
 		}
 
@@ -53,23 +53,18 @@ public class KanjiWritingLayout extends ViewGroup {
 			edgeLength = Math.max(edgeLength, length);
 			if (edgeLength > length) {
 				rowCount--;
-				columnCount = Math.round((childCount + 0.5f) / ((float) rowCount));
+				columnCount = (int) Math.ceil(childCount / (double) rowCount);
 				break;
 			}
 		}
 
 		if (edgeLength == 0) {
-			setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
+			setMeasuredDimension(0, 0);
 			return;
 		}
 
-		columnCount = Math.min(childCount, width / edgeLength);
-
-		widthMeasureSpec = MeasureSpec.makeMeasureSpec(columnCount * edgeLength, MeasureSpec.AT_MOST);
-		heightMeasureSpec = MeasureSpec.makeMeasureSpec(rowCount * edgeLength, MeasureSpec.AT_MOST);
-
-		setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+		columnCount = Math.min(childCount, columnCount);
+		setMeasuredDimension(columnCount * edgeLength, rowCount * edgeLength);
 	}
 
 	@Override
