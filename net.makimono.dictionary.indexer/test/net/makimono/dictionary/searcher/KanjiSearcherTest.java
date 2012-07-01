@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -17,7 +18,6 @@ import net.makimono.dictionary.indexer.KanjiIndexer;
 import net.makimono.dictionary.model.KanjiEntry;
 import net.makimono.dictionary.model.Language;
 import net.makimono.dictionary.model.Meaning;
-import net.makimono.dictionary.searcher.KanjiSearcher;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.Document;
@@ -55,7 +55,7 @@ public class KanjiSearcherTest {
 
 	@Test
 	public void getKanjiEntryForDocument() throws Exception {
-		Document document = new KanjiIndexer().createDocument(testKanji);
+		Document document = new KanjiIndexer(new Properties()).createDocument(testKanji);
 		KanjiEntry entry = searcher.getKanjiEntryForDocument(document);
 
 		assertEquals("語", entry.getLiteral());
@@ -117,6 +117,8 @@ public class KanjiSearcherTest {
 		assertEquals(62, entry.getRadical());
 		assertEquals('戈', entry.getRadicalKanji());
 		assertEquals("かのほこ", entry.getRadicalKana());
+
+		assertEquals("[ノ, 十, 土, 弋]", entry.getRadicals().toString());
 	}
 
 	@Test

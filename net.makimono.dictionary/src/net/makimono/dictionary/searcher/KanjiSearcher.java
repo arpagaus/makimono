@@ -90,8 +90,10 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 			entry.setJlpt(fieldable.getBinaryValue()[0]);
 		}
 
-		entry.setRadical(ByteBuffer.wrap(document.getFieldable(KanjiFieldName.RADICAL.name()).getBinaryValue()).getShort());
+		entry.setRadical(ByteBuffer.wrap(document.getFieldable(KanjiFieldName.MAIN_RADICAL.name()).getBinaryValue()).getShort());
 		entry.setStrokeCount(document.getFieldable(KanjiFieldName.STROKE_COUNT.name()).getBinaryValue()[0]);
+
+		entry.getRadicals().addAll(getStringsForField(document, KanjiFieldName.RADICAL));
 
 		entry.getOnYomi().addAll(getStringsForField(document, KanjiFieldName.ONYOMI));
 		entry.getKunYomi().addAll(getStringsForField(document, KanjiFieldName.KUNYOMI));

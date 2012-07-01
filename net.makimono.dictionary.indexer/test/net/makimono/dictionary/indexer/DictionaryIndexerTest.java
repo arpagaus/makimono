@@ -3,8 +3,8 @@ package net.makimono.dictionary.indexer;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
+import java.util.Properties;
 
-import net.makimono.dictionary.indexer.DictionaryIndexer;
 import net.makimono.dictionary.model.DictionaryEntry;
 
 import org.junit.Test;
@@ -17,7 +17,7 @@ public class DictionaryIndexerTest {
 
 	@Test
 	public void testBoost() {
-		DictionaryIndexer indexer = new DictionaryIndexer();
+		DictionaryIndexer indexer = new DictionaryIndexer(new Properties());
 
 		assertEquals(100, indexer.getBoost("ichi1"), 0);
 		assertEquals(100, indexer.getBoost("spec1"), 0);
@@ -46,7 +46,7 @@ public class DictionaryIndexerTest {
 		jmdictEntry.getREle().add(createREel("ひび"));
 		jmdictEntry.getREle().add(createREel("あかぎれ", "皹", "皸"));
 
-		DictionaryIndexer indexer = new DictionaryIndexer();
+		DictionaryIndexer indexer = new DictionaryIndexer(new Properties());
 		DictionaryEntry entry = indexer.transformEntry(jmdictEntry);
 
 		assertEquals(Arrays.asList("ひび"), entry.getReadings("罅"));

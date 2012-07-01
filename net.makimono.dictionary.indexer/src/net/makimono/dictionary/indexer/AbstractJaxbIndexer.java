@@ -24,7 +24,6 @@ import org.apache.lucene.util.Version;
 public abstract class AbstractJaxbIndexer<ROOT, IT> {
 
 	private final String contextPath;
-
 	private KanaConverter kanaConverter = new KanaConverter();
 
 	protected AbstractJaxbIndexer(String contextPath) {

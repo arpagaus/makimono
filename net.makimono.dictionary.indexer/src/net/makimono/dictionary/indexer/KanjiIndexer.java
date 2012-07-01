@@ -1,11 +1,14 @@
 package net.makimono.dictionary.indexer;
 
+import java.io.File;
 import java.nio.ByteBuffer;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
 
+import net.makimono.dictionary.indexer.parser.KradfileParser;
 import net.makimono.dictionary.searcher.KanjiFieldName;
 
 import org.apache.commons.lang3.StringUtils;
@@ -27,14 +30,26 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 	public static final int RADICAL_UNICODE_OFFSET = 0x2F00;
 
 	private Map<Integer, String> strokePaths = new HashMap<Integer, String>();
+	private Map<String, Set<String>> kanjiRadicals = new HashMap<String, Set<String>>();
 
-	public KanjiIndexer() {
-		this(Collections.<Integer, String> emptyMap());
-	}
-
-	public KanjiIndexer(Map<Integer, String> strokePaths) {
+	public KanjiIndexer(Properties properties) {
 		super(Kanjidic2.class.getPackage().getName());
-		this.strokePaths = strokePaths;
+
+		try {
+			String kanjivgProperty = properties.getProperty("kanjivg");
+			if (StringUtils.isNotBlank(kanjivgProperty)) {
+				KanjiVgIndexer kanjiVgIndexer = new KanjiVgIndexer();
+				this.strokePaths = kanjiVgIndexer.getStrokePaths(new File(kanjivgProperty));
+			}
+
+			String kradfileProperty = properties.getProperty("kradfile");
+			if (StringUtils.isNotBlank(kradfileProperty)) {
+				KradfileParser kradfileParser = new KradfileParser(new File(kradfileProperty));
+				this.kanjiRadicals = kradfileParser.getKanjiRadicals();
+			}
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override
@@ -74,12 +89,8 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 
 		for (RadValue r : character.getRadical().getRadValue()) {
 			if (r.getRadType().equalsIgnoreCase("classical")) {
-				document.add(new Field(KanjiFieldName.RADICAL.name(), ByteBuffer.allocate(2).putShort(r.getValue()).array()));
+				document.add(new Field(KanjiFieldName.MAIN_RADICAL.name(), ByteBuffer.allocate(2).putShort(r.getValue()).array()));
 			}
-		}
-
-		for (String radicalName : character.getMisc().getRadName()) {
-			document.add(new Field(KanjiFieldName.RADICAL_NAME.name(), radicalName, Store.YES, Index.NOT_ANALYZED));
 		}
 
 		addReadings(document, rm.getRmgroup().getReading());
@@ -98,6 +109,12 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 		if (strokePaths.containsKey(codePoint)) {
 			byte[] binary = CompressionTools.compress(strokePaths.get(codePoint).getBytes("UTF-8"));
 			document.add(new Field(KanjiFieldName.STROKE_PATHS.name(), binary));
+		}
+
+		if (kanjiRadicals.containsKey(literal)) {
+			for (String radical : kanjiRadicals.get(literal)) {
+				document.add(new Field(KanjiFieldName.RADICAL.name(), radical, Store.YES, Index.NOT_ANALYZED));
+			}
 		}
 
 		return document;

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -33,6 +35,7 @@ public class KanjiEntry implements Parcelable, Entry {
 	private byte grade;
 	private short frequency;
 	private short radical;
+	private SortedSet<String> radicals;
 	private byte strokeCount;
 	private List<String> onYomi;
 	private List<String> kunYomi;
@@ -108,6 +111,13 @@ public class KanjiEntry implements Parcelable, Entry {
 		this.radical = radical;
 	}
 
+	public SortedSet<String> getRadicals() {
+		if (radicals == null) {
+			radicals = new TreeSet<String>();
+		}
+		return radicals;
+	}
+
 	public byte getStrokeCount() {
 		return strokeCount;
 	}
@@ -126,7 +136,6 @@ public class KanjiEntry implements Parcelable, Entry {
 	public List<String> getKunYomi() {
 		if (kunYomi == null) {
 			kunYomi = new ArrayList<String>();
-
 		}
 		return kunYomi;
 	}

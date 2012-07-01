@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import net.makimono.dictionary.indexer.parser.EdictParser;
 import net.makimono.dictionary.model.Dialect;
 import net.makimono.dictionary.model.DictionaryEntry;
 import net.makimono.dictionary.model.FieldOfApplication;
@@ -38,7 +38,6 @@ import au.edu.monash.csse.jmdict.model.ReRestr;
 import au.edu.monash.csse.jmdict.model.Sense;
 
 public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
-
 	private static final Map<String, String> JMDICT_ENTITY_REFERENCES = new HashMap<String, String>();
 
 	static {
@@ -54,16 +53,26 @@ public class DictionaryIndexer extends AbstractJaxbIndexer<JMdict, Entry> {
 		}
 	}
 
-	public DictionaryIndexer() {
-		this(Collections.<String, DictionaryEntry> emptyMap());
-	}
-
-	public DictionaryIndexer(Map<String, DictionaryEntry> mixinMeanings) {
+	public DictionaryIndexer(Properties properties) {
 		super(JMdict.class.getPackage().getName());
-		this.mixinMeanings = mixinMeanings;
+
+		try {
+			for (Object key : properties.keySet()) {
+				String keyName = key.toString();
+				if (keyName.startsWith("edict")) {
+					String lang = keyName.substring(keyName.length() - 2, keyName.length());
+					Language language = Language.valueOf(lang);
+					EdictParser edictParser = new EdictParser(language);
+					Map<String, DictionaryEntry> entries = edictParser.parse(new File(properties.getProperty(keyName)));
+					mixinMeanings.putAll(entries);
+				}
+			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
-	private Map<String, DictionaryEntry> mixinMeanings;
+	private Map<String, DictionaryEntry> mixinMeanings = new HashMap<String, DictionaryEntry>();
 	private Map<String, Integer> languageCount = new HashMap<String, Integer>();
 
 	@Override
