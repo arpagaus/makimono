@@ -227,8 +227,8 @@ public class KanjiEntry implements Parcelable, Entry {
 
 	@Override
 	public String toString() {
-		return "KanjiEntry [literal=" + literal + ", codePoint=" + codePoint + ", jlpt=" + jlpt + ", grade=" + grade + ", frequency=" + frequency + ", radical=" + radical + ", strokeCount="
-				+ strokeCount + ", onYomi=" + onYomi + ", kunYomi=" + kunYomi + ", nanori=" + nanori + ", pinyin=" + pinyin + ", hangul=" + hangul + ", meanings=" + meanings + "]";
+		return "KanjiEntry [literal=" + literal + ", codePoint=" + codePoint + ", jlpt=" + jlpt + ", grade=" + grade + ", frequency=" + frequency + ", radical=" + radical + ", radicals=" + radicals
+				+ ", strokeCount=" + strokeCount + ", onYomi=" + onYomi + ", kunYomi=" + kunYomi + ", nanori=" + nanori + ", pinyin=" + pinyin + ", hangul=" + hangul + ", meanings=" + meanings + "]";
 	}
 
 	public static final Parcelable.Creator<KanjiEntry> CREATOR = new Parcelable.Creator<KanjiEntry>() {

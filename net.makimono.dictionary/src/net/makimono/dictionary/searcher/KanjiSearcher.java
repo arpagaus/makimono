@@ -19,6 +19,8 @@ import org.apache.lucene.document.CompressionTools;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.Term;
+import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 
@@ -26,6 +28,16 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 
 	public KanjiSearcher(File dictionaryPath) throws IOException {
 		super(dictionaryPath);
+	}
+
+	public List<KanjiEntry> searchByRadicals(List<String> radicals) throws IOException {
+		BooleanQuery query = new BooleanQuery();
+
+		for (String radical : radicals) {
+			query.add(new TermQuery(new Term(KanjiFieldName.RADICAL.name(), radical)), Occur.MUST);
+		}
+
+		return getEntriesForQuery(query);
 	}
 
 	@Override

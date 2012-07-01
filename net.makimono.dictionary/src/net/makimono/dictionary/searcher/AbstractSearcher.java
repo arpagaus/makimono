@@ -27,6 +27,7 @@ import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.IndexSearcher;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
@@ -133,9 +134,12 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 				}
 			}
 		}
+		return getEntriesForQuery(booleanQuery);
+	}
 
+	protected List<T> getEntriesForQuery(Query query) throws IOException {
 		List<T> entries = new ArrayList<T>();
-		TopDocs topDocs = getIndexSearcher().search(booleanQuery, MAX_SIZE);
+		TopDocs topDocs = getIndexSearcher().search(query, MAX_SIZE);
 		for (ScoreDoc d : topDocs.scoreDocs) {
 			T entry = getEntryByDocId(d.doc);
 			if (!entries.contains(entry)) {
