@@ -17,6 +17,7 @@ import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.document.NumericField;
 
 import au.edu.monash.csse.kanjidic.model.CpValue;
 import au.edu.monash.csse.kanjidic.model.Kanjidic2;
@@ -85,7 +86,9 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 		}
 
 		Byte strokeCount = character.getMisc().getStrokeCount().get(0);
-		document.add(new Field(KanjiFieldName.STROKE_COUNT.name(), new byte[] { strokeCount }));
+		NumericField strokeCountField = new NumericField(KanjiFieldName.STROKE_COUNT.name(), Store.YES, true);
+		strokeCountField.setIntValue(strokeCount);
+		document.add(strokeCountField);
 
 		for (RadValue r : character.getRadical().getRadValue()) {
 			if (r.getRadType().equalsIgnoreCase("classical")) {

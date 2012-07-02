@@ -21,6 +21,7 @@ import org.apache.lucene.document.Fieldable;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.NumericRangeQuery;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 
@@ -30,11 +31,15 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 		super(dictionaryPath);
 	}
 
-	public List<KanjiEntry> searchByRadicals(List<String> radicals) throws IOException {
+	public List<KanjiEntry> searchByRadicals(List<String> radicals, Integer minStrokes, Integer maxStrokes) throws IOException {
 		BooleanQuery query = new BooleanQuery();
-
 		for (String radical : radicals) {
 			query.add(new TermQuery(new Term(KanjiFieldName.RADICAL.name(), radical)), Occur.MUST);
+		}
+
+		if (minStrokes != null || maxStrokes != null) {
+			NumericRangeQuery<Integer> strokeRangeQuery = NumericRangeQuery.newIntRange(KanjiFieldName.STROKE_COUNT.name(), minStrokes, maxStrokes, true, true);
+			query.add(strokeRangeQuery, Occur.MUST);
 		}
 
 		return getEntriesForQuery(query);
@@ -103,7 +108,7 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 		}
 
 		entry.setRadical(ByteBuffer.wrap(document.getFieldable(KanjiFieldName.MAIN_RADICAL.name()).getBinaryValue()).getShort());
-		entry.setStrokeCount(document.getFieldable(KanjiFieldName.STROKE_COUNT.name()).getBinaryValue()[0]);
+		entry.setStrokeCount(Byte.valueOf(document.getFieldable(KanjiFieldName.STROKE_COUNT.name()).stringValue()));
 
 		entry.getRadicals().addAll(getStringsForField(document, KanjiFieldName.RADICAL));
 

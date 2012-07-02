@@ -236,8 +236,12 @@ public class KanjiSearcherTest {
 
 	@Test
 	public void searchByRadicals() throws Exception {
-		List<KanjiEntry> entries = searcher.searchByRadicals(Arrays.asList("｜", "ノ", "二", "丶", "廾", "井"));
+		List<KanjiEntry> entries = searcher.searchByRadicals(Arrays.asList("｜", "ノ", "二", "丶", "廾", "井"), null, null);
 		assertEquals(1, entries.size());
 		assertEquals(searcher.getKanjiEntry("丼"), entries.get(0));
+
+		entries = searcher.searchByRadicals(Arrays.asList("ハ", "二", "已"), 21, null);
+		assertEquals(1, entries.size());
+		assertEquals("饌", entries.get(0).getLiteral());
 	}
 }
