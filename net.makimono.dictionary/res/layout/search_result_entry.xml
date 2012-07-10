@@ -4,14 +4,14 @@
     android:layout_height="match_parent"
     android:padding="5dp" >
 
-    <TextView
+    <net.makimono.dictionary.view.TextView
         android:id="@+id/result_expression"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="例えば"
         android:textSize="24sp" />
 
-    <TextView
+    <net.makimono.dictionary.view.TextView
         android:id="@+id/result_reading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

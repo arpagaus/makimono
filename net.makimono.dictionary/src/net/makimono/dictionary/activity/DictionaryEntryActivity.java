@@ -88,7 +88,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		readingTextSwitcher.setFactory(new ViewFactory() {
 			@Override
 			public View makeView() {
-				TextView textView = new TextView(DictionaryEntryActivity.this);
+				TextView textView = new net.makimono.dictionary.view.TextView(DictionaryEntryActivity.this);
 				textView.setTextColor(Color.GRAY);
 				textView.setTextSize(24);
 				return textView;
@@ -102,7 +102,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		expressionTextSwitcher.setFactory(new ViewFactory() {
 			@Override
 			public View makeView() {
-				TextView textView = new TextView(DictionaryEntryActivity.this);
+				TextView textView = new net.makimono.dictionary.view.TextView(DictionaryEntryActivity.this);
 				textView.setTextSize(32);
 				textView.setGravity(Gravity.CENTER_HORIZONTAL);
 				return textView;

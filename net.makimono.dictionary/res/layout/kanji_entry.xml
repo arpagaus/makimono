@@ -7,7 +7,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <TextView
+        <net.makimono.dictionary.view.TextView
             android:id="@+id/kanji_literal"
             style="@style/EntryMainExpression"
             android:textSize="56dp" />
@@ -164,7 +164,7 @@
                     android:text="@string/radical"
                     android:textSize="@dimen/label_text_size" />
 
-                <TextView
+                <net.makimono.dictionary.view.TextView
                     android:id="@+id/kanji_radical"
                     android:layout_margin="3dp"
                     android:paddingLeft="15dp"
