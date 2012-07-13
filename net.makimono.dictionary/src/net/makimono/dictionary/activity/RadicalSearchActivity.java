@@ -2,6 +2,8 @@ package net.makimono.dictionary.activity;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -67,6 +69,7 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 	@Override
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
+		getSupportActionBar().setTitle(R.string.radical_search);
 		setContentView(R.layout.radical_search);
 
 		strokeCountLayout = (LinearLayout) findViewById(R.id.strokeCountLayout);
@@ -167,7 +170,7 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 
 				for (Object o : radicalCounts) {
 					strokesAndRadicals.add(Integer.valueOf(o.toString()));
-					String[] radicals = properties.get(o).toString().split(";");
+					Collection<String> radicals = new TreeSet<String>(Arrays.asList(properties.get(o).toString().split(";")));
 					for (String r : radicals) {
 						strokesAndRadicals.add(r);
 					}
