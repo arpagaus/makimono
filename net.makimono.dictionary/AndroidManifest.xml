@@ -68,6 +68,7 @@
         <service
             android:name=".service.SearcherService"
             android:exported="false" />
+        <activity android:name=".activity.RadicalSearchActivity"></activity>
     </application>
 
 </manifest>

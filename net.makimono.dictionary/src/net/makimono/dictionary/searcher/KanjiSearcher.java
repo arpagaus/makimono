@@ -31,7 +31,7 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 		super(dictionaryPath);
 	}
 
-	public List<KanjiEntry> searchByRadicals(List<String> radicals, Integer minStrokes, Integer maxStrokes) throws IOException {
+	public List<KanjiEntry> searchByRadicals(Collection<String> radicals, Integer minStrokes, Integer maxStrokes) throws IOException {
 		BooleanQuery query = new BooleanQuery();
 		for (String radical : radicals) {
 			query.add(new TermQuery(new Term(KanjiFieldName.RADICAL.name(), radical)), Occur.MUST);

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+<comment>Stroke count radical mapping</comment>
+<entry key="1">｜;ノ;乙;丶;一;亅</entry>
+<entry key="2">⺅;マ;ユ;ハ;冫;厂;九;冖;厶;冂;乃;凵;又;几;匕;匚;儿;人;卜;亠;入;十;卩;二;力;勹;刀;刂</entry>
+<entry key="3">⻏;⺾;ヨ;⻖;大;彑;也;夂;氵;彡;夕;久;辶;彳;弋;女;及;子;弓;口;忄;工;宀;已;巾;扌;巛;川;土;亡;寸;山;囗;屮;广;幺;干;尸;尢;犭;小;廴;廾;士</entry>
+<entry key="4">⺹;气;氏;水;王;曰;礻;心;巴;手;戸;五;井;戈;元;斗;止;文;屯;歹;方;斤;欠;尤;犬;勿;无;日;片;火;灬;木;牛;毋;攵;月;支;毛;比;殳;爪;父;爻;爿</entry>
+<entry key="5">疒;冊;疋;矛;示;玄;罒;石;世;矢;巨;田;用;生;甘;禾;禸;穴;皮;皿;瓦;目;立;牙;母;白;衤;癶</entry>
+<entry key="6">缶;羊;羽;至;臼;西;自;而;虫;耒;舌;并;虍;舟;耳;艮;米;色;聿;瓜;肉;竹;糸;行;血;衣</entry>
+<entry key="7">見;角;辰;辛;麦;足;赤;邑;走;臣;車;舛;貝;身;酉;豕;豆;豸;言;谷;釆;里</entry>
+<entry key="8">奄;雨;隹;隶;免;青;長;非;斉;岡;金;門</entry>
+<entry key="9">風;食;飛;頁;品;面;首;革;香;音;韭</entry>
+<entry key="10">骨;高;髟;馬;竜;韋;鬯;鬥;鬼;鬲</entry>
+<entry key="11">黒;鳥;黄;麻;鹵;鹿;亀;魚</entry>
+<entry key="12">黍;黹;無;歯</entry>
+<entry key="13">黽;鼎;鼓;鼠</entry>
+<entry key="14">滴;齊;鼻</entry>
+<entry key="17">龠</entry>
+</properties>

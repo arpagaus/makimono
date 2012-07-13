@@ -17,6 +17,12 @@
         android:text="@string/kanji_search" />
 
     <Button
+        android:id="@+id/radical_search"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/btn_home_kanji"
+        android:text="@string/radical_search" />
+
+    <Button
         android:id="@+id/settings"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/btn_home_settings"
@@ -27,8 +33,6 @@
         style="@style/DashboardButton"
         android:drawableTop="@drawable/btn_home_about"
         android:text="@string/about" />
-
-    <Button style="@style/DashboardButton" />
 
     <Button style="@style/DashboardButton" />
 

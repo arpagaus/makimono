@@ -3,10 +3,13 @@ package net.makimono.dictionary.searcher;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
@@ -15,6 +18,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 
 import net.makimono.dictionary.indexer.KanjiIndexer;
+import net.makimono.dictionary.indexer.parser.KradfileParser;
 import net.makimono.dictionary.model.KanjiEntry;
 import net.makimono.dictionary.model.Language;
 import net.makimono.dictionary.model.Meaning;
@@ -23,6 +27,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.Document;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import au.edu.monash.csse.kanjidic.model.Kanjidic2;
@@ -146,9 +151,6 @@ public class KanjiSearcherTest {
 		assertEquals("本", entries.get(1).getLiteral());
 		assertEquals("語", entries.get(2).getLiteral());
 
-		entries = searcher.getKanjiEntries("酛");
-		assertTrue(entries.isEmpty());
-
 		entries = searcher.getKanjiEntries("日日");
 		assertEquals(1, entries.size());
 	}
@@ -243,5 +245,43 @@ public class KanjiSearcherTest {
 		entries = searcher.searchByRadicals(Arrays.asList("ハ", "二", "已"), 21, null);
 		assertEquals(1, entries.size());
 		assertEquals("饌", entries.get(0).getLiteral());
+	}
+
+	@Ignore
+	@Test
+	public void buildRadicalSearchFile() throws Exception {
+		Map<String, Set<String>> map = new KradfileParser(new File("res/kradfile-u.gz")).getKanjiRadicals();
+		Set<String> radicals = new HashSet<String>();
+		for (Set<String> set : map.values()) {
+			radicals.addAll(set);
+		}
+
+		Properties properties = new Properties();
+		Set<String> missingRadicals = new HashSet<String>();
+
+		for (String radical : radicals) {
+			KanjiEntry entry = searcher.getKanjiEntry(radical);
+			if (entry == null) {
+				missingRadicals.add(radical);
+				continue;
+			}
+			String strokes = String.valueOf(entry.getStrokeCount());
+			Object existingRadicals = properties.get(strokes);
+			if (existingRadicals == null) {
+				properties.put(strokes, radical);
+			} else {
+				properties.put(strokes, existingRadicals.toString() + ";" + radical);
+			}
+		}
+
+		FileOutputStream fileOutputStream = new FileOutputStream("radicals.xml");
+		properties.storeToXML(fileOutputStream, "Stroke count radical mapping", "UTF-8");
+		fileOutputStream.close();
+
+		System.out.println(missingRadicals);
+		for (String s : missingRadicals) {
+			System.out.printf("0x%h", Character.codePointAt(s, 0));
+			System.out.println();
+		}
 	}
 }

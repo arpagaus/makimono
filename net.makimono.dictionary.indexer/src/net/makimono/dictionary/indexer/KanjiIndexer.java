@@ -61,7 +61,7 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 	@Override
 	public Document createDocument(au.edu.monash.csse.kanjidic.model.Character character) throws Exception {
 		ReadingMeaning rm = character.getReadingMeaning();
-		if (rm == null || rm.getRmgroup() == null || rm.getRmgroup().getMeaning().isEmpty() || rm.getRmgroup().getReading().isEmpty()) {
+		if (rm == null || rm.getRmgroup() == null) {
 			return null;
 		}
 

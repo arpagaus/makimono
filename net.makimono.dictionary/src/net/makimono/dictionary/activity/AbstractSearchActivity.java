@@ -1,5 +1,6 @@
 package net.makimono.dictionary.activity;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.makimono.dictionary.R;
@@ -25,8 +26,12 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 
 public abstract class AbstractSearchActivity extends AbstractDefaultActivity implements OnItemClickListener {
-	private static final String CLASS_NAME = AbstractSearchActivity.class.getName();
+	private static final String LOG_TAG = AbstractSearchActivity.class.getName();
 
+	/**
+	 * Keep the string of the last search, so, it can be show to the user when
+	 * she wants to search again
+	 */
 	private String searchString = "";
 
 	protected SearcherServiceConnection connection = new SearcherServiceConnection();
@@ -83,15 +88,11 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 		handleIntent(intent);
 	}
 
-	private void handleIntent(Intent intent) {
+	protected void handleIntent(Intent intent) {
 		setIntent(intent);
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			searchString = query;
-
-			progressView.setVisibility(View.VISIBLE);
-			noEntriesTextView.setVisibility(View.GONE);
-			listView.setVisibility(View.GONE);
 			new SearchTask().execute(query);
 		}
 	}
@@ -100,20 +101,32 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 
 	protected abstract Class<? extends AbstractSearchSuggestionProvider> getSearchSuggestionProviderClass();
 
-	private class SearchTask extends AsyncTask<String, Void, List<? extends Entry>> {
+	protected class SearchTask extends AsyncTask<Object, Void, List<? extends Entry>> {
 
-		protected List<? extends Entry> doInBackground(String... queries) {
+		@Override
+		protected void onPreExecute() {
+			progressView.setVisibility(View.VISIBLE);
+			noEntriesTextView.setVisibility(View.GONE);
+			listView.setVisibility(View.GONE);
+		}
+
+		@Override
+		protected List<? extends Entry> doInBackground(Object... queries) {
 			try {
-				String query = queries[0];
-				List<? extends Entry> entries = getSearcher().search(query);
-				if (!entries.isEmpty()) {
-					AbstractSearchSuggestionProvider.saveRecentQuery(getApplicationContext(), getSearchSuggestionProviderClass(), query);
-				}
-				return entries;
+				return executeQuery(queries);
 			} catch (Exception e) {
-				Log.e(CLASS_NAME, "Failed to search", e);
+				Log.e(LOG_TAG, "Failed to search", e);
 				return null;
 			}
+		}
+
+		protected List<? extends Entry> executeQuery(Object... queries) throws IOException {
+			String query = queries[0].toString();
+			List<? extends Entry> entries = getSearcher().search(query);
+			if (!entries.isEmpty()) {
+				AbstractSearchSuggestionProvider.saveRecentQuery(getApplicationContext(), getSearchSuggestionProviderClass(), query);
+			}
+			return entries;
 		}
 
 		protected void onPostExecute(List<? extends Entry> entries) {

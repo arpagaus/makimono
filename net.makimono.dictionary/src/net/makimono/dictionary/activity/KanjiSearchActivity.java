@@ -1,8 +1,13 @@
 package net.makimono.dictionary.activity;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import net.makimono.dictionary.R;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
 import net.makimono.dictionary.content.KanjiSearchSuggestionProvider;
+import net.makimono.dictionary.model.Entry;
 import net.makimono.dictionary.model.KanjiEntry;
 import net.makimono.dictionary.searcher.KanjiSearcher;
 import android.content.Intent;
@@ -11,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView;
 
 public class KanjiSearchActivity extends AbstractSearchActivity {
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,5 +39,20 @@ public class KanjiSearchActivity extends AbstractSearchActivity {
 	@Override
 	protected Class<? extends AbstractSearchSuggestionProvider> getSearchSuggestionProviderClass() {
 		return KanjiSearchSuggestionProvider.class;
+	}
+
+	@Override
+	protected void handleIntent(Intent intent) {
+		super.handleIntent(intent);
+		if (net.makimono.dictionary.Intent.ACTION_RADICAL_SEARCH.equals(intent.getAction())) {
+			final List<String> radicals = Arrays.asList(intent.getStringArrayExtra(net.makimono.dictionary.Intent.EXTRA_RADICALS));
+			final int minStrokes = intent.getIntExtra(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, 0);
+			final int maxStrokes = intent.getIntExtra(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, 0);
+			new SearchTask() {
+				protected List<? extends Entry> executeQuery(Object... queries) throws IOException {
+					return getSearcher().searchByRadicals(radicals, minStrokes, maxStrokes);
+				}
+			}.execute();
+		}
 	}
 }
