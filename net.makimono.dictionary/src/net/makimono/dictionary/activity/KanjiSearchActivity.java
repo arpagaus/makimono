@@ -12,14 +12,16 @@ import net.makimono.dictionary.model.KanjiEntry;
 import net.makimono.dictionary.searcher.KanjiSearcher;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
 public class KanjiSearchActivity extends AbstractSearchActivity {
+	private static final String LOG_TAG = KanjiSearchActivity.class.getSimpleName();
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		getSupportActionBar().setTitle(R.string.kanji);
 	}
 
@@ -48,6 +50,7 @@ public class KanjiSearchActivity extends AbstractSearchActivity {
 			final List<String> radicals = Arrays.asList(intent.getStringArrayExtra(net.makimono.dictionary.Intent.EXTRA_RADICALS));
 			final int minStrokes = intent.getIntExtra(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, 0);
 			final int maxStrokes = intent.getIntExtra(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, 0);
+			Log.v(LOG_TAG, "minStrokes=" + minStrokes + ", maxStrokes=" + maxStrokes + ", radicals=" + radicals);
 			new SearchTask() {
 				protected List<? extends Entry> executeQuery(Object... queries) throws IOException {
 					return getSearcher().searchByRadicals(radicals, minStrokes, maxStrokes);

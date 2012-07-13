@@ -815,7 +815,9 @@ containing a value of this type.
         public static final int ic_spanish=0x7f020070;
         public static final int primary_separator=0x7f020071;
         public static final int secondary_separator=0x7f020072;
-        public static final int selected_radical_background=0x7f020073;
+        public static final int seek_thumb_normal=0x7f020073;
+        public static final int seek_thumb_pressed=0x7f020074;
+        public static final int selected_radical_background=0x7f020075;
     }
     public static final class id {
         public static final int about=0x7f050039;
@@ -883,11 +885,9 @@ containing a value of this type.
         public static final int kanji_unicode=0x7f05004f;
         public static final int kanji_writing=0x7f050050;
         public static final int listMode=0x7f050002;
-        public static final int maxStrokeCount=0x7f050053;
         public static final int menu_preferences=0x7f05005b;
         public static final int menu_search=0x7f05005c;
         public static final int menu_share=0x7f05005d;
-        public static final int minStrokeCount=0x7f050052;
         public static final int next_expression=0x7f05002b;
         public static final int next_reading=0x7f05002e;
         public static final int no_entries=0x7f050056;
@@ -907,7 +907,9 @@ containing a value of this type.
         public static final int showCustom=0x7f050008;
         public static final int showHome=0x7f050005;
         public static final int showTitle=0x7f050007;
-        public static final int strokeCountText=0x7f050051;
+        public static final int strokeCount=0x7f050053;
+        public static final int strokeCountLayout=0x7f050051;
+        public static final int strokeCountText=0x7f050052;
         public static final int tabMode=0x7f050003;
         public static final int useLogo=0x7f050004;
         public static final int version=0x7f050010;
@@ -1152,6 +1154,7 @@ containing a value of this type.
         public static final int abs__shareactionprovider_share_with_application=0x7f0a0009;
         public static final int acknowledgement_edrdg=0x7f0a00b0;
         public static final int app_name=0x7f0a00b1;
+        public static final int between_x_and_y_strokes=0x7f0a00dc;
         public static final int clear_search_history=0x7f0a00b2;
         public static final int clear_search_history_summary=0x7f0a00b3;
         public static final int dictionary=0x7f0a00b4;
@@ -1191,7 +1194,6 @@ containing a value of this type.
         public static final int settings=0x7f0a00d5;
         public static final int spanish=0x7f0a00d6;
         public static final int stroke_count=0x7f0a00d7;
-        public static final int the_kanji_has_between_x_and_y_strokes=0x7f0a00dc;
         public static final int troubleshooting=0x7f0a00d8;
         public static final int unicode=0x7f0a00d9;
         public static final int welcome=0x7f0a00da;

@@ -46,7 +46,7 @@
     <string name="unicode">Unicode</string>
     <string name="welcome">Welcome</string>
     <string name="welcome_info_message">Welcome to Makimono!\n\nI will need to initialize the dictionary data files. This may take up to one minute.</string>
-    <string name="the_kanji_has_between_x_and_y_strokes">The kanji has between %1$d and %2$d strokes</string>
+    <string name="between_x_and_y_strokes">Between %1$d and %2$d strokes</string>
     <string name="radical_search">Radical search</string>
 
 </resources>

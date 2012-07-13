@@ -13,10 +13,13 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.makimono.dictionary.R;
+import net.makimono.dictionary.view.RangeSeekBar;
+import net.makimono.dictionary.view.RangeSeekBar.OnRangeSeekBarChangeListener;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,10 +30,9 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 public class RadicalSearchActivity extends AbstractDefaultActivity {
@@ -56,9 +58,9 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 
 	private Set<String> selectedRadicals = new HashSet<String>();
 
+	private LinearLayout strokeCountLayout;
 	private TextView strokeCountText;
-	private SeekBar minStrokeCountsBar;
-	private SeekBar maxStrokeCountsBar;
+	private RangeSeekBar<Integer> strokeCountsSeekBar;
 	private GridView radicalsGridView;
 	private Button searchButton;
 
@@ -67,12 +69,20 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 		super.onCreate(bundle);
 		setContentView(R.layout.radical_search);
 
+		strokeCountLayout = (LinearLayout) findViewById(R.id.strokeCountLayout);
+		Configuration configuration = getResources().getConfiguration();
+		if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			strokeCountLayout.setOrientation(LinearLayout.HORIZONTAL);
+		} else {
+			strokeCountLayout.setOrientation(LinearLayout.VERTICAL);
+		}
+
 		strokeCountText = (TextView) findViewById(R.id.strokeCountText);
 
-		minStrokeCountsBar = (SeekBar) findViewById(R.id.minStrokeCount);
-		minStrokeCountsBar.setOnSeekBarChangeListener(new SeekBarListener());
-		maxStrokeCountsBar = (SeekBar) findViewById(R.id.maxStrokeCount);
-		maxStrokeCountsBar.setOnSeekBarChangeListener(new SeekBarListener());
+		strokeCountsSeekBar = new RangeSeekBar<Integer>(1, 33, this);
+		strokeCountsSeekBar.setNotifyWhileDragging(true);
+		strokeCountsSeekBar.setOnRangeSeekBarChangeListener(new SeekBarListener());
+		((FrameLayout) findViewById(R.id.strokeCount)).addView(strokeCountsSeekBar);
 		updateStrokeIndexText();
 
 		radicalsGridView = (GridView) findViewById(R.id.radicals);
@@ -106,8 +116,8 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 			public void onClick(View v) {
 				Intent intent = new Intent(RadicalSearchActivity.this, KanjiSearchActivity.class);
 				intent.setAction(net.makimono.dictionary.Intent.ACTION_RADICAL_SEARCH);
-				intent.putExtra(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, minStrokeCountsBar.getProgress());
-				intent.putExtra(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, maxStrokeCountsBar.getProgress());
+				intent.putExtra(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, strokeCountsSeekBar.getSelectedMinValue());
+				intent.putExtra(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, strokeCountsSeekBar.getSelectedMaxValue());
 				intent.putExtra(net.makimono.dictionary.Intent.EXTRA_RADICALS, selectedRadicals.toArray(new String[selectedRadicals.size()]));
 				startActivity(intent);
 			}
@@ -115,7 +125,7 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 	}
 
 	private void updateStrokeIndexText() {
-		String text = getString(R.string.the_kanji_has_between_x_and_y_strokes, minStrokeCountsBar.getProgress(), maxStrokeCountsBar.getProgress());
+		String text = getString(R.string.between_x_and_y_strokes, strokeCountsSeekBar.getSelectedMinValue(), strokeCountsSeekBar.getSelectedMaxValue());
 		strokeCountText.setText(text);
 	}
 
@@ -127,21 +137,11 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 		}
 	}
 
-	private class SeekBarListener implements OnSeekBarChangeListener {
-
+	private class SeekBarListener implements OnRangeSeekBarChangeListener<Integer> {
 		@Override
-		public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+		public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
 			updateStrokeIndexText();
 		}
-
-		@Override
-		public void onStartTrackingTouch(SeekBar seekBar) {
-		}
-
-		@Override
-		public void onStopTrackingTouch(SeekBar seekBar) {
-		}
-
 	}
 
 	private class RadicalAdapter extends BaseAdapter {
