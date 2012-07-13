@@ -65,6 +65,7 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 	private RangeSeekBar<Integer> strokeCountsSeekBar;
 	private GridView radicalsGridView;
 	private Button searchButton;
+	private Button resetButton;
 
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -123,6 +124,19 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 				intent.putExtra(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, strokeCountsSeekBar.getSelectedMaxValue());
 				intent.putExtra(net.makimono.dictionary.Intent.EXTRA_RADICALS, selectedRadicals.toArray(new String[selectedRadicals.size()]));
 				startActivity(intent);
+			}
+		});
+
+		resetButton = (Button) findViewById(R.id.resetButton);
+		resetButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				strokeCountsSeekBar.setSelectedMinValue(strokeCountsSeekBar.getAbsoluteMinValue());
+				strokeCountsSeekBar.setSelectedMaxValue(strokeCountsSeekBar.getAbsoluteMaxValue());
+				updateStrokeIndexText();
+
+				selectedRadicals.clear();
+				((BaseAdapter) radicalsGridView.getAdapter()).notifyDataSetChanged();
 			}
 		});
 	}
