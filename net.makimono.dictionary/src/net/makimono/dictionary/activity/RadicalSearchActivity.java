@@ -46,8 +46,8 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 	/**
 	 * The font DroidSansJapanese does not seem to support the CJK radical
 	 * characters. This map replaces those characters with their Kanji
-	 * counterparts. Even though they might look the same, their code points
-	 * differ.
+	 * counterparts. Even though they might look the same, their Unicode code
+	 * points differ.
 	 */
 	@SuppressWarnings("serial")
 	private static final Map<String, String> CHARACTER_SUBSTITUTES = new HashMap<String, String>() {
@@ -162,6 +162,25 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 		public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
 			updateStrokeIndexText();
 		}
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putStringArray(net.makimono.dictionary.Intent.EXTRA_RADICALS, selectedRadicals.toArray(new String[selectedRadicals.size()]));
+		outState.putInt(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, strokeCountsSeekBar.getSelectedMinValue());
+		outState.putInt(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, strokeCountsSeekBar.getSelectedMaxValue());
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle instanceState) {
+		super.onRestoreInstanceState(instanceState);
+		selectedRadicals.addAll(Arrays.asList(instanceState.getStringArray(net.makimono.dictionary.Intent.EXTRA_RADICALS)));
+		((BaseAdapter) radicalsGridView.getAdapter()).notifyDataSetChanged();
+
+		strokeCountsSeekBar.setSelectedMinValue(instanceState.getInt(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, strokeCountsSeekBar.getAbsoluteMinValue()));
+		strokeCountsSeekBar.setSelectedMaxValue(instanceState.getInt(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, strokeCountsSeekBar.getAbsoluteMaxValue()));
+		updateStrokeIndexText();
 	}
 
 	private class RadicalAdapter extends BaseAdapter {
