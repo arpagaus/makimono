@@ -8,7 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.zip.DataFormatException;
 
 import net.makimono.dictionary.model.KanjiEntry;
@@ -22,6 +24,7 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.NumericRangeQuery;
+import org.apache.lucene.search.ScoreDoc;
 import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 
@@ -31,7 +34,31 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 		super(dictionaryPath);
 	}
 
+	public Set<String> getSelectableRadicals(Collection<String> radicals, Integer minStrokes, Integer maxStrokes) throws IOException {
+		if (radicals == null || radicals.isEmpty()) {
+			return null;
+		}
+
+		BooleanQuery query = getRadicalQuery(radicals, minStrokes, maxStrokes);
+
+		Set<String> selectableRadicals = new HashSet<String>();
+		TopDocs topDocs = getIndexSearcher().search(query, Integer.MAX_VALUE);
+		for (ScoreDoc d : topDocs.scoreDocs) {
+			Document doc = getIndexSearcher().doc(d.doc);
+			Fieldable[] fieldables = doc.getFieldables(KanjiFieldName.RADICAL.name());
+			for (Fieldable f : fieldables) {
+				selectableRadicals.add(f.stringValue());
+			}
+		}
+		return selectableRadicals;
+	}
+
 	public List<KanjiEntry> searchByRadicals(Collection<String> radicals, Integer minStrokes, Integer maxStrokes) throws IOException {
+		BooleanQuery query = getRadicalQuery(radicals, minStrokes, maxStrokes);
+		return getEntriesForQuery(query);
+	}
+
+	private BooleanQuery getRadicalQuery(Collection<String> radicals, Integer minStrokes, Integer maxStrokes) {
 		BooleanQuery query = new BooleanQuery();
 		for (String radical : radicals) {
 			query.add(new TermQuery(new Term(KanjiFieldName.RADICAL.name(), radical)), Occur.MUST);
@@ -41,8 +68,7 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 			NumericRangeQuery<Integer> strokeRangeQuery = NumericRangeQuery.newIntRange(KanjiFieldName.STROKE_COUNT.name(), minStrokes, maxStrokes, true, true);
 			query.add(strokeRangeQuery, Occur.MUST);
 		}
-
-		return getEntriesForQuery(query);
+		return query;
 	}
 
 	@Override
@@ -164,4 +190,5 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 	protected IndexFieldName getIndexFieldName(String fieldName) {
 		return KanjiFieldName.valueOf(fieldName);
 	}
+
 }

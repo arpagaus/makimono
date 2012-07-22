@@ -1,5 +1,6 @@
 package net.makimono.dictionary.activity;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,12 +16,15 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.makimono.dictionary.R;
+import net.makimono.dictionary.service.SearcherService;
+import net.makimono.dictionary.service.SearcherServiceConnection;
 import net.makimono.dictionary.util.TypedValueUtil;
 import net.makimono.dictionary.view.RangeSeekBar;
 import net.makimono.dictionary.view.RangeSeekBar.OnRangeSeekBarChangeListener;
 
 import org.apache.commons.lang3.math.NumberUtils;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -61,6 +65,12 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 		}
 	};
 
+	private SearcherServiceConnection connection = new SearcherServiceConnection();
+
+	/**
+	 * <code>null</code> means that there is no selection restriction
+	 */
+	private Set<String> selectableRadicals;
 	private Set<String> selectedRadicals = new HashSet<String>();
 
 	private LinearLayout strokeCountLayout;
@@ -114,6 +124,13 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 					selectedRadicals.add(radical);
 				}
 				updateItem(((ViewGroup) view).getChildAt(0), radical);
+
+				try {
+					selectableRadicals = connection.getKanjiSearcher().getSelectableRadicals(selectedRadicals, strokeCountsSeekBar.getAbsoluteMinValue(), strokeCountsSeekBar.getAbsoluteMaxValue());
+				} catch (IOException e) {
+					selectableRadicals = null;
+				}
+				((BaseAdapter) radicalsGridView.getAdapter()).notifyDataSetChanged();
 			}
 		});
 
@@ -139,9 +156,12 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 				updateStrokeIndexText();
 
 				selectedRadicals.clear();
+				selectableRadicals = null;
 				((BaseAdapter) radicalsGridView.getAdapter()).notifyDataSetChanged();
 			}
 		});
+
+		bindSearcher();
 	}
 
 	private void updateStrokeIndexText() {
@@ -162,6 +182,17 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 		public void onRangeSeekBarValuesChanged(RangeSeekBar<?> bar, Integer minValue, Integer maxValue) {
 			updateStrokeIndexText();
 		}
+	}
+
+	private void bindSearcher() {
+		Intent intent = new Intent(this, SearcherService.class);
+		bindService(intent, connection, Context.BIND_AUTO_CREATE);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		unbindService(connection);
 	}
 
 	@Override
@@ -232,8 +263,15 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 		}
 
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public boolean isEnabled(int position) {
+			if (strokesAndRadicals.get(position) instanceof Integer) {
+				return false;
+			}
+			return !isNotSelectableRadical(strokesAndRadicals.get(position).toString());
+		}
 
+		@Override
+		public View getView(int position, View convertView, ViewGroup parent) {
 			TextView textView = new net.makimono.dictionary.view.TextView(RadicalSearchActivity.this);
 			final String radical = strokesAndRadicals.get(position).toString();
 			if (CHARACTER_SUBSTITUTES.containsKey(radical)) {
@@ -250,6 +288,10 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 			} else {
 				textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
 				updateItem(textView, radical);
+
+				if (isNotSelectableRadical(radical)) {
+					textView.setTextColor(Color.LTGRAY);
+				}
 			}
 
 			int size = TypedValueUtil.getPixelForDip(36, getResources().getDisplayMetrics());
@@ -260,6 +302,10 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 			ViewGroup layout = new LinearLayout(RadicalSearchActivity.this);
 			layout.addView(textView, layoutParams);
 			return layout;
+		}
+
+		private boolean isNotSelectableRadical(final String radical) {
+			return selectableRadicals != null && !selectableRadicals.contains(radical);
 		}
 	}
 }

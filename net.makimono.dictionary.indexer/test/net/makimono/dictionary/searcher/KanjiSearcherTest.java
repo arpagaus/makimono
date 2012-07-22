@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -245,6 +246,15 @@ public class KanjiSearcherTest {
 		entries = searcher.searchByRadicals(Arrays.asList("ハ", "二", "已"), 21, null);
 		assertEquals(1, entries.size());
 		assertEquals("饌", entries.get(0).getLiteral());
+	}
+
+	@Test
+	public void getSelectableRadicals() throws Exception {
+		Set<String> radicals = searcher.getSelectableRadicals(Arrays.asList("龠"), null, 17);
+		assertTrue(radicals.containsAll(Arrays.asList("�", "冊", "一", "龠", "口")));
+
+		radicals = searcher.getSelectableRadicals(Collections.<String> emptySet(), 1, 33);
+		assertNull(radicals);
 	}
 
 	@Ignore
