@@ -15,6 +15,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import net.makimono.dictionary.R;
+import net.makimono.dictionary.util.TypedValueUtil;
 import net.makimono.dictionary.view.RangeSeekBar;
 import net.makimono.dictionary.view.RangeSeekBar.OnRangeSeekBarChangeListener;
 
@@ -23,8 +24,10 @@ import org.apache.commons.lang3.math.NumberUtils;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -211,7 +214,6 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewGroup layout = new LinearLayout(RadicalSearchActivity.this);
 
 			TextView textView = new net.makimono.dictionary.view.TextView(RadicalSearchActivity.this);
 			final String radical = strokesAndRadicals.get(position).toString();
@@ -222,15 +224,21 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 			}
 			textView.setGravity(Gravity.CENTER);
 			if (strokesAndRadicals.get(position) instanceof Integer) {
-				textView.setBackgroundColor(Color.BLACK);
+				textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
+				textView.setBackgroundResource(R.drawable.radical_stroke_count_background);
 				textView.setTextColor(Color.WHITE);
+				textView.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
 			} else {
-				textView.setTextSize(28);
+				textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 24);
 				updateItem(textView, radical);
 			}
 
-			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(64, 64, Gravity.CENTER);
-			layoutParams.setMargins(2, 2, 2, 2);
+			int size = TypedValueUtil.getPixelForDip(36, getResources().getDisplayMetrics());
+			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(size, size);
+			int padding = TypedValueUtil.getPixelForDip(2, getResources().getDisplayMetrics());
+			layoutParams.setMargins(padding, padding, padding, padding);
+
+			ViewGroup layout = new LinearLayout(RadicalSearchActivity.this);
 			layout.addView(textView, layoutParams);
 			return layout;
 		}

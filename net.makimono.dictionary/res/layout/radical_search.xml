@@ -36,11 +36,14 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="4dp"
         android:layout_weight="0.1"
-        android:columnWidth="64px"
+        android:columnWidth="40dp"
+        android:drawSelectorOnTop="false"
         android:gravity="center"
         android:listSelector="@null"
         android:numColumns="auto_fit"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:scrollingCache="true"
+        android:smoothScrollbar="true" />
 
     <LinearLayout
         android:layout_width="fill_parent"

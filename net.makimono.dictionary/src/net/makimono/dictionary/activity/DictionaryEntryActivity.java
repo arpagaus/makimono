@@ -15,6 +15,7 @@ import net.makimono.dictionary.service.SearcherService;
 import net.makimono.dictionary.service.SearcherServiceConnection;
 import net.makimono.dictionary.util.DictionaryAlternativesSwitcher;
 import net.makimono.dictionary.util.MeaningTextViewFactory;
+import net.makimono.dictionary.util.TypedValueUtil;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -26,7 +27,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -230,7 +230,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	}
 
 	private int getPixelForDip(int dip) {
-		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, (float) dip, getResources().getDisplayMetrics());
+		return TypedValueUtil.getPixelForDip(dip, getResources().getDisplayMetrics());
 	}
 
 	private class LoadKanjiEntriesTask extends AsyncTask<DictionaryEntry, Void, List<KanjiEntry>> {

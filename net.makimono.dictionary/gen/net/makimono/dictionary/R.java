@@ -814,10 +814,11 @@ containing a value of this type.
         public static final int ic_russian=0x7f02006f;
         public static final int ic_spanish=0x7f020070;
         public static final int primary_separator=0x7f020071;
-        public static final int secondary_separator=0x7f020072;
-        public static final int seek_thumb_normal=0x7f020073;
-        public static final int seek_thumb_pressed=0x7f020074;
-        public static final int selected_radical_background=0x7f020075;
+        public static final int radical_stroke_count_background=0x7f020072;
+        public static final int secondary_separator=0x7f020073;
+        public static final int seek_thumb_normal=0x7f020074;
+        public static final int seek_thumb_pressed=0x7f020075;
+        public static final int selected_radical_background=0x7f020076;
     }
     public static final class id {
         public static final int about=0x7f050039;
