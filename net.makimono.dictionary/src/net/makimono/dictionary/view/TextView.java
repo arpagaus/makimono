@@ -25,7 +25,7 @@ public class TextView extends android.widget.TextView {
 
 	private void initialize() {
 		if (japaneseTypeface == null) {
-			japaneseTypeface = Typeface.createFromAsset(getContext().getAssets(), "DroidSansJapanese.ttf");
+			japaneseTypeface = Typeface.createFromAsset(getContext().getAssets(), "DroidSansJapanese.jpg");
 		}
 		setTypeface(japaneseTypeface);
 	}
