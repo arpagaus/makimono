@@ -2,6 +2,7 @@
 <com.google.android.apps.iosched.ui.widget.DashboardLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:layout_marginBottom="32dp"
     android:background="@android:color/white" >
 
     <Button
@@ -19,7 +20,7 @@
     <Button
         android:id="@+id/radical_search"
         style="@style/DashboardButton"
-        android:drawableTop="@drawable/btn_home_kanji"
+        android:drawableTop="@drawable/btn_home_radical"
         android:text="@string/radical_search" />
 
     <Button

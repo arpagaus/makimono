@@ -236,11 +236,24 @@
                     android:textSize="@dimen/content_text_size" />
             </TableRow>
         </TableLayout>
+        
+        <!-- Alternative radicals -->
+
+        <TextView
+            android:id="@+id/alternative_radicals_separator_text"
+            style="@style/SeparatorText"
+            android:layout_below="@id/kanji_misc"
+            android:text="Alternative radicals" />
+
+        <View
+            android:id="@+id/alternative_radicals_separator_line"
+            style="@style/SeparatorLine"
+            android:layout_below="@id/alternative_radicals_separator_text" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/kanji_misc"
+            android:layout_below="@id/alternative_radicals_separator_line"
             android:padding="10dp"
             android:text="@string/acknowledgement_edrdg"
             android:textSize="12sp" />
