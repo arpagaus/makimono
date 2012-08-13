@@ -104,7 +104,7 @@
             style="@style/SeparatorLine"
             android:layout_below="@id/entry_separator_kanji" />
 
-        <LinearLayout
+        <net.makimono.dictionary.view.NonScrollingListView
             android:id="@+id/entry_kanji"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

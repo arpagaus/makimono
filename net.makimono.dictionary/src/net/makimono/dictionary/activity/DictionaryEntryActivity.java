@@ -6,7 +6,7 @@ import java.io.ObjectInputStream;
 import java.util.List;
 
 import net.makimono.dictionary.R;
-import net.makimono.dictionary.listener.KanjiViewListener;
+import net.makimono.dictionary.adapter.SearchResultAdapter;
 import net.makimono.dictionary.model.DictionaryEntry;
 import net.makimono.dictionary.model.KanjiEntry;
 import net.makimono.dictionary.model.Language;
@@ -16,6 +16,7 @@ import net.makimono.dictionary.service.SearcherServiceConnection;
 import net.makimono.dictionary.util.DictionaryAlternativesSwitcher;
 import net.makimono.dictionary.util.MeaningTextViewFactory;
 import net.makimono.dictionary.util.TypedValueUtil;
+import net.makimono.dictionary.view.NonScrollingListView;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -28,9 +29,10 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
@@ -41,14 +43,14 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
 
-	private LayoutInflater layoutInflater;
-
 	private DictionaryAlternativesSwitcher alternativesSwitcher;
 
 	private TextSwitcher expressionTextSwitcher;
 	private TextSwitcher readingTextSwitcher;
 	private LinearLayout meaningsGroupView;
-	private LinearLayout kanjiGroupView;
+	private NonScrollingListView kanjiListView;
+
+	private SearchResultAdapter resultAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -66,13 +68,22 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	}
 
 	private void initializeContentView() {
-		layoutInflater = LayoutInflater.from(this);
-
 		setContentView(R.layout.dictionary_entry);
 		expressionTextSwitcher = createExpressionTextSwitcher();
 		readingTextSwitcher = createReadingTextSwitcher();
 		meaningsGroupView = (LinearLayout) findViewById(R.id.entry_meanings);
-		kanjiGroupView = (LinearLayout) findViewById(R.id.entry_kanji);
+		kanjiListView = (NonScrollingListView) findViewById(R.id.entry_kanji);
+
+		resultAdapter = new SearchResultAdapter(this);
+		kanjiListView.setAdapter(resultAdapter);
+		kanjiListView.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int index, long id) {
+				Intent intent = new Intent(DictionaryEntryActivity.this, KanjiEntryActivity.class);
+				intent.putExtra(KanjiEntryActivity.EXTRA_KANJI_ENTRY, (KanjiEntry) resultAdapter.getItem(index));
+				startActivity(intent);
+			}
+		});
 
 		alternativesSwitcher = new DictionaryAlternativesSwitcher(this);
 	}
@@ -141,39 +152,6 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 				addMeanings(sense);
 			}
 		}
-	}
-
-	private void updateKanjiView(List<KanjiEntry> kanjiEntries) {
-		kanjiGroupView.removeAllViews();
-		if (kanjiEntries.isEmpty()) {
-			findViewById(R.id.entry_separator_kanji).setVisibility(View.GONE);
-			findViewById(R.id.entry_separator_line_kanji).setVisibility(View.GONE);
-			kanjiGroupView.setVisibility(View.GONE);
-		} else {
-			for (KanjiEntry kanjiEntry : kanjiEntries) {
-				if (kanjiGroupView.getChildCount() > 0) {
-					kanjiGroupView.addView(createSeparator());
-				}
-				kanjiGroupView.addView(createKanjiView(kanjiEntry));
-			}
-		}
-	}
-
-	private View createKanjiView(KanjiEntry kanjiEntry) {
-		View kanjiView = layoutInflater.inflate(R.layout.search_result_entry, kanjiGroupView, false);
-		kanjiView.setBackgroundResource(R.drawable.clickable_background);
-		kanjiView.setPadding(getPixelForDip(10), getPixelForDip(5), getPixelForDip(10), getPixelForDip(5));
-
-		TextView resultExpression = (TextView) kanjiView.findViewById(R.id.result_expression);
-		TextView resultReading = (TextView) kanjiView.findViewById(R.id.result_reading);
-		TextView resultMeaning = (TextView) kanjiView.findViewById(R.id.result_meaning);
-
-		resultExpression.setText(kanjiEntry.getLiteral());
-		resultReading.setText(kanjiEntry.getReadingSummary());
-		resultMeaning.setText(kanjiEntry.getMeaningSummary(getConfiguredLanguages()));
-
-		kanjiView.setOnClickListener(new KanjiViewListener(this, kanjiEntry));
-		return kanjiView;
 	}
 
 	private View createSeparator() {
@@ -248,7 +226,12 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		}
 
 		protected void onPostExecute(List<KanjiEntry> kanji) {
-			updateKanjiView(kanji);
+			resultAdapter.updateEntries(kanji);
+
+			int visibility = kanji.isEmpty() ? View.GONE : View.VISIBLE;
+			findViewById(R.id.entry_separator_kanji).setVisibility(visibility);
+			findViewById(R.id.entry_separator_line_kanji).setVisibility(visibility);
+			kanjiListView.setVisibility(visibility);
 		}
 	}
 }
