@@ -179,7 +179,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	private View createSeparator() {
 		View separator = new View(this);
 		separator.setBackgroundResource(R.drawable.secondary_separator);
-		separator.setMinimumHeight(getPixelForDip(1));
+		separator.setMinimumHeight(1);
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		separator.setLayoutParams(layoutParams);
 		layoutParams.leftMargin = getPixelForDip(10);
