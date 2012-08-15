@@ -252,6 +252,7 @@ public class KanjiEntry implements Parcelable, Entry {
 		radical = (short) parcel.readInt();
 		strokeCount = parcel.readByte();
 
+		radicals = new TreeSet<String>(Arrays.asList((String[]) parcel.readValue(null)));
 		onYomi = Arrays.asList((String[]) parcel.readValue(null));
 		kunYomi = Arrays.asList((String[]) parcel.readValue(null));
 		nanori = Arrays.asList((String[]) parcel.readValue(null));
@@ -280,6 +281,7 @@ public class KanjiEntry implements Parcelable, Entry {
 		parcel.writeInt(radical);
 		parcel.writeByte(strokeCount);
 
+		parcel.writeValue(getRadicals().toArray(new String[getRadicals().size()]));
 		parcel.writeValue(getOnYomi().toArray(new String[getOnYomi().size()]));
 		parcel.writeValue(getKunYomi().toArray(new String[getKunYomi().size()]));
 		parcel.writeValue(getNanori().toArray(new String[getNanori().size()]));

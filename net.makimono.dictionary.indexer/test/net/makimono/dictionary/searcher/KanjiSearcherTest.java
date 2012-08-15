@@ -3,6 +3,7 @@ package net.makimono.dictionary.searcher;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -177,6 +178,23 @@ public class KanjiSearcherTest {
 
 			assertNotNull("Radical " + i, entry.getRadicalKana());
 			assertTrue("Radical " + i, entry.getRadicalKana().length() > 0);
+		}
+	}
+
+	@Test
+	public void findAllKradfileRadicals() throws Exception {
+		Properties properties = new Properties();
+		InputStream input = new FileInputStream("../net.makimono.dictionary/assets/radicals.xml");
+		properties.loadFromXML(input);
+		input.close();
+
+		for (Object row : properties.values()) {
+			String[] radicals = row.toString().split(";");
+			for (String radical : radicals) {
+				KanjiEntry entry = searcher.getKanjiEntry(radical);
+				assertNotNull("Missing radical " + radical, entry);
+				assertNotNull(entry.getLiteral());
+			}
 		}
 	}
 

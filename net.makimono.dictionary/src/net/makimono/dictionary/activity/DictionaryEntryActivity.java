@@ -50,7 +50,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	private LinearLayout meaningsGroupView;
 	private NonScrollingListView kanjiListView;
 
-	private SearchResultAdapter resultAdapter;
+	private SearchResultAdapter kanjiResultAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -74,13 +74,13 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		meaningsGroupView = (LinearLayout) findViewById(R.id.entry_meanings);
 		kanjiListView = (NonScrollingListView) findViewById(R.id.entry_kanji);
 
-		resultAdapter = new SearchResultAdapter(this);
-		kanjiListView.setAdapter(resultAdapter);
+		kanjiResultAdapter = new SearchResultAdapter(this);
+		kanjiListView.setAdapter(kanjiResultAdapter);
 		kanjiListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int index, long id) {
 				Intent intent = new Intent(DictionaryEntryActivity.this, KanjiEntryActivity.class);
-				intent.putExtra(KanjiEntryActivity.EXTRA_KANJI_ENTRY, (KanjiEntry) resultAdapter.getItem(index));
+				intent.putExtra(KanjiEntryActivity.EXTRA_KANJI_ENTRY, (KanjiEntry) kanjiResultAdapter.getItem(index));
 				startActivity(intent);
 			}
 		});
@@ -226,7 +226,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		}
 
 		protected void onPostExecute(List<KanjiEntry> kanji) {
-			resultAdapter.updateEntries(kanji);
+			kanjiResultAdapter.updateEntries(kanji);
 
 			int visibility = kanji.isEmpty() ? View.GONE : View.VISIBLE;
 			findViewById(R.id.entry_separator_kanji).setVisibility(visibility);

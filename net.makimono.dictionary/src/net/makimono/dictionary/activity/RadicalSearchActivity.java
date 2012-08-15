@@ -54,7 +54,7 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 	 * points differ.
 	 */
 	@SuppressWarnings("serial")
-	private static final Map<String, String> CHARACTER_SUBSTITUTES = new HashMap<String, String>() {
+	public static final Map<String, String> CHARACTER_SUBSTITUTES = new HashMap<String, String>() {
 		{
 			put("⺅", "亻");
 			put("⺹", "耂");

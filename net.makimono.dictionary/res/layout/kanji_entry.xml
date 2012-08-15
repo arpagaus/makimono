@@ -250,10 +250,18 @@
             style="@style/SeparatorLine"
             android:layout_below="@id/alternative_radicals_separator_text" />
 
+        <net.makimono.dictionary.view.NonScrollingListView
+            android:id="@+id/alternative_radicals"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/alternative_radicals_separator_line"
+            android:orientation="vertical"
+            android:paddingBottom="10dp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/alternative_radicals_separator_line"
+            android:layout_below="@id/alternative_radicals"
             android:padding="10dp"
             android:text="@string/acknowledgement_edrdg"
             android:textSize="12sp" />

@@ -5,6 +5,7 @@ import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
@@ -19,12 +20,17 @@ import org.apache.lucene.document.Field.Index;
 import org.apache.lucene.document.Field.Store;
 import org.apache.lucene.document.NumericField;
 
+import au.edu.monash.csse.kanjidic.model.Character;
+import au.edu.monash.csse.kanjidic.model.Codepoint;
 import au.edu.monash.csse.kanjidic.model.CpValue;
 import au.edu.monash.csse.kanjidic.model.Kanjidic2;
 import au.edu.monash.csse.kanjidic.model.Meaning;
+import au.edu.monash.csse.kanjidic.model.Misc;
 import au.edu.monash.csse.kanjidic.model.RadValue;
+import au.edu.monash.csse.kanjidic.model.Radical;
 import au.edu.monash.csse.kanjidic.model.Reading;
 import au.edu.monash.csse.kanjidic.model.ReadingMeaning;
+import au.edu.monash.csse.kanjidic.model.Rmgroup;
 
 public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.csse.kanjidic.model.Character> {
 	private static final int FREQ_MAX = 2500;
@@ -32,6 +38,8 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 
 	private Map<Integer, String> strokePaths = new HashMap<Integer, String>();
 	private Map<String, Set<String>> kanjiRadicals = new HashMap<String, Set<String>>();
+
+	private Map<String, String> missingRadicals = new HashMap<String, String>();
 
 	public KanjiIndexer(Properties properties) {
 		super(Kanjidic2.class.getPackage().getName());
@@ -48,6 +56,15 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 				KradfileParser kradfileParser = new KradfileParser(new File(kradfileProperty));
 				this.kanjiRadicals = kradfileParser.getKanjiRadicals();
 			}
+
+			String missingRadicalsProperty = properties.getProperty("missingRadicals");
+			if (StringUtils.isNotBlank(missingRadicalsProperty)) {
+				String[] radicals = missingRadicalsProperty.split(";");
+				for (String radical : radicals) {
+					String[] s = radical.split("/");
+					missingRadicals.put(s[0], s[1]);
+				}
+			}
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -55,7 +72,46 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 
 	@Override
 	protected List<au.edu.monash.csse.kanjidic.model.Character> getIteratable(Kanjidic2 root) {
+		addMissingRadicals(root);
 		return root.getCharacter();
+	}
+
+	/**
+	 * This is a bit of a hack because not all radicals are actually part of the
+	 * KANJIDIC2
+	 * 
+	 * @param root
+	 */
+	private void addMissingRadicals(Kanjidic2 root) {
+		for (Entry<String, String> entry : missingRadicals.entrySet()) {
+			Character character = new Character();
+			character.setCodepoint(new Codepoint());
+			character.setReadingMeaning(new ReadingMeaning());
+			character.getReadingMeaning().setRmgroup(new Rmgroup());
+
+			character.setMisc(new Misc());
+			character.getMisc().getStrokeCount().add(new Byte((byte) 0));
+
+			RadValue radValue = new RadValue();
+			radValue.setValue((short) 0);
+			radValue.setRadType("classical");
+			character.setRadical(new Radical());
+			character.getRadical().getRadValue().add(radValue);
+
+			CpValue cpValue = new CpValue();
+			cpValue.setCpType("ucs");
+			cpValue.setValue(entry.getKey());
+			character.getCodepoint().getCpValue().add(cpValue);
+
+			character.setLiteral(String.valueOf(java.lang.Character.toChars(Integer.parseInt(entry.getKey(), 16))));
+
+			Meaning meaning = new Meaning();
+			meaning.setValue(entry.getValue());
+			meaning.setMLang("en");
+			character.getReadingMeaning().getRmgroup().getMeaning().add(meaning);
+
+			root.getCharacter().add(0, character);
+		}
 	}
 
 	@Override
@@ -71,7 +127,7 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 		}
 
 		Document document = new Document();
-		String literal = String.valueOf(Character.toChars(codePoint));
+		String literal = String.valueOf(java.lang.Character.toChars(codePoint));
 		document.add(new Field(KanjiFieldName.LITERAL.name(), literal, Store.YES, Index.NOT_ANALYZED));
 		document.add(new Field(KanjiFieldName.CODE_POINT.name(), ByteBuffer.allocate(4).putInt(codePoint).array()));
 
@@ -85,10 +141,12 @@ public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.c
 			document.add(new Field(KanjiFieldName.GRADE.name(), new byte[] { grade }));
 		}
 
-		Byte strokeCount = character.getMisc().getStrokeCount().get(0);
-		NumericField strokeCountField = new NumericField(KanjiFieldName.STROKE_COUNT.name(), Store.YES, true);
-		strokeCountField.setIntValue(strokeCount);
-		document.add(strokeCountField);
+		if (!character.getMisc().getStrokeCount().isEmpty()) {
+			Byte strokeCount = character.getMisc().getStrokeCount().get(0);
+			NumericField strokeCountField = new NumericField(KanjiFieldName.STROKE_COUNT.name(), Store.YES, true);
+			strokeCountField.setIntValue(strokeCount);
+			document.add(strokeCountField);
+		}
 
 		for (RadValue r : character.getRadical().getRadValue()) {
 			if (r.getRadType().equalsIgnoreCase("classical")) {

@@ -1,10 +1,12 @@
 package net.makimono.dictionary.activity;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import net.makimono.dictionary.R;
+import net.makimono.dictionary.adapter.SearchResultAdapter;
 import net.makimono.dictionary.model.KanjiEntry;
 import net.makimono.dictionary.model.Language;
 import net.makimono.dictionary.model.Meaning;
@@ -12,6 +14,7 @@ import net.makimono.dictionary.service.SearcherService;
 import net.makimono.dictionary.service.SearcherServiceConnection;
 import net.makimono.dictionary.util.MeaningTextViewFactory;
 import net.makimono.dictionary.view.KanjiWritingView;
+import net.makimono.dictionary.view.NonScrollingListView;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -47,6 +50,8 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 	private TextView frequencyTextView;
 	private TextView unicodeTextView;
 	private LinearLayout meaningsGroupView;
+	private NonScrollingListView alternativeRadicalsListView;
+	private SearchResultAdapter alternativeRadicalsResultAdapter;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,10 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		unicodeTextView = (TextView) findViewById(R.id.kanji_unicode);
 
 		meaningsGroupView = (LinearLayout) findViewById(R.id.kanji_meanings);
+
+		alternativeRadicalsListView = (NonScrollingListView) findViewById(R.id.alternative_radicals);
+		alternativeRadicalsResultAdapter = new SearchResultAdapter(this);
+		alternativeRadicalsListView.setAdapter(alternativeRadicalsResultAdapter);
 	}
 
 	private void handleIntent(Intent intent) {
@@ -95,6 +104,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 			updateView(entry);
 
 			new LoadRadicalTask().execute(entry.getRadicalKanji());
+			new LoadAlternativeRadicalsTask().execute(entry);
 		}
 	}
 
@@ -202,6 +212,34 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 				return;
 			} else {
 				updateRadicalTextView(entry, result);
+			}
+		}
+	}
+
+	private class LoadAlternativeRadicalsTask extends AsyncTask<KanjiEntry, Void, List<KanjiEntry>> {
+
+		@Override
+		protected List<KanjiEntry> doInBackground(KanjiEntry... params) {
+			try {
+				List<KanjiEntry> kanjiEntries = new ArrayList<KanjiEntry>(params[0].getRadicals().size());
+				for (String radical : params[0].getRadicals()) {
+					KanjiEntry e = connection.getKanjiSearcher().getKanjiEntry(radical);
+					if (RadicalSearchActivity.CHARACTER_SUBSTITUTES.containsKey(e.getLiteral())) {
+						e.setLiteral(RadicalSearchActivity.CHARACTER_SUBSTITUTES.get(e.getLiteral()));
+					}
+					kanjiEntries.add(e);
+				}
+				return kanjiEntries;
+			} catch (IOException e) {
+				Log.e(LOG_TAG, "Failed to load radical", e);
+				return null;
+			}
+		}
+
+		@Override
+		protected void onPostExecute(List<KanjiEntry> result) {
+			if (result != null) {
+				alternativeRadicalsResultAdapter.updateEntries(result);
 			}
 		}
 	}
