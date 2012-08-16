@@ -21,7 +21,7 @@ import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 
-public abstract class AbstractJaxbIndexer<ROOT, IT> {
+public abstract class AbstractJaxbIndexer<ROOT, IT> implements Indexer {
 
 	private final String contextPath;
 	private KanaConverter kanaConverter = new KanaConverter();

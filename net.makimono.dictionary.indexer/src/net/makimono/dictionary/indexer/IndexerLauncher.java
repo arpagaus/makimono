@@ -26,8 +26,7 @@ public class IndexerLauncher {
 		Directory luceneDirectory = new SimpleFSDirectory(directory);
 
 		Class<?> clazz = Class.forName(properties.getProperty("class"));
-		@SuppressWarnings("rawtypes")
-		AbstractJaxbIndexer indexer = (AbstractJaxbIndexer) clazz.getDeclaredConstructor(Properties.class).newInstance(properties);
-		indexer.createIndex(new File(properties.getProperty("gzipXmlFile")), luceneDirectory);
+		Indexer indexer = (Indexer) clazz.getDeclaredConstructor(Properties.class).newInstance(properties);
+		indexer.createIndex(new File(properties.getProperty("sourceFile")), luceneDirectory);
 	}
 }

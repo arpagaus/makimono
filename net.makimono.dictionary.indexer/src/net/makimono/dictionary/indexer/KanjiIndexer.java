@@ -32,7 +32,7 @@ import au.edu.monash.csse.kanjidic.model.Reading;
 import au.edu.monash.csse.kanjidic.model.ReadingMeaning;
 import au.edu.monash.csse.kanjidic.model.Rmgroup;
 
-public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.csse.kanjidic.model.Character> {
+public class KanjiIndexer extends AbstractJaxbIndexer<Kanjidic2, au.edu.monash.csse.kanjidic.model.Character> implements Indexer {
 	private static final int FREQ_MAX = 2500;
 	public static final int RADICAL_UNICODE_OFFSET = 0x2F00;
 
