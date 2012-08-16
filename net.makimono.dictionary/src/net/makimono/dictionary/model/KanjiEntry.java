@@ -191,16 +191,24 @@ public class KanjiEntry implements Parcelable, Entry {
 
 	@Override
 	public String getMeaningSummary(List<Language> languages) {
-		StringBuilder meaning = new StringBuilder();
-		for (Meaning g : getMeanings()) {
-			if (languages.contains(g.getLanguage())) {
-				if (meaning.length() > 0) {
-					meaning.append(", ");
-				}
-				meaning.append(g.getValue());
+		List<String> meaningSummary = new ArrayList<String>(languages.size());
+		for (Language language : languages) {
+			List<Meaning> meanings = getMeaningsForLanguage(language);
+			if (!meanings.isEmpty()) {
+				meaningSummary.add(StringUtils.join(meanings, ", "));
 			}
 		}
-		return meaning.toString();
+		return StringUtils.join(meaningSummary, " / ");
+	}
+
+	private List<Meaning> getMeaningsForLanguage(Language language) {
+		List<Meaning> meanings = new ArrayList<Meaning>(getMeanings().size());
+		for (Meaning m : getMeanings()) {
+			if (m.getLanguage().equals(language)) {
+				meanings.add(m);
+			}
+		}
+		return meanings;
 	}
 
 	@Override

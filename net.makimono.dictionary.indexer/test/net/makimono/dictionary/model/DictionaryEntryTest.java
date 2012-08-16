@@ -10,15 +10,6 @@ import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Collections;
 
-import net.makimono.dictionary.model.Dialect;
-import net.makimono.dictionary.model.DictionaryEntry;
-import net.makimono.dictionary.model.FieldOfApplication;
-import net.makimono.dictionary.model.Language;
-import net.makimono.dictionary.model.Meaning;
-import net.makimono.dictionary.model.Miscellaneous;
-import net.makimono.dictionary.model.PartOfSpeech;
-import net.makimono.dictionary.model.Sense;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -105,7 +96,7 @@ public class DictionaryEntryTest {
 	}
 
 	@Test
-	public void testGeMeaningString() {
+	public void testGeMeaningSummary() {
 		String summary = entry.getMeaningSummary(Collections.<Language> emptyList());
 		assertEquals("", summary);
 
@@ -113,10 +104,10 @@ public class DictionaryEntryTest {
 		assertEquals("Bonbon, Verlockung", summary);
 
 		summary = entry.getMeaningSummary(Arrays.asList(Language.de, Language.en));
-		assertEquals("Bonbon, Verlockung, (hard) candy, toffee, language", summary);
+		assertEquals("Bonbon, Verlockung / (hard) candy, toffee, language", summary);
 
 		summary = entry.getMeaningSummary(Arrays.asList(Language.en, Language.fr, Language.de));
-		assertEquals("(hard) candy, toffee, language, bonbon, sucrerie, Bonbon, Verlockung", summary);
+		assertEquals("(hard) candy, toffee, language / bonbon, sucrerie / Bonbon, Verlockung", summary);
 	}
 
 }
