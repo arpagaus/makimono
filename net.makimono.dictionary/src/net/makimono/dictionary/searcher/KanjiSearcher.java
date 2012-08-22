@@ -105,17 +105,13 @@ public class KanjiSearcher extends AbstractSearcher<KanjiEntry> {
 
 		TopDocs topDocs = getIndexSearcher().search(query, 1);
 		if (topDocs.totalHits > 0) {
-			return getKanjiEntryForDocument(getIndexSearcher().doc(topDocs.scoreDocs[0].doc));
+			return getEntryForDocument(getIndexSearcher().doc(topDocs.scoreDocs[0].doc));
 		}
 		return null;
 	}
 
 	@Override
-	protected KanjiEntry getEntryByDocId(int doc) throws IOException {
-		return getKanjiEntryForDocument(getIndexSearcher().doc(doc));
-	}
-
-	KanjiEntry getKanjiEntryForDocument(Document document) throws IOException {
+	protected KanjiEntry getEntryForDocument(Document document) throws IOException {
 		KanjiEntry entry = new KanjiEntry();
 		entry.setLiteral(document.getFieldable(KanjiFieldName.LITERAL.name()).stringValue());
 		entry.setCodePoint(ByteBuffer.wrap(document.getFieldable(KanjiFieldName.CODE_POINT.name()).getBinaryValue()).getInt());

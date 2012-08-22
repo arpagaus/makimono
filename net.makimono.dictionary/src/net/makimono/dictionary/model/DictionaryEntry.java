@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 
 public class DictionaryEntry implements Entry {
 	private int id;
-	transient private int docId;
 	private ArrayList<String> expressions;
 	private ArrayList<String> readings;
 	private Map<Integer, Set<Integer>> readingRestrictions;
@@ -27,14 +26,6 @@ public class DictionaryEntry implements Entry {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getDocId() {
-		return docId;
-	}
-
-	public void setDocId(int docId) {
-		this.docId = docId;
 	}
 
 	public ArrayList<String> getExpressions() {

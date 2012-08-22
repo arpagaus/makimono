@@ -20,6 +20,7 @@ import net.makimono.dictionary.model.Language;
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexReader.FieldOption;
 import org.apache.lucene.index.Term;
@@ -141,7 +142,7 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 		List<T> entries = new ArrayList<T>();
 		TopDocs topDocs = getIndexSearcher().search(query, MAX_SIZE);
 		for (ScoreDoc d : topDocs.scoreDocs) {
-			T entry = getEntryByDocId(d.doc);
+			T entry = getEntryForDocument(getIndexSearcher().doc(d.doc));
 			if (!entries.contains(entry)) {
 				entries.add(entry);
 			}
@@ -157,7 +158,7 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 		return getIndexSearcher().getIndexReader().getFieldNames(FieldOption.INDEXED);
 	}
 
-	protected abstract T getEntryByDocId(int doc) throws IOException;
+	protected abstract T getEntryForDocument(Document document) throws IOException;
 
 	protected Set<String> extractTokens(String queryString) throws IOException {
 		Set<String> token = new HashSet<String>();

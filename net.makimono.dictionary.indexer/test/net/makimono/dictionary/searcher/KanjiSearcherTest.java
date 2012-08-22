@@ -63,7 +63,7 @@ public class KanjiSearcherTest {
 	@Test
 	public void getKanjiEntryForDocument() throws Exception {
 		Document document = new KanjiIndexer(new Properties()).createDocument(testKanji);
-		KanjiEntry entry = searcher.getKanjiEntryForDocument(document);
+		KanjiEntry entry = searcher.getEntryForDocument(document);
 
 		assertEquals("語", entry.getLiteral());
 		assertEquals(0x8a9e, entry.getCodePoint());

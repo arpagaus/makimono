@@ -16,12 +16,10 @@ public class DictionarySearcher extends AbstractSearcher<DictionaryEntry> {
 	}
 
 	@Override
-	protected DictionaryEntry getEntryByDocId(int docId) throws IOException {
-		Document document = getIndexSearcher().doc(docId);
+	protected DictionaryEntry getEntryForDocument(Document document) throws IOException {
 		try {
 			ObjectInputStream inputStream = new ObjectInputStream(new ByteArrayInputStream(document.getBinaryValue("entry")));
 			DictionaryEntry entry = DictionaryEntry.readEntry(inputStream);
-			entry.setDocId(docId);
 			return entry;
 		} catch (IOException e) {
 			throw e;
