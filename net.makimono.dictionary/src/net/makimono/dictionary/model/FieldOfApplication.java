@@ -9,5 +9,5 @@ package net.makimono.dictionary.model;
  * </ol>
  */
 public enum FieldOfApplication {
-	JMdict_archit, JMdict_astron, JMdict_baseb, JMdict_biol, JMdict_bot, JMdict_Buddh, JMdict_bus, JMdict_chem, JMdict_comp, JMdict_econ, JMdict_eng, JMdict_fin, JMdict_food, JMdict_geol, JMdict_geom, JMdict_law, JMdict_ling, JMdict_MA, JMdict_math, JMdict_med, JMdict_mil, JMdict_music, JMdict_physics, JMdict_Shinto, JMdict_sports, JMdict_sumo
+	JMdict_anat, JMdict_archit, JMdict_astron, JMdict_baseb, JMdict_biol, JMdict_bot, JMdict_Buddh, JMdict_bus, JMdict_chem, JMdict_comp, JMdict_econ, JMdict_engr, JMdict_finc, JMdict_food, JMdict_geol, JMdict_geom, JMdict_law, JMdict_ling, JMdict_MA, JMdict_math, JMdict_med, JMdict_mil, JMdict_music, JMdict_physics, JMdict_Shinto, JMdict_sports, JMdict_sumo, JMdict_zool
 }

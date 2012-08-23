@@ -9,5 +9,5 @@ package net.makimono.dictionary.model;
  * </ol>
  */
 public enum Miscellaneous {
-	JMdict_abbr, JMdict_arch, JMdict_chn, JMdict_col, JMdict_derog, JMdict_fam, JMdict_fem, JMdict_hon, JMdict_hum, JMdict_id, JMdict_joc, JMdict_male, JMdict_m_sl, JMdict_obsc, JMdict_obs, JMdict_on_mim, JMdict_poet, JMdict_pol, JMdict_proverb, JMdict_sens, JMdict_sl, JMdict_uk, JMdict_vulg, JMdict_X
+	JMdict_abbr, JMdict_arch, JMdict_chn, JMdict_col, JMdict_derog, JMdict_fam, JMdict_fem, JMdict_hon, JMdict_hum, JMdict_id, JMdict_joc, JMdict_male, JMdict_m_sl, JMdict_obsc, JMdict_obs, JMdict_on_mim, JMdict_poet, JMdict_pol, JMdict_proverb, JMdict_rare, JMdict_sens, JMdict_sl, JMdict_uk, JMdict_vulg, JMdict_X
 }
