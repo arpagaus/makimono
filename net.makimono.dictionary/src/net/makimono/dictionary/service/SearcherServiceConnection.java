@@ -3,6 +3,7 @@ package net.makimono.dictionary.service;
 import java.util.concurrent.CountDownLatch;
 
 import net.makimono.dictionary.searcher.DictionarySearcher;
+import net.makimono.dictionary.searcher.ExampleSearcher;
 import net.makimono.dictionary.searcher.KanjiSearcher;
 import net.makimono.dictionary.service.SearcherService.SearcherBinder;
 import android.content.ComponentName;
@@ -33,6 +34,15 @@ public class SearcherServiceConnection implements ServiceConnection {
 			Log.e(LOG_TAG, e.getMessage(), e);
 		}
 		return searcherBinder.getKanjiSearcher();
+	}
+
+	public ExampleSearcher getExampleSearcher() {
+		try {
+			lock.await();
+		} catch (InterruptedException e) {
+			Log.e(LOG_TAG, e.getMessage(), e);
+		}
+		return searcherBinder.getExampleSearcher();
 	}
 
 	@Override

@@ -43,6 +43,7 @@ public class HomeActivity extends AbstractDefaultActivity {
 	private View searchDictionaryTextView;
 	private View searchKanjiTextView;
 	private View radicalLookupTextView;
+	private View searchExampleTextView;
 	private View settingsTextView;
 	private View aboutTextView;
 
@@ -72,6 +73,14 @@ public class HomeActivity extends AbstractDefaultActivity {
 			public void onClick(View v) {
 				Intent intent = new Intent(HomeActivity.this, RadicalSearchActivity.class);
 				startActivity(intent);
+			}
+		});
+
+		searchExampleTextView = (View) findViewById(R.id.search_example);
+		searchExampleTextView.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startSearch(ExampleSearchActivity.class);
 			}
 		});
 

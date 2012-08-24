@@ -7,6 +7,7 @@ import java.util.List;
 import net.makimono.dictionary.activity.PreferenceActivity;
 import net.makimono.dictionary.model.Language;
 import net.makimono.dictionary.searcher.DictionarySearcher;
+import net.makimono.dictionary.searcher.ExampleSearcher;
 import net.makimono.dictionary.searcher.KanjiSearcher;
 import net.makimono.dictionary.util.ExternalStorageUtil;
 import android.app.Service;
@@ -24,6 +25,7 @@ public class SearcherService extends Service {
 
 	private DictionarySearcher dictionarySearcher;
 	private KanjiSearcher kanjiSearcher;
+	private ExampleSearcher exampleSearcher;
 
 	private OnSharedPreferenceChangeListener preferenceChangeListener;
 
@@ -38,6 +40,9 @@ public class SearcherService extends Service {
 
 				directory = new File(ExternalStorageUtil.getExternalFilesDir(getApplicationContext()), "indexes/kanji/");
 				kanjiSearcher = new KanjiSearcher(directory);
+
+				directory = new File(ExternalStorageUtil.getExternalFilesDir(getApplicationContext()), "indexes/example/");
+				exampleSearcher = new ExampleSearcher(directory);
 
 				updatePreferences(PreferenceManager.getDefaultSharedPreferences(this));
 				preferenceChangeListener = new PreferenceChangeListener();
@@ -74,6 +79,15 @@ public class SearcherService extends Service {
 			}
 		}
 		kanjiSearcher = null;
+
+		if (exampleSearcher != null) {
+			try {
+				exampleSearcher.close();
+			} catch (IOException e) {
+				Log.e(LOG_TAG, "Failed to close searcher", e);
+			}
+		}
+		exampleSearcher = null;
 	}
 
 	@Override
@@ -88,6 +102,10 @@ public class SearcherService extends Service {
 
 		public KanjiSearcher getKanjiSearcher() {
 			return SearcherService.this.kanjiSearcher;
+		}
+
+		public ExampleSearcher getExampleSearcher() {
+			return SearcherService.this.exampleSearcher;
 		}
 	}
 

@@ -24,6 +24,12 @@
         android:text="@string/radical_search" />
 
     <Button
+        android:id="@+id/search_example"
+        style="@style/DashboardButton"
+        android:drawableTop="@drawable/btn_home_examples"
+        android:text="Example search" />
+    
+    <Button
         android:id="@+id/settings"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/btn_home_settings"
@@ -35,6 +41,5 @@
         android:drawableTop="@drawable/btn_home_about"
         android:text="@string/about" />
 
-    <Button style="@style/DashboardButton" />
 
 </com.google.android.apps.iosched.ui.widget.DashboardLayout>

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="net.makimono.dictionary"
+    android:installLocation="preferExternal"
     android:versionCode="2"
-    android:versionName="0.2.1" android:installLocation="preferExternal">
+    android:versionName="0.2.1" >
 
     <uses-sdk
         android:minSdkVersion="7"
@@ -45,6 +46,17 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/kanji_searchable" />
         </activity>
+        <activity
+            android:name=".activity.ExampleSearchActivity"
+            android:launchMode="singleTop" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/example_searchable" />
+        </activity>
         <activity android:name=".activity.DictionaryEntryActivity" >
         </activity>
         <activity android:name=".activity.KanjiEntryActivity" >
@@ -58,17 +70,26 @@
 
         <provider
             android:name=".content.DictionarySearchSuggestionProvider"
-            android:authorities="net.makimono.dictionary.content.DictionarySearchSuggestionProvider" >
+            android:authorities="net.makimono.dictionary.content.DictionarySearchSuggestionProvider"
+            android:exported="false" >
         </provider>
         <provider
             android:name=".content.KanjiSearchSuggestionProvider"
-            android:authorities="net.makimono.dictionary.content.KanjiSearchSuggestionProvider" >
+            android:authorities="net.makimono.dictionary.content.KanjiSearchSuggestionProvider"
+            android:exported="false" >
+        </provider>
+        <provider
+            android:name=".content.ExampleSearchSuggestionProvider"
+            android:authorities="net.makimono.dictionary.content.ExampleSearchSuggestionProvider"
+            android:exported="false" >
         </provider>
 
         <service
             android:name=".service.SearcherService"
             android:exported="false" />
-        <activity android:name=".activity.RadicalSearchActivity"></activity>
+
+        <activity android:name=".activity.RadicalSearchActivity" >
+        </activity>
     </application>
 
 </manifest>

@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class ExampleEntry implements Entry {
 
 	private Map<Language, String> sentences = new HashMap<Language, String>(Language.values().length);
@@ -18,7 +20,7 @@ public class ExampleEntry implements Entry {
 
 	@Override
 	public String getExpression() {
-		return null;
+		return sentences.get(Language.ja);
 	}
 
 	@Override
@@ -28,7 +30,11 @@ public class ExampleEntry implements Entry {
 
 	@Override
 	public String getMeaningSummary(List<Language> languages) {
-		return null;
+		String[] meanings = new String[languages.size()];
+		for (int i = 0; i < meanings.length; i++) {
+			meanings[i] = sentences.get(languages.get(i));
+		}
+		return StringUtils.join(meanings, "\n");
 	}
 
 	@Override
