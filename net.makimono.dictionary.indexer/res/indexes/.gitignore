@@ -1,0 +1,9 @@
+*/*.fdt
+*/*.fdx
+*/*.fnm
+*/*.frq
+*/*.nrm
+*/*.prx
+*/*.tii
+*/*.tis
+*/segments*
