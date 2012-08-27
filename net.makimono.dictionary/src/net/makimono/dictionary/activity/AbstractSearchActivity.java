@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +37,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 
 	protected SearcherServiceConnection connection = new SearcherServiceConnection();
 
-	private SearchResultAdapter resultAdapter;
+	private SearchResultAdapter listAdapter;
 	private ListView listView;
 	private TextView noEntriesTextView;
 	private LinearLayout progressView;
@@ -60,8 +61,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 		noEntriesTextView = (TextView) findViewById(R.id.no_entries);
 		progressView = (LinearLayout) findViewById(R.id.progress_bar);
 		listView.setOnItemClickListener(this);
-		resultAdapter = new SearchResultAdapter(this);
-		listView.setAdapter(resultAdapter);
+		listView.setAdapter(getListAdapter());
 	}
 
 	@Override
@@ -95,6 +95,17 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 			searchString = query;
 			new SearchTask().execute(query);
 		}
+	}
+
+	protected ListAdapter getListAdapter() {
+		if (listAdapter == null) {
+			listAdapter = new SearchResultAdapter(this);
+		}
+		return listAdapter;
+	}
+
+	protected void updateEntries(List<? extends Entry> entries) {
+		listAdapter.updateEntries(entries);
 	}
 
 	protected abstract Searcher<? extends Entry> getSearcher();
@@ -139,8 +150,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 			} else {
 				noEntriesTextView.setVisibility(View.GONE);
 				listView.setVisibility(View.VISIBLE);
-				resultAdapter.updateEntries(entries);
-				listView.setSelectionAfterHeaderView();
+				updateEntries(entries);
 			}
 		}
 	}

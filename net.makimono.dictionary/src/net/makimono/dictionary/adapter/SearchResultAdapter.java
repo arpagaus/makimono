@@ -34,6 +34,10 @@ public class SearchResultAdapter extends BaseAdapter {
 		languages = PreferenceActivity.getConfiguredLanguages(sharedPreferences);
 	}
 
+	protected List<Language> getLanguages() {
+		return languages;
+	}
+
 	@Override
 	public int getCount() {
 		return entries.size();

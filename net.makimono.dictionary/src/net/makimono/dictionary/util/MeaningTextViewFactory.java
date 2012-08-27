@@ -5,7 +5,7 @@ import java.util.Map;
 
 import net.makimono.dictionary.R;
 import net.makimono.dictionary.model.Language;
-import android.content.ContextWrapper;
+import android.content.Context;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.TextView;
@@ -24,9 +24,9 @@ public class MeaningTextViewFactory {
 		}
 	};
 
-	private ContextWrapper context;
+	private Context context;
 
-	public MeaningTextViewFactory(ContextWrapper context) {
+	public MeaningTextViewFactory(Context context) {
 		super();
 		this.context = context;
 	}

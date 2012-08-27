@@ -18,6 +18,10 @@ public class ExampleEntry implements Entry {
 		sentences.put(language, sentence);
 	}
 
+	public boolean hasTranslation(Language language) {
+		return sentences.containsKey(language);
+	}
+
 	@Override
 	public String getExpression() {
 		return sentences.get(Language.ja);
@@ -41,4 +45,5 @@ public class ExampleEntry implements Entry {
 	public String toString() {
 		return "ExampleEntry [sentences=" + sentences + "]";
 	}
+
 }
