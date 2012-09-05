@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +28,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.Document;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import au.edu.monash.csse.kanjidic.model.Kanjidic2;
@@ -126,6 +124,12 @@ public class KanjiSearcherTest {
 		assertEquals("かのほこ", entry.getRadicalKana());
 
 		assertEquals("[ノ, 十, 土, 弋]", entry.getRadicals().toString());
+	}
+
+	@Test
+	public void getRadicals() throws Exception {
+		assertTrue(searcher.getKanjiEntry("飼").getRadicals().contains("𠆢"));
+		assertTrue(searcher.getKanjiEntry("餑").getRadicals().contains("𠆢"));
 	}
 
 	@Test
@@ -269,13 +273,12 @@ public class KanjiSearcherTest {
 	@Test
 	public void getSelectableRadicals() throws Exception {
 		Set<String> radicals = searcher.getSelectableRadicals(Arrays.asList("龠"), null, 17);
-		assertTrue(radicals.containsAll(Arrays.asList("�", "冊", "一", "龠", "口")));
+		assertTrue(radicals.containsAll(Arrays.asList("𠆢", "冊", "一", "龠", "口")));
 
 		radicals = searcher.getSelectableRadicals(Collections.<String> emptySet(), 1, 33);
 		assertNull(radicals);
 	}
 
-	@Ignore
 	@Test
 	public void buildRadicalSearchFile() throws Exception {
 		Map<String, Set<String>> map = new KradfileParser(new File("res/kradfile-u.gz")).getKanjiRadicals();
@@ -302,14 +305,16 @@ public class KanjiSearcherTest {
 			}
 		}
 
-		FileOutputStream fileOutputStream = new FileOutputStream("radicals.xml");
-		properties.storeToXML(fileOutputStream, "Stroke count radical mapping", "UTF-8");
-		fileOutputStream.close();
+		// FileOutputStream fileOutputStream = new
+		// FileOutputStream("radicals.xml");
+		// properties.storeToXML(fileOutputStream,
+		// "Stroke count radical mapping", "UTF-8");
+		// fileOutputStream.close();
 
-		System.out.println(missingRadicals);
 		for (String s : missingRadicals) {
-			System.out.printf("0x%h", Character.codePointAt(s, 0));
+			System.out.printf("U+%h", Character.codePointAt(s, 0));
 			System.out.println();
 		}
+		assertTrue(missingRadicals.isEmpty());
 	}
 }

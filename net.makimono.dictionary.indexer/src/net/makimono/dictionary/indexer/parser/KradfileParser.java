@@ -33,7 +33,7 @@ public class KradfileParser {
 			HashSet<String> set = new HashSet<String>();
 			String[] split = line.split(":");
 			map.put(split[0].trim(), set);
-			for (String radical : split[1].split("\\s*")) {
+			for (String radical : split[1].split(" ")) {
 				if (StringUtils.isNotBlank(radical)) {
 					set.add(radical);
 				}

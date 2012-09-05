@@ -221,15 +221,19 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		@Override
 		protected List<KanjiEntry> doInBackground(KanjiEntry... params) {
 			try {
-				List<KanjiEntry> kanjiEntries = new ArrayList<KanjiEntry>(params[0].getRadicals().size());
+				List<KanjiEntry> radicalKanjiEntries = new ArrayList<KanjiEntry>(params[0].getRadicals().size());
 				for (String radical : params[0].getRadicals()) {
-					KanjiEntry e = connection.getKanjiSearcher().getKanjiEntry(radical);
-					if (RadicalSearchActivity.CHARACTER_SUBSTITUTES.containsKey(e.getLiteral())) {
-						e.setLiteral(RadicalSearchActivity.CHARACTER_SUBSTITUTES.get(e.getLiteral()));
+					KanjiEntry radicalKanjiEntry = connection.getKanjiSearcher().getKanjiEntry(radical);
+					if (radicalKanjiEntry == null) {
+						Log.e(LOG_TAG, "There is no entry for U+" + Integer.toHexString(radical.codePointAt(0)));
+					} else {
+						if (RadicalSearchActivity.CHARACTER_SUBSTITUTES.containsKey(radicalKanjiEntry.getLiteral())) {
+							radicalKanjiEntry.setLiteral(RadicalSearchActivity.CHARACTER_SUBSTITUTES.get(radicalKanjiEntry.getLiteral()));
+						}
+						radicalKanjiEntries.add(radicalKanjiEntry);
 					}
-					kanjiEntries.add(e);
 				}
-				return kanjiEntries;
+				return radicalKanjiEntries;
 			} catch (IOException e) {
 				Log.e(LOG_TAG, "Failed to load radical", e);
 				return null;

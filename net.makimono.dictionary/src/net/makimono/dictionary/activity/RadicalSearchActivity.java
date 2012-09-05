@@ -62,6 +62,7 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 			put("辶", "辶");
 			put("⻏", " 阝");
 			put("⻖", "阝 ");
+			put("𠆢", "亼 ");
 		}
 	};
 
