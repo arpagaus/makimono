@@ -186,7 +186,7 @@ public class HomeActivity extends AbstractDefaultActivity {
 		private File destination;
 		private ProgressDialog progressDialog;
 
-		private final static int INDEXES_FILE_COUNT = 20;
+		private final static int INDEXES_FILE_COUNT = 30;
 		private int currentProgress;
 
 		public FileExtractorTask(File destination) {

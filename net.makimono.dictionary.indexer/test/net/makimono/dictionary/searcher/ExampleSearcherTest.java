@@ -38,8 +38,8 @@ public class ExampleSearcherTest {
 		document.add(new Field(ExampleFieldName.SENTENCE_JA.name(), "これは文です。", Store.YES, Index.ANALYZED));
 
 		ExampleEntry entry = searcher.getEntryForDocument(document);
-		assertEquals("Das ist ein Testsatz", entry.getSentence(Language.de));
-		assertEquals("これは文です。", entry.getSentence(Language.ja));
+		assertEquals("Das ist ein Testsatz", entry.getMeaning(Language.de).getValue());
+		assertEquals("これは文です。", entry.getJapaneseMeaning().getValue());
 	}
 
 	@Test
@@ -48,10 +48,10 @@ public class ExampleSearcherTest {
 		assertFalse(entries.isEmpty());
 
 		ExampleEntry entry = entries.get(0);
-		assertEquals("君の手は清潔ですか。", entry.getSentence(Language.ja));
-		assertEquals("Sind deine Hände sauber?", entry.getSentence(Language.de));
-		assertEquals("¿Tienes las manos limpias?", entry.getSentence(Language.es));
-		assertEquals("Are your hands free of dirt?", entry.getSentence(Language.en));
-		assertEquals("Tes mains sont-elles propres ?", entry.getSentence(Language.fr));
+		assertEquals("君の手は清潔ですか。", entry.getMeaning(Language.ja).getValue());
+		assertEquals("Sind deine Hände sauber?", entry.getMeaning(Language.de).getValue());
+		assertEquals("¿Tenéis las manos limpias?", entry.getMeaning(Language.es).getValue());
+		assertEquals("Are your hands free of dirt?", entry.getMeaning(Language.en).getValue());
+		assertEquals("Tes mains sont propres ?", entry.getMeaning(Language.fr).getValue());
 	}
 }

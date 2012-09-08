@@ -6,6 +6,7 @@ import java.util.Map;
 import net.makimono.dictionary.R;
 import net.makimono.dictionary.model.ExampleEntry;
 import net.makimono.dictionary.model.Language;
+import net.makimono.dictionary.model.Meaning;
 import net.makimono.dictionary.util.TypedValueUtil;
 import android.content.Context;
 import android.text.TextUtils.TruncateAt;
@@ -47,7 +48,7 @@ public class ExampleSearchResultAdapter extends SearchResultAdapter {
 
 		if (example != null) {
 			net.makimono.dictionary.view.TextView japaneseTextView = new net.makimono.dictionary.view.TextView(parent.getContext());
-			japaneseTextView.setText(example.getSentence(Language.ja));
+			japaneseTextView.setText(example.getJapaneseMeaning().getValue());
 			japaneseTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, japaneseTextSize);
 			japaneseTextView.setSingleLine(true);
 			japaneseTextView.setEllipsize(TruncateAt.END);
@@ -55,14 +56,15 @@ public class ExampleSearchResultAdapter extends SearchResultAdapter {
 			layout.addView(japaneseTextView);
 
 			for (Language language : getLanguages()) {
-				if (example.hasTranslation(language)) {
+				Meaning meaning = example.getMeaning(language);
+				if (meaning != null) {
 					TextView textView = new TextView(parent.getContext());
 					textView.setSingleLine(true);
 					textView.setEllipsize(TruncateAt.END);
 					textView.setCompoundDrawablesWithIntrinsicBounds(LANGUAGE_ICONS.get(language), 0, 0, 0);
 					textView.setCompoundDrawablePadding(padding);
 
-					textView.setText(example.getSentence(language));
+					textView.setText(meaning.getValue());
 					layout.addView(textView);
 				}
 			}

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import net.makimono.dictionary.model.ExampleEntry;
+import net.makimono.dictionary.model.Meaning;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Fieldable;
@@ -25,7 +26,7 @@ public class ExampleSearcher extends AbstractSearcher<ExampleEntry> {
 		for (Fieldable f : document.getFields()) {
 			ExampleFieldName fieldName = ExampleFieldName.valueOf(f.name());
 			if (fieldName.isMeaning()) {
-				entry.putSentence(fieldName.getLanguage(), f.stringValue());
+				entry.getMeanings().add(new Meaning(f.stringValue(), fieldName.getLanguage()));
 			}
 		}
 		return entry;

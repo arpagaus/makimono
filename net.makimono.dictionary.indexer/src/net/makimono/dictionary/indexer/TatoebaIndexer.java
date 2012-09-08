@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -16,7 +17,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.makimono.dictionary.model.Language;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.Pair;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -47,7 +47,7 @@ public class TatoebaIndexer implements Indexer {
 	/**
 	 * groupId / (language / sentence)
 	 */
-	private Map<Integer, Set<Pair<String, String>>> sentences = new HashMap<Integer, Set<Pair<String, String>>>();
+	private Map<Integer, Map<Language, String>> sentences = new HashMap<Integer, Map<Language, String>>();
 
 	private IndexWriter indexWriter;
 
@@ -58,7 +58,7 @@ public class TatoebaIndexer implements Indexer {
 			put(Language.de.name(), new AtomicInteger());
 			put(Language.es.name(), new AtomicInteger());
 			put(Language.fr.name(), new AtomicInteger());
-			put("ja", new AtomicInteger());
+			put(Language.ja.name(), new AtomicInteger());
 		}
 	};
 
@@ -167,22 +167,22 @@ public class TatoebaIndexer implements Indexer {
 	private void addSentence(int groupId, String language, String sentence) throws IOException {
 		languageCount.get(language).incrementAndGet();
 
-		Set<Pair<String, String>> set = sentences.get(groupId);
-		if (set == null) {
-			set = new HashSet<Pair<String, String>>();
-			sentences.put(groupId, set);
+		Map<Language, String> map = sentences.get(groupId);
+		if (map == null) {
+			map = new HashMap<Language, String>();
+			sentences.put(groupId, map);
 		}
-		set.add(Pair.of(language, sentence));
+		map.put(Language.valueOf(language), sentence);
 	}
 
 	private void writeIndex(Directory luceneDirectory) throws IOException {
 		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35));
 		indexWriter = new IndexWriter(luceneDirectory, config);
 
-		for (Set<Pair<String, String>> set : sentences.values()) {
+		for (Map<Language, String> map : sentences.values()) {
 			Document document = new Document();
-			for (Pair<String, String> pair : set) {
-				document.add(new Field("SENTENCE_" + pair.getLeft().toUpperCase(), pair.getRight(), Store.YES, Index.ANALYZED));
+			for (Entry<Language, String> entry : map.entrySet()) {
+				document.add(new Field("SENTENCE_" + entry.getKey().name().toUpperCase(), entry.getValue(), Store.YES, Index.ANALYZED));
 			}
 			indexWriter.addDocument(document);
 		}

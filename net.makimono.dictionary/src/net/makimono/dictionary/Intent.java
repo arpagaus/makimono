@@ -8,5 +8,5 @@ public interface Intent {
 	String EXTRA_MIN_STROKES = Intent.class.getName() + ".EXTRA_MIN_STROKES";
 	String EXTRA_MAX_STROKES = Intent.class.getName() + ".EXTRA_MAX_STROKES";
 	String EXTRA_RADICALS = Intent.class.getName() + ".EXTRA_RADICALS";
-
+	String EXTRA_EXAMPLE_ENTRY = Intent.class.getName() + ".EXTRA_EXAMPLE_ENTRY";;
 }

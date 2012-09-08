@@ -49,5 +49,7 @@
     <string name="between_x_and_y_strokes">Between %1$d and %2$d strokes</string>
     <string name="radical_search">Radical search</string>
     <string name="reset">Reset</string>
+    <string name="example_search">Example search</string>
+    <string name="example">Example</string>
 
 </resources>

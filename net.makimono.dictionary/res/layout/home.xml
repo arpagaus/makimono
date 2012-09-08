@@ -27,7 +27,7 @@
         android:id="@+id/search_example"
         style="@style/DashboardButton"
         android:drawableTop="@drawable/btn_home_examples"
-        android:text="Example search" />
+        android:text="@string/example_search" />
     
     <Button
         android:id="@+id/settings"

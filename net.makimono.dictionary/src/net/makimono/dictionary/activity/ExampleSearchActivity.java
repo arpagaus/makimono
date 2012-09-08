@@ -2,11 +2,15 @@ package net.makimono.dictionary.activity;
 
 import java.util.List;
 
+import net.makimono.dictionary.R;
 import net.makimono.dictionary.adapter.ExampleSearchResultAdapter;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
 import net.makimono.dictionary.content.ExampleSearchSuggestionProvider;
 import net.makimono.dictionary.model.Entry;
+import net.makimono.dictionary.model.ExampleEntry;
 import net.makimono.dictionary.searcher.Searcher;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -16,9 +20,17 @@ public class ExampleSearchActivity extends AbstractSearchActivity {
 	private ExampleSearchResultAdapter listAdapter;
 
 	@Override
-	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		// TODO Auto-generated method stub
-		System.out.println("onItemClick");
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		getSupportActionBar().setTitle(R.string.example);
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> view, View v, int position, long id) {
+		ExampleEntry entry = (ExampleEntry) view.getAdapter().getItem(position);
+		Intent intent = new Intent(this, ExampleEntryActivity.class);
+		intent.putExtra(net.makimono.dictionary.Intent.EXTRA_EXAMPLE_ENTRY, entry);
+		startActivity(intent);
 	}
 
 	@Override

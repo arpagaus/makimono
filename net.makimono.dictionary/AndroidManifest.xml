@@ -67,6 +67,8 @@
         </activity>
         <activity android:name=".activity.AboutActivity" >
         </activity>
+        <activity android:name=".activity.ExampleEntryActivity" >
+        </activity>
 
         <provider
             android:name=".content.DictionarySearchSuggestionProvider"
