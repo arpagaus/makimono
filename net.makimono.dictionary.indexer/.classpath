@@ -7,6 +7,8 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/net.makimono.dictionary"/>
 	<classpathentry kind="lib" path="/opt/android-sdk-linux/platforms/android-7/android.jar"/>
-	<classpathentry kind="lib" path="/net.makimono.dictionary/libs/lucene-core-3.5.0.jar"/>
+	<classpathentry kind="lib" path="/net.makimono.dictionary/libs/lucene-core-3.6.1.jar"/>
+	<classpathentry kind="lib" path="libs/lucene-analyzers-3.6.1.jar"/>
+	<classpathentry kind="lib" path="libs/lucene-kuromoji-3.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

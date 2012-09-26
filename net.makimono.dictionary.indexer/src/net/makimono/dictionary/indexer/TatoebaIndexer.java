@@ -17,7 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import net.makimono.dictionary.model.Language;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
+import org.apache.lucene.analysis.ja.JapaneseAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.Field.Index;
@@ -176,7 +176,7 @@ public class TatoebaIndexer implements Indexer {
 	}
 
 	private void writeIndex(Directory luceneDirectory) throws IOException {
-		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, new StandardAnalyzer(Version.LUCENE_35));
+		IndexWriterConfig config = new IndexWriterConfig(Version.LUCENE_35, new JapaneseAnalyzer(Version.LUCENE_35));
 		indexWriter = new IndexWriter(luceneDirectory, config);
 
 		for (Map<Language, String> map : sentences.values()) {

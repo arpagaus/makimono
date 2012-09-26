@@ -57,10 +57,10 @@ public class ExampleSearcherTest {
 
 	@Test
 	public void testJapaneseWordSearch() throws Exception {
-		List<ExampleEntry> entries = searcher.search("語");
+		List<ExampleEntry> entries = searcher.search("日本語");
 		assertFalse(entries.isEmpty());
 		for (ExampleEntry entry : entries) {
-			assertTrue("Meaning: '" + entry.getJapaneseMeaning() + "'", entry.getJapaneseMeaning().getValue().contains("語"));
+			assertTrue("Meaning: '" + entry.getJapaneseMeaning() + "'", entry.getJapaneseMeaning().getValue().contains("日本語"));
 		}
 	}
 }

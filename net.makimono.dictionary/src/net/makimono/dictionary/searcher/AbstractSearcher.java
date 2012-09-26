@@ -22,7 +22,6 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.index.IndexReader.FieldOption;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.index.TermEnum;
 import org.apache.lucene.search.BooleanClause.Occur;
@@ -34,6 +33,7 @@ import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.search.TopDocs;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.SimpleFSDirectory;
+import org.apache.lucene.util.ReaderUtil;
 import org.apache.lucene.util.Version;
 
 public abstract class AbstractSearcher<T extends Entry> implements Closeable, Searcher<T> {
@@ -155,7 +155,7 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 	}
 
 	protected Collection<String> getIndexedFieldNames() throws IOException {
-		return getIndexSearcher().getIndexReader().getFieldNames(FieldOption.INDEXED);
+		return ReaderUtil.getIndexedFields(getIndexSearcher().getIndexReader());
 	}
 
 	protected abstract T getEntryForDocument(Document document) throws IOException;
