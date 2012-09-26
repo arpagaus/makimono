@@ -110,7 +110,9 @@ public class DictionaryEntry implements Entry {
 			for (Sense sense : getSenses()) {
 				meanings.addAll(sense.getMeanings(lang));
 			}
-			meaningSummary.add(StringUtils.join(meanings, ", "));
+			if (!meanings.isEmpty()) {
+				meaningSummary.add(StringUtils.join(meanings, ", "));
+			}
 		}
 		return StringUtils.join(meaningSummary, " / ");
 	}

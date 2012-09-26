@@ -108,6 +108,9 @@ public class DictionaryEntryTest {
 
 		summary = entry.getMeaningSummary(Arrays.asList(Language.en, Language.fr, Language.de));
 		assertEquals("(hard) candy, toffee, language / bonbon, sucrerie / Bonbon, Verlockung", summary);
+
+		summary = entry.getMeaningSummary(Arrays.asList(Language.values()));
+		assertEquals("(hard) candy, toffee, language / Bonbon, Verlockung / bonbon, sucrerie", summary);
 	}
 
 }

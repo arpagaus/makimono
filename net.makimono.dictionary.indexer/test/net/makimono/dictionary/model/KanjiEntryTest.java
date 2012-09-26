@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class KnajiEntryTest {
+public class KanjiEntryTest {
 
 	private static final List<Language> ALL_LANGUAGES = Arrays.asList(Language.values());
 
