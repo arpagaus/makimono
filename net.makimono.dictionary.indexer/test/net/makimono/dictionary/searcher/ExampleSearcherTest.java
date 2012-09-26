@@ -54,4 +54,13 @@ public class ExampleSearcherTest {
 		assertEquals("Are your hands free of dirt?", entry.getMeaning(Language.en).getValue());
 		assertEquals("Tes mains sont propres ?", entry.getMeaning(Language.fr).getValue());
 	}
+
+	@Test
+	public void testJapaneseWordSearch() throws Exception {
+		List<ExampleEntry> entries = searcher.search("語");
+		assertFalse(entries.isEmpty());
+		for (ExampleEntry entry : entries) {
+			assertTrue("Meaning: '" + entry.getJapaneseMeaning() + "'", entry.getJapaneseMeaning().getValue().contains("語"));
+		}
+	}
 }

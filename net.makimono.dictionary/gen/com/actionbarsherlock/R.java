@@ -817,20 +817,21 @@ containing a value of this type.
         public static final int ic_launcher=0x7f020072;
         public static final int ic_menu_home=0x7f020073;
         public static final int ic_menu_preferences=0x7f020074;
-        public static final int ic_menu_search_holo_dark=0x7f020075;
-        public static final int ic_menu_share_holo_dark=0x7f020076;
-        public static final int ic_portugese=0x7f020077;
-        public static final int ic_portugese_small=0x7f020078;
-        public static final int ic_russian=0x7f020079;
-        public static final int ic_russian_small=0x7f02007a;
-        public static final int ic_spanish=0x7f02007b;
-        public static final int ic_spanish_small=0x7f02007c;
-        public static final int primary_separator=0x7f02007d;
-        public static final int radical_stroke_count_background=0x7f02007e;
-        public static final int secondary_separator=0x7f02007f;
-        public static final int seek_thumb_normal=0x7f020080;
-        public static final int seek_thumb_pressed=0x7f020081;
-        public static final int selected_radical_background=0x7f020082;
+        public static final int ic_menu_search_example=0x7f020075;
+        public static final int ic_menu_search_holo_dark=0x7f020076;
+        public static final int ic_menu_share_holo_dark=0x7f020077;
+        public static final int ic_portugese=0x7f020078;
+        public static final int ic_portugese_small=0x7f020079;
+        public static final int ic_russian=0x7f02007a;
+        public static final int ic_russian_small=0x7f02007b;
+        public static final int ic_spanish=0x7f02007c;
+        public static final int ic_spanish_small=0x7f02007d;
+        public static final int primary_separator=0x7f02007e;
+        public static final int radical_stroke_count_background=0x7f02007f;
+        public static final int secondary_separator=0x7f020080;
+        public static final int seek_thumb_normal=0x7f020081;
+        public static final int seek_thumb_pressed=0x7f020082;
+        public static final int selected_radical_background=0x7f020083;
     }
     public static final class id {
         public static final int about=0x7f05003e;
@@ -905,7 +906,8 @@ containing a value of this type.
         public static final int meanings=0x7f050038;
         public static final int menu_preferences=0x7f050064;
         public static final int menu_search=0x7f050065;
-        public static final int menu_share=0x7f050066;
+        public static final int menu_search_example=0x7f050066;
+        public static final int menu_share=0x7f050067;
         public static final int next_expression=0x7f05002b;
         public static final int next_reading=0x7f05002e;
         public static final int no_entries=0x7f05005f;
@@ -976,7 +978,8 @@ containing a value of this type.
     public static final class menu {
         public static final int base=0x7f0c0000;
         public static final int search=0x7f0c0001;
-        public static final int share=0x7f0c0002;
+        public static final int search_example=0x7f0c0002;
+        public static final int share=0x7f0c0003;
     }
     public static final class string {
         public static final int JMdict_Buddh=0x7f0a001b;
@@ -1218,6 +1221,7 @@ containing a value of this type.
         public static final int search_for_kanji=0x7f0a00d3;
         public static final int search_the_dictionary=0x7f0a00d4;
         public static final int settings=0x7f0a00d5;
+        public static final int share=0x7f0a00e1;
         public static final int spanish=0x7f0a00d6;
         public static final int stroke_count=0x7f0a00d7;
         public static final int troubleshooting=0x7f0a00d8;

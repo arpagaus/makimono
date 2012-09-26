@@ -20,6 +20,7 @@ import net.makimono.dictionary.view.NonScrollingListView;
 
 import org.apache.commons.lang3.StringUtils;
 
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -38,7 +39,12 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher.ViewFactory;
 
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
 public class DictionaryEntryActivity extends AbstractDefaultActivity {
+	private static final String LOG_TAG = DictionaryEntryActivity.class.getSimpleName();
+
 	public static final String EXTRA_DICTIONARY_ENTRY = DictionaryEntryActivity.class + ".EXTRA_DOC_ID";
 
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
@@ -92,6 +98,32 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 		unbindService(connection);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getSupportMenuInflater().inflate(R.menu.search_example, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.menu_search_example:
+			if (expressionTextSwitcher.getCurrentView() instanceof TextView) {
+				CharSequence expression = ((TextView) expressionTextSwitcher.getCurrentView()).getText();
+				if (StringUtils.isNotBlank(expression)) {
+					Intent intent = new Intent(this, ExampleSearchActivity.class);
+					intent.setAction(Intent.ACTION_SEARCH);
+					intent.putExtra(SearchManager.QUERY, expression);
+					startActivity(intent);
+					return true;
+				}
+			}
+			Log.e(LOG_TAG, "Failed to search examples, expressionTextSwitcher=" + expressionTextSwitcher.getCurrentView());
+			return false;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private TextSwitcher createReadingTextSwitcher() {
