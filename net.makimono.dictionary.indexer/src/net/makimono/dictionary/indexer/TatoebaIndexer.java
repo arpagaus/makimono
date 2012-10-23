@@ -180,6 +180,10 @@ public class TatoebaIndexer implements Indexer {
 		indexWriter = new IndexWriter(luceneDirectory, config);
 
 		for (Map<Language, String> map : sentences.values()) {
+			if (!map.containsKey(Language.ja)) {
+				continue;
+			}
+
 			Document document = new Document();
 			for (Entry<Language, String> entry : map.entrySet()) {
 				document.add(new Field("SENTENCE_" + entry.getKey().name().toUpperCase(), entry.getValue(), Store.YES, Index.ANALYZED));
