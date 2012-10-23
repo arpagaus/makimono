@@ -236,14 +236,14 @@
                     android:textSize="@dimen/content_text_size" />
             </TableRow>
         </TableLayout>
-        
+
         <!-- Alternative radicals -->
 
         <TextView
             android:id="@+id/alternative_radicals_separator_text"
             style="@style/SeparatorText"
             android:layout_below="@id/kanji_misc"
-            android:text="Alternative radicals" />
+            android:text="@string/alternative_radicals" />
 
         <View
             android:id="@+id/alternative_radicals_separator_line"

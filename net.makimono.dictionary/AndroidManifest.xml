@@ -26,6 +26,7 @@
         </activity>
         <activity
             android:name=".activity.DictionarySearchActivity"
+            android:exported="false"
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -37,6 +38,7 @@
         </activity>
         <activity
             android:name=".activity.KanjiSearchActivity"
+            android:exported="false"
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -48,6 +50,7 @@
         </activity>
         <activity
             android:name=".activity.ExampleSearchActivity"
+            android:exported="false"
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

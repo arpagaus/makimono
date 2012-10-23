@@ -1179,6 +1179,7 @@ containing a value of this type.
          */
         public static final int abs__shareactionprovider_share_with_application=0x7f0a0009;
         public static final int acknowledgement_edrdg=0x7f0a00b0;
+        public static final int alternative_radicals=0x7f0a00e2;
         public static final int app_name=0x7f0a00b1;
         public static final int between_x_and_y_strokes=0x7f0a00dc;
         public static final int clear_search_history=0x7f0a00b2;
