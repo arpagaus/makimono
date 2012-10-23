@@ -3,12 +3,16 @@
 
     <string name="about">Info</string>
     <string name="acknowledgement_edrdg">Diese Applikation verwendet die JMDict und KANJIDIC2 Wörterbuch-Dateien. Diese Dateien sind Eigentum der Electronic Dictionary Research and Development Group und werden in Übereinstimmung mit deren Lizenz verwendet.</string>
+    <string name="alternative_radicals">Alternative Radikale</string>
     <string name="app_name">Makimono</string>
+    <string name="between_x_and_y_strokes">Zwischen %1$d und %2$d Strichen</string>
     <string name="clear_search_history">Suchverlauf löschen</string>
     <string name="clear_search_history_summary">Alle Suchvorgänge aus dem Verlauf entfernen</string>
     <string name="dictionary">Wörterbuch</string>
     <string name="dictionary_search">Wörterbuch-Suche</string>
     <string name="english">Englisch</string>
+    <string name="example">Beispiel</string>
+    <string name="example_search">Beispiel-Suche</string>
     <string name="french">Französich</string>
     <string name="frequency">Häufigkeit</string>
     <string name="german">Deutsch</string>
@@ -30,7 +34,9 @@
     <string name="previous_expression_alternative">Vorherige Ausdruck-Alternative</string>
     <string name="previous_reading_alternative">Vorherige Lese-Alternative</string>
     <string name="radical">Radikal</string>
+    <string name="radical_search">Radikal-Suche</string>
     <string name="readings">Lesungen</string>
+    <string name="reset">Zurücksetzen</string>
     <string name="romaji">Rōmaji</string>
     <string name="romaji_search">Rōmaji Suche</string>
     <string name="romaji_search_summary">Ermöglicht es bei der Suche nach japanischen Ausdrücken Rōmaji zu verwenden</string>
@@ -40,6 +46,7 @@
     <string name="search_for_kanji">Suche nach Kanji</string>
     <string name="search_the_dictionary">Suche im Wörterbuch</string>
     <string name="settings">Einstellungen</string>
+    <string name="share">Teilen</string>
     <string name="spanish">Spanisch</string>
     <string name="stroke_count">Strichzahl</string>
     <string name="troubleshooting">Problembehebung</string>

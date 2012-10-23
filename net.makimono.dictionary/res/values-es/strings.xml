@@ -3,12 +3,16 @@
 
     <string name="about">Acerca de</string>
     <string name="acknowledgement_edrdg">Esta aplicación usa los archivos de diccionario JMDict y KANJIDIC2. Estos archivos son propiedad del Grupo de Desarrollo e Investigación de Diccionarios Electrónicos, y son usados de acuerdo a la licencia de derechos de autor de dicho Grupo.</string>
+    <string name="alternative_radicals">Los radicales alternativos</string>
     <string name="app_name">Makimono</string>
+    <string name="between_x_and_y_strokes">Entre trazos %1$d e %2$d</string>
     <string name="clear_search_history">Borrar historial de búsqueda</string>
     <string name="clear_search_history_summary">Eliminar todas las búsquedas que ha realizado</string>
     <string name="dictionary">Diccionario</string>
     <string name="dictionary_search">Búsqueda en diccionario</string>
     <string name="english">Inglés</string>
+    <string name="example">Ejemplo</string>
+    <string name="example_search">Búsqueda de ejemplo</string>
     <string name="french">Francés</string>
     <string name="frequency">Frecuencia</string>
     <string name="german">Alemán</string>
@@ -30,7 +34,9 @@
     <string name="previous_expression_alternative">Ir a la expresión alternativa anterior</string>
     <string name="previous_reading_alternative">Ir a la lectura alternativa anterior</string>
     <string name="radical">Radical</string>
+    <string name="radical_search">Búsqueda de radical</string>
     <string name="readings">Lecturas</string>
+    <string name="reset">Reajustar</string>
     <string name="romaji">Rōmaji</string>
     <string name="romaji_search">Búsqueda por rōmaji</string>
     <string name="romaji_search_summary">Le permite usar rōmaji a la hora de buscar expresiones japonesas</string>
@@ -40,6 +46,7 @@
     <string name="search_for_kanji">Buscar kanji</string>
     <string name="search_the_dictionary">Buscar en el diccionario</string>
     <string name="settings">Configuración</string>
+    <string name="share">Compartir</string>
     <string name="spanish">Español</string>
     <string name="stroke_count">Número de trazos</string>
     <string name="troubleshooting">Solución de problemas</string>

@@ -3,12 +3,16 @@
 
     <string name="about">About</string>
     <string name="acknowledgement_edrdg">This application uses the JMDict and KANJIDIC2 dictionary files. These files are the property of the Electronic Dictionary Research and Development Group, and are used in conformance with the Group\s licence.</string>
+    <string name="alternative_radicals">Alternative radicals</string>
     <string name="app_name">Makimono</string>
+    <string name="between_x_and_y_strokes">Between %1$d and %2$d strokes</string>
     <string name="clear_search_history">Clear search history</string>
     <string name="clear_search_history_summary">Remove all the searches you have performed</string>
     <string name="dictionary">Dictionary</string>
     <string name="dictionary_search">Dictionary search</string>
     <string name="english">English</string>
+    <string name="example">Example</string>
+    <string name="example_search">Example search</string>
     <string name="french">French</string>
     <string name="frequency">Frequency</string>
     <string name="german">German</string>
@@ -30,7 +34,9 @@
     <string name="previous_expression_alternative">Previous expression alternative</string>
     <string name="previous_reading_alternative">Previous reading alternative</string>
     <string name="radical">Radical</string>
+    <string name="radical_search">Radical search</string>
     <string name="readings">Readings</string>
+    <string name="reset">Reset</string>
     <string name="romaji">Rōmaji</string>
     <string name="romaji_search">Rōmaji Search</string>
     <string name="romaji_search_summary">Allows you using rōmaji when searching Japanese expressions</string>
@@ -40,18 +46,12 @@
     <string name="search_for_kanji">Search for kanji</string>
     <string name="search_the_dictionary">Search the dictionary</string>
     <string name="settings">Settings</string>
+    <string name="share">Share</string>
     <string name="spanish">Spanish</string>
     <string name="stroke_count">Stroke count</string>
     <string name="troubleshooting">Troubleshooting</string>
     <string name="unicode">Unicode</string>
     <string name="welcome">Welcome</string>
     <string name="welcome_info_message">Welcome to Makimono!\n\nI will need to initialize the dictionary data files. This may take up to one minute.</string>
-    <string name="between_x_and_y_strokes">Between %1$d and %2$d strokes</string>
-    <string name="radical_search">Radical search</string>
-    <string name="reset">Reset</string>
-    <string name="example_search">Example search</string>
-    <string name="example">Example</string>
-    <string name="share">Share</string>
-    <string name="alternative_radicals">Alternative radicals</string>
 
 </resources>
