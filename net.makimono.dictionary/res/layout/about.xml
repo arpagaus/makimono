@@ -38,10 +38,9 @@
 
     <View
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="1dp"
         android:layout_margin="8dp"
-        android:background="@android:color/black"
-        android:minHeight="1dp" />
+        android:background="@android:color/black" />
 
     <WebView
         android:id="@+id/about_html"
