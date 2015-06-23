@@ -4,12 +4,12 @@
 	<property name="jdk.dir" location="/usr/lib/jvm/java-7-openjdk-amd64/" />
 	<property name="android.dir" location="/opt/android-sdk-linux/platforms/android-8/" />
 
-	<property name="lib.dir" location="../net.makimono/libs" />
+	<property name="lib.dir" location="../net.makimono.dictionary/libs" />
 
 	<property name="build.dir" location="${java.io.tmpdir}/indexer" />
 	<property name="dist.dir" location="dist" />
 
-	<property name="src.dir" location="../net.makimono/src" />
+	<property name="src.dir" location="../net.makimono.dictionary/src" />
 
 	<property name="indexer.src.dir" location="src" />
 	<property name="indexer.gen.dir" location="gen" />
@@ -59,7 +59,7 @@
 
 	<target name="create-jmdict-index" depends="build-jmdict-indexer,download-jmdict-file">
 		<delete dir="${dictionary.index.dir}" />
-		<java classname="net.makimono.indexer.Launcher" fork="true">
+		<java classname="net.makimono.dictionary.indexer.IndexerLauncher" fork="true">
 			<jvmarg value="-Xmx512m" />
 			<arg value="${jmdict.file}" />
 			<arg value="${dictionary.index.dir}" />
