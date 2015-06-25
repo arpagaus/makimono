@@ -1,14 +1,13 @@
 package net.makimono.dictionary.activity;
 
-import net.makimono.dictionary.R;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
+import net.makimono.dictionary.R;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
-public abstract class AbstractDefaultActivity extends SherlockActivity {
+public abstract class AbstractDefaultActivity extends AppCompatActivity {
 
 	@Override
 	protected void onCreate(Bundle bundle) {
@@ -17,7 +16,7 @@ public abstract class AbstractDefaultActivity extends SherlockActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.base, menu);
+		getMenuInflater().inflate(R.menu.base, menu);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		return true;
 	}

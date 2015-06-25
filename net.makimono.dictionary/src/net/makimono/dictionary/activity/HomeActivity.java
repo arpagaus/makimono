@@ -9,10 +9,6 @@ import java.io.InputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import net.makimono.dictionary.Application;
-import net.makimono.dictionary.R;
-import net.makimono.dictionary.util.ExternalStorageUtil;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -31,10 +27,12 @@ import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import net.makimono.dictionary.Application;
+import net.makimono.dictionary.R;
+import net.makimono.dictionary.util.ExternalStorageUtil;
 
 public class HomeActivity extends AbstractDefaultActivity {
 	private static final String LOG_TAG = HomeActivity.class.getSimpleName();

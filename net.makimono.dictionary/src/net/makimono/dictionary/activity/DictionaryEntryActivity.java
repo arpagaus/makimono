@@ -5,19 +5,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.List;
 
-import net.makimono.dictionary.R;
-import net.makimono.dictionary.adapter.SearchResultAdapter;
-import net.makimono.dictionary.model.DictionaryEntry;
-import net.makimono.dictionary.model.KanjiEntry;
-import net.makimono.dictionary.model.Language;
-import net.makimono.dictionary.model.Sense;
-import net.makimono.dictionary.service.SearcherService;
-import net.makimono.dictionary.service.SearcherServiceConnection;
-import net.makimono.dictionary.util.DictionaryAlternativesSwitcher;
-import net.makimono.dictionary.util.MeaningTextViewFactory;
-import net.makimono.dictionary.util.TypedValueUtil;
-import net.makimono.dictionary.view.NonScrollingListView;
-
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.SearchManager;
@@ -30,6 +17,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -38,9 +27,18 @@ import android.widget.LinearLayout;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher.ViewFactory;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import net.makimono.dictionary.R;
+import net.makimono.dictionary.adapter.SearchResultAdapter;
+import net.makimono.dictionary.model.DictionaryEntry;
+import net.makimono.dictionary.model.KanjiEntry;
+import net.makimono.dictionary.model.Language;
+import net.makimono.dictionary.model.Sense;
+import net.makimono.dictionary.service.SearcherService;
+import net.makimono.dictionary.service.SearcherServiceConnection;
+import net.makimono.dictionary.util.DictionaryAlternativesSwitcher;
+import net.makimono.dictionary.util.MeaningTextViewFactory;
+import net.makimono.dictionary.util.TypedValueUtil;
+import net.makimono.dictionary.view.NonScrollingListView;
 
 public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	private static final String LOG_TAG = DictionaryEntryActivity.class.getSimpleName();
@@ -102,7 +100,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.search_example, menu);
+		getMenuInflater().inflate(R.menu.search_example, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

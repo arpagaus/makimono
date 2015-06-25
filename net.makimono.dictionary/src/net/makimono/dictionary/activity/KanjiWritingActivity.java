@@ -2,18 +2,17 @@ package net.makimono.dictionary.activity;
 
 import java.util.List;
 
-import net.makimono.dictionary.R;
-import net.makimono.dictionary.view.KanjiWritingLayout;
-import net.makimono.dictionary.view.KanjiWritingView;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import net.makimono.dictionary.R;
+import net.makimono.dictionary.view.KanjiWritingLayout;
+import net.makimono.dictionary.view.KanjiWritingView;
 
 public class KanjiWritingActivity extends AbstractDefaultActivity {
 
@@ -29,7 +28,7 @@ public class KanjiWritingActivity extends AbstractDefaultActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.share, menu);
+		getMenuInflater().inflate(R.menu.share, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 

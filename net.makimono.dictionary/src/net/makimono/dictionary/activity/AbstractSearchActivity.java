@@ -3,19 +3,13 @@ package net.makimono.dictionary.activity;
 import java.io.IOException;
 import java.util.List;
 
-import net.makimono.dictionary.R;
-import net.makimono.dictionary.adapter.SearchResultAdapter;
-import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
-import net.makimono.dictionary.model.Entry;
-import net.makimono.dictionary.searcher.Searcher;
-import net.makimono.dictionary.service.SearcherService;
-import net.makimono.dictionary.service.SearcherServiceConnection;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
@@ -23,8 +17,13 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.actionbarsherlock.view.Menu;
+import net.makimono.dictionary.R;
+import net.makimono.dictionary.adapter.SearchResultAdapter;
+import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
+import net.makimono.dictionary.model.Entry;
+import net.makimono.dictionary.searcher.Searcher;
+import net.makimono.dictionary.service.SearcherService;
+import net.makimono.dictionary.service.SearcherServiceConnection;
 
 public abstract class AbstractSearchActivity extends AbstractDefaultActivity implements OnItemClickListener {
 	private static final String LOG_TAG = AbstractSearchActivity.class.getName();
@@ -78,7 +77,7 @@ public abstract class AbstractSearchActivity extends AbstractDefaultActivity imp
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getSupportMenuInflater().inflate(R.menu.search, menu);
+		getMenuInflater().inflate(R.menu.search, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
