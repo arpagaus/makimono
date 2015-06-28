@@ -3,6 +3,7 @@ package com.poliveira.apps.materialtests;
 import java.util.List;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,13 +17,13 @@ import net.makimono.dictionary.R;
  */
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> {
 
-	private List<NavigationItem> mData;
+	private List<NavigationItem> mNavigationItems;
 	private NavigationDrawerCallbacks mNavigationDrawerCallbacks;
 	private int mSelectedPosition;
 	private int mTouchedPosition = -1;
 
-	public NavigationDrawerAdapter(List<NavigationItem> data) {
-		mData = data;
+	public NavigationDrawerAdapter(List<NavigationItem> navigationItems) {
+		mNavigationItems = navigationItems;
 	}
 
 	public NavigationDrawerCallbacks getNavigationDrawerCallbacks() {
@@ -68,12 +69,15 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 	}
 
 	@Override
-	public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder viewHolder, final int i) {
-		viewHolder.textView.setText(mData.get(i).getText());
-		viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(mData.get(i).getDrawable(), null, null, null);
+	public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder viewHolder, final int position) {
+		NavigationItem item = mNavigationItems.get(position);
+		@SuppressWarnings("deprecation")
+		Drawable drawable = viewHolder.textView.getResources().getDrawable(item.getDrawableId());
+		viewHolder.textView.setText(item.getText());
+		viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
 
 		// TODO: selected menu position, change layout accordingly
-		if (mSelectedPosition == i || mTouchedPosition == i) {
+		if (mSelectedPosition == position || mTouchedPosition == position) {
 			viewHolder.itemView.setBackgroundColor(viewHolder.itemView.getContext().getResources().getColor(R.color.selected_gray));
 		} else {
 			viewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
@@ -98,7 +102,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
 	@Override
 	public int getItemCount() {
-		return mData != null ? mData.size() : 0;
+		return mNavigationItems != null ? mNavigationItems.size() : 0;
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
