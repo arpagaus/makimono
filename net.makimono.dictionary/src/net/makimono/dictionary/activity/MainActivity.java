@@ -1,4 +1,4 @@
-package com.poliveira.apps.materialtests;
+package net.makimono.dictionary.activity;
 
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
 import net.makimono.dictionary.R;
+import net.makimono.dictionary.navigation.NavigationDrawerCallbacks;
+import net.makimono.dictionary.navigation.NavigationDrawerFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationDrawerCallbacks {
 

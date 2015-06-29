@@ -1,4 +1,4 @@
-package com.poliveira.apps.materialtests;
+package net.makimono.dictionary.navigation;
 
 /**
  * Created by poliveira on 24/10/2014.

@@ -1,4 +1,4 @@
-package com.poliveira.apps.materialtests;
+package net.makimono.dictionary.navigation;
 
 import java.util.ArrayList;
 import java.util.List;
