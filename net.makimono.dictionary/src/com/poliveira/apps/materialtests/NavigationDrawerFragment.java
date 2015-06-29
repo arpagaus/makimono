@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -19,19 +20,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import net.makimono.dictionary.R;
+import net.makimono.dictionary.activity.PreferenceEnum;
 
 /**
  * Created by poliveira on 24/10/2014.
  */
 public class NavigationDrawerFragment extends Fragment implements NavigationDrawerCallbacks {
-	private static final String PREF_USER_LEARNED_DRAWER = "navigation_drawer_learned";
-	private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-	private static final String PREFERENCES_FILE = "my_app_settings"; // TODO:
-																		// change
-																		// this
-																		// to
-																		// your
-																		// file
+	private static final String SELECTED_NAVIGATION_DRAWER_POSITION = "selected_navigation_drawer_position";
+
 	private NavigationDrawerCallbacks mCallbacks;
 	private RecyclerView mDrawerList;
 	private View mFragmentContainerView;
@@ -60,9 +56,12 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		mUserLearnedDrawer = Boolean.valueOf(readSharedSetting(getActivity(), PREF_USER_LEARNED_DRAWER, "false"));
+
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+		mUserLearnedDrawer = sharedPreferences.getBoolean(PreferenceEnum.USER_LEARNED_NAVIGATION_DRAWER.key(), false);
+
 		if (savedInstanceState != null) {
-			mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
+			mCurrentSelectedPosition = savedInstanceState.getInt(SELECTED_NAVIGATION_DRAWER_POSITION);
 			mFromSavedInstanceState = true;
 		}
 	}
@@ -106,7 +105,9 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 					return;
 				if (!mUserLearnedDrawer) {
 					mUserLearnedDrawer = true;
-					saveSharedSetting(getActivity(), PREF_USER_LEARNED_DRAWER, "true");
+					SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getActivity()).edit();
+					editor.putBoolean(PreferenceEnum.USER_LEARNED_NAVIGATION_DRAWER.key(), mUserLearnedDrawer);
+					editor.commit();
 				}
 
 				getActivity().supportInvalidateOptionsMenu();
@@ -193,7 +194,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
+		outState.putInt(SELECTED_NAVIGATION_DRAWER_POSITION, mCurrentSelectedPosition);
 	}
 
 	@Override
@@ -209,15 +210,15 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		mDrawerLayout = drawerLayout;
 	}
 
-	public static void saveSharedSetting(Context ctx, String settingName, String settingValue) {
-		SharedPreferences sharedPref = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
+	public static void saveSharedSetting(Context context, String key, boolean value) {
+		SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
 		SharedPreferences.Editor editor = sharedPref.edit();
-		editor.putString(settingName, settingValue);
+		editor.putBoolean(key, value);
 		editor.commit();
 	}
 
-	public static String readSharedSetting(Context ctx, String settingName, String defaultValue) {
-		SharedPreferences sharedPref = ctx.getSharedPreferences(PREFERENCES_FILE, Context.MODE_PRIVATE);
-		return sharedPref.getString(settingName, defaultValue);
+	public static boolean readSharedSetting(Context context, String key, boolean value) {
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+		return sharedPreferences.getBoolean(key, value);
 	}
 }

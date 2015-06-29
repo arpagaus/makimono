@@ -164,7 +164,7 @@ public class HomeActivity extends AbstractDefaultActivity {
 	}
 
 	private boolean isFileExtractionNecessary(File destination) throws NameNotFoundException {
-		int indexFilesVersion = PreferenceManager.getDefaultSharedPreferences(this).getInt(PreferenceActivity.INDEX_FILES_VERSION, 0);
+		int indexFilesVersion = PreferenceManager.getDefaultSharedPreferences(this).getInt(PreferenceEnum.INDEX_FILES_VERSION.key(), 0);
 
 		PackageManager manager = this.getPackageManager();
 		PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
@@ -252,7 +252,7 @@ public class HomeActivity extends AbstractDefaultActivity {
 					PackageInfo info = manager.getPackageInfo(HomeActivity.this.getPackageName(), 0);
 
 					Editor editor = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this.getApplicationContext()).edit();
-					editor.putInt(PreferenceActivity.INDEX_FILES_VERSION, info.versionCode);
+					editor.putInt(PreferenceEnum.INDEX_FILES_VERSION.key(), info.versionCode);
 					editor.commit();
 				}
 
