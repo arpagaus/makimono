@@ -87,9 +87,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
 	public void setup(int fragmentId, DrawerLayout drawerLayout, Toolbar toolbar) {
 		mFragmentContainerView = getActivity().findViewById(fragmentId);
-		if (mFragmentContainerView.getParent() instanceof ScrimInsetsFrameLayout) {
-			mFragmentContainerView = (View) mFragmentContainerView.getParent();
-		}
 		mDrawerLayout = drawerLayout;
 		mDrawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.myPrimaryDarkColor));
 
