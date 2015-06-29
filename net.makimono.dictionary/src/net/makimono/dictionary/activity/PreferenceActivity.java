@@ -25,7 +25,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
 		for (PreferenceEnum languageEnum : PreferenceEnum.getLanguageEnums()) {
 			boolean enabled = preferences.getBoolean(languageEnum.key(), true);
 			if (enabled) {
-				String languageString = languageEnum.key().substring(languageEnum.key().lastIndexOf('_'));
+				String languageString = languageEnum.key().substring(languageEnum.key().lastIndexOf('_') + 1);
 				Language language = Language.valueOf(languageString);
 				languages.add(language);
 			}
