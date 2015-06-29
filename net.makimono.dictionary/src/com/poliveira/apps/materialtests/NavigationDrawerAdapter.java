@@ -17,12 +17,12 @@ import net.makimono.dictionary.R;
  */
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> {
 
-	private List<NavigationItem> mNavigationItems;
+	private List<NavigationDrawerItem> mNavigationItems;
 	private NavigationDrawerCallbacks mNavigationDrawerCallbacks;
 	private int mSelectedPosition;
 	private int mTouchedPosition = -1;
 
-	public NavigationDrawerAdapter(List<NavigationItem> navigationItems) {
+	public NavigationDrawerAdapter(List<NavigationDrawerItem> navigationItems) {
 		mNavigationItems = navigationItems;
 	}
 
@@ -70,7 +70,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
 	@Override
 	public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder viewHolder, final int position) {
-		NavigationItem item = mNavigationItems.get(position);
+		NavigationDrawerItem item = mNavigationItems.get(position);
 		@SuppressWarnings("deprecation")
 		Drawable drawable = viewHolder.textView.getResources().getDrawable(item.getDrawableId());
 		viewHolder.textView.setText(item.getText());

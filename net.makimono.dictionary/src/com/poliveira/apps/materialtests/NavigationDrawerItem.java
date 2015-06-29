@@ -3,11 +3,11 @@ package com.poliveira.apps.materialtests;
 /**
  * Created by poliveira on 24/10/2014.
  */
-public class NavigationItem {
+public class NavigationDrawerItem {
 	private final String mText;
 	private final int mDrawableId;
 
-	public NavigationItem(String text, int drawableId) {
+	public NavigationDrawerItem(String text, int drawableId) {
 		mText = text;
 		mDrawableId = drawableId;
 	}

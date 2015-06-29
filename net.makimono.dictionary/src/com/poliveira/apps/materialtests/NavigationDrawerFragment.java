@@ -140,13 +140,13 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		mCallbacks = null;
 	}
 
-	public List<NavigationItem> getNavigationItems() {
-		List<NavigationItem> items = new ArrayList<NavigationItem>();
-		items.add(new NavigationItem("Dictionary", R.drawable.ic_find_in_page_black_24dp));
-		items.add(new NavigationItem("Kanji", R.drawable.ic_brush_black_24dp));
-		items.add(new NavigationItem("Example", R.drawable.ic_message_black_24dp));
-		items.add(new NavigationItem("Settings", R.drawable.ic_settings_black_24dp));
-		items.add(new NavigationItem("About", R.drawable.ic_info_outline_black_24dp));
+	public List<NavigationDrawerItem> getNavigationItems() {
+		List<NavigationDrawerItem> items = new ArrayList<NavigationDrawerItem>();
+		items.add(new NavigationDrawerItem("Dictionary", R.drawable.ic_find_in_page_black_24dp));
+		items.add(new NavigationDrawerItem("Kanji", R.drawable.ic_brush_black_24dp));
+		items.add(new NavigationDrawerItem("Example", R.drawable.ic_message_black_24dp));
+		items.add(new NavigationDrawerItem("Settings", R.drawable.ic_settings_black_24dp));
+		items.add(new NavigationDrawerItem("About", R.drawable.ic_info_outline_black_24dp));
 		return items;
 	}
 
