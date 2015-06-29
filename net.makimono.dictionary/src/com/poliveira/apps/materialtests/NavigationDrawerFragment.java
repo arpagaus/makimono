@@ -145,11 +145,11 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 
 	public List<NavigationItem> getNavigationItems() {
 		List<NavigationItem> items = new ArrayList<NavigationItem>();
-		items.add(new NavigationItem("Dictionary", R.drawable.ic_menu_check));
-		items.add(new NavigationItem("Kanji", R.drawable.ic_menu_check));
-		items.add(new NavigationItem("Example", R.drawable.ic_menu_check));
-		items.add(new NavigationItem("Settings", R.drawable.ic_menu_check));
-		items.add(new NavigationItem("About", R.drawable.ic_menu_check));
+		items.add(new NavigationItem("Dictionary", R.drawable.ic_find_in_page_black_24dp));
+		items.add(new NavigationItem("Kanji", R.drawable.ic_brush_black_24dp));
+		items.add(new NavigationItem("Example", R.drawable.ic_message_black_24dp));
+		items.add(new NavigationItem("Settings", R.drawable.ic_settings_black_24dp));
+		items.add(new NavigationItem("About", R.drawable.ic_info_outline_black_24dp));
 		return items;
 	}
 
