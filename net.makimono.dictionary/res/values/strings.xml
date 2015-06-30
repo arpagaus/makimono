@@ -4,7 +4,6 @@
     
     <string name="drawer_open">Menu opened</string>
     <string name="drawer_close">Menu closed</string>
-    <string name="action_settings">Settings</string>
     
     <string name="about">About</string>
     <string name="acknowledgement_edrdg">This application uses the JMDict and KANJIDIC2 dictionary files. These files are the property of the Electronic Dictionary Research and Development Group, and are used in conformance with the Group\s licence.</string>
