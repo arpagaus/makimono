@@ -34,11 +34,6 @@ public abstract class AbstractDefaultActivity extends AppCompatActivity {
 			onSearchRequested();
 			return true;
 		}
-		case R.id.menu_preferences: {
-			Intent intent = new Intent(this, PreferenceActivity.class);
-			startActivity(intent);
-			return true;
-		}
 		default:
 			return super.onOptionsItemSelected(item);
 		}

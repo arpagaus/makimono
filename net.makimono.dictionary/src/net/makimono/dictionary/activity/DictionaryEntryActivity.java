@@ -206,7 +206,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	}
 
 	private List<Language> getConfiguredLanguages() {
-		return PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
+		return PreferenceFragment.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 	}
 
 	private void addAdditionalInfo(Sense sense) {

@@ -14,11 +14,8 @@ import org.apache.commons.io.IOUtils;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -29,7 +26,6 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import net.makimono.dictionary.Application;
 import net.makimono.dictionary.R;
 import net.makimono.dictionary.util.ExternalStorageUtil;
@@ -38,67 +34,10 @@ public class HomeActivity extends AbstractDefaultActivity {
 	private static final String LOG_TAG = HomeActivity.class.getSimpleName();
 	private static final String INDEXES_FILE_NAME = "indexes.zip";
 
-	private View searchDictionaryTextView;
-	private View searchKanjiTextView;
-	private View radicalLookupTextView;
-	private View searchExampleTextView;
-	private View settingsTextView;
-	private View aboutTextView;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.home);
-
-		searchDictionaryTextView = (View) findViewById(R.id.search_dictionary);
-		searchDictionaryTextView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startSearch(DictionarySearchActivity.class);
-			}
-		});
-		searchKanjiTextView = (View) findViewById(R.id.search_kanji);
-		searchKanjiTextView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startSearch(KanjiSearchActivity.class);
-			}
-		});
-
-		radicalLookupTextView = (View) findViewById(R.id.radical_search);
-		radicalLookupTextView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(HomeActivity.this, RadicalSearchActivity.class);
-				startActivity(intent);
-			}
-		});
-
-		searchExampleTextView = (View) findViewById(R.id.search_example);
-		searchExampleTextView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				startSearch(ExampleSearchActivity.class);
-			}
-		});
-
-		settingsTextView = (View) findViewById(R.id.settings);
-		settingsTextView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(HomeActivity.this, PreferenceActivity.class);
-				startActivity(intent);
-			}
-		});
-
-		aboutTextView = (View) findViewById(R.id.about);
-		aboutTextView.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intent = new Intent(HomeActivity.this, AboutActivity.class);
-				startActivity(intent);
-			}
-		});
 
 		initializeIndexFiles();
 	}
@@ -118,11 +57,6 @@ public class HomeActivity extends AbstractDefaultActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getSupportActionBar().setDisplayUseLogoEnabled(false);
 		return true;
-	}
-
-	private void startSearch(Class<?> clazz) {
-		SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-		manager.startSearch(null, false, new ComponentName(HomeActivity.this, clazz), null, false);
 	}
 
 	@Override

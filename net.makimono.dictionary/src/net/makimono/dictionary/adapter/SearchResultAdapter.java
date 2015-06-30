@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.makimono.dictionary.R;
-import net.makimono.dictionary.activity.PreferenceActivity;
+import net.makimono.dictionary.activity.PreferenceFragment;
 import net.makimono.dictionary.model.Entry;
 import net.makimono.dictionary.model.Language;
 import android.content.Context;
@@ -31,7 +31,7 @@ public class SearchResultAdapter extends BaseAdapter {
 	}
 
 	private void updateLanguages() {
-		languages = PreferenceActivity.getConfiguredLanguages(sharedPreferences);
+		languages = PreferenceFragment.getConfiguredLanguages(sharedPreferences);
 	}
 
 	protected List<Language> getLanguages() {

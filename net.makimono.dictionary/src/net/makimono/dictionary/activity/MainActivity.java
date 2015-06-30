@@ -1,5 +1,7 @@
 package net.makimono.dictionary.activity;
 
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +31,13 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 	@Override
 	public void onNavigationDrawerItemSelected(int position) {
 		Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
+
+		if (position == 3) {
+			Fragment fragment = new PreferenceFragment();
+
+			FragmentManager fragmentManager = getFragmentManager();
+			fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+		}
 	}
 
 	@Override

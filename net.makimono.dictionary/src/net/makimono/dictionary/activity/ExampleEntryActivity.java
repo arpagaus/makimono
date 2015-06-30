@@ -49,7 +49,7 @@ public class ExampleEntryActivity extends AbstractDefaultActivity {
 
 		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);
 		meaningsGroupView.removeAllViews();
-		List<Language> languages = PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
+		List<Language> languages = PreferenceFragment.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 		for (Language language : languages) {
 			Meaning meaning = entry.getMeaning(language);
 			if (meaning != null) {

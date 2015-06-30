@@ -134,7 +134,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 
 		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);
 		meaningsGroupView.removeAllViews();
-		List<Language> languages = PreferenceActivity.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
+		List<Language> languages = PreferenceFragment.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 		for (Language language : languages) {
 			CharSequence meaning = entry.getMeaningSummary(Collections.singletonList(language));
 			if (meaning.length() > 0) {

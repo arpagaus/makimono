@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import net.makimono.dictionary.activity.PreferenceActivity;
+import net.makimono.dictionary.activity.PreferenceFragment;
 import net.makimono.dictionary.activity.PreferenceEnum;
 import net.makimono.dictionary.model.Language;
 import net.makimono.dictionary.searcher.DictionarySearcher;
@@ -111,7 +111,7 @@ public class SearcherService extends Service {
 	}
 
 	private void updatePreferences(SharedPreferences sharedPreferences) {
-		List<Language> languages = PreferenceActivity.getConfiguredLanguages(sharedPreferences);
+		List<Language> languages = PreferenceFragment.getConfiguredLanguages(sharedPreferences);
 		dictionarySearcher.setLanguages(languages);
 		dictionarySearcher.setRomajiSearchEnabled(sharedPreferences.getBoolean(PreferenceEnum.ROMAJI_SEARCH.key(), true));
 	}

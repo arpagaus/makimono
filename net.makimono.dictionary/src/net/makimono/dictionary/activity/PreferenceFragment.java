@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.preference.Preference;
-import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
+import android.widget.Toast;
 import net.makimono.dictionary.R;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
 import net.makimono.dictionary.model.Language;
 
-public class PreferenceActivity extends android.preference.PreferenceActivity implements OnPreferenceChangeListener, OnPreferenceClickListener {
+public class PreferenceFragment extends android.preference.PreferenceFragment implements OnPreferenceClickListener {
 
 	// TODO use EnumSet<Langauage> instead of List<Langauage>
 	public static List<Language> getConfiguredLanguages(SharedPreferences preferences) {
@@ -34,12 +33,10 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
 		return languages.isEmpty() ? Collections.singletonList(Language.getDefaultLanguage()) : languages;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preference);
-
 		findPreference(PreferenceEnum.CLEAR_SEARCH_HISTORY.key()).setOnPreferenceClickListener(this);
 		findPreference(PreferenceEnum.INDEX_FILES_VERSION_RESET.key()).setOnPreferenceClickListener(this);
 	}
@@ -47,24 +44,21 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
 	@Override
 	public boolean onPreferenceClick(Preference preference) {
 		if (preference.getKey().equals(PreferenceEnum.CLEAR_SEARCH_HISTORY.key())) {
-			AbstractSearchSuggestionProvider.clearHistory(this);
+			AbstractSearchSuggestionProvider.clearHistory(getActivity());
 			return true;
 		}
 		if (preference.getKey().equals(PreferenceEnum.INDEX_FILES_VERSION_RESET.key())) {
-			Editor editor = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext()).edit();
+			Editor editor = PreferenceManager.getDefaultSharedPreferences(this.getActivity().getApplicationContext()).edit();
 			editor.putInt(PreferenceEnum.INDEX_FILES_VERSION.key(), 0);
 			editor.commit();
 
-			Intent intent = new Intent(this, HomeActivity.class);
-			startActivity(intent);
+			// FIXME rar
+			// Intent intent = new Intent(this, HomeActivity.class);
+			// startActivity(intent);
+			Toast.makeText(getActivity(), "Not implemented", Toast.LENGTH_SHORT).show();
 
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public boolean onPreferenceChange(Preference preference, Object newValue) {
-		return true;
 	}
 }
