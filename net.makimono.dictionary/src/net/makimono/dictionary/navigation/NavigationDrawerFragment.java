@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -76,7 +76,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		}
 	}
 
-	public ActionBarDrawerToggle getActionBarDrawerToggle() {
+	public ActionBarDrawerToggle getSupportActionBarDrawerToggle() {
 		return mActionBarDrawerToggle;
 	}
 
@@ -95,7 +95,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 				super.onDrawerClosed(drawerView);
 				if (!isAdded())
 					return;
-				getActivity().supportInvalidateOptionsMenu();
+				getActivity().invalidateOptionsMenu();
 			}
 
 			@Override
@@ -110,7 +110,7 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 					editor.commit();
 				}
 
-				getActivity().supportInvalidateOptionsMenu();
+				getActivity().invalidateOptionsMenu();
 			}
 		};
 
