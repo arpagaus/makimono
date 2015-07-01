@@ -8,5 +8,4 @@
     android:scrollbars="vertical"
     android:focusable="true"
     android:fitsSystemWindows="true"
-    android:layout_height="match_parent"
-    android:background="@color/myDrawerBackground"/>
+    android:layout_height="match_parent"/>

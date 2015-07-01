@@ -8,13 +8,9 @@
         http://www.google.com/design/spec/style/color.html#color-ui-color-palette
     -->
 
-    <color name="myPrimaryColor">#3F51B5</color>
-    <color name="myPrimaryDarkColor">#3F51B5</color>
-    <color name="myAccentColor">#3F51B5</color>
-    <color name="myDrawerBackground">#F2F2F2</color>
-    <color name="myWindowBackground">#DEDEDE</color>
-    <color name="myTextPrimaryColor">#FFFFFF</color>
-    <color name="myNavigationColor">#000000</color>
-
-    <color name="selected_gray">#ffdbdbdb</color>
+    <color name="colorPrimary">#4caf50</color>
+    <color name="colorPrimaryDark">#2e7d32</color>
+    <color name="colorAccent">#dd2c00</color>
+    <color name="windowBackground">#e8f5e9</color>
+    <color name="colorSelected">#c8e6c9</color>
 </resources>
