@@ -32,9 +32,16 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 	public void onNavigationDrawerItemSelected(int position) {
 		Toast.makeText(this, "Menu item selected -> " + position, Toast.LENGTH_SHORT).show();
 
+		Fragment fragment = null;
 		if (position == 3) {
-			Fragment fragment = new PreferenceFragment();
+			fragment = new PreferenceFragment();
 
+		}
+		if (position == 4) {
+			fragment = new AboutFragment();
+		}
+
+		if (fragment != null) {
 			FragmentManager fragmentManager = getFragmentManager();
 			fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 		}
