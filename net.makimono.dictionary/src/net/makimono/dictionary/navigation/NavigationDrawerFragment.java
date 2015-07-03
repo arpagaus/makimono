@@ -49,7 +49,6 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 		NavigationDrawerAdapter adapter = new NavigationDrawerAdapter(getNavigationItems());
 		adapter.setNavigationDrawerCallbacks(this);
 		mDrawerList.setAdapter(adapter);
-		selectItem(mCurrentSelectedPosition);
 		return view;
 	}
 
@@ -64,6 +63,12 @@ public class NavigationDrawerFragment extends Fragment implements NavigationDraw
 			mCurrentSelectedPosition = savedInstanceState.getInt(SELECTED_NAVIGATION_DRAWER_POSITION);
 			mFromSavedInstanceState = true;
 		}
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		selectItem(mCurrentSelectedPosition);
 	}
 
 	@Override

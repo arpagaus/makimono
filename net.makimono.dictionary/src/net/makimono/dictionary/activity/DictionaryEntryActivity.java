@@ -111,7 +111,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			if (expressionTextSwitcher.getCurrentView() instanceof TextView) {
 				CharSequence expression = ((TextView) expressionTextSwitcher.getCurrentView()).getText();
 				if (StringUtils.isNotBlank(expression)) {
-					Intent intent = new Intent(this, ExampleSearchActivity.class);
+					Intent intent = new Intent(this, ExampleSearchFragment.class);
 					intent.setAction(Intent.ACTION_SEARCH);
 					intent.putExtra(SearchManager.QUERY, expression);
 					startActivity(intent);

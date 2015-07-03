@@ -1,22 +1,14 @@
 package net.makimono.dictionary.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import net.makimono.dictionary.R;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
 import net.makimono.dictionary.content.KanjiSearchSuggestionProvider;
 import net.makimono.dictionary.model.KanjiEntry;
 import net.makimono.dictionary.searcher.KanjiSearcher;
 
 public class KanjiSearchFragment extends AbstractSearchFragment {
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		getAppCompatActivity().getSupportActionBar().setTitle(R.string.kanji);
-	}
 
 	@Override
 	public void onItemClick(AdapterView<?> view, View v, int position, long id) {

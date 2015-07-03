@@ -36,13 +36,20 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 		Fragment fragment = null;
 
 		if (position == 0) {
+			getSupportActionBar().setTitle(R.string.dictionary);
 			fragment = new DictionarySearchFragment();
 		}
 		if (position == 1) {
+			getSupportActionBar().setTitle(R.string.kanji);
 			fragment = new KanjiSearchFragment();
+		}
+		if (position == 2) {
+			getSupportActionBar().setTitle(R.string.example);
+			fragment = new ExampleSearchFragment();
 		}
 
 		if (position == 3) {
+			getSupportActionBar().setTitle(R.string.settings);
 			if (currentFragment != null) {
 				getSupportFragmentManager().beginTransaction().remove(currentFragment).commit();
 			}
@@ -57,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 		}
 
 		if (position == 4) {
+			getSupportActionBar().setTitle(R.string.about);
 			fragment = new AboutFragment();
 		}
 
