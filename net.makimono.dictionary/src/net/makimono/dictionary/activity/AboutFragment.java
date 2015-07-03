@@ -2,10 +2,10 @@ package net.makimono.dictionary.activity;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.app.Fragment;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;

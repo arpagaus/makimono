@@ -25,6 +25,7 @@ import net.makimono.dictionary.searcher.Searcher;
 import net.makimono.dictionary.service.SearcherService;
 import net.makimono.dictionary.service.SearcherServiceConnection;
 
+@Deprecated
 public abstract class AbstractSearchActivity extends AbstractDefaultActivity implements OnItemClickListener {
 	private static final String LOG_TAG = AbstractSearchActivity.class.getName();
 
