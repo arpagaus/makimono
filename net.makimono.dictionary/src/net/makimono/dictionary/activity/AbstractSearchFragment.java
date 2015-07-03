@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.util.Log;
@@ -27,6 +28,10 @@ public abstract class AbstractSearchFragment extends ListFragment implements OnI
 	private static final String LOG_TAG = AbstractSearchFragment.class.getName();
 
 	protected SearcherServiceConnection connection = new SearcherServiceConnection();
+
+	public AppCompatActivity getAppCompatActivity() {
+		return (AppCompatActivity) super.getActivity();
+	}
 
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -50,10 +55,14 @@ public abstract class AbstractSearchFragment extends ListFragment implements OnI
 
 			@Override
 			public boolean onQueryTextSubmit(String query) {
-				new SearchTask().execute(query);
+				executeQuery(query);
 				return false;
 			}
 		});
+	}
+
+	protected void executeQuery(String query) {
+		new SearchTask().execute(query);
 	}
 
 	@Override

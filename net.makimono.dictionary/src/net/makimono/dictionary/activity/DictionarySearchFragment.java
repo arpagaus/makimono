@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import net.makimono.dictionary.R;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
 import net.makimono.dictionary.content.DictionarySearchSuggestionProvider;
 import net.makimono.dictionary.model.DictionaryEntry;
@@ -21,8 +22,7 @@ public class DictionarySearchFragment extends AbstractSearchFragment implements 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// FIXME use getSupportActionBar()
-		// getActivity().getActionBar().setTitle(R.string.dictionary);
+		getAppCompatActivity().getSupportActionBar().setTitle(R.string.dictionary);
 	}
 
 	@Override

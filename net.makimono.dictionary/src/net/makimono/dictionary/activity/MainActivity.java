@@ -38,6 +38,9 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 		if (position == 0) {
 			fragment = new DictionarySearchFragment();
 		}
+		if (position == 1) {
+			fragment = new KanjiSearchFragment();
+		}
 
 		if (position == 3) {
 			if (currentFragment != null) {
@@ -66,9 +69,10 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 
 	@Override
 	public void onBackPressed() {
-		if (mNavigationDrawerFragment.isDrawerOpen())
+		if (mNavigationDrawerFragment.isDrawerOpen()) {
 			mNavigationDrawerFragment.closeDrawer();
-		else
+		} else {
 			super.onBackPressed();
+		}
 	}
 }

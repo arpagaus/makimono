@@ -139,7 +139,7 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 		searchButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(RadicalSearchActivity.this, KanjiSearchActivity.class);
+				Intent intent = new Intent(RadicalSearchActivity.this, KanjiSearchFragment.class);
 				intent.setAction(net.makimono.dictionary.Intent.ACTION_RADICAL_SEARCH);
 				intent.putExtra(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, strokeCountsSeekBar.getSelectedMinValue());
 				intent.putExtra(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, strokeCountsSeekBar.getSelectedMaxValue());
