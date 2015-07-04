@@ -1,6 +1,6 @@
 package net.makimono.dictionary.model;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface Entry {
 
@@ -8,5 +8,5 @@ public interface Entry {
 
 	public String getReadingSummary();
 
-	public String getMeaningSummary(List<Language> languages);
+	public String getMeaningSummary(Collection<Language> languages);
 }

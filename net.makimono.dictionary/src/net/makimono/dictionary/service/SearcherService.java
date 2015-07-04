@@ -2,15 +2,8 @@ package net.makimono.dictionary.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 
-import net.makimono.dictionary.activity.PreferenceFragment;
-import net.makimono.dictionary.activity.PreferenceEnum;
-import net.makimono.dictionary.model.Language;
-import net.makimono.dictionary.searcher.DictionarySearcher;
-import net.makimono.dictionary.searcher.ExampleSearcher;
-import net.makimono.dictionary.searcher.KanjiSearcher;
-import net.makimono.dictionary.util.ExternalStorageUtil;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +13,13 @@ import android.os.Environment;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import net.makimono.dictionary.activity.PreferenceEnum;
+import net.makimono.dictionary.activity.PreferenceFragment;
+import net.makimono.dictionary.model.Language;
+import net.makimono.dictionary.searcher.DictionarySearcher;
+import net.makimono.dictionary.searcher.ExampleSearcher;
+import net.makimono.dictionary.searcher.KanjiSearcher;
+import net.makimono.dictionary.util.ExternalStorageUtil;
 
 public class SearcherService extends Service {
 	private final static String LOG_TAG = SearcherService.class.getSimpleName();
@@ -111,7 +111,7 @@ public class SearcherService extends Service {
 	}
 
 	private void updatePreferences(SharedPreferences sharedPreferences) {
-		List<Language> languages = PreferenceFragment.getConfiguredLanguages(sharedPreferences);
+		Collection<Language> languages = PreferenceFragment.getConfiguredLanguages(sharedPreferences);
 		dictionarySearcher.setLanguages(languages);
 		dictionarySearcher.setRomajiSearchEnabled(sharedPreferences.getBoolean(PreferenceEnum.ROMAJI_SEARCH.key(), true));
 	}

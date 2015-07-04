@@ -1,12 +1,9 @@
 package net.makimono.dictionary.adapter;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 
-import net.makimono.dictionary.R;
-import net.makimono.dictionary.activity.PreferenceFragment;
-import net.makimono.dictionary.model.Entry;
-import net.makimono.dictionary.model.Language;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -15,10 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import net.makimono.dictionary.R;
+import net.makimono.dictionary.activity.PreferenceFragment;
+import net.makimono.dictionary.model.Entry;
+import net.makimono.dictionary.model.Language;
 
 public class SearchResultAdapter extends BaseAdapter {
 
-	private List<Language> languages;
+	private EnumSet<Language> languages;
 	private LayoutInflater inflater;
 	private SharedPreferences sharedPreferences;
 
@@ -34,7 +35,7 @@ public class SearchResultAdapter extends BaseAdapter {
 		languages = PreferenceFragment.getConfiguredLanguages(sharedPreferences);
 	}
 
-	protected List<Language> getLanguages() {
+	protected EnumSet<Language> getLanguages() {
 		return languages;
 	}
 

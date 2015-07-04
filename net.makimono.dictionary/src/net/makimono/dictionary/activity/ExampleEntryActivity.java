@@ -1,12 +1,6 @@
 package net.makimono.dictionary.activity;
 
-import java.util.List;
-
-import net.makimono.dictionary.R;
-import net.makimono.dictionary.model.ExampleEntry;
-import net.makimono.dictionary.model.Language;
-import net.makimono.dictionary.model.Meaning;
-import net.makimono.dictionary.util.MeaningTextViewFactory;
+import java.util.EnumSet;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,6 +9,11 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import net.makimono.dictionary.R;
+import net.makimono.dictionary.model.ExampleEntry;
+import net.makimono.dictionary.model.Language;
+import net.makimono.dictionary.model.Meaning;
+import net.makimono.dictionary.util.MeaningTextViewFactory;
 
 public class ExampleEntryActivity extends AbstractDefaultActivity {
 
@@ -49,7 +48,7 @@ public class ExampleEntryActivity extends AbstractDefaultActivity {
 
 		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);
 		meaningsGroupView.removeAllViews();
-		List<Language> languages = PreferenceFragment.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
+		EnumSet<Language> languages = PreferenceFragment.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 		for (Language language : languages) {
 			Meaning meaning = entry.getMeaning(language);
 			if (meaning != null) {

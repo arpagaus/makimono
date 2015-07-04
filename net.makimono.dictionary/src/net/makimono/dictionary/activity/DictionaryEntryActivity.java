@@ -3,6 +3,7 @@ package net.makimono.dictionary.activity;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -205,7 +206,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		}
 	}
 
-	private List<Language> getConfiguredLanguages() {
+	private EnumSet<Language> getConfiguredLanguages() {
 		return PreferenceFragment.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 	}
 

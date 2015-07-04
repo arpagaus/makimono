@@ -1,8 +1,6 @@
 package net.makimono.dictionary.activity;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.EnumSet;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -17,9 +15,8 @@ import net.makimono.dictionary.model.Language;
 
 public class PreferenceFragment extends android.preference.PreferenceFragment implements OnPreferenceClickListener {
 
-	// TODO use EnumSet<Langauage> instead of List<Langauage>
-	public static List<Language> getConfiguredLanguages(SharedPreferences preferences) {
-		ArrayList<Language> languages = new ArrayList<Language>();
+	public static EnumSet<Language> getConfiguredLanguages(SharedPreferences preferences) {
+		EnumSet<Language> languages = EnumSet.noneOf(Language.class);
 
 		for (PreferenceEnum languageEnum : PreferenceEnum.getLanguageEnums()) {
 			boolean enabled = preferences.getBoolean(languageEnum.key(), true);
@@ -30,7 +27,11 @@ public class PreferenceFragment extends android.preference.PreferenceFragment im
 			}
 		}
 
-		return languages.isEmpty() ? Collections.singletonList(Language.getDefaultLanguage()) : languages;
+		if (languages.isEmpty()) {
+			languages.add(Language.getDefaultLanguage());
+		}
+
+		return languages;
 	}
 
 	@Override

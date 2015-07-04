@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -103,7 +104,7 @@ public class DictionaryEntry implements Entry {
 	}
 
 	@Override
-	public String getMeaningSummary(List<Language> languages) {
+	public String getMeaningSummary(Collection<Language> languages) {
 		List<String> meaningSummary = new ArrayList<String>(languages.size());
 		for (Language lang : languages) {
 			List<Meaning> meanings = new ArrayList<Meaning>();

@@ -14,9 +14,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import net.makimono.dictionary.model.Entry;
-import net.makimono.dictionary.model.Language;
-
 import org.apache.lucene.analysis.SimpleAnalyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -36,6 +33,9 @@ import org.apache.lucene.store.SimpleFSDirectory;
 import org.apache.lucene.util.ReaderUtil;
 import org.apache.lucene.util.Version;
 
+import net.makimono.dictionary.model.Entry;
+import net.makimono.dictionary.model.Language;
+
 public abstract class AbstractSearcher<T extends Entry> implements Closeable, Searcher<T> {
 	private static final int MAX_SUGGESTION = 10;
 	private static final int MAX_SIZE = 100;
@@ -43,7 +43,7 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 	private static final float MAX_BOOST = 1f;
 	private static final float MIN_BOOST = 0.0001f;
 
-	private List<Language> languages;
+	private Collection<Language> languages;
 	private boolean romajiSearchEnabled = true;
 
 	private Directory dictionaryDirectory;
@@ -54,11 +54,11 @@ public abstract class AbstractSearcher<T extends Entry> implements Closeable, Se
 		languages = Arrays.asList(Language.values());
 	}
 
-	public void setLanguages(List<Language> languages) {
+	public void setLanguages(Collection<Language> languages) {
 		this.languages = languages;
 	}
 
-	protected List<Language> getLanguages() {
+	protected Collection<Language> getLanguages() {
 		return languages;
 	}
 

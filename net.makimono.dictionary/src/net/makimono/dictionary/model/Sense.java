@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -49,7 +50,7 @@ public class Sense {
 		return meanings;
 	}
 
-	public boolean hasMeaningsForLanguage(List<Language> languages) {
+	public boolean hasMeaningsForLanguage(Collection<Language> languages) {
 		for (Meaning meaning : getMeanings()) {
 			if (languages.contains(meaning.getLanguage())) {
 				return true;

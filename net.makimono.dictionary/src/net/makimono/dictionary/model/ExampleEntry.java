@@ -1,6 +1,7 @@
 package net.makimono.dictionary.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,10 +48,10 @@ public class ExampleEntry implements Parcelable, Entry {
 	}
 
 	@Override
-	public String getMeaningSummary(List<Language> languages) {
-		String[] meanings = new String[languages.size()];
-		for (int i = 0; i < meanings.length; i++) {
-			meanings[i] = sentences.get(languages.get(i));
+	public String getMeaningSummary(Collection<Language> languages) {
+		List<String> meanings = new ArrayList<String>(languages.size());
+		for (Language language : languages) {
+			meanings.add(sentences.get(language));
 		}
 		return StringUtils.join(meanings, "\n");
 	}

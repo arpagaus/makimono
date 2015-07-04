@@ -3,6 +3,7 @@ package net.makimono.dictionary.model;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
 import java.util.SortedSet;
@@ -190,7 +191,7 @@ public class KanjiEntry implements Parcelable, Entry {
 	}
 
 	@Override
-	public String getMeaningSummary(List<Language> languages) {
+	public String getMeaningSummary(Collection<Language> languages) {
 		List<String> meaningSummary = new ArrayList<String>(languages.size());
 		for (Language language : languages) {
 			List<Meaning> meanings = getMeaningsForLanguage(language);

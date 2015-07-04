@@ -3,18 +3,8 @@ package net.makimono.dictionary.activity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
-
-import net.makimono.dictionary.R;
-import net.makimono.dictionary.adapter.SearchResultAdapter;
-import net.makimono.dictionary.model.KanjiEntry;
-import net.makimono.dictionary.model.Language;
-import net.makimono.dictionary.model.Meaning;
-import net.makimono.dictionary.service.SearcherService;
-import net.makimono.dictionary.service.SearcherServiceConnection;
-import net.makimono.dictionary.util.MeaningTextViewFactory;
-import net.makimono.dictionary.view.KanjiWritingView;
-import net.makimono.dictionary.view.NonScrollingListView;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,6 +17,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import net.makimono.dictionary.R;
+import net.makimono.dictionary.adapter.SearchResultAdapter;
+import net.makimono.dictionary.model.KanjiEntry;
+import net.makimono.dictionary.model.Language;
+import net.makimono.dictionary.model.Meaning;
+import net.makimono.dictionary.service.SearcherService;
+import net.makimono.dictionary.service.SearcherServiceConnection;
+import net.makimono.dictionary.util.MeaningTextViewFactory;
+import net.makimono.dictionary.view.KanjiWritingView;
+import net.makimono.dictionary.view.NonScrollingListView;
 
 public class KanjiEntryActivity extends AbstractDefaultActivity {
 	public static final String EXTRA_KANJI_ENTRY = KanjiEntryActivity.class.getName() + ".EXTRA_KANJI_ENTRY";
@@ -134,7 +134,7 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 
 		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);
 		meaningsGroupView.removeAllViews();
-		List<Language> languages = PreferenceFragment.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
+		EnumSet<Language> languages = PreferenceFragment.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
 		for (Language language : languages) {
 			CharSequence meaning = entry.getMeaningSummary(Collections.singletonList(language));
 			if (meaning.length() > 0) {
