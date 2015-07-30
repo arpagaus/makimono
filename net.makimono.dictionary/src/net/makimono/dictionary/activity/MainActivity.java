@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 			}
 
 			PreferenceFragment preferenceFragment = new PreferenceFragment();
-			getFragmentManager().beginTransaction().replace(R.id.content_frame, preferenceFragment, PreferenceFragment.class.getSimpleName()).commit();
+			getFragmentManager().beginTransaction().replace(R.id.container, preferenceFragment, PreferenceFragment.class.getSimpleName()).commit();
 		} else {
 			android.app.Fragment preferenceFragment = getFragmentManager().findFragmentByTag(PreferenceFragment.class.getSimpleName());
 			if (preferenceFragment != null) {
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 
 		if (fragment != null) {
 			FragmentManager fragmentManager = getSupportFragmentManager();
-			fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+			fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
 		}
 		currentFragment = fragment;
 	}
