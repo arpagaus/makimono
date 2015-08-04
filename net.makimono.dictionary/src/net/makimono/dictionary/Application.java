@@ -1,6 +1,6 @@
 package net.makimono.dictionary;
 
-import net.makimono.dictionary.activity.HomeActivity.FileExtractorTask;
+import net.makimono.dictionary.activity.MainActivity.FileExtractorTask;
 
 public class Application extends android.app.Application {
 
