@@ -16,11 +16,13 @@ import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.Menu;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -41,14 +43,14 @@ import net.makimono.dictionary.util.MeaningTextViewFactory;
 import net.makimono.dictionary.util.TypedValueUtil;
 import net.makimono.dictionary.view.NonScrollingListView;
 
-public class DictionaryEntryActivity extends AbstractDefaultActivity {
-	private static final String LOG_TAG = DictionaryEntryActivity.class.getSimpleName();
+public class DictionaryEntryFragment extends Fragment {
+	private static final String LOG_TAG = DictionaryEntryFragment.class.getSimpleName();
 
-	public static final String EXTRA_DICTIONARY_ENTRY = DictionaryEntryActivity.class + ".EXTRA_DOC_ID";
+	public static final String EXTRA_DICTIONARY_ENTRY = DictionaryEntryFragment.class + ".EXTRA_DOC_ID";
 
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
 
-	private DictionaryAlternativesSwitcher alternativesSwitcher;
+	private View contentView;
 
 	private TextSwitcher expressionTextSwitcher;
 	private TextSwitcher readingTextSwitcher;
@@ -57,52 +59,56 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 	private SearchResultAdapter kanjiResultAdapter;
 
+	private DictionaryAlternativesSwitcher alternativesSwitcher;
+
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		getSupportActionBar().setTitle(R.string.dictionary);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		contentView = inflater.inflate(R.layout.dictionary_entry, container, false);
 
-		bindSearcher();
-		initializeContentView();
-		handleIntent(getIntent());
-	}
-
-	private void bindSearcher() {
-		Intent intent = new Intent(this, SearcherService.class);
-		bindService(intent, connection, Context.BIND_AUTO_CREATE);
-	}
-
-	private void initializeContentView() {
-		setContentView(R.layout.dictionary_entry);
 		expressionTextSwitcher = createExpressionTextSwitcher();
 		readingTextSwitcher = createReadingTextSwitcher();
-		meaningsGroupView = (LinearLayout) findViewById(R.id.entry_meanings);
-		kanjiListView = (NonScrollingListView) findViewById(R.id.entry_kanji);
+		meaningsGroupView = (LinearLayout) contentView.findViewById(R.id.entry_meanings);
+		kanjiListView = (NonScrollingListView) contentView.findViewById(R.id.entry_kanji);
 
-		kanjiResultAdapter = new SearchResultAdapter(this);
-		kanjiListView.setAdapter(kanjiResultAdapter);
 		kanjiListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int index, long id) {
-				Intent intent = new Intent(DictionaryEntryActivity.this, KanjiEntryActivity.class);
+				Intent intent = new Intent(getActivity(), KanjiEntryActivity.class);
 				intent.putExtra(KanjiEntryActivity.EXTRA_KANJI_ENTRY, (KanjiEntry) kanjiResultAdapter.getItem(index));
 				startActivity(intent);
 			}
 		});
 
-		alternativesSwitcher = new DictionaryAlternativesSwitcher(this);
+		alternativesSwitcher = new DictionaryAlternativesSwitcher(contentView);
+
+		return contentView;
 	}
 
 	@Override
-	protected void onDestroy() {
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
+
+		bindSearcher();
+
+		kanjiResultAdapter = new SearchResultAdapter(getActivity());
+		kanjiListView.setAdapter(kanjiResultAdapter);
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		handleArguments();
+	}
+
+	private void bindSearcher() {
+		Intent intent = new Intent(getActivity(), SearcherService.class);
+		getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+	}
+
+	@Override
+	public void onDestroy() {
 		super.onDestroy();
-		unbindService(connection);
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.search_example, menu);
-		return super.onCreateOptionsMenu(menu);
+		getActivity().unbindService(connection);
 	}
 
 	@Override
@@ -112,7 +118,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			if (expressionTextSwitcher.getCurrentView() instanceof TextView) {
 				CharSequence expression = ((TextView) expressionTextSwitcher.getCurrentView()).getText();
 				if (StringUtils.isNotBlank(expression)) {
-					Intent intent = new Intent(this, ExampleSearchFragment.class);
+					Intent intent = new Intent(getActivity(), ExampleSearchFragment.class);
 					intent.setAction(Intent.ACTION_SEARCH);
 					intent.putExtra(SearchManager.QUERY, expression);
 					startActivity(intent);
@@ -126,11 +132,11 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	}
 
 	private TextSwitcher createReadingTextSwitcher() {
-		readingTextSwitcher = (TextSwitcher) findViewById(R.id.entry_reading);
+		readingTextSwitcher = (TextSwitcher) contentView.findViewById(R.id.entry_reading);
 		readingTextSwitcher.setFactory(new ViewFactory() {
 			@Override
 			public View makeView() {
-				TextView textView = new net.makimono.dictionary.view.TextView(DictionaryEntryActivity.this);
+				TextView textView = new net.makimono.dictionary.view.TextView(getActivity());
 				textView.setTextColor(Color.GRAY);
 				textView.setTextSize(24);
 				return textView;
@@ -140,11 +146,11 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	}
 
 	private TextSwitcher createExpressionTextSwitcher() {
-		expressionTextSwitcher = (TextSwitcher) findViewById(R.id.entry_expression);
+		expressionTextSwitcher = (TextSwitcher) contentView.findViewById(R.id.entry_expression);
 		expressionTextSwitcher.setFactory(new ViewFactory() {
 			@Override
 			public View makeView() {
-				TextView textView = new net.makimono.dictionary.view.TextView(DictionaryEntryActivity.this);
+				TextView textView = new net.makimono.dictionary.view.TextView(getActivity());
 				textView.setTextSize(32);
 				textView.setGravity(Gravity.CENTER_HORIZONTAL);
 				return textView;
@@ -153,16 +159,18 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		return expressionTextSwitcher;
 	}
 
-	private void handleIntent(Intent intent) {
-		if (intent.hasExtra(EXTRA_DICTIONARY_ENTRY)) {
-			ByteArrayInputStream in = new ByteArrayInputStream(intent.getExtras().getByteArray(EXTRA_DICTIONARY_ENTRY));
+	private void handleArguments() {
+		byte[] entryData = getArguments().getByteArray(EXTRA_DICTIONARY_ENTRY);
+
+		if (entryData != null && entryData.length > 0) {
+			ByteArrayInputStream in = new ByteArrayInputStream(entryData);
 			try {
 				DictionaryEntry entry = DictionaryEntry.readEntry(new ObjectInputStream(in));
 				updateView(entry);
 
 				new LoadKanjiEntriesTask().execute(entry);
 			} catch (Exception e) {
-				Log.e(DictionaryEntryActivity.class.getSimpleName(), "Failed to deserialize entry", e);
+				Log.e(DictionaryEntryFragment.class.getSimpleName(), "Failed to deserialize entry", e);
 			}
 		}
 	}
@@ -186,7 +194,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	}
 
 	private View createSeparator() {
-		View separator = new View(this);
+		View separator = new View(getActivity());
 		separator.setBackgroundResource(R.drawable.secondary_separator);
 		separator.setMinimumHeight(1);
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -197,7 +205,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	}
 
 	private void addMeanings(Sense sense) {
-		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);
+		MeaningTextViewFactory factory = new MeaningTextViewFactory(getActivity());
 		for (Language language : getConfiguredLanguages()) {
 			CharSequence meaning = StringUtils.join(sense.getMeanings(language), ", ");
 			if (meaning.length() > 0) {
@@ -207,7 +215,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 	}
 
 	private EnumSet<Language> getConfiguredLanguages() {
-		return PreferenceFragment.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
+		return PreferenceFragment.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(getActivity()));
 	}
 
 	private void addAdditionalInfo(Sense sense) {
@@ -220,7 +228,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 		}
 
 		if (additionalInfo.length() > 0) {
-			TextView textView = new TextView(this);
+			TextView textView = new TextView(getActivity());
 			textView.setText(additionalInfo);
 			textView.setTypeface(Typeface.defaultFromStyle(Typeface.ITALIC), Typeface.ITALIC);
 			textView.setTextColor(Color.GRAY);
@@ -232,7 +240,7 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 
 	private String getStringForName(String name) {
 		try {
-			return getResources().getString(getResources().getIdentifier(name, "string", getPackageName()));
+			return getResources().getString(getResources().getIdentifier(name, "string", getActivity().getPackageName()));
 		} catch (RuntimeException e) {
 			return name;
 		}
@@ -260,8 +268,8 @@ public class DictionaryEntryActivity extends AbstractDefaultActivity {
 			kanjiResultAdapter.updateEntries(kanji);
 
 			int visibility = kanji.isEmpty() ? View.GONE : View.VISIBLE;
-			findViewById(R.id.entry_separator_kanji).setVisibility(visibility);
-			findViewById(R.id.entry_separator_line_kanji).setVisibility(visibility);
+			contentView.findViewById(R.id.entry_separator_kanji).setVisibility(visibility);
+			contentView.findViewById(R.id.entry_separator_line_kanji).setVisibility(visibility);
 			kanjiListView.setVisibility(visibility);
 		}
 	}

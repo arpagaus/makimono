@@ -2,13 +2,12 @@ package net.makimono.dictionary.util;
 
 import java.util.List;
 
-import net.makimono.dictionary.R;
-import net.makimono.dictionary.model.DictionaryEntry;
-import android.app.Activity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TextSwitcher;
+import net.makimono.dictionary.R;
+import net.makimono.dictionary.model.DictionaryEntry;
 
 public class DictionaryAlternativesSwitcher {
 	private TextSwitcher expressionTextSwitcher;
@@ -24,11 +23,11 @@ public class DictionaryAlternativesSwitcher {
 	private int currentExpressionIndex;
 	private int currentReadingIndex;
 
-	public DictionaryAlternativesSwitcher(Activity activity) {
-		expressionTextSwitcher = (TextSwitcher) activity.findViewById(R.id.entry_expression);
-		readingTextSwitcher = (TextSwitcher) activity.findViewById(R.id.entry_reading);
+	public DictionaryAlternativesSwitcher(View view) {
+		expressionTextSwitcher = (TextSwitcher) view.findViewById(R.id.entry_expression);
+		readingTextSwitcher = (TextSwitcher) view.findViewById(R.id.entry_reading);
 
-		nextExpressionButton = (ImageButton) activity.findViewById(R.id.next_expression);
+		nextExpressionButton = (ImageButton) view.findViewById(R.id.next_expression);
 		nextExpressionButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -37,7 +36,7 @@ public class DictionaryAlternativesSwitcher {
 			}
 		});
 
-		previousExpressionButton = (ImageButton) activity.findViewById(R.id.previous_expression);
+		previousExpressionButton = (ImageButton) view.findViewById(R.id.previous_expression);
 		previousExpressionButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -46,7 +45,7 @@ public class DictionaryAlternativesSwitcher {
 			}
 		});
 
-		nextReadingButton = (ImageButton) activity.findViewById(R.id.next_reading);
+		nextReadingButton = (ImageButton) view.findViewById(R.id.next_reading);
 		nextReadingButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -55,7 +54,7 @@ public class DictionaryAlternativesSwitcher {
 			}
 		});
 
-		previousReadingButton = (ImageButton) activity.findViewById(R.id.previous_reading);
+		previousReadingButton = (ImageButton) view.findViewById(R.id.previous_reading);
 		previousReadingButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
