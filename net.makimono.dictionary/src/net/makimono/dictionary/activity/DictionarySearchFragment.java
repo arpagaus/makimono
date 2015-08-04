@@ -16,7 +16,7 @@ import net.makimono.dictionary.model.DictionaryEntry;
 import net.makimono.dictionary.searcher.DictionarySearcher;
 
 public class DictionarySearchFragment extends AbstractSearchFragment {
-	private static final String CLASS_NAME = DictionarySearchFragment.class.getName();
+	private static final String LOG_TAG = DictionarySearchFragment.class.getName();
 
 	@Override
 	public void onListItemClick(ListView l, View view, int position, long id) {
@@ -32,9 +32,9 @@ public class DictionarySearchFragment extends AbstractSearchFragment {
 			fragment.setArguments(arguments);
 
 			FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-			fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+			fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
 		} catch (IOException e) {
-			Log.e(CLASS_NAME, "Failed to serialize entry", e);
+			Log.e(LOG_TAG, "Failed to serialize entry", e);
 		}
 	}
 
