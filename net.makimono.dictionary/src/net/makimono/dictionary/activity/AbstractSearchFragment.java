@@ -15,7 +15,6 @@ import android.support.v7.widget.SearchView.OnQueryTextListener;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.AdapterView.OnItemClickListener;
 import net.makimono.dictionary.R;
 import net.makimono.dictionary.adapter.SearchResultAdapter;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
@@ -24,7 +23,7 @@ import net.makimono.dictionary.searcher.Searcher;
 import net.makimono.dictionary.service.SearcherService;
 import net.makimono.dictionary.service.SearcherServiceConnection;
 
-public abstract class AbstractSearchFragment extends ListFragment implements OnItemClickListener {
+public abstract class AbstractSearchFragment extends ListFragment {
 	private static final String LOG_TAG = AbstractSearchFragment.class.getName();
 
 	protected SearcherServiceConnection connection = new SearcherServiceConnection();

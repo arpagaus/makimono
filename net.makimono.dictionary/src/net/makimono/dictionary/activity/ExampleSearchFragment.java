@@ -3,7 +3,7 @@ package net.makimono.dictionary.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.ListView;
 import net.makimono.dictionary.adapter.SearchResultAdapter;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
 import net.makimono.dictionary.content.ExampleSearchSuggestionProvider;
@@ -20,8 +20,8 @@ public class ExampleSearchFragment extends AbstractSearchFragment {
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> view, View v, int position, long id) {
-		ExampleEntry entry = (ExampleEntry) view.getAdapter().getItem(position);
+	public void onListItemClick(ListView l, View view, int position, long id) {
+		ExampleEntry entry = (ExampleEntry) getListAdapter().getItem(position);
 		Intent intent = new Intent(getActivity(), ExampleEntryActivity.class);
 		intent.putExtra(net.makimono.dictionary.Intent.EXTRA_EXAMPLE_ENTRY, entry);
 		startActivity(intent);

@@ -8,20 +8,19 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListView;
 import net.makimono.dictionary.R;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
 import net.makimono.dictionary.content.DictionarySearchSuggestionProvider;
 import net.makimono.dictionary.model.DictionaryEntry;
 import net.makimono.dictionary.searcher.DictionarySearcher;
 
-public class DictionarySearchFragment extends AbstractSearchFragment implements OnItemClickListener {
+public class DictionarySearchFragment extends AbstractSearchFragment {
 	private static final String CLASS_NAME = DictionarySearchFragment.class.getName();
 
 	@Override
-	public void onItemClick(AdapterView<?> view, View v, int position, long id) {
-		DictionaryEntry entry = (DictionaryEntry) view.getAdapter().getItem(position);
+	public void onListItemClick(ListView l, View view, int position, long id) {
+		DictionaryEntry entry = (DictionaryEntry) getListAdapter().getItem(position);
 		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			DictionaryEntry.writeEntry(new ObjectOutputStream(out), entry);

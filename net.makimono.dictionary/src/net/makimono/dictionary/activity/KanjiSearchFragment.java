@@ -2,7 +2,7 @@ package net.makimono.dictionary.activity;
 
 import android.content.Intent;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.ListView;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
 import net.makimono.dictionary.content.KanjiSearchSuggestionProvider;
 import net.makimono.dictionary.model.KanjiEntry;
@@ -11,8 +11,8 @@ import net.makimono.dictionary.searcher.KanjiSearcher;
 public class KanjiSearchFragment extends AbstractSearchFragment {
 
 	@Override
-	public void onItemClick(AdapterView<?> view, View v, int position, long id) {
-		KanjiEntry entry = (KanjiEntry) view.getAdapter().getItem(position);
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		KanjiEntry entry = (KanjiEntry) getListAdapter().getItem(position);
 		Intent intent = new Intent(getActivity(), KanjiEntryActivity.class);
 		intent.putExtra(KanjiEntryActivity.EXTRA_KANJI_ENTRY, entry);
 		startActivity(intent);
