@@ -100,6 +100,22 @@ public class DictionaryEntryFragment extends Fragment {
 		handleArguments();
 	}
 
+	private void handleArguments() {
+		byte[] entryData = getArguments().getByteArray(EXTRA_DICTIONARY_ENTRY);
+
+		if (entryData != null && entryData.length > 0) {
+			ByteArrayInputStream in = new ByteArrayInputStream(entryData);
+			try {
+				DictionaryEntry entry = DictionaryEntry.readEntry(new ObjectInputStream(in));
+				updateView(entry);
+
+				new LoadKanjiEntriesTask().execute(entry);
+			} catch (Exception e) {
+				Log.e(DictionaryEntryFragment.class.getSimpleName(), "Failed to deserialize entry", e);
+			}
+		}
+	}
+
 	private void bindSearcher() {
 		Intent intent = new Intent(getActivity(), SearcherService.class);
 		getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
@@ -157,22 +173,6 @@ public class DictionaryEntryFragment extends Fragment {
 			}
 		});
 		return expressionTextSwitcher;
-	}
-
-	private void handleArguments() {
-		byte[] entryData = getArguments().getByteArray(EXTRA_DICTIONARY_ENTRY);
-
-		if (entryData != null && entryData.length > 0) {
-			ByteArrayInputStream in = new ByteArrayInputStream(entryData);
-			try {
-				DictionaryEntry entry = DictionaryEntry.readEntry(new ObjectInputStream(in));
-				updateView(entry);
-
-				new LoadKanjiEntriesTask().execute(entry);
-			} catch (Exception e) {
-				Log.e(DictionaryEntryFragment.class.getSimpleName(), "Failed to deserialize entry", e);
-			}
-		}
 	}
 
 	private void updateView(DictionaryEntry entry) {

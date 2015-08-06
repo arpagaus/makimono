@@ -1,9 +1,10 @@
 package net.makimono.dictionary.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.ListView;
+import net.makimono.dictionary.R;
 import net.makimono.dictionary.adapter.SearchResultAdapter;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
 import net.makimono.dictionary.content.ExampleSearchSuggestionProvider;
@@ -22,9 +23,15 @@ public class ExampleSearchFragment extends AbstractSearchFragment {
 	@Override
 	public void onListItemClick(ListView l, View view, int position, long id) {
 		ExampleEntry entry = (ExampleEntry) getListAdapter().getItem(position);
-		Intent intent = new Intent(getActivity(), ExampleEntryActivity.class);
-		intent.putExtra(net.makimono.dictionary.Intent.EXTRA_EXAMPLE_ENTRY, entry);
-		startActivity(intent);
+
+		Bundle arguments = new Bundle();
+		arguments.putParcelable(net.makimono.dictionary.Intent.EXTRA_EXAMPLE_ENTRY, entry);
+
+		DictionaryEntryFragment fragment = new DictionaryEntryFragment();
+		fragment.setArguments(arguments);
+
+		FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+		fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
 	}
 
 	@Override
