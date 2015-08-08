@@ -1,5 +1,6 @@
 package net.makimono.dictionary.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Intent;
@@ -7,29 +8,26 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import net.makimono.dictionary.R;
 import net.makimono.dictionary.view.KanjiWritingLayout;
 import net.makimono.dictionary.view.KanjiWritingView;
 
-public class KanjiWritingActivity extends AbstractDefaultActivity {
+public class KanjiWritingFragment extends Fragment {
 
+	private View contentView;
 	private KanjiWritingLayout layout;
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		initializeContentView();
-		handleIntent(getIntent());
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.share, menu);
-		return super.onCreateOptionsMenu(menu);
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.share, menu);
 	}
 
 	@Override
@@ -43,7 +41,7 @@ public class KanjiWritingActivity extends AbstractDefaultActivity {
 				Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
 				view.setDrawingCacheEnabled(false);
 
-				String url = MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, getString(R.string.app_name), "Kanji writing");
+				String url = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, getString(R.string.app_name), "Kanji writing");
 
 				Intent shareIntent = new Intent(Intent.ACTION_SEND);
 				shareIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -55,26 +53,28 @@ public class KanjiWritingActivity extends AbstractDefaultActivity {
 			}
 			return false;
 		}
-
 	}
 
-	private void initializeContentView() {
-		setContentView(R.layout.kanji_writing);
-		this.layout = (KanjiWritingLayout) findViewById(R.id.kanji_writing);
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		contentView = inflater.inflate(R.layout.kanji_writing, container, false);
+		layout = (KanjiWritingLayout) contentView.findViewById(R.id.kanji_writing);
+		return contentView;
 	}
 
-	private void handleIntent(Intent intent) {
-		if (intent.hasExtra(net.makimono.dictionary.Intent.EXTRA_STROKE_PATHS)) {
-			List<String> strokePaths = intent.getStringArrayListExtra(net.makimono.dictionary.Intent.EXTRA_STROKE_PATHS);
-			updateView(strokePaths);
-		}
+	@Override
+	public void onStart() {
+		super.onStart();
+
+		ArrayList<String> strokePaths = getArguments().getStringArrayList(net.makimono.dictionary.Intent.EXTRA_STROKE_PATHS);
+		updateView(strokePaths);
 	}
 
 	private void updateView(List<String> strokePaths) {
 		layout.removeAllViews();
 
 		for (int i = 0; i < strokePaths.size(); i++) {
-			KanjiWritingView kanjiWritingView = new KanjiWritingView(this);
+			KanjiWritingView kanjiWritingView = new KanjiWritingView(getActivity());
 			kanjiWritingView.setStrokePaths(strokePaths);
 			kanjiWritingView.setStrokeIndex(i);
 			layout.addView(kanjiWritingView);

@@ -15,9 +15,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -39,8 +41,6 @@ public class KanjiEntryFragment extends Fragment {
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
 
 	private View contentView;
-
-	private KanjiEntry entry;
 
 	private TextView literalTextView;
 	private KanjiWritingView kanjiAnimationView;
@@ -70,6 +70,21 @@ public class KanjiEntryFragment extends Fragment {
 
 		literalTextView = (TextView) contentView.findViewById(R.id.kanji_literal);
 		kanjiAnimationView = (KanjiWritingView) contentView.findViewById(R.id.kanji_animation);
+		kanjiAnimationView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Bundle arguments = new Bundle();
+				arguments.putStringArrayList(net.makimono.dictionary.Intent.EXTRA_STROKE_PATHS, new ArrayList<String>(getEntry().getStrokePaths()));
+
+				KanjiWritingFragment fragment = new KanjiWritingFragment();
+				fragment.setArguments(arguments);
+
+				FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+				fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
+			}
+		});
+
 		onYomiTextView = (TextView) contentView.findViewById(R.id.kanji_on_yomi);
 		kunYomiTextView = (TextView) contentView.findViewById(R.id.kanji_kun_yomi);
 		nanoriTextView = (TextView) contentView.findViewById(R.id.kanji_nanori);
@@ -110,19 +125,21 @@ public class KanjiEntryFragment extends Fragment {
 		handleArguments();
 	}
 
-	private void handleArguments() {
+	private KanjiEntry getEntry() {
 		KanjiEntry entry = getArguments().getParcelable(EXTRA_KANJI_ENTRY);
-		if (entry != null) {
-			updateView(entry);
+		return entry;
+	}
 
-			new LoadRadicalTask().execute(entry.getRadicalKanji());
-			new LoadAlternativeRadicalsTask().execute(entry);
+	private void handleArguments() {
+		if (getEntry() != null) {
+			updateView(getEntry());
+
+			new LoadRadicalTask().execute(getEntry().getRadicalKanji());
+			new LoadAlternativeRadicalsTask().execute(getEntry());
 		}
 	}
 
 	private void updateView(KanjiEntry entry) {
-		this.entry = entry;
-
 		kanjiAnimationView.setStrokePaths(entry.getStrokePaths());
 		if (entry.getStrokePaths().isEmpty()) {
 			kanjiAnimationView.setVisibility(View.GONE);
@@ -223,7 +240,7 @@ public class KanjiEntryFragment extends Fragment {
 			if (result == null) {
 				return;
 			} else {
-				updateRadicalTextView(entry, result);
+				updateRadicalTextView(getEntry(), result);
 			}
 		}
 	}
