@@ -73,8 +73,8 @@ public class DictionaryEntryFragment extends Fragment {
 		kanjiListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int index, long id) {
-				Intent intent = new Intent(getActivity(), KanjiEntryActivity.class);
-				intent.putExtra(KanjiEntryActivity.EXTRA_KANJI_ENTRY, (KanjiEntry) kanjiResultAdapter.getItem(index));
+				Intent intent = new Intent(getActivity(), KanjiEntryFragment.class);
+				intent.putExtra(KanjiEntryFragment.EXTRA_KANJI_ENTRY, (KanjiEntry) kanjiResultAdapter.getItem(index));
 				startActivity(intent);
 			}
 		});

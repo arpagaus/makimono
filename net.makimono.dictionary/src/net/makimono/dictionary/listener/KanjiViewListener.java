@@ -1,6 +1,6 @@
 package net.makimono.dictionary.listener;
 
-import net.makimono.dictionary.activity.KanjiEntryActivity;
+import net.makimono.dictionary.activity.KanjiEntryFragment;
 import net.makimono.dictionary.model.KanjiEntry;
 import android.app.Activity;
 import android.content.Intent;
@@ -19,8 +19,8 @@ public class KanjiViewListener implements OnClickListener {
 
 	@Override
 	public void onClick(View v) {
-		Intent intent = new Intent(activity, KanjiEntryActivity.class);
-		intent.putExtra(KanjiEntryActivity.EXTRA_KANJI_ENTRY, entry);
+		Intent intent = new Intent(activity, KanjiEntryFragment.class);
+		intent.putExtra(KanjiEntryFragment.EXTRA_KANJI_ENTRY, entry);
 		activity.startActivity(intent);
 	}
 }

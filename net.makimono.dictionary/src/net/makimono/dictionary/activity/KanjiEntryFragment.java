@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,8 +14,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import net.makimono.dictionary.R;
@@ -28,11 +32,13 @@ import net.makimono.dictionary.util.MeaningTextViewFactory;
 import net.makimono.dictionary.view.KanjiWritingView;
 import net.makimono.dictionary.view.NonScrollingListView;
 
-public class KanjiEntryActivity extends AbstractDefaultActivity {
-	public static final String EXTRA_KANJI_ENTRY = KanjiEntryActivity.class.getName() + ".EXTRA_KANJI_ENTRY";
-	private final static String LOG_TAG = KanjiEntryActivity.class.getSimpleName();
+public class KanjiEntryFragment extends Fragment {
+	public static final String EXTRA_KANJI_ENTRY = KanjiEntryFragment.class.getName() + ".EXTRA_KANJI_ENTRY";
+	private final static String LOG_TAG = KanjiEntryFragment.class.getSimpleName();
 
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
+
+	private View contentView;
 
 	private KanjiEntry entry;
 
@@ -53,54 +59,60 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 	private NonScrollingListView alternativeRadicalsListView;
 	private SearchResultAdapter alternativeRadicalsResultAdapter;
 
+	private void bindSearcher() {
+		Intent intent = new Intent(getActivity(), SearcherService.class);
+		getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
+	}
+
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		getSupportActionBar().setTitle(R.string.kanji);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		contentView = inflater.inflate(R.layout.kanji_entry, container, false);
+
+		literalTextView = (TextView) contentView.findViewById(R.id.kanji_literal);
+		kanjiAnimationView = (KanjiWritingView) contentView.findViewById(R.id.kanji_animation);
+		onYomiTextView = (TextView) contentView.findViewById(R.id.kanji_on_yomi);
+		kunYomiTextView = (TextView) contentView.findViewById(R.id.kanji_kun_yomi);
+		nanoriTextView = (TextView) contentView.findViewById(R.id.kanji_nanori);
+		hangulTextView = (TextView) contentView.findViewById(R.id.kanji_hangul);
+		pinyinTextView = (TextView) contentView.findViewById(R.id.kanji_pinyin);
+		radicalTextView = (TextView) contentView.findViewById(R.id.kanji_radical);
+		strokeCountTextView = (TextView) contentView.findViewById(R.id.kanji_stroke_count);
+		jlptTextView = (TextView) contentView.findViewById(R.id.kanji_jlpt);
+		gradeTextView = (TextView) contentView.findViewById(R.id.kanji_grade);
+		frequencyTextView = (TextView) contentView.findViewById(R.id.kanji_frequency);
+		unicodeTextView = (TextView) contentView.findViewById(R.id.kanji_unicode);
+
+		meaningsGroupView = (LinearLayout) contentView.findViewById(R.id.kanji_meanings);
+
+		alternativeRadicalsListView = (NonScrollingListView) contentView.findViewById(R.id.alternative_radicals);
+		alternativeRadicalsResultAdapter = new SearchResultAdapter(getActivity());
+		alternativeRadicalsListView.setAdapter(alternativeRadicalsResultAdapter);
+
+		return contentView;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 
 		bindSearcher();
-		initializeContentView();
-		handleIntent(getIntent());
 	}
 
 	@Override
-	protected void onDestroy() {
+	public void onDestroy() {
 		super.onDestroy();
-		unbindService(connection);
+		getActivity().unbindService(connection);
 	}
 
-	private void bindSearcher() {
-		Intent intent = new Intent(this, SearcherService.class);
-		bindService(intent, connection, Context.BIND_AUTO_CREATE);
+	@Override
+	public void onStart() {
+		super.onStart();
+		handleArguments();
 	}
 
-	private void initializeContentView() {
-		setContentView(R.layout.kanji_entry);
-
-		literalTextView = (TextView) findViewById(R.id.kanji_literal);
-		kanjiAnimationView = (KanjiWritingView) findViewById(R.id.kanji_animation);
-		onYomiTextView = (TextView) findViewById(R.id.kanji_on_yomi);
-		kunYomiTextView = (TextView) findViewById(R.id.kanji_kun_yomi);
-		nanoriTextView = (TextView) findViewById(R.id.kanji_nanori);
-		hangulTextView = (TextView) findViewById(R.id.kanji_hangul);
-		pinyinTextView = (TextView) findViewById(R.id.kanji_pinyin);
-		radicalTextView = (TextView) findViewById(R.id.kanji_radical);
-		strokeCountTextView = (TextView) findViewById(R.id.kanji_stroke_count);
-		jlptTextView = (TextView) findViewById(R.id.kanji_jlpt);
-		gradeTextView = (TextView) findViewById(R.id.kanji_grade);
-		frequencyTextView = (TextView) findViewById(R.id.kanji_frequency);
-		unicodeTextView = (TextView) findViewById(R.id.kanji_unicode);
-
-		meaningsGroupView = (LinearLayout) findViewById(R.id.kanji_meanings);
-
-		alternativeRadicalsListView = (NonScrollingListView) findViewById(R.id.alternative_radicals);
-		alternativeRadicalsResultAdapter = new SearchResultAdapter(this);
-		alternativeRadicalsListView.setAdapter(alternativeRadicalsResultAdapter);
-	}
-
-	private void handleIntent(Intent intent) {
-		if (intent.hasExtra(EXTRA_KANJI_ENTRY)) {
-			KanjiEntry entry = intent.getParcelableExtra(EXTRA_KANJI_ENTRY);
+	private void handleArguments() {
+		KanjiEntry entry = getArguments().getParcelable(EXTRA_KANJI_ENTRY);
+		if (entry != null) {
 			updateView(entry);
 
 			new LoadRadicalTask().execute(entry.getRadicalKanji());
@@ -130,11 +142,11 @@ public class KanjiEntryActivity extends AbstractDefaultActivity {
 		jlptTextView.setText(getJlptString(entry.getJlpt()));
 		gradeTextView.setText(getGradeString(entry.getGrade()));
 		frequencyTextView.setText(getDisplayString(entry.getFrequency()));
-		unicodeTextView.setText("U+" + Integer.toHexString(entry.getCodePoint()).toUpperCase());
+		unicodeTextView.setText("U+" + Integer.toHexString(entry.getCodePoint()).toUpperCase(Locale.US));
 
-		MeaningTextViewFactory factory = new MeaningTextViewFactory(this);
+		MeaningTextViewFactory factory = new MeaningTextViewFactory(getActivity());
 		meaningsGroupView.removeAllViews();
-		EnumSet<Language> languages = PreferenceFragment.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(this));
+		EnumSet<Language> languages = PreferenceFragment.getConfiguredLanguages(PreferenceManager.getDefaultSharedPreferences(getActivity()));
 		for (Language language : languages) {
 			CharSequence meaning = entry.getMeaningSummary(Collections.singletonList(language));
 			if (meaning.length() > 0) {

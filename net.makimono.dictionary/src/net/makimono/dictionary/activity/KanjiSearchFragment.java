@@ -1,8 +1,10 @@
 package net.makimono.dictionary.activity;
 
-import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.ListView;
+import net.makimono.dictionary.R;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
 import net.makimono.dictionary.content.KanjiSearchSuggestionProvider;
 import net.makimono.dictionary.model.KanjiEntry;
@@ -13,9 +15,15 @@ public class KanjiSearchFragment extends AbstractSearchFragment {
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		KanjiEntry entry = (KanjiEntry) getListAdapter().getItem(position);
-		Intent intent = new Intent(getActivity(), KanjiEntryActivity.class);
-		intent.putExtra(KanjiEntryActivity.EXTRA_KANJI_ENTRY, entry);
-		startActivity(intent);
+
+		Bundle arguments = new Bundle();
+		arguments.putParcelable(KanjiEntryFragment.EXTRA_KANJI_ENTRY, entry);
+
+		KanjiEntryFragment fragment = new KanjiEntryFragment();
+		fragment.setArguments(arguments);
+
+		FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+		fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
 	}
 
 	@Override
