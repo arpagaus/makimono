@@ -256,8 +256,8 @@ public class KanjiEntryFragment extends Fragment {
 					if (radicalKanjiEntry == null) {
 						Log.e(LOG_TAG, "There is no entry for U+" + Integer.toHexString(radical.codePointAt(0)));
 					} else {
-						if (RadicalSearchActivity.CHARACTER_SUBSTITUTES.containsKey(radicalKanjiEntry.getLiteral())) {
-							radicalKanjiEntry.setLiteral(RadicalSearchActivity.CHARACTER_SUBSTITUTES.get(radicalKanjiEntry.getLiteral()));
+						if (RadicalSearchFragment.CHARACTER_SUBSTITUTES.containsKey(radicalKanjiEntry.getLiteral())) {
+							radicalKanjiEntry.setLiteral(RadicalSearchFragment.CHARACTER_SUBSTITUTES.get(radicalKanjiEntry.getLiteral()));
 						}
 						radicalKanjiEntries.add(radicalKanjiEntry);
 					}

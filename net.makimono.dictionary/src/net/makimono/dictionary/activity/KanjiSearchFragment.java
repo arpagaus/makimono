@@ -1,16 +1,24 @@
 package net.makimono.dictionary.activity;
 
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import net.makimono.dictionary.R;
 import net.makimono.dictionary.content.AbstractSearchSuggestionProvider;
 import net.makimono.dictionary.content.KanjiSearchSuggestionProvider;
+import net.makimono.dictionary.model.Entry;
 import net.makimono.dictionary.model.KanjiEntry;
 import net.makimono.dictionary.searcher.KanjiSearcher;
 
 public class KanjiSearchFragment extends AbstractSearchFragment {
+
+	private static final String LOG_TAG = KanjiSearchFragment.class.getSimpleName();
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
@@ -39,27 +47,17 @@ public class KanjiSearchFragment extends AbstractSearchFragment {
 	@Override
 	protected void executeQuery(String query) {
 		super.executeQuery(query);
-		// TODO inter-fragment communication?
-		// if
-		// (net.makimono.dictionary.Intent.ACTION_RADICAL_SEARCH.equals(intent.getAction()))
-		// {
-		// final List<String> radicals =
-		// Arrays.asList(intent.getStringArrayExtra(net.makimono.dictionary.Intent.EXTRA_RADICALS));
-		// final int minStrokes =
-		// intent.getIntExtra(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES,
-		// 0);
-		// final int maxStrokes =
-		// intent.getIntExtra(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES,
-		// 0);
-		// Log.v(LOG_TAG, "minStrokes=" + minStrokes + ", maxStrokes=" +
-		// maxStrokes + ", radicals=" + radicals);
-		// new SearchTask() {
-		// protected List<? extends Entry> executeQuery(Object... queries)
-		// throws IOException {
-		// return getSearcher().searchByRadicals(radicals, minStrokes,
-		// maxStrokes);
-		// }
-		// }.execute();
-		// }
+
+		if (getArguments().containsKey(net.makimono.dictionary.Intent.EXTRA_RADICALS)) {
+			final List<String> radicals = Arrays.asList(getArguments().getStringArray(net.makimono.dictionary.Intent.EXTRA_RADICALS));
+			final int minStrokes = getArguments().getInt(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, 0);
+			final int maxStrokes = getArguments().getInt(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, 0);
+			Log.v(LOG_TAG, "minStrokes=" + minStrokes + ", maxStrokes=" + maxStrokes + ", radicals=" + radicals);
+			new SearchTask() {
+				protected List<? extends Entry> executeQuery(Object... queries) throws IOException {
+					return getSearcher().searchByRadicals(radicals, minStrokes, maxStrokes);
+				}
+			}.execute();
+		}
 	}
 }

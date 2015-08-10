@@ -15,13 +15,6 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import net.makimono.dictionary.R;
-import net.makimono.dictionary.service.SearcherService;
-import net.makimono.dictionary.service.SearcherServiceConnection;
-import net.makimono.dictionary.util.TypedValueUtil;
-import net.makimono.dictionary.view.RangeSeekBar;
-import net.makimono.dictionary.view.RangeSeekBar.OnRangeSeekBarChangeListener;
-
 import org.apache.commons.lang3.math.NumberUtils;
 
 import android.content.Context;
@@ -30,9 +23,12 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -43,9 +39,15 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import net.makimono.dictionary.R;
+import net.makimono.dictionary.service.SearcherService;
+import net.makimono.dictionary.service.SearcherServiceConnection;
+import net.makimono.dictionary.util.TypedValueUtil;
+import net.makimono.dictionary.view.RangeSeekBar;
+import net.makimono.dictionary.view.RangeSeekBar.OnRangeSeekBarChangeListener;
 
-public class RadicalSearchActivity extends AbstractDefaultActivity {
-	private static final String LOG_TAG = RadicalSearchActivity.class.getSimpleName();
+public class RadicalSearchFragment extends Fragment {
+	private static final String LOG_TAG = RadicalSearchFragment.class.getSimpleName();
 
 	/**
 	 * The font DroidSansJapanese does not seem to support the CJK radical
@@ -74,6 +76,8 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 	private Set<String> selectableRadicals;
 	private Set<String> selectedRadicals = new HashSet<String>();
 
+	private View contentView;
+
 	private LinearLayout strokeCountLayout;
 	private TextView strokeCountText;
 	private RangeSeekBar<Integer> strokeCountsSeekBar;
@@ -82,12 +86,10 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 	private Button resetButton;
 
 	@Override
-	protected void onCreate(Bundle bundle) {
-		super.onCreate(bundle);
-		getSupportActionBar().setTitle(R.string.radical_search);
-		setContentView(R.layout.radical_search);
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		contentView = inflater.inflate(R.layout.radical_search, container, false);
 
-		strokeCountLayout = (LinearLayout) findViewById(R.id.strokeCountLayout);
+		strokeCountLayout = (LinearLayout) contentView.findViewById(R.id.strokeCountLayout);
 		Configuration configuration = getResources().getConfiguration();
 		if (configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			strokeCountLayout.setOrientation(LinearLayout.HORIZONTAL);
@@ -95,16 +97,15 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 			strokeCountLayout.setOrientation(LinearLayout.VERTICAL);
 		}
 
-		strokeCountText = (TextView) findViewById(R.id.strokeCountText);
+		strokeCountText = (TextView) contentView.findViewById(R.id.strokeCountText);
 
-		strokeCountsSeekBar = new RangeSeekBar<Integer>(1, 33, this);
+		strokeCountsSeekBar = new RangeSeekBar<Integer>(1, 33, getActivity());
 		strokeCountsSeekBar.setNotifyWhileDragging(true);
 		strokeCountsSeekBar.setOnRangeSeekBarChangeListener(new SeekBarListener());
-		((FrameLayout) findViewById(R.id.strokeCount)).addView(strokeCountsSeekBar);
+		((FrameLayout) contentView.findViewById(R.id.strokeCount)).addView(strokeCountsSeekBar);
 		updateStrokeIndexText();
 
-		radicalsGridView = (GridView) findViewById(R.id.radicals);
-		radicalsGridView.setAdapter(new RadicalAdapter());
+		radicalsGridView = (GridView) contentView.findViewById(R.id.radicals);
 		radicalsGridView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
@@ -135,20 +136,24 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 			}
 		});
 
-		searchButton = (Button) findViewById(R.id.searchButton);
+		searchButton = (Button) contentView.findViewById(R.id.searchButton);
 		searchButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(RadicalSearchActivity.this, KanjiSearchFragment.class);
-				intent.setAction(net.makimono.dictionary.Intent.ACTION_RADICAL_SEARCH);
-				intent.putExtra(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, strokeCountsSeekBar.getSelectedMinValue());
-				intent.putExtra(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, strokeCountsSeekBar.getSelectedMaxValue());
-				intent.putExtra(net.makimono.dictionary.Intent.EXTRA_RADICALS, selectedRadicals.toArray(new String[selectedRadicals.size()]));
-				startActivity(intent);
+				Bundle arguments = new Bundle();
+				arguments.putInt(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, strokeCountsSeekBar.getSelectedMinValue());
+				arguments.putInt(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, strokeCountsSeekBar.getSelectedMaxValue());
+				arguments.putStringArray(net.makimono.dictionary.Intent.EXTRA_RADICALS, selectedRadicals.toArray(new String[selectedRadicals.size()]));
+
+				KanjiSearchFragment fragment = new KanjiSearchFragment();
+				fragment.setArguments(arguments);
+
+				FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+				fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
 			}
 		});
 
-		resetButton = (Button) findViewById(R.id.resetButton);
+		resetButton = (Button) contentView.findViewById(R.id.resetButton);
 		resetButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -162,7 +167,21 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 			}
 		});
 
+		return contentView;
+	}
+
+	@Override
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState);
 		bindSearcher();
+		radicalsGridView.setAdapter(new RadicalAdapter());
+
+		selectedRadicals.addAll(Arrays.asList(savedInstanceState.getStringArray(net.makimono.dictionary.Intent.EXTRA_RADICALS)));
+		((BaseAdapter) radicalsGridView.getAdapter()).notifyDataSetChanged();
+
+		strokeCountsSeekBar.setSelectedMinValue(savedInstanceState.getInt(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, strokeCountsSeekBar.getAbsoluteMinValue()));
+		strokeCountsSeekBar.setSelectedMaxValue(savedInstanceState.getInt(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, strokeCountsSeekBar.getAbsoluteMaxValue()));
+		updateStrokeIndexText();
 	}
 
 	private void updateStrokeIndexText() {
@@ -186,33 +205,22 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 	}
 
 	private void bindSearcher() {
-		Intent intent = new Intent(this, SearcherService.class);
-		bindService(intent, connection, Context.BIND_AUTO_CREATE);
+		Intent intent = new Intent(getActivity(), SearcherService.class);
+		getActivity().bindService(intent, connection, Context.BIND_AUTO_CREATE);
 	}
 
 	@Override
-	protected void onDestroy() {
+	public void onDestroy() {
 		super.onDestroy();
-		unbindService(connection);
+		getActivity().unbindService(connection);
 	}
 
 	@Override
-	protected void onSaveInstanceState(Bundle outState) {
+	public void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
 		outState.putStringArray(net.makimono.dictionary.Intent.EXTRA_RADICALS, selectedRadicals.toArray(new String[selectedRadicals.size()]));
 		outState.putInt(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, strokeCountsSeekBar.getSelectedMinValue());
 		outState.putInt(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, strokeCountsSeekBar.getSelectedMaxValue());
-	}
-
-	@Override
-	protected void onRestoreInstanceState(Bundle instanceState) {
-		super.onRestoreInstanceState(instanceState);
-		selectedRadicals.addAll(Arrays.asList(instanceState.getStringArray(net.makimono.dictionary.Intent.EXTRA_RADICALS)));
-		((BaseAdapter) radicalsGridView.getAdapter()).notifyDataSetChanged();
-
-		strokeCountsSeekBar.setSelectedMinValue(instanceState.getInt(net.makimono.dictionary.Intent.EXTRA_MIN_STROKES, strokeCountsSeekBar.getAbsoluteMinValue()));
-		strokeCountsSeekBar.setSelectedMaxValue(instanceState.getInt(net.makimono.dictionary.Intent.EXTRA_MAX_STROKES, strokeCountsSeekBar.getAbsoluteMaxValue()));
-		updateStrokeIndexText();
 	}
 
 	private class RadicalAdapter extends BaseAdapter {
@@ -224,7 +232,7 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 
 			try {
 				Properties properties = new Properties();
-				InputStream input = getAssets().open("radicals.xml");
+				InputStream input = getActivity().getAssets().open("radicals.xml");
 				properties.loadFromXML(input);
 				input.close();
 
@@ -273,7 +281,7 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			TextView textView = new net.makimono.dictionary.view.TextView(RadicalSearchActivity.this);
+			TextView textView = new net.makimono.dictionary.view.TextView(getActivity());
 			final String radical = strokesAndRadicals.get(position).toString();
 			if (CHARACTER_SUBSTITUTES.containsKey(radical)) {
 				textView.setText(CHARACTER_SUBSTITUTES.get(radical));
@@ -300,7 +308,7 @@ public class RadicalSearchActivity extends AbstractDefaultActivity {
 			int padding = TypedValueUtil.getPixelForDip(2, getResources().getDisplayMetrics());
 			layoutParams.setMargins(padding, padding, padding, padding);
 
-			ViewGroup layout = new LinearLayout(RadicalSearchActivity.this);
+			ViewGroup layout = new LinearLayout(getActivity());
 			layout.addView(textView, layoutParams);
 			return layout;
 		}
