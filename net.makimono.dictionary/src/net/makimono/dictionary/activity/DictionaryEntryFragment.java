@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,6 +16,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -46,7 +46,7 @@ import net.makimono.dictionary.view.NonScrollingListView;
 public class DictionaryEntryFragment extends Fragment {
 	private static final String LOG_TAG = DictionaryEntryFragment.class.getSimpleName();
 
-	public static final String EXTRA_DICTIONARY_ENTRY = DictionaryEntryFragment.class + ".EXTRA_DOC_ID";
+	public static final String EXTRA_DICTIONARY_ENTRY = DictionaryEntryFragment.class + ".EXTRA_DICTIONARY_ENTRY";
 
 	private SearcherServiceConnection connection = new SearcherServiceConnection();
 
@@ -73,9 +73,16 @@ public class DictionaryEntryFragment extends Fragment {
 		kanjiListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int index, long id) {
-				Intent intent = new Intent(getActivity(), KanjiEntryFragment.class);
-				intent.putExtra(KanjiEntryFragment.EXTRA_KANJI_ENTRY, (KanjiEntry) kanjiResultAdapter.getItem(index));
-				startActivity(intent);
+				KanjiEntry entry = (KanjiEntry) kanjiResultAdapter.getItem(index);
+
+				Bundle arguments = new Bundle();
+				arguments.putParcelable(KanjiEntryFragment.EXTRA_KANJI_ENTRY, entry);
+
+				KanjiEntryFragment fragment = new KanjiEntryFragment();
+				fragment.setArguments(arguments);
+
+				FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+				fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
 			}
 		});
 
@@ -134,10 +141,15 @@ public class DictionaryEntryFragment extends Fragment {
 			if (expressionTextSwitcher.getCurrentView() instanceof TextView) {
 				CharSequence expression = ((TextView) expressionTextSwitcher.getCurrentView()).getText();
 				if (StringUtils.isNotBlank(expression)) {
-					Intent intent = new Intent(getActivity(), ExampleSearchFragment.class);
-					intent.setAction(Intent.ACTION_SEARCH);
-					intent.putExtra(SearchManager.QUERY, expression);
-					startActivity(intent);
+					Bundle arguments = new Bundle();
+					arguments.putString(ExampleSearchFragment.EXTRA_QUERY_STRING, expression.toString());
+
+					ExampleSearchFragment fragment = new ExampleSearchFragment();
+					fragment.setArguments(arguments);
+
+					FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+					fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
+
 					return true;
 				}
 			}
