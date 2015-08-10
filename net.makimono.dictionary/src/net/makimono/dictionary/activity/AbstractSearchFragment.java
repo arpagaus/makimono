@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -26,7 +28,11 @@ import net.makimono.dictionary.service.SearcherServiceConnection;
 public abstract class AbstractSearchFragment extends ListFragment {
 	private static final String LOG_TAG = AbstractSearchFragment.class.getName();
 
+	public static final String EXTRA_QUERY_STRING = DictionaryEntryFragment.class + ".EXTRA_SEARCH_STRING";
+
 	protected SearcherServiceConnection connection = new SearcherServiceConnection();
+
+	protected String queryString;
 
 	public AppCompatActivity getAppCompatActivity() {
 		return (AppCompatActivity) super.getActivity();
@@ -61,6 +67,7 @@ public abstract class AbstractSearchFragment extends ListFragment {
 	}
 
 	protected void executeQuery(String query) {
+		this.queryString = query;
 		new SearchTask().execute(query);
 	}
 
@@ -68,6 +75,20 @@ public abstract class AbstractSearchFragment extends ListFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActivity().bindService(new Intent(getActivity(), SearcherService.class), connection, Context.BIND_AUTO_CREATE);
+
+		String argumentsSearchString = getArguments().getString(EXTRA_QUERY_STRING);
+		String instanceSearchString = savedInstanceState.getString(EXTRA_QUERY_STRING);
+		if (StringUtils.isNotEmpty(argumentsSearchString)) {
+			executeQuery(argumentsSearchString);
+		} else if (StringUtils.isNotEmpty(instanceSearchString)) {
+			executeQuery(instanceSearchString);
+		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putString(EXTRA_QUERY_STRING, queryString);
 	}
 
 	@Override

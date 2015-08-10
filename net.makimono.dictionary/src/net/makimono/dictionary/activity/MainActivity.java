@@ -32,28 +32,28 @@ import android.util.Log;
 import android.widget.Toast;
 import net.makimono.dictionary.Application;
 import net.makimono.dictionary.R;
-import net.makimono.dictionary.navigation.NavigationDrawerCallbacks;
+import net.makimono.dictionary.navigation.NavigationDrawerCallback;
 import net.makimono.dictionary.navigation.NavigationDrawerFragment;
 import net.makimono.dictionary.util.ExternalStorageUtil;
 
-public class MainActivity extends AppCompatActivity implements NavigationDrawerCallbacks {
+public class MainActivity extends AppCompatActivity implements NavigationDrawerCallback {
 	private static final String LOG_TAG = MainActivity.class.getSimpleName();
 	private static final String INDEXES_FILE_NAME = "indexes.zip";
 
-	private Toolbar mToolbar;
-	private NavigationDrawerFragment mNavigationDrawerFragment;
+	private Toolbar toolbar;
+	private NavigationDrawerFragment navigationDrawerFragment;
 	private Fragment currentFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		mToolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
-		setSupportActionBar(mToolbar);
+		toolbar = (Toolbar) findViewById(R.id.toolbar_actionbar);
+		setSupportActionBar(toolbar);
 		getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-		mNavigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
-		mNavigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), mToolbar);
+		navigationDrawerFragment = (NavigationDrawerFragment) getFragmentManager().findFragmentById(R.id.fragment_drawer);
+		navigationDrawerFragment.setup(R.id.fragment_drawer, (DrawerLayout) findViewById(R.id.drawer), toolbar);
 
 		initializeIndexFiles();
 	}
@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements NavigationDrawerC
 
 	@Override
 	public void onBackPressed() {
-		if (mNavigationDrawerFragment.isDrawerOpen()) {
-			mNavigationDrawerFragment.closeDrawer();
+		if (navigationDrawerFragment.isDrawerOpen()) {
+			navigationDrawerFragment.closeDrawer();
 		} else {
 			super.onBackPressed();
 		}

@@ -17,31 +17,30 @@ import net.makimono.dictionary.R;
  */
 public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDrawerAdapter.ViewHolder> {
 
-	private List<NavigationDrawerItem> mNavigationItems;
-	private NavigationDrawerCallbacks mNavigationDrawerCallbacks;
-	private int mSelectedPosition;
-	private int mTouchedPosition = -1;
+	private List<NavigationDrawerItem> navigationItems;
+	private NavigationDrawerCallback navigationDrawerCallbacks;
+	private int selectedPosition;
+	private int touchedPosition = -1;
 
 	public NavigationDrawerAdapter(List<NavigationDrawerItem> navigationItems) {
-		mNavigationItems = navigationItems;
+		this.navigationItems = navigationItems;
 	}
 
-	public NavigationDrawerCallbacks getNavigationDrawerCallbacks() {
-		return mNavigationDrawerCallbacks;
+	public NavigationDrawerCallback getNavigationDrawerCallbacks() {
+		return navigationDrawerCallbacks;
 	}
 
-	public void setNavigationDrawerCallbacks(NavigationDrawerCallbacks navigationDrawerCallbacks) {
-		mNavigationDrawerCallbacks = navigationDrawerCallbacks;
+	public void setNavigationDrawerCallbacks(NavigationDrawerCallback navigationDrawerCallback) {
+		this.navigationDrawerCallbacks = navigationDrawerCallback;
 	}
 
 	@Override
 	public NavigationDrawerAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-		View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.drawer_row, viewGroup, false);
-		final ViewHolder viewholder = new ViewHolder(v);
+		View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.drawer_row, viewGroup, false);
+		final ViewHolder viewholder = new ViewHolder(view);
 		viewholder.itemView.setOnTouchListener(new View.OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
-
 				switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN:
 					touchPosition(viewholder.getAdapterPosition());
@@ -61,8 +60,8 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 		viewholder.itemView.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (mNavigationDrawerCallbacks != null)
-					mNavigationDrawerCallbacks.onNavigationDrawerItemSelected(viewholder.getAdapterPosition());
+				if (navigationDrawerCallbacks != null)
+					navigationDrawerCallbacks.onNavigationDrawerItemSelected(viewholder.getAdapterPosition());
 			}
 		});
 		return viewholder;
@@ -70,14 +69,14 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
 	@Override
 	public void onBindViewHolder(NavigationDrawerAdapter.ViewHolder viewHolder, final int position) {
-		NavigationDrawerItem item = mNavigationItems.get(position);
+		NavigationDrawerItem item = navigationItems.get(position);
 		@SuppressWarnings("deprecation")
 		Drawable drawable = viewHolder.textView.getResources().getDrawable(item.getDrawableId());
 		viewHolder.textView.setText(item.getText());
 		viewHolder.textView.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
 
 		// TODO: selected menu position, change layout accordingly
-		if (mSelectedPosition == position || mTouchedPosition == position) {
+		if (selectedPosition == position || touchedPosition == position) {
 			viewHolder.itemView.setBackgroundColor(viewHolder.itemView.getContext().getResources().getColor(R.color.colorSelected));
 		} else {
 			viewHolder.itemView.setBackgroundColor(Color.TRANSPARENT);
@@ -85,8 +84,8 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 	}
 
 	private void touchPosition(int position) {
-		int lastPosition = mTouchedPosition;
-		mTouchedPosition = position;
+		int lastPosition = touchedPosition;
+		touchedPosition = position;
 		if (lastPosition >= 0)
 			notifyItemChanged(lastPosition);
 		if (position >= 0)
@@ -94,15 +93,15 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 	}
 
 	public void selectPosition(int position) {
-		int lastPosition = mSelectedPosition;
-		mSelectedPosition = position;
+		int lastPosition = selectedPosition;
+		selectedPosition = position;
 		notifyItemChanged(lastPosition);
 		notifyItemChanged(position);
 	}
 
 	@Override
 	public int getItemCount() {
-		return mNavigationItems != null ? mNavigationItems.size() : 0;
+		return navigationItems != null ? navigationItems.size() : 0;
 	}
 
 	public static class ViewHolder extends RecyclerView.ViewHolder {
